@@ -2,7 +2,7 @@
 name = ostan
 description = OSTolaskujen ANalysointi -- package for analysing invoices of Finnish public organizations
 author = Tuomas Borman
-license = MIT
+license = Apache License 2.0
 license_file = LICENSE
 platforms = unix, linux, osx, cygwin, win32
 classifiers =
