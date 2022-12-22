@@ -1,0 +1,13 @@
+key,value
+kokonaissumma euroina,total
+vat-tunnus,vat_code
+alv-koodi,vat_code
+alv määrä euroina,vat_amount
+alv-määrä euroina,vat_amount
+rivin osuus vero,vat_amount
+kustannuspaikan nimi,cost_pool_name
+kustannuspaikka_nimi,cost_pool_name
+kustannuspaikka,cost_pool
+kustannuspaikka_numero,cost_pool_id
+kustannuspaikka_id,cost_pool_id
+hilma-tunnus,hilma_code

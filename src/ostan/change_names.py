@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pandas as pd
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import warnings
@@ -6,8 +7,10 @@ import warnings
 
 def change_names(df, fields, guess_names=True, **args):
     # Open files that include fields
-    mandatory_fields = pd.read_csv("~/Downloads/mandatory_fields.csv").set_index("key")["value"].to_dict()
-    optional_fields = pd.read_csv("~/Downloads/optional_fields.csv").set_index("key")["value"].to_dict()
+    mandatory_fields = pd.read_csv("data/mandatory_fields.csv"
+                                   ).set_index("key")["value"].to_dict()
+    optional_fields = pd.read_csv("data/optional_fields.csv"
+                                  ).set_index("key")["value"].to_dict()
     # Combine fields into one dictionary
     fields = {}
     fields.update(mandatory_fields)
@@ -37,7 +40,8 @@ def change_names(df, fields, guess_names=True, **args):
     # to be guessed
     if len(colnames_not_found) > 0 and guess_names:
         for name in colnames_not_found:
-            name = guess_name(df, col, colnames, colnames_not_found.append, fields, **args)
+            name = guess_name(df, col, colnames,
+                              colnames_not_found, fields, **args)
             # Change name
             colnames[colnames.index(colnames_not_found[1])] = name
             # Remove from list
@@ -131,6 +135,9 @@ def guess_name(df, col, colnames, fields,
     # Test if voucher
     elif df.iloc[:, colnames.index(col)].nunique() == df.shape[0]:
         col_name = "voucher"
+    # Test if column includes country codes
+    elif test_if_country(df, col, colnames, **args):
+        col_name = "country"
     else:
         # Try partial match
         # Get the most similar key value
@@ -144,6 +151,7 @@ def guess_name(df, col, colnames, fields,
             col_name = fields.get(col_name_part)
 
     return col_name
+
 
 def test_if_BID(df, col, patt_found_th=0.8, char_len_th=0.8, **args):
     # Initialize result as False
@@ -173,33 +181,38 @@ def org_or_suppl_BID(df, col, colnames):
         # If the column is in colnames
         if col_match in colnames:
             # Subset the data by taking only specified columns
-            temp = df.iloc[:, [colnames.index(col), colnames.index(col_match)] ]
+            temp = df.iloc[:, [colnames.index(col),
+                               colnames.index(col_match)]]
             # Drop rows with blank values
             temp = temp.dropna()
             # Number of unique combinations
             n_uniq = temp.drop_duplicates().shape[0]
             # If there are as many combinations as there are individual values
             # these columns match
-            if n_uniq == df.iloc[:,colnames.index(col_match)].nunique():
+            if n_uniq == df.iloc[:, colnames.index(col_match)].nunique():
                 res = "org_id"
     # If there are supplier IDs already, try if they are differemt
-    if "suppl_id" in colnames and all(df.iloc[:, colnames.index(col)] != df.iloc[:, colnames.index("suppl_id")]):
+    if "suppl_id" in colnames and all(df.iloc[:, colnames.index(col)] !=
+                                      df.iloc[:, colnames.index("suppl_id")]):
         res = "org_id"
     # If there are organization IDs already, try if they are differemt
-    if "org_id" in colnames and all(df.iloc[:, colnames.index(col)] == df.iloc[:, colnames.index("org_id")]):
+    if "org_id" in colnames and all(df.iloc[:, colnames.index(col)] ==
+                                    df.iloc[:, colnames.index("org_id")]):
         res = "org_id"
     # If there are not many unique values, it might be organization ID
     if df.iloc[:, colnames.index(col)].nunique()/df.shape[0] < 0.5:
         res = "org_id"
     return res
 
+
 def test_if_date(df, col, colnames):
-    temp = df
-    temp = temp.dropna()
-    column = temp.iloc[:, colnames.index(col)]
-    if column.dtype == "datetime64":
-        name = "date"
-    elif column.dtype == "int64":
+    # Initialize result
+    res = False
+    df = df.iloc[:, colnames.index(col)]
+    df = df.dropna()
+    if df.dtype == "datetime64":
+        res = True
+    elif df.dtype == "int64":
         patt_to_search = [
             "\\d\\d\\d\\d\\d\\d\\d\\d",
             "\\d\\d\\d\\d\\d\\d\\d",
@@ -215,11 +228,9 @@ def test_if_date(df, col, colnames):
             "\\d\\d\\d\\d[.-/]\\d\\d[.-/]\\d",
             "\\d\\d\\d[.-/]\\d[.-/]",
             ]
-        patt_found = df.loc[:, col].astype(str).str.contains("|".join(patt_to_search))
+        patt_found = df.astype(str).str.contains("|".join(patt_to_search))
         if all(patt_found):
             res = True
-    else:
-        res = False
     return res
 
 
@@ -233,29 +244,41 @@ def test_match_between_colnames(df, col, colnames, cols_match, datatype):
             # If the column is in colnames
             if col_match in colnames:
                 # Subset the data by taking only specified columns
-                temp = df.iloc[:, [colnames.index(col), colnames.index(col_match)] ]
+                temp = df.iloc[:, [colnames.index(col),
+                                   colnames.index(col_match)]]
                 # Drop rows with blank values
                 temp = temp.dropna()
                 # Number of unique combinations
                 n_uniq = temp.drop_duplicates().shape[0]
-                # If there are as many combinations as there are individual values
-                # these columns match
-                if n_uniq == df.iloc[:,colnames.index(col_match)].nunique():
+                # If there are as many combinations as there are
+                # individual values these columns match
+                if n_uniq == df.iloc[:, colnames.index(col_match)].nunique():
                     res = True
     return res
+
 
 def test_if_sums(df, col, colnames, greater_cols, less_cols, datatype):
     # Initialize results as False
     res = False
     # Test if all cols_match are available and their type is correct
-    if all((col_match in colnames for col_match in (greater_cols + less_cols))) and all( df.iloc[:, [colnames.index(col_match) for col_match in (greater_cols+less_cols)]].dtypes == datatype ):
+    if all((col_match in colnames for
+            col_match in (greater_cols + less_cols))) and all(
+                df.iloc[:, [colnames.index(col_match)
+                            for col_match in (greater_cols+less_cols)
+                            ]].dtypes == datatype):
         # Check if the column values are less than greater_cols values
-        if len(greater_cols) > 0 and all((df.iloc[:, [colnames.index(greater_col) for greater_col in greater_cols]].values > df[[df.columns[colnames.index(col)]]].values).all(axis=1)):
+        if len(greater_cols) > 0 and all((
+                df.iloc[:, [colnames.index(greater_col)
+                            for greater_col in greater_cols]].values >
+                df[[df.columns[colnames.index(col)]]].values).all(axis=1)):
             less_than_great = True
         else:
             less_than_great = False
         # Check if the column values are greater than less_cols values
-        if len(less_cols) > 0 and all((df.iloc[:, [colnames.index(less_col) for less_col in less_cols]].values < df[[df.columns[colnames.index(col)]]].values).all(axis=1)):
+        if len(less_cols) > 0 and all((
+                df.iloc[:, [colnames.index(less_col)
+                            for less_col in less_cols]].values <
+                df[[df.columns[colnames.index(col)]]].values).all(axis=1)):
             greater_than_less = True
         else:
             greater_than_less = False
@@ -264,7 +287,20 @@ def test_if_sums(df, col, colnames, greater_cols, less_cols, datatype):
             res = True
     return res
 
-def test_if_country(df, col, colnames):
+
+def test_if_country(df, col, colnames, country_threshold=0.2, **args):
     # Initialize results as False
     res = False
+    # Get specific column and remove NaNs
+    df = df.iloc[:, colnames.index(col)]
+    df = df.dropna()
     # Test if col values can be found from the table
+    codes = pd.read_csv("data/land_codes.csv", index_col=0)
+    res_df = pd.DataFrame()
+    for name, data in codes.items():
+        res_df[name] = (df.isin(data))
+    # How many times the value was found from the codes? If enoug, then we
+    # can be sure that the column includes land codes
+    if sum(res_df.sum(axis=1) > 0)/res_df.shape[0] > country_threshold:
+        res = True
+    return res
