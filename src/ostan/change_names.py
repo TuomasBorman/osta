@@ -37,7 +37,7 @@ def change_names(df, fields, guess_names=True, **args):
     # to be guessed
     if len(colnames_not_found) > 0 and guess_names:
         for name in colnames_not_found:
-            name = guess_name(df, col, colnames, colnames_not_found.append, all_fields, **args)
+            name = guess_name(df, col, colnames, colnames_not_found.append, fields, **args)
             # Change name
             colnames[colnames.index(colnames_not_found[1])] = name
             # Remove from list
