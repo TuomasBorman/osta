@@ -128,6 +128,9 @@ def guess_name(df, col, colnames, fields,
                       datatype="float64"
                       ):
         col_name = "vat_amount"
+    # Test if voucher
+    elif df.iloc[:, colnames.index(col)].nunique() == df.shape[0]:
+        col_name = "voucher"
     else:
         # Try partial match
         # Get the most similar key value
@@ -196,7 +199,7 @@ def test_if_date(df, col, colnames):
     column = temp.iloc[:, colnames.index(col)]
     if column.dtype == "datetime64":
         name = "date"
-    elif column.dtype] == "int64":
+    elif column.dtype == "int64":
         patt_to_search = [
             "\\d\\d\\d\\d\\d\\d\\d\\d",
             "\\d\\d\\d\\d\\d\\d\\d",
@@ -224,7 +227,7 @@ def test_match_between_colnames(df, col, colnames, cols_match, datatype):
     # Initialize results as False
     res = False
     # Test the data type
-    if temp.dtypes[colnames.index(col)] in datatype:
+    if df.dtypes[colnames.index(col)] in datatype:
         # Loop over columns that should be matched
         for col_match in cols_match:
             # If the column is in colnames
@@ -252,7 +255,7 @@ def test_if_sums(df, col, colnames, greater_cols, less_cols, datatype):
         else:
             less_than_great = False
         # Check if the column values are greater than less_cols values
-        if len(less_cols) > 0 and all((df.iloc[:, [colnames.index(less_col) for greater_col in greater_cols]].values < df[[df.columns[colnames.index(col)]]].values).all(axis=1)):
+        if len(less_cols) > 0 and all((df.iloc[:, [colnames.index(less_col) for less_col in less_cols]].values < df[[df.columns[colnames.index(col)]]].values).all(axis=1)):
             greater_than_less = True
         else:
             greater_than_less = False
@@ -260,3 +263,8 @@ def test_if_sums(df, col, colnames, greater_cols, less_cols, datatype):
         if less_than_great and greater_than_less:
             res = True
     return res
+
+def test_if_country(df, col, colnames):
+    # Initialize results as False
+    res = False
+    # Test if col values can be found from the table
