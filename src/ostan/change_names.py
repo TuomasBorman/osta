@@ -56,24 +56,77 @@ def change_names(df, fields, guess_names=True, **args):
     return df
 
 
-def guess_name(df, col, colnames, fields, match_th=85, scorer=fuzz.token_set_ratio, **args):
+def guess_name(df, col, colnames, fields,
+               match_th=85, scorer=fuzz.token_set_ratio, **args):
     # Try if column is ID column
-    if test_if_BID(df, col):
-        # BID can be from organization or supplier.
-        col_name = org_or_suppl_BID(df, col)
-    elif test_if_org_number(df, col, colnames):
-        col_name = "org_id"
+    if test_if_BID(df, col, colnames, **args):
+        # BID can be from organization or supplier
+        col_name = org_or_suppl_BID(df, col, colnames)
+    # Test if date
     elif test_if_date(df, col, colnames):
         col_name = "date"
-    elif test_if_org_name(df, col, colnames):
+    # Test if org_number
+    elif test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                     cols_match=["org_name", "org_id"],
+                                     datatype=["int64"]
+                                     ):
+        col_name = "org_number"
+    # Test if org_name
+    elif test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                     cols_match=["org_number", "org_id"],
+                                     datatype=["object"]
+                                     ):
         col_name = "org_name"
-    elif test_if_suppl_name(df, col, colnames):
+    # Test if suppl_name
+    elif test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                     cols_match=["suppl_id"],
+                                     datatype=["object"]
+                                     ):
         col_name = "suppl_name"
-    elif test_if_netsum(df, col, colnames):
+    # Test if service_cat
+    elif test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                     cols_match=["service_cat_name"],
+                                     datatype=["object", "int64"]
+                                     ):
+        col_name = "service_cat"
+    # Test if service_cat_name
+    elif test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                     cols_match=["service_cat"],
+                                     datatype=["object"]
+                                     ):
+        col_name = "service_cat_name"
+    # Test if account_number
+    elif test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                     cols_match=["account_name"],
+                                     datatype=["int64"]
+                                     ):
+        col_name = "account_number"
+    # Test if account_name
+    elif test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                     cols_match=["account_number"],
+                                     datatype=["object"]
+                                     ):
+        col_name = "account_name"
+    # test if price_ex_vat
+    elif test_if_sums(df=df, col=col, colnames=colnames,
+                      greater_cols=["total"],
+                      less_cols=["vat_amount"],
+                      datatype="float64"
+                      ):
         col_name = "price_ex_vat"
-    elif test_if_total(df, col, colnames):
+    # test if total
+    elif test_if_sums(df=df, col=col, colnames=colnames,
+                      greater_cols=[],
+                      less_cols=["vat_amount", "price_ex_vat"],
+                      datatype="float64"
+                      ):
         col_name = "total"
-    elif test_if_vat_amount(df, col, colnames):
+    # test if vat_AMOUNT
+    elif test_if_sums(df=df, col=col, colnames=colnames,
+                      greater_cols=["total", "price_ex_vat"],
+                      less_cols=[],
+                      datatype="float64"
+                      ):
         col_name = "vat_amount"
     else:
         # Try partial match
@@ -89,9 +142,11 @@ def guess_name(df, col, colnames, fields, match_th=85, scorer=fuzz.token_set_rat
 
     return col_name
 
-def test_if_BID(df, col_name, patt_found_th=0.8, char_len_th=0.8):
+def test_if_BID(df, col, patt_found_th=0.8, char_len_th=0.8, **args):
+    # Initialize result as False
+    res = False
     # Test if pattern found
-    patt_found = df.loc[:, col_name].astype(str).str.contains(
+    patt_found = df.loc[:, col].astype(str).str.contains(
         "\\d\\d\\d\\d\\d\\d\\d-\\d")
     patt_found = patt_found.value_counts()/df.shape[0]
     if True in patt_found.index:
@@ -102,80 +157,38 @@ def test_if_BID(df, col_name, patt_found_th=0.8, char_len_th=0.8):
     # Check if over threshold
     if patt_found > patt_found_th:
         res = True
-    else:
-        res = False
-
     return res
 
 
 def org_or_suppl_BID(df, col, colnames):
-    temp = df
-    nrow = df.shape[0]
-    if "org_number" in colnames:
-        # Take only specified columns
-        temp = temp.iloc[:, [colnames.index(col), colnames.index("org_number")] ]
-        # Drop rows with blank values
-        temp = temp.dropna()
-        # Number of unique combinations
-        n_uniq = temp.drop_duplicates().shape[0]
-        # If there is only 1 unique combination, the BID is from org
-        if n_uniq == 1:
-            name = "org_id"
-        else:
-            name = "suppl_id"
-    elif "org_name" in colnames:
-        # Take only specified columns
-        temp = temp.iloc[:, [colnames.index(col), colnames.index("org_number")] ]
-        # Drop rows with blank values
-        temp = temp.dropna()
-        # Number of unique combinations
-        n_uniq = temp.drop_duplicates().shape[0]
-        # If there is only 1 unique combination, the BID is from org
-        if n_uniq == 1:
-            name = "org_id"
-        else:
-            name = "suppl_id"
-    else:
-        # Take only specified columns
-        temp = temp.iloc[:, colnames.index(col)]
-        # Drop rows with blank values
-        temp = temp.dropna()
-        # Number of unique combinations
-        n_uniq = temp.drop_duplicates().shape[0]
-        if n_uniq/nrow > 0.5:
-            name = "suppl_id"
-    return name
-
-
-def test_if_org_number(df, col, colnames):
-    temp = df
-    # Test if integer
-    if temp.dtypes[colnames.index(col)] == "int64":
-        if "org_name" in colnames:
-            # Take only specified columns
-            temp = temp.iloc[:, [colnames.index(col), colnames.index("org_name")] ]
+    # Initialize result as supplier ID
+    res = "suppl_id"
+    # List of columns that are matched
+    cols_match = ["org_number", "org_name"]
+    # Loop over columns that should be matched
+    for col_match in cols_match:
+        # If the column is in colnames
+        if col_match in colnames:
+            # Subset the data by taking only specified columns
+            temp = df.iloc[:, [colnames.index(col), colnames.index(col_match)] ]
             # Drop rows with blank values
             temp = temp.dropna()
             # Number of unique combinations
             n_uniq = temp.drop_duplicates().shape[0]
-            # If there is only 1 unique combination, the BID is from org
-            if n_uniq == 1:
-                res = True
-        elif "org_id" in colnames:
-            # Take only specified columns
-            temp = temp.iloc[:, [colnames.index(col), colnames.index("org_id")]]
-            # Drop rows with blank values
-            temp = temp.dropna()
-            # Number of unique combinations
-            n_uniq = temp.drop_duplicates().shape[0]
-            # If there is only 1 unique combination, the BID is from org
-            if n_uniq == 1:
-                res = True
-    else:
-        res = False
-
+            # If there are as many combinations as there are individual values
+            # these columns match
+            if n_uniq == df.iloc[:,colnames.index(col_match)].nunique():
+                res = "org_id"
+    # If there are supplier IDs already, try if they are differemt
+    if "suppl_id" in colnames and all(df.iloc[:, colnames.index(col)] != df.iloc[:, colnames.index("suppl_id")]):
+        res = "org_id"
+    # If there are organization IDs already, try if they are differemt
+    if "org_id" in colnames and all(df.iloc[:, colnames.index(col)] == df.iloc[:, colnames.index("org_id")]):
+        res = "org_id"
+    # If there are not many unique values, it might be organization ID
+    if df.iloc[:, colnames.index(col)].nunique()/df.shape[0] < 0.5:
+        res = "org_id"
     return res
-
 
 def test_if_date(df, col, colnames):
     temp = df
@@ -206,77 +219,44 @@ def test_if_date(df, col, colnames):
         res = False
     return res
 
-def test_if_org_name(df, col, colnames):
-    temp = df
-    temp = temp.dropna()
-    if "org_number" in colnames:
-        # Take only specified columns
-        temp = temp.iloc[:, [colnames.index(col), colnames.index("org_number")] ]
-        # Drop rows with blank values
-        temp = temp.dropna()
-        # Number of unique combinations
-        n_uniq = temp.drop_duplicates().shape[0]
-        # If there is only 1 unique combination, the BID is from org
-        if n_uniq == 1:
-            res = True
-    elif "org_id" in colnames:
-        # Take only specified columns
-        temp = temp.iloc[:, [colnames.index(col), colnames.index("org_id")]]
-        # Drop rows with blank values
-        temp = temp.dropna()
-        # Number of unique combinations
-        n_uniq = temp.drop_duplicates().shape[0]
-        # If there is only 1 unique combination, the BID is from org
-        if n_uniq == 1:
-            res = True
-    else:
-        res = False
-    return res
 
-def test_if_suppl_name(df, col, colnames):
-    temp = df
-    temp = temp.dropna()
-    if "suppl_id" in colnames:
-        # Take only specified columns
-        temp = temp.iloc[:, [colnames.index(col), colnames.index("suppl_id")] ]
-        # Drop rows with blank values
-        temp = temp.dropna()
-        # Number of unique combinations
-        n_uniq = temp.drop_duplicates().shape[0]
-        # If there is only 1 unique combination, the BID is from org
-        if n_uniq == 1:
-            res = True
-    else:
-        res = False
-    return res
-
-
-def test_if_netsum(df, col, colnames):
-    temp = df
-    temp = temp.dropna()
+def test_match_between_colnames(df, col, colnames, cols_match, datatype):
+    # Initialize results as False
     res = False
-    if "total" in colnames and "vat_amount" in colnames:
-        temp = temp.iloc[:, [colnames.index(col), colnames.index("total"), colnames.index("vat_amount")] ]
-        if temp.dtypes == "float64" and all(temp.iloc[:, colnames.index("total")] > temp.iloc[:, colnames.index(col)] & temp.iloc[:, colnames.index(col)] > temp.iloc[:, colnames.index("vat_amount")]):
-            res = True
+    # Test the data type
+    if temp.dtypes[colnames.index(col)] in datatype:
+        # Loop over columns that should be matched
+        for col_match in cols_match:
+            # If the column is in colnames
+            if col_match in colnames:
+                # Subset the data by taking only specified columns
+                temp = df.iloc[:, [colnames.index(col), colnames.index(col_match)] ]
+                # Drop rows with blank values
+                temp = temp.dropna()
+                # Number of unique combinations
+                n_uniq = temp.drop_duplicates().shape[0]
+                # If there are as many combinations as there are individual values
+                # these columns match
+                if n_uniq == df.iloc[:,colnames.index(col_match)].nunique():
+                    res = True
     return res
 
-def test_if_total(df, col, colnames):
-    temp = df
-    temp = temp.dropna()
+def test_if_sums(df, col, colnames, greater_cols, less_cols, datatype):
+    # Initialize results as False
     res = False
-    if "price_ex_vat" in colnames and "vat_amount" in colnames:
-        temp = temp.iloc[:, [colnames.index(col), colnames.index("price_ex_vat"), colnames.index("vat_amount")] ]
-        if temp.dtypes == "float64" and all(temp.iloc[:, colnames.index(col)] > temp.iloc[:, colnames.index("price_ex_vat")] & temp.iloc[:, colnames.index(col)] > temp.iloc[:, colnames.index("vat_amount")]):
-            res = True
-    return res
-
-def test_if_vat_amount(df, col, colnames):
-    temp = df
-    temp = temp.dropna()
-    res = False
-    if "price_ex_vat" in colnames and "total" in colnames:
-        temp = temp.iloc[:, [colnames.index(col), colnames.index("price_ex_vat"), colnames.index("total")] ]
-        if temp.dtypes == "float64" and all(temp.iloc[:, colnames.index(col)] < temp.iloc[:, colnames.index("price_ex_vat")] & temp.iloc[:, colnames.index(col)] < temp.iloc[:, colnames.index("total")]):
+    # Test if all cols_match are available and their type is correct
+    if all((col_match in colnames for col_match in (greater_cols + less_cols))) and all( df.iloc[:, [colnames.index(col_match) for col_match in (greater_cols+less_cols)]].dtypes == datatype ):
+        # Check if the column values are less than greater_cols values
+        if len(greater_cols) > 0 and all((df.iloc[:, [colnames.index(greater_col) for greater_col in greater_cols]].values > df[[df.columns[colnames.index(col)]]].values).all(axis=1)):
+            less_than_great = True
+        else:
+            less_than_great = False
+        # Check if the column values are greater than less_cols values
+        if len(less_cols) > 0 and all((df.iloc[:, [colnames.index(less_col) for greater_col in greater_cols]].values < df[[df.columns[colnames.index(col)]]].values).all(axis=1)):
+            greater_than_less = True
+        else:
+            greater_than_less = False
+        # If both were True, result is True
+        if less_than_great and greater_than_less:
             res = True
     return res
