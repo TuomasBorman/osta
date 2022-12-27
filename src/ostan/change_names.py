@@ -9,21 +9,18 @@ def change_names(df, fields=None, guess_names=True, **args):
     # INPUT CHECK
     # df must be pandas DataFrame
     if not isinstance(df, pd.DataFrame):
-        warnings.warn(
-            message="'df' must be pandas.DataFrame.",
-            category=UserWarning
+        raise Exception(
+            "'df' must be pandas.DataFrame."
             )
     # fields must be pandas DataFrame or None
     if not (isinstance(fields, dict) or fields is None):
-        warnings.warn(
-            message="'fields' must be dict or None.",
-            category=UserWarning
+        raise Exception(
+            "'fields' must be dict or None."
             )
     # guess_names must be boolean
     if not isinstance(guess_names, bool):
-        warnings.warn(
-            message="'guess_names' must be bool.",
-            category=UserWarning
+        raise Exception(
+            "'guess_names' must be bool."
             )
     # INPUT CHECK END
 
@@ -50,14 +47,27 @@ def change_names(df, fields=None, guess_names=True, **args):
     # If there are column names that were not detected and user wants them
     # to be guessed
     if len(colnames_not_found) > 0 and guess_names:
-        for name in colnames_not_found:
-            name = guess_name(df, col, colnames,
-                              colnames_not_found, fields, **args)
-            # Change name
-            colnames[colnames.index(colnames_not_found[1])] = name
-            # Remove from list
-            colnames_not_found.remove(name)
-
+        # Initialize list for new and old column names for warning message
+        colnames_old = []
+        colnames_new = []
+        for i, col in enumerate(colnames_not_found):
+            name = guess_name(df=df, col=col, colnames=colnames,
+                              fields=fields, **args)
+            # if the column name was changed
+            if col != name:
+                # Change name
+                colnames[i] = name
+                # Remove from list
+                colnames_not_found.remove(col)
+                # Append old and new column name list
+                colnames_old.append(col)
+                colnames_new.append(name)
+        # If there are columns that were changed, give warning
+        warnings.warn(
+            message=f"The following column names... \n {colnames_old}\n"
+            f"... were replaced with \n {colnames_new}",
+            category=UserWarning
+            )
     # Replace column names with new ones
     df.columns = colnames
 
@@ -78,9 +88,10 @@ def change_names(df, fields=None, guess_names=True, **args):
 
 def get_fields_df():
     # Open files that include fields
-    mandatory_fields = pd.read_csv("data/mandatory_fields.csv"
+    # CHANGE THE PATHS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    mandatory_fields = pd.read_csv("~/Python/ostan/data/mandatory_fields.csv"
                                    ).set_index("key")["value"].to_dict()
-    optional_fields = pd.read_csv("data/optional_fields.csv"
+    optional_fields = pd.read_csv("~/Python/ostan/data/optional_fields.csv"
                                   ).set_index("key")["value"].to_dict()
     # Combine fields into one dictionary
     fields = {}
@@ -100,18 +111,17 @@ def guess_name(df, col, colnames, fields,
     # match_th must be numeric value 0-1
     if not ((isinstance(match_th, int) or isinstance(match_th, float)) and
             (0 <= match_th <= 1)):
-        warnings.warn(
-            message="'match_th' must be a number between 0-1.",
-            category=UserWarning
+        raise Exception(
+            "'match_th' must be a number between 0-1."
             )
     # INPUT CHECK END
 
     # Try if column is ID column
-    if test_if_BID(df, col, colnames, **args):
+    if test_if_BID(df=df, col=col, **args):
         # BID can be from organization or supplier
-        col_name = org_or_suppl_BID(df, col, colnames)
+        col_name = org_or_suppl_BID(df=df, col=col, colnames=colnames)
     # Test if date
-    elif test_if_date(df, col, colnames):
+    elif test_if_date(df=df, col=col, colnames=colnames):
         col_name = "date"
     # Test if org_number
     elif test_match_between_colnames(df=df, col=col, colnames=colnames,
@@ -194,7 +204,9 @@ def guess_name(df, col, colnames, fields,
             col_name_part = col_name_part[0]
             # Based on the key, get the value
             col_name = fields.get(col_name_part)
-
+        else:
+            # If the threshold was not met, the colname is the old one
+            col_name = col
     return col_name
 
 
@@ -209,17 +221,15 @@ def test_if_BID(df, col, patt_found_th=0.8, char_len_th=0.8, **args):
     if not ((isinstance(patt_found_th, int) or
              isinstance(patt_found_th, float)) and
             (0 <= patt_found_th <= 1)):
-        warnings.warn(
-            message="'patt_found_th' must be a number between 0-1.",
-            category=UserWarning
+        raise Exception(
+            "'patt_found_th' must be a number between 0-1."
             )
     # char_len_th must be numeric value 0-100
     if not ((isinstance(char_len_th, int) or
              isinstance(char_len_th, float)) and
             (0 <= char_len_th <= 1)):
-        warnings.warn(
-            message="'char_len_th' must be a number between 0-1.",
-            category=UserWarning
+        raise Exception(
+            "'char_len_th' must be a number between 0-1."
             )
     # INPUT CHECK END
 
@@ -233,7 +243,7 @@ def test_if_BID(df, col, patt_found_th=0.8, char_len_th=0.8, **args):
         patt_found = patt_found[patt_found.index][0]
     else:
         patt_found = 0
-
+    print(patt_found)
     # Check if over threshold
     if patt_found > patt_found_th:
         res = True
@@ -390,9 +400,8 @@ def test_if_country(df, col, colnames, country_th=0.2, **args):
     if not ((isinstance(country_th, int) or
              isinstance(country_th, float)) and
             (0 <= country_th <= 1)):
-        warnings.warn(
-            message="'country_th' must be a number between 0-1.",
-            category=UserWarning
+        raise Exception(
+            "'country_th' must be a number between 0-1."
             )
     # INPUT CHECK END
 
@@ -402,7 +411,8 @@ def test_if_country(df, col, colnames, country_th=0.2, **args):
     df = df.iloc[:, colnames.index(col)]
     df = df.dropna()
     # Test if col values can be found from the table
-    codes = pd.read_csv("data/land_codes.csv", index_col=0)
+    # CHANGE THE PATH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    codes = pd.read_csv("~/Python/ostan/data/land_codes.csv", index_col=0)
     res_df = pd.DataFrame()
     for name, data in codes.items():
         res_df[name] = (df.isin(data))
