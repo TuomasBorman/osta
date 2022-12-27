@@ -105,7 +105,7 @@ def get_fields_df():
 
 
 def guess_name(df, col, colnames, fields,
-               match_th=0.85, scorer=fuzz.token_set_ratio, **args):
+               match_th=0.85, scorer=fuzz.token_sort_ratio, **args):
     # INPUT CHECK
     # Types of all other arguments are fixed
     # match_th must be numeric value 0-1
@@ -123,6 +123,9 @@ def guess_name(df, col, colnames, fields,
     # Test if date
     elif test_if_date(df=df, col=col, colnames=colnames):
         col_name = "date"
+    # Test if column includes country codes
+    elif test_if_country(df, col, colnames, **args):
+        col_name = "country"
     # Test if org_number
     elif test_match_between_colnames(df=df, col=col, colnames=colnames,
                                      cols_match=["org_name", "org_id"],
@@ -189,9 +192,6 @@ def guess_name(df, col, colnames, fields,
     # Test if voucher
     elif df.iloc[:, colnames.index(col)].nunique() == df.shape[0]:
         col_name = "voucher"
-    # Test if column includes country codes
-    elif test_if_country(df, col, colnames, **args):
-        col_name = "country"
     else:
         # Try partial match
         # Get the most similar key value
@@ -243,7 +243,6 @@ def test_if_BID(df, col, patt_found_th=0.8, char_len_th=0.8, **args):
         patt_found = patt_found[patt_found.index][0]
     else:
         patt_found = 0
-    print(patt_found)
     # Check if over threshold
     if patt_found > patt_found_th:
         res = True
