@@ -5,20 +5,31 @@ from fuzzywuzzy import process
 import warnings
 
 
-def change_names(df, fields, guess_names=True, **args):
-    # Open files that include fields
-    mandatory_fields = pd.read_csv("data/mandatory_fields.csv"
-                                   ).set_index("key")["value"].to_dict()
-    optional_fields = pd.read_csv("data/optional_fields.csv"
-                                  ).set_index("key")["value"].to_dict()
-    # Combine fields into one dictionary
-    fields = {}
-    fields.update(mandatory_fields)
-    fields.update(optional_fields)
-    # Add field values as a key
-    add_fields = pd.DataFrame(fields.values(), fields.values())
-    add_fields = add_fields[0].to_dict()
-    fields.update(add_fields)
+def change_names(df, fields=None, guess_names=True, **args):
+    # INPUT CHECK
+    # df must be pandas DataFrame
+    if not isinstance(df, pd.DataFrame):
+        warnings.warn(
+            message="'df' must be pandas.DataFrame.",
+            category=UserWarning
+            )
+    # fields must be pandas DataFrame or None
+    if not (isinstance(fields, dict) or fields is None):
+        warnings.warn(
+            message="'fields' must be dict or None.",
+            category=UserWarning
+            )
+    # guess_names must be boolean
+    if not isinstance(guess_names, bool):
+        warnings.warn(
+            message="'guess_names' must be bool.",
+            category=UserWarning
+            )
+    # INPUT CHECK END
+
+    # If fields is None, get them
+    if fields is None:
+        fields = get_fields_df()
     # Initialize lists for column names
     colnames = []
     colnames_not_found = []
@@ -58,6 +69,28 @@ def change_names(df, fields, guess_names=True, **args):
             category=UserWarning
             )
     return df
+
+
+# Fetch DataFrame that contains fields and create a dictionary from it.
+# Input: -
+# Output: A dictionary containing which column names are meaning the same
+
+
+def get_fields_df():
+    # Open files that include fields
+    mandatory_fields = pd.read_csv("data/mandatory_fields.csv"
+                                   ).set_index("key")["value"].to_dict()
+    optional_fields = pd.read_csv("data/optional_fields.csv"
+                                  ).set_index("key")["value"].to_dict()
+    # Combine fields into one dictionary
+    fields = {}
+    fields.update(mandatory_fields)
+    fields.update(optional_fields)
+    # Add field values as a key
+    add_fields = pd.DataFrame(fields.values(), fields.values())
+    add_fields = add_fields[0].to_dict()
+    fields.update(add_fields)
+    return fields
 
 
 def guess_name(df, col, colnames, fields,
@@ -153,6 +186,11 @@ def guess_name(df, col, colnames, fields,
     return col_name
 
 
+# This function checks if the column defines BIDs (y-tunnus)
+# Input: DataFrame, name of the column, found final column names
+# Output: Boolean value
+
+
 def test_if_BID(df, col, patt_found_th=0.8, char_len_th=0.8, **args):
     # Initialize result as False
     res = False
@@ -169,6 +207,11 @@ def test_if_BID(df, col, patt_found_th=0.8, char_len_th=0.8, **args):
     if patt_found > patt_found_th:
         res = True
     return res
+
+
+# This function checks if the column defines BID of organization or supplier
+# Input: DataFrame, name of the column, found final column names
+# Output: The final colname of BID column
 
 
 def org_or_suppl_BID(df, col, colnames):
@@ -205,6 +248,11 @@ def org_or_suppl_BID(df, col, colnames):
     return res
 
 
+# This function checks if the column defines dates
+# Input: DataFrame, name of the column, found final column names
+# Output: Boolean value
+
+
 def test_if_date(df, col, colnames):
     # Initialize result
     res = False
@@ -234,6 +282,12 @@ def test_if_date(df, col, colnames):
     return res
 
 
+# This function checks if the column defines extra information of
+# another column / if the column is related to that
+# Input: DataFrame, name of the column, found final column names
+# Output: Boolean value
+
+
 def test_match_between_colnames(df, col, colnames, cols_match, datatype):
     # Initialize results as False
     res = False
@@ -255,6 +309,12 @@ def test_match_between_colnames(df, col, colnames, cols_match, datatype):
                 if n_uniq == df.iloc[:, colnames.index(col_match)].nunique():
                     res = True
     return res
+
+
+# This function checks if the column defines total, net, or VAT sum,
+# the arguments defines what is searched
+# Input: DataFrame, name of the column, found final column names
+# Output: Boolean value
 
 
 def test_if_sums(df, col, colnames, greater_cols, less_cols, datatype):
@@ -288,6 +348,11 @@ def test_if_sums(df, col, colnames, greater_cols, less_cols, datatype):
     return res
 
 
+# This function checks if the column defines countries
+# Input: DataFrame, name of the column, found final column names
+# Output: Boolean value
+
+
 def test_if_country(df, col, colnames, country_threshold=0.2, **args):
     # Initialize results as False
     res = False
@@ -299,7 +364,7 @@ def test_if_country(df, col, colnames, country_threshold=0.2, **args):
     res_df = pd.DataFrame()
     for name, data in codes.items():
         res_df[name] = (df.isin(data))
-    # How many times the value was found from the codes? If enoug, then we
+    # How many times the value was found from the codes? If enough, then we
     # can be sure that the column includes land codes
     if sum(res_df.sum(axis=1) > 0)/res_df.shape[0] > country_threshold:
         res = True
