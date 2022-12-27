@@ -94,7 +94,18 @@ def get_fields_df():
 
 
 def guess_name(df, col, colnames, fields,
-               match_th=85, scorer=fuzz.token_set_ratio, **args):
+               match_th=0.85, scorer=fuzz.token_set_ratio, **args):
+    # INPUT CHECK
+    # Types of all other arguments are fixed
+    # match_th must be numeric value 0-1
+    if not ((isinstance(match_th, int) or isinstance(match_th, float)) and
+            (0 <= match_th <= 1)):
+        warnings.warn(
+            message="'match_th' must be a number between 0-1.",
+            category=UserWarning
+            )
+    # INPUT CHECK END
+
     # Try if column is ID column
     if test_if_BID(df, col, colnames, **args):
         # BID can be from organization or supplier
@@ -177,6 +188,7 @@ def guess_name(df, col, colnames, fields,
         col_name_part = process.extractOne(col, fields.keys(),
                                            scorer=scorer)
         # If the matching score is over threshold
+        match_th = match_th*100  # float value to a number between 0-100
         if col_name_part[1] >= match_th:
             # Get only the key name
             col_name_part = col_name_part[0]
@@ -192,6 +204,25 @@ def guess_name(df, col, colnames, fields,
 
 
 def test_if_BID(df, col, patt_found_th=0.8, char_len_th=0.8, **args):
+    # INPUT CHECK
+    # patt_found_th must be numeric value 0-100
+    if not ((isinstance(patt_found_th, int) or
+             isinstance(patt_found_th, float)) and
+            (0 <= patt_found_th <= 1)):
+        warnings.warn(
+            message="'patt_found_th' must be a number between 0-1.",
+            category=UserWarning
+            )
+    # char_len_th must be numeric value 0-100
+    if not ((isinstance(char_len_th, int) or
+             isinstance(char_len_th, float)) and
+            (0 <= char_len_th <= 1)):
+        warnings.warn(
+            message="'char_len_th' must be a number between 0-1.",
+            category=UserWarning
+            )
+    # INPUT CHECK END
+
     # Initialize result as False
     res = False
     # Test if pattern found
@@ -353,7 +384,18 @@ def test_if_sums(df, col, colnames, greater_cols, less_cols, datatype):
 # Output: Boolean value
 
 
-def test_if_country(df, col, colnames, country_threshold=0.2, **args):
+def test_if_country(df, col, colnames, country_th=0.2, **args):
+    # INPUT CHECK
+    # country_th must be numeric value 0-100
+    if not ((isinstance(country_th, int) or
+             isinstance(country_th, float)) and
+            (0 <= country_th <= 1)):
+        warnings.warn(
+            message="'country_th' must be a number between 0-1.",
+            category=UserWarning
+            )
+    # INPUT CHECK END
+
     # Initialize results as False
     res = False
     # Get specific column and remove NaNs
@@ -366,6 +408,6 @@ def test_if_country(df, col, colnames, country_threshold=0.2, **args):
         res_df[name] = (df.isin(data))
     # How many times the value was found from the codes? If enough, then we
     # can be sure that the column includes land codes
-    if sum(res_df.sum(axis=1) > 0)/res_df.shape[0] > country_threshold:
+    if sum(res_df.sum(axis=1) > 0)/res_df.shape[0] > country_th:
         res = True
     return res
