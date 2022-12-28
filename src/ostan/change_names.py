@@ -73,7 +73,7 @@ def change_names(df, fields=None, guess_names=True, **args):
     df.columns = colnames
 
     # Give warning if there were column names that were not identified
-    if colnames_not_found:
+    if len(colnames_not_found) > 0:
         warnings.warn(
             message=f"The following column names were not detected. "
             f"Please check them for errors.\n {colnames_not_found}",
@@ -106,7 +106,7 @@ def get_fields_df():
 
 
 def guess_name(df, col, colnames, fields,
-               match_th=0.85, scorer=fuzz.token_sort_ratio, **args):
+               match_th=0.9, scorer=fuzz.token_sort_ratio, **args):
     # INPUT CHECK
     # Types of all other arguments are fixed
     # match_th must be numeric value 0-1
@@ -193,7 +193,7 @@ def guess_name(df, col, colnames, fields,
     # Test if voucher
     elif test_if_voucher(df=df, col=col, colnames=colnames):
         col = "voucher"
-    elif not col.strip():
+    elif col.strip():
         # Try partial match if column name is not empty
         # Get the most similar key value
         col_name_part = process.extractOne(col, fields.keys(),
@@ -359,11 +359,10 @@ def test_if_sums(df, col, colnames, greater_cols, less_cols, datatype):
     # Initialize results as False
     res = False
     # Test if all cols_match are available and their type is correct
-    if all((col_match in colnames for
-            col_match in (greater_cols + less_cols))) and all(
-                df.iloc[:, [colnames.index(col_match)
-                            for col_match in (greater_cols+less_cols)
-                            ]].dtypes == datatype):
+    all_vars = (greater_cols+less_cols+[col])
+    if all((col_match in colnames for col_match in all_vars)) and all(
+            df.iloc[:, [colnames.index(col_match) for col_match in all_vars
+                        ]].dtypes == datatype):
         # Check if the column values are less than greater_cols values
         if len(greater_cols) > 0 and all((
                 df.iloc[:, [colnames.index(greater_col)

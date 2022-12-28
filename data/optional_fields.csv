@@ -1,10 +1,7 @@
 key,value
-kokonaissumma euroina,total
 vat-tunnus,vat_code
 alv-koodi,vat_code
-alv määrä euroina,vat_amount
-alv-määrä euroina,vat_amount
-rivin osuus vero,vat_amount
+Alv-numero,vat_code
 kustannuspaikan nimi,cost_pool_name
 kustannuspaikka_nimi,cost_pool_name
 kustannuspaikka,cost_pool
