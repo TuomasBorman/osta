@@ -63,11 +63,12 @@ def change_names(df, fields=None, guess_names=True, **args):
                 colnames_old.append(col)
                 colnames_new.append(name)
         # If there are columns that were changed, give warning
-        warnings.warn(
-            message=f"The following column names... \n {colnames_old}\n"
-            f"... were replaced with \n {colnames_new}",
-            category=Warning
-            )
+        if len(colnames_new) > 0:
+            warnings.warn(
+                message=f"The following column names... \n {colnames_old}\n"
+                f"... were replaced with \n {colnames_new}",
+                category=Warning
+                )
     # Replace column names with new ones
     df.columns = colnames
 
@@ -190,7 +191,7 @@ def guess_name(df, col, colnames, fields,
                       ):
         col = "vat_amount"
     # Test if voucher
-    elif df.iloc[:, colnames.index(col)].nunique() == df.shape[0]:
+    elif test_if_voucher(df=df, col=col, colnames=colnames):
         col = "voucher"
     elif not col.strip():
         # Try partial match if column name is not empty
@@ -416,4 +417,84 @@ def test_if_country(df, col, colnames, country_th=0.2, **args):
     # can be sure that the column includes land codes
     if sum(res_df.sum(axis=1) > 0)/res_df.shape[0] > country_th:
         res = True
+    return res
+
+
+# This function checks if the column defines vouchers
+# Input: DataFrame, name of the column, found final column names
+# Output: Boolean value
+
+def test_if_voucher(df, col, colnames):
+    # Initialize result"
+    res = False
+    test_res = []
+    # List variables that are matched/checked
+    variable_list = [
+        ["org_number", "org_id", "org_name"],  # Organization
+        ["suppl_id", "suppl_name"],  # Supplier
+        ["account_name", "account_number"],  # Account
+        ["service_cat", "service_cat_number"],  # Service category
+        ["date"],   # Date
+        ]
+    # List thresholds that are used
+    thresholds = [
+        100,  # Organization
+        2,  # Supplier
+        5,  # Account
+        5,  # Service category
+        1.5,  # Date
+        ]
+    # If variables were found from the colnames
+    for i, variables in enumerate(variable_list):
+        # Test if column match with prerequisites of voucher column
+        temp_res = test_if_voucher_help(df=df,
+                                        col=col,
+                                        colnames=colnames,
+                                        variables=variables,
+                                        voucher_th=thresholds[i],
+                                        )
+        test_res.append(temp_res)
+    # If not float, then  it is not sum
+    if df.dtypes[colnames.index(col)] == "float64":
+        test_res.append(False)
+    else:
+        test_res.append(True)
+    # If all test were True, the result is True
+    if all(test_res):
+        res = True
+    return res
+
+
+# This function is a help function for voucher tester.
+# This function tests if there are more unique values than there are
+# tested values
+# Input: DataFrame, name of the column, found final column names
+# Output: Boolean value
+
+
+def test_if_voucher_help(df, col, colnames, variables, voucher_th):
+    # Initialize results
+    res = False
+    # CHeck which variables are shared between variables and colnames
+    var_shared = list(set(colnames) & set(variables))
+    # If variables were found from the colnames
+    if len(var_shared) > 0:
+        # Get only specified columns
+        temp = df.iloc[:, [colnames.index(var) for var in var_shared]]
+        # Remove rows with NA
+        temp = temp.dropna()
+        # Drop duplicates, now we have unique rows
+        temp = temp.drop_duplicates()
+        # Add column to variables
+        var_shared.append(col)
+        # Get only specified columns with column that is being checked
+        temp_col = df.iloc[:, [colnames.index(var) for var in var_shared]]
+        # Remove rows with NA
+        temp_col = temp_col.dropna()
+        # Drop duplicates, now we have unique rows
+        temp_col = temp_col.drop_duplicates()
+        # If there are voucher_th times more unique rows, the column
+        # is not related to columns that are matched
+        if temp_col.shape[0] > temp.shape[0]*voucher_th:
+            res = True
     return res
