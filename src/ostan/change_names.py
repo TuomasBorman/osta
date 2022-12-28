@@ -50,13 +50,13 @@ def change_names(df, fields=None, guess_names=True, **args):
         # Initialize list for new and old column names for warning message
         colnames_old = []
         colnames_new = []
-        for i, col in enumerate(colnames_not_found):
+        for col in colnames_not_found:
             name = guess_name(df=df, col=col, colnames=colnames,
                               fields=fields, **args)
             # if the column name was changed
             if col != name:
                 # Change name
-                colnames[i] = name
+                colnames[colnames.index(col)] = name
                 # Remove from list
                 colnames_not_found.remove(col)
                 # Append old and new column name list
@@ -66,7 +66,7 @@ def change_names(df, fields=None, guess_names=True, **args):
         warnings.warn(
             message=f"The following column names... \n {colnames_old}\n"
             f"... were replaced with \n {colnames_new}",
-            category=UserWarning
+            category=Warning
             )
     # Replace column names with new ones
     df.columns = colnames
@@ -76,7 +76,7 @@ def change_names(df, fields=None, guess_names=True, **args):
         warnings.warn(
             message=f"The following column names were not detected. "
             f"Please check them for errors.\n {colnames_not_found}",
-            category=UserWarning
+            category=Warning
             )
     return df
 
@@ -143,6 +143,7 @@ def guess_name(df, col, colnames, fields,
                                      cols_match=["suppl_id"],
                                      datatype=["object"]
                                      ):
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         col_name = "suppl_name"
     # Test if service_cat
     elif test_match_between_colnames(df=df, col=col, colnames=colnames,
