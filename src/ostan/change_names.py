@@ -119,82 +119,81 @@ def guess_name(df, col, colnames, fields,
     # Try if column is ID column
     if test_if_BID(df=df, col=col, **args):
         # BID can be from organization or supplier
-        col_name = org_or_suppl_BID(df=df, col=col, colnames=colnames)
+        col = org_or_suppl_BID(df=df, col=col, colnames=colnames)
     # Test if date
     elif test_if_date(df=df, col=col, colnames=colnames):
-        col_name = "date"
+        col = "date"
     # Test if column includes country codes
     elif test_if_country(df, col, colnames, **args):
-        col_name = "country"
+        col = "country"
     # Test if org_number
     elif test_match_between_colnames(df=df, col=col, colnames=colnames,
                                      cols_match=["org_name", "org_id"],
                                      datatype=["int64"]
                                      ):
-        col_name = "org_number"
+        col = "org_number"
     # Test if org_name
     elif test_match_between_colnames(df=df, col=col, colnames=colnames,
                                      cols_match=["org_number", "org_id"],
                                      datatype=["object"]
                                      ):
-        col_name = "org_name"
+        col = "org_name"
     # Test if suppl_name
     elif test_match_between_colnames(df=df, col=col, colnames=colnames,
                                      cols_match=["suppl_id"],
                                      datatype=["object"]
                                      ):
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        col_name = "suppl_name"
+        col = "suppl_name"
     # Test if service_cat
     elif test_match_between_colnames(df=df, col=col, colnames=colnames,
                                      cols_match=["service_cat_name"],
                                      datatype=["object", "int64"]
                                      ):
-        col_name = "service_cat"
+        col = "service_cat"
     # Test if service_cat_name
     elif test_match_between_colnames(df=df, col=col, colnames=colnames,
                                      cols_match=["service_cat"],
                                      datatype=["object"]
                                      ):
-        col_name = "service_cat_name"
+        col = "service_cat_name"
     # Test if account_number
     elif test_match_between_colnames(df=df, col=col, colnames=colnames,
                                      cols_match=["account_name"],
                                      datatype=["int64"]
                                      ):
-        col_name = "account_number"
+        col = "account_number"
     # Test if account_name
     elif test_match_between_colnames(df=df, col=col, colnames=colnames,
                                      cols_match=["account_number"],
                                      datatype=["object"]
                                      ):
-        col_name = "account_name"
+        col = "account_name"
     # test if price_ex_vat
     elif test_if_sums(df=df, col=col, colnames=colnames,
                       greater_cols=["total"],
                       less_cols=["vat_amount"],
                       datatype="float64"
                       ):
-        col_name = "price_ex_vat"
+        col = "price_ex_vat"
     # test if total
     elif test_if_sums(df=df, col=col, colnames=colnames,
                       greater_cols=[],
                       less_cols=["vat_amount", "price_ex_vat"],
                       datatype="float64"
                       ):
-        col_name = "total"
+        col = "total"
     # test if vat_AMOUNT
     elif test_if_sums(df=df, col=col, colnames=colnames,
                       greater_cols=["total", "price_ex_vat"],
                       less_cols=[],
                       datatype="float64"
                       ):
-        col_name = "vat_amount"
+        col = "vat_amount"
     # Test if voucher
     elif df.iloc[:, colnames.index(col)].nunique() == df.shape[0]:
-        col_name = "voucher"
-    else:
-        # Try partial match
+        col = "voucher"
+    elif not col.strip():
+        # Try partial match if column name is not empty
         # Get the most similar key value
         col_name_part = process.extractOne(col, fields.keys(),
                                            scorer=scorer)
@@ -204,11 +203,8 @@ def guess_name(df, col, colnames, fields,
             # Get only the key name
             col_name_part = col_name_part[0]
             # Based on the key, get the value
-            col_name = fields.get(col_name_part)
-        else:
-            # If the threshold was not met, the colname is the old one
-            col_name = col
-    return col_name
+            col = fields.get(col_name_part)
+    return col
 
 
 # This function checks if the column defines BIDs (y-tunnus)
