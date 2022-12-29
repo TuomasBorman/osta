@@ -42,6 +42,31 @@ def change_names(df, guess_names=True, **args):
             observations where the pattern must be present to conclude that
             column includes country cides. (By default: country_code_th=0.2)
 
+    Details:
+        This function changes the column names to standardized names that are
+        required in other functions in ostan package. If the names are already
+        in standardized format, the function works as checker as it gives
+        warnings if certain name was not detected or it has been changed with
+        non-exact match.
+
+        First, the function checks if exact match is found between existing
+        column names and names in dictionary. If the natch was found, certain
+        column name is replaced with standardizd name.
+
+        Secondly, if there are column names that did not have exact match, user
+        can specify whether matches are checked more loosely. The function
+        checks if a pattern of values of undetected column matches with pattern
+        of certain data types that are expected to be in invoice data. The
+        checking is done with "fail-safe" principle to be sure that matches are
+        found with the highest possible accuracy.
+
+        If a match is not detected, the function tries to find if
+        the column name resembles one of the names in dictionary.
+        If the signal is strong enough, the column name is is changed.
+        Otherwise, the column name stays unmodified.
+
+    Output:
+        pandas.DataFrame with standardized column names.
 
     """
     # INPUT CHECK
