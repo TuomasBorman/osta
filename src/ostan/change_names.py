@@ -5,7 +5,7 @@ from fuzzywuzzy import process
 import warnings
 
 
-def change_names(df, guess_names=True, **args):
+def change_names(df, guess_names=True, make_unique=True, **args):
     """
     Change column names of pandas.DataFrame
 
@@ -18,6 +18,9 @@ def change_names(df, guess_names=True, **args):
 
         guess_names: A boolean value specifying whether to guess column names
         that did not have exact matches or not. (By default: guess_names=True)
+
+        make_unique: A boolean value specifying whether to add a suffix to
+        duplicated column names. (By default: make_unique=True)
 
         **args: Additional arguments passes into other functions:
 
@@ -80,6 +83,11 @@ def change_names(df, guess_names=True, **args):
         raise Exception(
             "'guess_names' must be bool."
             )
+    # make_unique must be boolean
+    if not isinstance(make_unique, bool):
+        raise Exception(
+            "'make_unique' must be bool."
+            )
     # INPUT CHECK END
     # Get fields / matches between column names and standardized names
     fields = get_fields_df(**args)
@@ -135,6 +143,33 @@ def change_names(df, guess_names=True, **args):
             f"Please check them for errors.\n {colnames_not_found}",
             category=Warning
             )
+
+    # If there are duplicated column names and user want to make them unique
+    if df.columns.nunique() != df.shape[1] and make_unique:
+        # Initialize a list for new column names
+        colnames = []
+        colnames_old = []
+        colnames_new = []
+        # Loop over column names
+        for col in df.columns:
+            # If there are already column that has same name
+            if col in colnames:
+                # Add old name to list
+                colnames_old.append(col)
+                # Add suffix to name
+                col = col + "_" + str(colnames.count(col)+1)
+                # Add new column name to list
+                colnames_new.append(col)
+            # Add column name to list
+            colnames.append(col)
+        # Give warning
+        warnings.warn(
+            message=f"The following duplicated column names... \n"
+            f"{colnames_old}\n... were replaced with \n {colnames_new}",
+            category=Warning
+            )
+        # Replace column names with new ones
+        df.columns = colnames
     return df
 
 
@@ -295,7 +330,7 @@ def test_if_BID(df, col, bid_patt_th=0.8, **args):
         "\\d\\d\\d\\d\\d\\d\\d-\\d")
     patt_found = patt_found.value_counts()/df.shape[0]
     # Test of length correct
-    len_correct = df.loc[:, col].str.len() == 9
+    len_correct = df.loc[:, col].astype(str).str.len() == 9
     len_correct = len_correct.value_counts()/df.shape[0]
     # If Trues exist in both, get the smaller portion. Otherwise, True was not
     # found and the result is 0 / not found

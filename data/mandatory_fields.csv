@@ -2,6 +2,7 @@ key,value
 kuntanumero,org_number
 kuntanro,org_number
 kunnan tai kuntayhtymän nimi,org_name
+kunnan/-yhtymän nimi,org_name
 kunnan nimi,org_name
 kunta,org_name
 kuntayhtymän nimi,org_name
@@ -22,6 +23,8 @@ toimittajan y-tunnus,suppl_id
 toimittajan maakoodi,country
 maa,country
 maakoodi,country
+maatunnus,country
+toimittajan maatunnus,country
 laskun summa ilman alv,price_ex_vat
 rivin osuus veroton,price_ex_vat
 rivin nettosumma,price_ex_vat
@@ -29,6 +32,7 @@ tositepäivämäärä,date
 tositepaivamaara,date
 tositepäivä,date
 tositepaiva,date
+tositepvm,date
 tapaht.pvm,date
 pvm,date
 kirjanpidon tilinumero,account_number
