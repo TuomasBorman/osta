@@ -5,17 +5,50 @@ from fuzzywuzzy import process
 import warnings
 
 
-def change_names(df, fields=None, guess_names=True, **args):
+def change_names(df, guess_names=True, **args):
+    """
+    Change column names of pandas.DataFrame
+
+    This function is used to change column names of pandas.DataFrame.
+    The column names are changed into standardized format that all other
+    functions in ostan package require.
+
+    Arguments:
+        df: pandas.DataFrame containing invoice data.
+
+        guess_names: A boolean value specifying whether to guess column names
+        that did not have exact matches or not. (By default: guess_names=True)
+
+        **args: Additional arguments passes into other functions:
+
+            fields: A dictionary containing matches between existing column
+            names (key) and standardized names (value) or None.
+            (By default: fields=None)
+
+            match_th: A numeric value [0,1] specifying the threshold of enough
+            good match. Value over threshold have enough strong pattern and it
+            is interpreted to be a match.
+
+            scorer: A scorer function passed into fuzzywuzzy.process.extractOne
+            function. (By default: scorer=fuzz.token_sort_ratio)
+
+            bid_patt_th: A numeric value [0,1] specifying the strength of
+            business ID pattern. The observation specifies the portion of
+            observations where the pattern must be present to conclude that
+            column includes BIDs. (By default: bid_patt_th=0.8)
+
+            country_code_th: A numeric value [0,1] specifying the strength of
+            country code pattern. The observation specifies the portion of
+            observations where the pattern must be present to conclude that
+            column includes country cides. (By default: country_code_th=0.2)
+
+
+    """
     # INPUT CHECK
     # df must be pandas DataFrame
     if not isinstance(df, pd.DataFrame):
         raise Exception(
             "'df' must be pandas.DataFrame."
-            )
-    # fields must be pandas DataFrame or None
-    if not (isinstance(fields, dict) or fields is None):
-        raise Exception(
-            "'fields' must be dict or None."
             )
     # guess_names must be boolean
     if not isinstance(guess_names, bool):
@@ -23,10 +56,8 @@ def change_names(df, fields=None, guess_names=True, **args):
             "'guess_names' must be bool."
             )
     # INPUT CHECK END
-
-    # If fields is None, get them
-    if fields is None:
-        fields = get_fields_df()
+    # Get fields / matches between column names and standardized names
+    fields = get_fields_df(**args)
     # Initialize lists for column names
     colnames = []
     colnames_not_found = []
@@ -83,25 +114,33 @@ def change_names(df, fields=None, guess_names=True, **args):
 
 
 # Fetch DataFrame that contains fields and create a dictionary from it.
-# Input: -
+# Input: A dictionary of fields or nothing.
 # Output: A dictionary containing which column names are meaning the same
 
 
-def get_fields_df():
-    # Open files that include fields
-    # CHANGE THE PATHS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    mandatory_fields = pd.read_csv("~/Python/ostan/data/mandatory_fields.csv"
-                                   ).set_index("key")["value"].to_dict()
-    optional_fields = pd.read_csv("~/Python/ostan/data/optional_fields.csv"
-                                  ).set_index("key")["value"].to_dict()
-    # Combine fields into one dictionary
-    fields = {}
-    fields.update(mandatory_fields)
-    fields.update(optional_fields)
-    # Add field values as a key
-    add_fields = pd.DataFrame(fields.values(), fields.values())
-    add_fields = add_fields[0].to_dict()
-    fields.update(add_fields)
+def get_fields_df(fields=None, **args):
+    # INPUT CHECK
+    # fields must be dict or None
+    if not (isinstance(fields, dict) or fields is None):
+        raise Exception(
+            "'fields' must be dict or None."
+            )
+    # INPUT CHECK END
+    # If fields was not provided, open files that include fields
+    if fields is None:
+        # CHANGE THE PATHS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        mandatory_fields = pd.read_csv("~/Python/ostan/data/mandatory_fields.csv"
+                                       ).set_index("key")["value"].to_dict()
+        optional_fields = pd.read_csv("~/Python/ostan/data/optional_fields.csv"
+                                      ).set_index("key")["value"].to_dict()
+        # Combine fields into one dictionary
+        fields = {}
+        fields.update(mandatory_fields)
+        fields.update(optional_fields)
+        # Add field values as a key
+        add_fields = pd.DataFrame(fields.values(), fields.values())
+        add_fields = add_fields[0].to_dict()
+        fields.update(add_fields)
     return fields
 
 
@@ -213,21 +252,14 @@ def guess_name(df, col, colnames, fields,
 # Output: Boolean value
 
 
-def test_if_BID(df, col, patt_found_th=0.8, char_len_th=0.8, **args):
+def test_if_BID(df, col, bid_patt_th=0.8, **args):
     # INPUT CHECK
-    # patt_found_th must be numeric value 0-100
-    if not ((isinstance(patt_found_th, int) or
-             isinstance(patt_found_th, float)) and
-            (0 <= patt_found_th <= 1)):
+    # bid_patt_th must be numeric value 0-100
+    if not ((isinstance(bid_patt_th, int) or
+             isinstance(bid_patt_th, float)) and
+            (0 <= bid_patt_th <= 1)):
         raise Exception(
-            "'patt_found_th' must be a number between 0-1."
-            )
-    # char_len_th must be numeric value 0-100
-    if not ((isinstance(char_len_th, int) or
-             isinstance(char_len_th, float)) and
-            (0 <= char_len_th <= 1)):
-        raise Exception(
-            "'char_len_th' must be a number between 0-1."
+            "'bid_patt_th' must be a number between 0-1."
             )
     # INPUT CHECK END
 
@@ -237,12 +269,21 @@ def test_if_BID(df, col, patt_found_th=0.8, char_len_th=0.8, **args):
     patt_found = df.loc[:, col].astype(str).str.contains(
         "\\d\\d\\d\\d\\d\\d\\d-\\d")
     patt_found = patt_found.value_counts()/df.shape[0]
-    if True in patt_found.index:
+    # Test of length correct
+    len_correct = df.loc[:, col].str.len() == 9
+    len_correct = len_correct.value_counts()/df.shape[0]
+    # If Trues exist in both, get the smaller portion. Otherwise, True was not
+    # found and the result is 0 / not found
+    if True in patt_found.index and True in len_correct.index:
+        # Get portion of Trues and take only value
         patt_found = patt_found[patt_found.index][0]
+        len_correct = len_correct[len_correct.index][0]
+        # Get smaller value
+        patt_found = min(patt_found, len_correct)
     else:
         patt_found = 0
     # Check if over threshold
-    if patt_found > patt_found_th:
+    if patt_found > bid_patt_th:
         res = True
     return res
 
@@ -390,14 +431,14 @@ def test_if_sums(df, col, colnames, greater_cols, less_cols, datatype):
 # Output: Boolean value
 
 
-def test_if_country(df, col, colnames, country_th=0.2, **args):
+def test_if_country(df, col, colnames, country_code_th=0.2, **args):
     # INPUT CHECK
-    # country_th must be numeric value 0-100
-    if not ((isinstance(country_th, int) or
-             isinstance(country_th, float)) and
-            (0 <= country_th <= 1)):
+    # country_code_th must be numeric value 0-100
+    if not ((isinstance(country_code_th, int) or
+             isinstance(country_code_th, float)) and
+            (0 <= country_code_th <= 1)):
         raise Exception(
-            "'country_th' must be a number between 0-1."
+            "'country_code_th' must be a number between 0-1."
             )
     # INPUT CHECK END
 
@@ -414,7 +455,7 @@ def test_if_country(df, col, colnames, country_th=0.2, **args):
         res_df[name] = (df.isin(data))
     # How many times the value was found from the codes? If enough, then we
     # can be sure that the column includes land codes
-    if sum(res_df.sum(axis=1) > 0)/res_df.shape[0] > country_th:
+    if sum(res_df.sum(axis=1) > 0)/res_df.shape[0] > country_code_th:
         res = True
     return res
 
