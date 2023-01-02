@@ -514,6 +514,8 @@ def test_if_country(df, col, colnames, country_code_th=0.2, **args):
     # Test if col values can be found from the table
     # CHANGE THE PATH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     codes = pd.read_csv("~/Python/ostan/data/land_codes.csv", index_col=0)
+    # Drop numeric codes, since we cannot be sure that they are land codes
+    codes = codes.drop("Numeerinen koodi [2]", axis=1)
     res_df = pd.DataFrame()
     for name, data in codes.items():
         res_df[name] = (df.isin(data))
