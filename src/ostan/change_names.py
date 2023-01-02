@@ -5,7 +5,7 @@ from fuzzywuzzy import process
 import warnings
 
 
-def change_names(df, guess_names=True, make_unique=True, **args):
+def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
     """
     Change column names of pandas.DataFrame
 
@@ -22,11 +22,11 @@ def change_names(df, guess_names=True, make_unique=True, **args):
         make_unique: A boolean value specifying whether to add a suffix to
         duplicated column names. (By default: make_unique=True)
 
-        **args: Additional arguments passes into other functions:
+        fields: A dictionary containing matches between existing column
+        names (key) and standardized names (value) or None. When fields=None,
+        function's default dictionary is used. (By default: fields=None)
 
-            fields: A dictionary containing matches between existing column
-            names (key) and standardized names (value) or None.
-            (By default: fields=None)
+        **args: Additional arguments passes into other functions:
 
             match_th: A numeric value [0,1] specifying the threshold of enough
             good match. Value over threshold have enough strong pattern and it
@@ -88,9 +88,14 @@ def change_names(df, guess_names=True, make_unique=True, **args):
         raise Exception(
             "'make_unique' must be bool."
             )
+    # fields must be dict or None
+    if not (isinstance(fields, dict) or fields is None):
+        raise Exception(
+            "'fields' must be dict or None."
+            )
     # INPUT CHECK END
     # Get fields / matches between column names and standardized names
-    fields = get_fields_df(**args)
+    fields = get_fields_df(fields)
     # Initialize lists for column names
     colnames = []
     colnames_not_found = []
@@ -121,8 +126,6 @@ def change_names(df, guess_names=True, make_unique=True, **args):
             if col != name:
                 # Change name
                 colnames[colnames.index(col)] = name
-                # Remove from list
-                colnames_not_found.remove(col)
                 # Append old and new column name list
                 colnames_old.append(col)
                 colnames_new.append(name)
@@ -133,6 +136,9 @@ def change_names(df, guess_names=True, make_unique=True, **args):
                 f"... were replaced with \n {colnames_new}",
                 category=Warning
                 )
+        # Update not-found column names
+        colnames_not_found = list(
+            set(colnames_not_found).difference(colnames_old))
     # Replace column names with new ones
     df.columns = colnames
 
@@ -178,14 +184,7 @@ def change_names(df, guess_names=True, make_unique=True, **args):
 # Output: A dictionary containing which column names are meaning the same
 
 
-def get_fields_df(fields=None, **args):
-    # INPUT CHECK
-    # fields must be dict or None
-    if not (isinstance(fields, dict) or fields is None):
-        raise Exception(
-            "'fields' must be dict or None."
-            )
-    # INPUT CHECK END
+def get_fields_df(fields):
     # If fields was not provided, open files that include fields
     if fields is None:
         # CHANGE THE PATHS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
