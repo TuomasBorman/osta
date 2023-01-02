@@ -269,22 +269,22 @@ def guess_name(df, col, colnames, fields,
         col = "account_name"
     # test if price_ex_vat
     elif test_if_sums(df=df, col=col, colnames=colnames,
-                      greater_cols=["total"],
-                      less_cols=["vat_amount"],
+                      test_sum="price_ex_vat",
+                      match_with=["total", "vat_amount"],
                       datatype="float64"
                       ):
         col = "price_ex_vat"
     # test if total
     elif test_if_sums(df=df, col=col, colnames=colnames,
-                      greater_cols=[],
-                      less_cols=["vat_amount", "price_ex_vat"],
+                      test_sum="total",
+                      match_with=["vat_amount", "price_ex_vat"],
                       datatype="float64"
                       ):
         col = "total"
-    # test if vat_AMOUNT
+    # test if vat_amount
     elif test_if_sums(df=df, col=col, colnames=colnames,
-                      greater_cols=["total", "price_ex_vat"],
-                      less_cols=[],
+                      test_sum="vat_amount",
+                      match_with=["total", "price_ex_vat"],
                       datatype="float64"
                       ):
         col = "vat_amount"
@@ -455,33 +455,38 @@ def test_match_between_colnames(df, col, colnames, cols_match, datatype):
 # Output: Boolean value
 
 
-def test_if_sums(df, col, colnames, greater_cols, less_cols, datatype):
+def test_if_sums(df, col, colnames, test_sum, match_with, datatype):
     # Initialize results as False
     res = False
-    # Test if all cols_match are available and their type is correct
-    all_vars = (greater_cols+less_cols+[col])
-    if all((col_match in colnames for col_match in all_vars)) and all(
-            df.iloc[:, [colnames.index(col_match) for col_match in all_vars
-                        ]].dtypes == datatype):
-        # Check if the column values are less than greater_cols values
-        if len(greater_cols) > 0 and all((
-                df.iloc[:, [colnames.index(greater_col)
-                            for greater_col in greater_cols]].values >
-                df[[df.columns[colnames.index(col)]]].values).all(axis=1)):
-            less_than_great = True
-        else:
-            less_than_great = False
-        # Check if the column values are greater than less_cols values
-        if len(less_cols) > 0 and all((
-                df.iloc[:, [colnames.index(less_col)
-                            for less_col in less_cols]].values <
-                df[[df.columns[colnames.index(col)]]].values).all(axis=1)):
-            greater_than_less = True
-        else:
-            greater_than_less = False
-        # If both were True, result is True
-        if less_than_great and greater_than_less:
-            res = True
+    # If all columns are available
+    if all(mw in colnames for mw in match_with):
+        # Take only specific columns
+        ind = list(colnames.index(mw) for mw in match_with)
+        ind.append(colnames.index(col))
+        df_temp = df.iloc[:, ind]
+        # Drop empty rows
+        df_temp = df_temp.dropna()
+
+        # If the datatypes are correct
+        if all(df_temp.dtypes == datatype):
+            # If VAT is tested and value is correct
+            if test_sum == "vat_amount" and\
+                all(df_temp.iloc[:, colnames.index(col)] ==
+                    df_temp.iloc[:, colnames.index("total")] -
+                    df_temp.iloc[:, colnames.index("price_ex_vat")]):
+                res = True
+            # If total is tested and value is correct
+            elif test_sum == "total" and\
+                all(df_temp.iloc[:, colnames.index(col)] ==
+                    df_temp.iloc[:, colnames.index("price_ex_vat")] +
+                    df_temp.iloc[:, colnames.index("vat_amount")]):
+                res = True
+            # If price_ex_vat is tested and value is correct
+            elif test_sum == "price_ex_vat" and\
+                all(df_temp.iloc[:, colnames.index(col)] ==
+                    df_temp.iloc[:, colnames.index("total")] -
+                    df_temp.iloc[:, colnames.index("vat_amount")]):
+                res = True
     return res
 
 
