@@ -398,7 +398,7 @@ def test_if_date(df, col, colnames):
     df = df.dropna()
     if df.dtype == "datetime64":
         res = True
-    elif df.dtype == "int64":
+    elif df.dtype in ["int64", "object"]:
         patt_to_search = [
             "\\d\\d\\d\\d\\d\\d\\d\\d",
             "\\d\\d\\d\\d\\d\\d\\d",
@@ -524,43 +524,49 @@ def test_if_country(df, col, colnames, country_code_th=0.2, **args):
 # Output: Boolean value
 
 def test_if_voucher(df, col, colnames):
-    # Initialize result"
+    # Initialize result
     res = False
-    test_res = []
-    # List variables that are matched/checked
-    variable_list = [
-        ["org_number", "org_id", "org_name"],  # Organization
-        ["suppl_id", "suppl_name"],  # Supplier
-        ["account_name", "account_number"],  # Account
-        ["service_cat", "service_cat_number"],  # Service category
-        ["date"],   # Date
-        ]
-    # List thresholds that are used
-    thresholds = [
-        100,  # Organization
-        2,  # Supplier
-        5,  # Account
-        5,  # Service category
-        1.5,  # Date
-        ]
-    # If variables were found from the colnames
-    for i, variables in enumerate(variable_list):
-        # Test if column match with prerequisites of voucher column
-        temp_res = test_if_voucher_help(df=df,
-                                        col=col,
-                                        colnames=colnames,
-                                        variables=variables,
-                                        voucher_th=thresholds[i],
-                                        )
-        test_res.append(temp_res)
-    # If not float, then  it is not sum
-    if df.dtypes[colnames.index(col)] == "float64":
-        test_res.append(False)
-    else:
-        test_res.append(True)
-    # If all test were True, the result is True
-    if all(test_res):
+    # If data includes already dates and values of column are increasing
+    # and they are not dates, the column includes voucher values
+    if "date" in colnames and df.loc[:, col].is_monotonic_increasing and \
+            not df.loc[:, col].equals(df.iloc[:, colnames.index("date")]):
         res = True
+    else:
+        test_res = []
+        # List variables that are matched/checked
+        variable_list = [
+            ["org_number", "org_id", "org_name"],  # Organization
+            ["suppl_id", "suppl_name"],  # Supplier
+            ["account_name", "account_number"],  # Account
+            ["service_cat", "service_cat_number"],  # Service category
+            ["date"],   # Date
+            ]
+        # List thresholds that are used
+        thresholds = [
+            100,  # Organization
+            2,  # Supplier
+            5,  # Account
+            5,  # Service category
+            1.5,  # Date
+            ]
+        # If variables were found from the colnames
+        for i, variables in enumerate(variable_list):
+            # Test if column match with prerequisites of voucher column
+            temp_res = test_if_voucher_help(df=df,
+                                            col=col,
+                                            colnames=colnames,
+                                            variables=variables,
+                                            voucher_th=thresholds[i],
+                                            )
+            test_res.append(temp_res)
+        # If not float, then  it is not sum
+        if df.dtypes[colnames.index(col)] == "float64":
+            test_res.append(False)
+        else:
+            test_res.append(True)
+        # If all test were True, the result is True
+        if all(test_res):
+            res = True
     return res
 
 
