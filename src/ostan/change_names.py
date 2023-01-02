@@ -137,8 +137,8 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
                 category=Warning
                 )
         # Update not-found column names
-        colnames_not_found = list(
-            set(colnames_not_found).difference(colnames_old))
+        colnames_not_found = [i for i in colnames_not_found
+                              if i not in colnames_old]
     # Replace column names with new ones
     df.columns = colnames
 
