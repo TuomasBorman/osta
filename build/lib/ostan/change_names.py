@@ -3,8 +3,6 @@ import pandas as pd
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import warnings
-from os import path
-data_dir = path.join(path.dirname(__file__), "data")
 
 
 def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
@@ -190,11 +188,9 @@ def get_fields_df(fields):
     # If fields was not provided, open files that include fields
     if fields is None:
         # CHANGE THE PATHS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        mandatory_fields = pd.read_csv(
-            path.join(data_dir, "mandatory_fields.csv")
+        mandatory_fields = pd.read_csv("~/Python/ostan/data/mandatory_fields.csv"
                                        ).set_index("key")["value"].to_dict()
-        optional_fields = pd.read_csv(
-            path.join(data_dir, "optional_fields.csv")
+        optional_fields = pd.read_csv("~/Python/ostan/data/optional_fields.csv"
                                       ).set_index("key")["value"].to_dict()
         # Combine fields into one dictionary
         fields = {}
