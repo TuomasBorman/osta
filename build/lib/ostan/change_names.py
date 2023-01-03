@@ -3,8 +3,7 @@ import pandas as pd
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import warnings
-from os import path
-data_dir = path.join(path.dirname(__file__), "data")
+import pkg_resources
 
 
 def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
@@ -189,12 +188,16 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
 def get_fields_df(fields):
     # If fields was not provided, open files that include fields
     if fields is None:
-        # CHANGE THE PATHS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        mandatory_fields = pd.read_csv(
-            path.join(data_dir, "mandatory_fields.csv")
+        # Load data from /resources
+        path = pkg_resources.resource_filename('ostan',
+                                               "resources/" +
+                                               "mandatory_fields.csv")
+        mandatory_fields = pd.read_csv(path
                                        ).set_index("key")["value"].to_dict()
-        optional_fields = pd.read_csv(
-            path.join(data_dir, "optional_fields.csv")
+        path = pkg_resources.resource_filename('ostan',
+                                               "resources/" +
+                                               "optional_fields.csv")
+        optional_fields = pd.read_csv(path
                                       ).set_index("key")["value"].to_dict()
         # Combine fields into one dictionary
         fields = {}
@@ -516,8 +519,10 @@ def test_if_country(df, col, colnames, country_code_th=0.2, **args):
     df = df.iloc[:, colnames.index(col)]
     df = df.dropna()
     # Test if col values can be found from the table
-    # CHANGE THE PATH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    codes = pd.read_csv("~/Python/ostan/data/land_codes.csv", index_col=0)
+    path = pkg_resources.resource_filename('ostan',
+                                           "resources/" +
+                                           "land_codes.csv")
+    codes = pd.read_csv(path, index_col=0)
     # Drop numeric codes, since we cannot be sure that they are land codes
     codes = codes.drop("Numeerinen koodi [2]", axis=1)
     res_df = pd.DataFrame()
