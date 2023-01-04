@@ -230,7 +230,7 @@ def guess_name(df, col, colnames, fields,
     elif test_if_date(df=df, col=col, colnames=colnames):
         col = "date"
     # Test if column includes country codes
-    elif test_if_country(df, col, colnames, **args):
+    elif _test_if_country(df, col, colnames, **args):
         col = "country"
     # Test if org_number
     elif test_match_between_colnames(df=df, col=col, colnames=colnames,
@@ -502,7 +502,7 @@ def test_if_sums(df, col, colnames, test_sum, match_with, datatype):
 # Output: Boolean value
 
 
-def test_if_country(df, col, colnames, country_code_th=0.2, **args):
+def _test_if_country(df, col, colnames, country_code_th=0.2, **args):
     # INPUT CHECK
     # country_code_th must be numeric value 0-100
     if not ((isinstance(country_code_th, int) or
