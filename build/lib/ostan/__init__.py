@@ -1,1 +1,1 @@
-from ostan import change_names
+from .change_names import change_names

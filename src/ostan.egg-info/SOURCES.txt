@@ -5,6 +5,7 @@ setup.cfg
 setup.py
 src/ostan/__init__.py
 src/ostan/change_names.py
+src/ostan/help_functions.py
 src/ostan.egg-info/PKG-INFO
 src/ostan.egg-info/SOURCES.txt
 src/ostan.egg-info/dependency_links.txt
