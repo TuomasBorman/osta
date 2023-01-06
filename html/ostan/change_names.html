@@ -43,6 +43,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
     functions in ostan package require.
 
     Arguments:
+        ```
         df: pandas.DataFrame containing invoice data.
 
         guess_names: A boolean value specifying whether to guess column names
@@ -56,7 +57,6 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         function&#39;s default dictionary is used. (By default: fields=None)
 
         **args: Additional arguments passes into other functions:
-
             match_th: A numeric value [0,1] specifying the threshold of enough
             good match. Value over threshold have enough strong pattern and it
             is interpreted to be a match.
@@ -73,6 +73,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             country code pattern. The observation specifies the portion of
             observations where the pattern must be present to conclude that
             column includes country cides. (By default: country_code_th=0.2)
+        ```
 
     Details:
         This function changes the column names to standardized names that are
@@ -96,6 +97,22 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         the column name resembles one of the names in dictionary.
         If the signal is strong enough, the column name is is changed.
         Otherwise, the column name stays unmodified.
+
+    Examples:
+        ```
+        # Create a dummy data
+        data = {&#34;name1&#34;: [&#34;FI&#34;, &#34;FI&#34;, &#34;FI&#34;],
+                &#34;päivämäärä&#34;: [&#34;02012023&#34;, &#34;2-1-2023&#34;, &#34;1.1.2023&#34;],
+                &#34;name3&#34;: [1, 2, 2],
+                &#34;org_name&#34;: [&#34;Turku&#34;, &#34;Turku&#34;, &#34;Turku&#34;],
+                &#34;supplier&#34;: [&#34;Myyjä&#34;, &#34;Supplier Oy&#34;, &#34;Myyjän tuote Oy&#34;],
+                &#34;summa&#34;: [100.21, 10.30, 50.50],
+                }
+        df = pd.DataFrame(data)
+        # Change those column names that are detected based on column name
+        # and pattern of the data.
+        df = change_names(df)
+        ```
 
     Output:
         pandas.DataFrame with standardized column names.
@@ -242,8 +259,7 @@ def __get_fields_df(fields):
     return fields
 
 
-def __guess_name(df, col, colnames, fields,
-                 match_th=0.9, scorer=fuzz.token_sort_ratio, **args):
+def __guess_name(df, col, colnames, fields, match_th=0.9, **args):
     &#34;&#34;&#34;
     Guess column names based on pattern.
     Input: DataFrame, column being guesses, current column names, match
@@ -261,8 +277,15 @@ def __guess_name(df, col, colnames, fields,
             )
     # INPUT CHECK END
 
+    # Try strict loose match (0.95) if match_th is smaller than 0.95
+    match_th_strict = 0.95 if match_th &lt; 0.95 else match_th
+    res = __test_if_loose_match(col=col, fields=fields,
+                                match_th=match_th_strict, **args)
+    # If there were match, column is renamed
+    if res != col:
+        col = res
     # Try if column is ID column
-    if __test_if_BID(df=df, col=col, **args):
+    elif __test_if_BID(df=df, col=col, **args):
         # BID can be from organization or supplier
         col = __org_or_suppl_BID(df=df, col=col, colnames=colnames)
     # Test if date
@@ -337,13 +360,29 @@ def __guess_name(df, col, colnames, fields,
     # Test if voucher
     elif __test_if_voucher(df=df, col=col, colnames=colnames):
         col = &#34;voucher&#34;
-    elif col.strip():
-        # Try partial match if column name is not empty
-        # Get the most similar key value
+    else:
+        # Get match from partial matching
+        col = __test_if_loose_match(col=col, fields=fields, match_th=match_th,
+                                    **args)
+    return col
+
+
+def __test_if_loose_match(col, fields, match_th,
+                          scorer=fuzz.token_sort_ratio,
+                          **args):
+    &#34;&#34;&#34;
+    Guess column names based on pattern on it.
+    Input: Column name and names that are tried to be match with it
+    Output: A guessed column name
+    &#34;&#34;&#34;
+    # If column is not empty
+    if col.strip():
+        # Try partial match, get the most similar key value
         col_name_part = process.extractOne(col, fields.keys(),
                                            scorer=scorer)
+        # Value [0,1] to a number between 0-100
+        match_th = match_th*100
         # If the matching score is over threshold
-        match_th = match_th*100  # float value to a number between 0-100
         if col_name_part[1] &gt;= match_th:
             # Get only the key name
             col_name_part = col_name_part[0]
@@ -591,7 +630,7 @@ def __test_if_voucher(df, col, colnames):
     # Initialize result
     res = False
     # If data includes already dates and values of column are increasing
-    # and they are not dates, the column includes voucher values
+    # and they are not dates,the column includes voucher values
     if &#34;date&#34; in colnames and df.loc[:, col].is_monotonic_increasing and \
             not df.loc[:, col].equals(df.iloc[:, colnames.index(&#34;date&#34;)]):
         res = True
@@ -685,31 +724,35 @@ def __test_if_voucher_help(df, col, colnames, variables, voucher_th):
 The column names are changed into standardized format that all other
 functions in ostan package require.</p>
 <h2 id="arguments">Arguments</h2>
-<p>df: pandas.DataFrame containing invoice data.</p>
-<p>guess_names: A boolean value specifying whether to guess column names
-that did not have exact matches or not. (By default: guess_names=True)</p>
-<p>make_unique: A boolean value specifying whether to add a suffix to
-duplicated column names. (By default: make_unique=True)</p>
-<p>fields: A dictionary containing matches between existing column
+<pre><code>df: pandas.DataFrame containing invoice data.
+
+guess_names: A boolean value specifying whether to guess column names
+that did not have exact matches or not. (By default: guess_names=True)
+
+make_unique: A boolean value specifying whether to add a suffix to
+duplicated column names. (By default: make_unique=True)
+
+fields: A dictionary containing matches between existing column
 names (key) and standardized names (value) or None. When fields=None,
-function's default dictionary is used. (By default: fields=None)</p>
-<p>**args: Additional arguments passes into other functions:</p>
-<pre><code>match_th: A numeric value [0,1] specifying the threshold of enough
-good match. Value over threshold have enough strong pattern and it
-is interpreted to be a match.
+function's default dictionary is used. (By default: fields=None)
 
-scorer: A scorer function passed into fuzzywuzzy.process.extractOne
-function. (By default: scorer=fuzz.token_sort_ratio)
+**args: Additional arguments passes into other functions:
+    match_th: A numeric value [0,1] specifying the threshold of enough
+    good match. Value over threshold have enough strong pattern and it
+    is interpreted to be a match.
 
-bid_patt_th: A numeric value [0,1] specifying the strength of
-business ID pattern. The observation specifies the portion of
-observations where the pattern must be present to conclude that
-column includes BIDs. (By default: bid_patt_th=0.8)
+    scorer: A scorer function passed into fuzzywuzzy.process.extractOne
+    function. (By default: scorer=fuzz.token_sort_ratio)
 
-country_code_th: A numeric value [0,1] specifying the strength of
-country code pattern. The observation specifies the portion of
-observations where the pattern must be present to conclude that
-column includes country cides. (By default: country_code_th=0.2)
+    bid_patt_th: A numeric value [0,1] specifying the strength of
+    business ID pattern. The observation specifies the portion of
+    observations where the pattern must be present to conclude that
+    column includes BIDs. (By default: bid_patt_th=0.8)
+
+    country_code_th: A numeric value [0,1] specifying the strength of
+    country code pattern. The observation specifies the portion of
+    observations where the pattern must be present to conclude that
+    column includes country cides. (By default: country_code_th=0.2)
 </code></pre>
 <h2 id="details">Details</h2>
 <p>This function changes the column names to standardized names that are
@@ -730,6 +773,20 @@ found with the highest possible accuracy.</p>
 the column name resembles one of the names in dictionary.
 If the signal is strong enough, the column name is is changed.
 Otherwise, the column name stays unmodified.</p>
+<h2 id="examples">Examples</h2>
+<pre><code># Create a dummy data
+data = {&quot;name1&quot;: [&quot;FI&quot;, &quot;FI&quot;, &quot;FI&quot;],
+        &quot;päivämäärä&quot;: [&quot;02012023&quot;, &quot;2-1-2023&quot;, &quot;1.1.2023&quot;],
+        &quot;name3&quot;: [1, 2, 2],
+        &quot;org_name&quot;: [&quot;Turku&quot;, &quot;Turku&quot;, &quot;Turku&quot;],
+        &quot;supplier&quot;: [&quot;Myyjä&quot;, &quot;Supplier Oy&quot;, &quot;Myyjän tuote Oy&quot;],
+        &quot;summa&quot;: [100.21, 10.30, 50.50],
+        }
+df = pd.DataFrame(data)
+# Change those column names that are detected based on column name
+# and pattern of the data.
+df = change_names(df)
+</code></pre>
 <h2 id="output">Output</h2>
 <p>pandas.DataFrame with standardized column names.</p></div>
 <details class="source">
@@ -745,6 +802,7 @@ Otherwise, the column name stays unmodified.</p>
     functions in ostan package require.
 
     Arguments:
+        ```
         df: pandas.DataFrame containing invoice data.
 
         guess_names: A boolean value specifying whether to guess column names
@@ -758,7 +816,6 @@ Otherwise, the column name stays unmodified.</p>
         function&#39;s default dictionary is used. (By default: fields=None)
 
         **args: Additional arguments passes into other functions:
-
             match_th: A numeric value [0,1] specifying the threshold of enough
             good match. Value over threshold have enough strong pattern and it
             is interpreted to be a match.
@@ -775,6 +832,7 @@ Otherwise, the column name stays unmodified.</p>
             country code pattern. The observation specifies the portion of
             observations where the pattern must be present to conclude that
             column includes country cides. (By default: country_code_th=0.2)
+        ```
 
     Details:
         This function changes the column names to standardized names that are
@@ -798,6 +856,22 @@ Otherwise, the column name stays unmodified.</p>
         the column name resembles one of the names in dictionary.
         If the signal is strong enough, the column name is is changed.
         Otherwise, the column name stays unmodified.
+
+    Examples:
+        ```
+        # Create a dummy data
+        data = {&#34;name1&#34;: [&#34;FI&#34;, &#34;FI&#34;, &#34;FI&#34;],
+                &#34;päivämäärä&#34;: [&#34;02012023&#34;, &#34;2-1-2023&#34;, &#34;1.1.2023&#34;],
+                &#34;name3&#34;: [1, 2, 2],
+                &#34;org_name&#34;: [&#34;Turku&#34;, &#34;Turku&#34;, &#34;Turku&#34;],
+                &#34;supplier&#34;: [&#34;Myyjä&#34;, &#34;Supplier Oy&#34;, &#34;Myyjän tuote Oy&#34;],
+                &#34;summa&#34;: [100.21, 10.30, 50.50],
+                }
+        df = pd.DataFrame(data)
+        # Change those column names that are detected based on column name
+        # and pattern of the data.
+        df = change_names(df)
+        ```
 
     Output:
         pandas.DataFrame with standardized column names.

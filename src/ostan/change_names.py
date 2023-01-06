@@ -15,6 +15,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
     functions in ostan package require.
 
     Arguments:
+        ```
         df: pandas.DataFrame containing invoice data.
 
         guess_names: A boolean value specifying whether to guess column names
@@ -28,7 +29,6 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         function's default dictionary is used. (By default: fields=None)
 
         **args: Additional arguments passes into other functions:
-
             match_th: A numeric value [0,1] specifying the threshold of enough
             good match. Value over threshold have enough strong pattern and it
             is interpreted to be a match.
@@ -45,6 +45,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             country code pattern. The observation specifies the portion of
             observations where the pattern must be present to conclude that
             column includes country cides. (By default: country_code_th=0.2)
+        ```
 
     Details:
         This function changes the column names to standardized names that are
@@ -70,6 +71,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         Otherwise, the column name stays unmodified.
 
     Examples:
+        ```
         # Create a dummy data
         data = {"name1": ["FI", "FI", "FI"],
                 "päivämäärä": ["02012023", "2-1-2023", "1.1.2023"],
@@ -82,6 +84,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         # Change those column names that are detected based on column name
         # and pattern of the data.
         df = change_names(df)
+        ```
 
     Output:
         pandas.DataFrame with standardized column names.
