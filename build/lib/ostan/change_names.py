@@ -15,6 +15,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
     functions in ostan package require.
 
     Arguments:
+        ```
         df: pandas.DataFrame containing invoice data.
 
         guess_names: A boolean value specifying whether to guess column names
@@ -28,7 +29,6 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         function's default dictionary is used. (By default: fields=None)
 
         **args: Additional arguments passes into other functions:
-
             match_th: A numeric value [0,1] specifying the threshold of enough
             good match. Value over threshold have enough strong pattern and it
             is interpreted to be a match.
@@ -45,6 +45,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             country code pattern. The observation specifies the portion of
             observations where the pattern must be present to conclude that
             column includes country cides. (By default: country_code_th=0.2)
+        ```
 
     Details:
         This function changes the column names to standardized names that are
@@ -69,15 +70,33 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         If the signal is strong enough, the column name is is changed.
         Otherwise, the column name stays unmodified.
 
+    Examples:
+        ```
+        # Create a dummy data
+        data = {"name1": ["FI", "FI", "FI"],
+                "päivämäärä": ["02012023", "2-1-2023", "1.1.2023"],
+                "name3": [1, 2, 2],
+                "org_name": ["Turku", "Turku", "Turku"],
+                "supplier": ["Myyjä", "Supplier Oy", "Myyjän tuote Oy"],
+                "summa": [100.21, 10.30, 50.50],
+                }
+        df = pd.DataFrame(data)
+        # Change those column names that are detected based on column name
+        # and pattern of the data.
+        df = change_names(df)
+        ```
+
     Output:
         pandas.DataFrame with standardized column names.
 
     """
     # INPUT CHECK
     # df must be pandas DataFrame
-    if not isinstance(df, pd.DataFrame):
+    if not isinstance(df, pd.DataFrame) or\
+        df.shape[0] == 0 or\
+            df.shape[1] == 0:
         raise Exception(
-            "'df' must be pandas.DataFrame."
+            "'df' must be non-empty pandas.DataFrame."
             )
     # guess_names must be boolean
     if not isinstance(guess_names, bool):
@@ -154,7 +173,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             )
 
     # If there are duplicated column names and user want to make them unique
-    if df.columns.nunique() != df.shape[1] and make_unique:
+    if len(set(df.columns)) != df.shape[1] and make_unique:
         # Initialize a list for new column names
         colnames = []
         colnames_old = []
@@ -214,8 +233,7 @@ def __get_fields_df(fields):
     return fields
 
 
-def __guess_name(df, col, colnames, fields,
-                 match_th=0.9, scorer=fuzz.token_sort_ratio, **args):
+def __guess_name(df, col, colnames, fields, match_th=0.9, **args):
     """
     Guess column names based on pattern.
     Input: DataFrame, column being guesses, current column names, match
@@ -233,8 +251,15 @@ def __guess_name(df, col, colnames, fields,
             )
     # INPUT CHECK END
 
+    # Try strict loose match (0.95) if match_th is smaller than 0.95
+    match_th_strict = 0.95 if match_th < 0.95 else match_th
+    res = __test_if_loose_match(col=col, fields=fields,
+                                match_th=match_th_strict, **args)
+    # If there were match, column is renamed
+    if res != col:
+        col = res
     # Try if column is ID column
-    if __test_if_BID(df=df, col=col, **args):
+    elif __test_if_BID(df=df, col=col, **args):
         # BID can be from organization or supplier
         col = __org_or_suppl_BID(df=df, col=col, colnames=colnames)
     # Test if date
@@ -309,13 +334,29 @@ def __guess_name(df, col, colnames, fields,
     # Test if voucher
     elif __test_if_voucher(df=df, col=col, colnames=colnames):
         col = "voucher"
-    elif col.strip():
-        # Try partial match if column name is not empty
-        # Get the most similar key value
+    else:
+        # Get match from partial matching
+        col = __test_if_loose_match(col=col, fields=fields, match_th=match_th,
+                                    **args)
+    return col
+
+
+def __test_if_loose_match(col, fields, match_th,
+                          scorer=fuzz.token_sort_ratio,
+                          **args):
+    """
+    Guess column names based on pattern on it.
+    Input: Column name and names that are tried to be match with it
+    Output: A guessed column name
+    """
+    # If column is not empty
+    if col.strip():
+        # Try partial match, get the most similar key value
         col_name_part = process.extractOne(col, fields.keys(),
                                            scorer=scorer)
+        # Value [0,1] to a number between 0-100
+        match_th = match_th*100
         # If the matching score is over threshold
-        match_th = match_th*100  # float value to a number between 0-100
         if col_name_part[1] >= match_th:
             # Get only the key name
             col_name_part = col_name_part[0]
@@ -563,7 +604,7 @@ def __test_if_voucher(df, col, colnames):
     # Initialize result
     res = False
     # If data includes already dates and values of column are increasing
-    # and they are not dates, the column includes voucher values
+    # and they are not dates,the column includes voucher values
     if "date" in colnames and df.loc[:, col].is_monotonic_increasing and \
             not df.loc[:, col].equals(df.iloc[:, colnames.index("date")]):
         res = True
