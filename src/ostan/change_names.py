@@ -171,7 +171,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             )
 
     # If there are duplicated column names and user want to make them unique
-    if df.columns.nunique() != df.shape[1] and make_unique:
+    if df.columns.astype(str).nunique() != df.shape[1] and make_unique:
         # Initialize a list for new column names
         colnames = []
         colnames_old = []
