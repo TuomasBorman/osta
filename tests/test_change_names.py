@@ -82,7 +82,7 @@ def test_change_names_all_wrong():
     df = __create_dummy_data()
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expect that are equal
     assert_frame_equal(df, df_ref)
@@ -94,7 +94,7 @@ def test_change_names_somw_wrong():
     df.columns = ["Kunnan nimi", "org_number", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["org_name", "org_number", "Test3"]
@@ -124,7 +124,7 @@ def test_change_names_duplicated_names():
     df.columns = ["date", "Test2", "date"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["date", "voucher", "date_2"]
@@ -135,7 +135,7 @@ def test_change_names_duplicated_names():
     df.columns = ["date", "Test2", "date"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df, make_unique=False)
     # Expected names
     df_ref.columns = ["date", "voucher", "date"]
@@ -149,7 +149,7 @@ def test_change_names_guess_names():
     df.columns = ["Kunnan_nimi", "Kunta numero", "Summa."]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["org_name", "org_number", "total"]
@@ -160,7 +160,7 @@ def test_change_names_guess_names():
     df.columns = ["Kunnan_nimi", "Kunta numero", "Summa."]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df, guess_names=False)
     # Expected names
     df_ref.columns = ["Kunnan_nimi", "Kunta numero", "Summa."]
@@ -174,7 +174,7 @@ def test_change_names_match_th():
     df.columns = ["Kunnan_nimi", "Kunta numero", "Kokko.summa"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df, match_th=1)
     # Expected names
     df_ref.columns = ["Kunnan_nimi", "Kunta numero", "Kokko.summa"]
@@ -186,7 +186,7 @@ def test_change_names_match_th():
     df.columns = ["Kunnan_nimi", "Kunta numero", "Kokko.summa"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df, match_th=0.6)
     # Expected names
     df_ref.columns = ["org_name", "org_number", "total"]
@@ -204,7 +204,7 @@ def test_change_names_test_sums():
     df.columns = ["total", "vat_amount", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["total", "vat_amount", "price_ex_vat"]
@@ -215,7 +215,7 @@ def test_change_names_test_sums():
     df.columns = ["total", "test2", "price_ex_vat"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["total", "vat_amount", "price_ex_vat"]
@@ -226,7 +226,7 @@ def test_change_names_test_sums():
     df.columns = ["test1", "vat_amount", "price_ex_vat"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     print(df)
@@ -247,7 +247,7 @@ def test_change_names_data_patterns():
     df.columns = ["Test1", "Test2", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["country", "date", "voucher"]
@@ -265,7 +265,7 @@ def test_change_names_data_patterns2():
     df.columns = ["Test1", "org_name", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["org_number", "org_name", "org_id"]
@@ -276,7 +276,7 @@ def test_change_names_data_patterns2():
     df.columns = ["org_number", "Test2", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["org_number", "org_name", "org_id"]
@@ -287,7 +287,7 @@ def test_change_names_data_patterns2():
     df.columns = ["Test1", "Test2", "org_id"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["org_number", "org_name", "org_id"]
@@ -303,7 +303,7 @@ def test_change_names_data_patterns2():
     df.columns = ["Test1", "Test2", "suppl_id"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["Test1", "suppl_name", "suppl_id"]
@@ -314,7 +314,7 @@ def test_change_names_data_patterns2():
     df.columns = ["Test1", "suppl_name", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["Test1", "suppl_name", "suppl_id"]
@@ -330,7 +330,7 @@ def test_change_names_data_patterns2():
     df.columns = ["Test1", "service_cat_name", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["service_cat", "service_cat_name", "bid"]
@@ -341,7 +341,7 @@ def test_change_names_data_patterns2():
     df.columns = ["service_cat", "Test2", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["service_cat", "service_cat_name", "bid"]
@@ -352,7 +352,7 @@ def test_change_names_data_patterns2():
     df.columns = ["account_number", "Test2", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["account_number", "account_name", "bid"]
@@ -363,7 +363,7 @@ def test_change_names_data_patterns2():
     df.columns = ["Test1", "account_name", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["account_number", "account_name", "bid"]
@@ -374,7 +374,7 @@ def test_change_names_data_patterns2():
     df.columns = ["Test1", "Test2", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df)
     # Expected names
     df_ref.columns = ["Test1", "Test2", "bid"]
@@ -392,7 +392,7 @@ def test_change_names_bid_patt_th():
     df.columns = ["Test1", "Test2", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df, bid_patt_th=0.67)
     # Expected names
     df_ref.columns = ["Test1", "Test2", "Test3"]
@@ -403,7 +403,7 @@ def test_change_names_bid_patt_th():
     df.columns = ["Test1", "Test2", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df, bid_patt_th=0.65)
     # Expected names
     df_ref.columns = ["Test1", "Test2", "bid"]
@@ -415,7 +415,7 @@ def test_change_names_bid_patt_th():
     df.columns = ["Kunnan_nimi", "Kunta numero", "Kokko.summa"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df, match_th=0.6)
     # Expected names
     df_ref.columns = ["org_name", "org_number", "total"]
@@ -433,7 +433,7 @@ def test_change_names_country_code_th():
     df.columns = ["Test1", "Test2", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df, country_code_th=0.67)
     # Expected names
     df_ref.columns = ["Test1", "Test2", "Test3"]
@@ -444,7 +444,7 @@ def test_change_names_country_code_th():
     df.columns = ["Test1", "Test2", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df, country_code_th=0.65)
     # Expected names
     df_ref.columns = ["Test1", "Test2", "country"]
@@ -456,7 +456,7 @@ def test_change_names_country_code_th():
     df.columns = ["Kunnan_nimi", "Kunta numero", "Kokko.summa"]
     df_ref = copy.copy(df)
     # Expect a warning
-    with pytest.warns():
+    with pytest.warns(Warning):
         df = change_names(df, match_th=0.6)
     # Expected names
     df_ref.columns = ["org_name", "org_number", "total"]
