@@ -1,0 +1,15 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+src/ostan/__init__.py
+src/ostan/change_names.py
+src/ostan.egg-info/PKG-INFO
+src/ostan.egg-info/SOURCES.txt
+src/ostan.egg-info/dependency_links.txt
+src/ostan.egg-info/not-zip-safe
+src/ostan.egg-info/top_level.txt
+src/ostan/resources/land_codes.csv
+src/ostan/resources/mandatory_fields.csv
+src/ostan/resources/optional_fields.csv

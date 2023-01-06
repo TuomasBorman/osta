@@ -1,0 +1,56 @@
+key,value
+kuntanumero,org_number
+kuntanro,org_number
+kunnan tai kuntayhtymän nimi,org_name
+kunnan/-yhtymän nimi,org_name
+kunnan nimi,org_name
+kunta,org_name
+kuntayhtymän nimi,org_name
+kunnan/kuntayhtymän nimi,org_name
+yhtiö,org_name
+kunnan y-tunnus,org_id
+toimielin,org_sub_name
+toimielitunnus,org_sub_number
+tositenumero,voucher
+tapahtumanumero,voucher
+tosite,voucher
+toimittajan nimi,suppl_name
+toimittaja,suppl_name
+toimittajanimi,suppl_name
+reskontranumero,suppl_name
+reskontranro,suppl_name
+toimittajan y-tunnus,suppl_id
+toimittajan maakoodi,country
+maa,country
+maakoodi,country
+maatunnus,country
+toimittajan maatunnus,country
+laskun summa ilman alv,price_ex_vat
+rivin osuus veroton,price_ex_vat
+rivin nettosumma,price_ex_vat
+tositepäivämäärä,date
+tositepaivamaara,date
+tositepäivä,date
+tositepaiva,date
+tositepvm,date
+tapaht.pvm,date
+pvm,date
+kirjanpidon tilinumero,account_number
+tilinumero,account_number
+pääkirjatili,account_number
+tili,account_number
+tilin nimi,account_name
+pääkirjatilin nimi,account_name
+palveluluokka,service_cat
+palvelun numero,service_cat
+vastuualuetunnus,service_cat
+palvelun nimi,service_cat_name
+vastuualue,service_cat_name
+kokonaissumma euroina,total
+summa,total
+rivin bruttosumma,total
+rivin osuus vero,vat_amount
+rivin alv-summa,vat_amount
+alv määrä euroina,vat_amount
+y-tunnus,id
+verkkolaskuosoite,invoice_account
