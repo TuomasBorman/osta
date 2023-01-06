@@ -84,6 +84,13 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         # Change those column names that are detected based on column name
         # and pattern of the data.
         df = change_names(df)
+
+        # To disable name guessing, use guess_names=False
+        df = change_names(df, guess_names=False)
+
+        # To control name matching, feed arguments
+        df = change_names(df, guess_names=True, make_unique=True,
+                          match_th=0.6, bid_patt_th=1)
         ```
 
     Output:
@@ -252,7 +259,7 @@ def __guess_name(df, col, colnames, fields, match_th=0.9, **args):
     # INPUT CHECK END
 
     # Try strict loose match (0.95) if match_th is smaller than 0.95
-    match_th_strict = 0.95 if match_th < 0.95 else match_th
+    match_th_strict = 0.95 if match_th <= 0.95 else match_th
     res = __test_if_loose_match(col=col, fields=fields,
                                 match_th=match_th_strict, **args)
     # If there were match, column is renamed
@@ -401,7 +408,7 @@ def __test_if_BID(df, col, bid_patt_th=0.8, **args):
     else:
         patt_found = 0
     # Check if over threshold
-    if patt_found > bid_patt_th:
+    if patt_found >= bid_patt_th:
         res = True
     return res
 
@@ -590,7 +597,7 @@ def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
         res_df[name] = (df.isin(data))
     # How many times the value was found from the codes? If enough, then we
     # can be sure that the column includes land codes
-    if sum(res_df.sum(axis=1) > 0)/res_df.shape[0] > country_code_th:
+    if sum(res_df.sum(axis=1) > 0)/res_df.shape[0] >= country_code_th:
         res = True
     return res
 
