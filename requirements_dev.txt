@@ -5,5 +5,3 @@ pytest-cov==2.12.1
 mypy===0.910
 pandas==1.5.2
 fuzzywuzzy==0.18.0
-pkg_resources
-warnings
