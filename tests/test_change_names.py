@@ -11,6 +11,8 @@ def test_check_names_wrong_arguments():
     with pytest.raises(Exception):
         df = change_names()
     with pytest.raises(Exception):
+        df = change_names(pd.DataFrame())
+    with pytest.raises(Exception):
         df = change_names(None)
     with pytest.raises(Exception):
         df = change_names(1)

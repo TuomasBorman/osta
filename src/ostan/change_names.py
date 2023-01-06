@@ -96,7 +96,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         df.shape[0] == 0 or\
             df.shape[1] == 0:
         raise Exception(
-            "'df' must be pandas.DataFrame."
+            "'df' must be non-empty pandas.DataFrame."
             )
     # guess_names must be boolean
     if not isinstance(guess_names, bool):
@@ -173,7 +173,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             )
 
     # If there are duplicated column names and user want to make them unique
-    if df.columns.nunique() != df.shape[1] and make_unique:
+    if len(set(df.columns)) != df.shape[1] and make_unique:
         # Initialize a list for new column names
         colnames = []
         colnames_old = []
