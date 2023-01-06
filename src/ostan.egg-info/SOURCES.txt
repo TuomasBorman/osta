@@ -9,7 +9,6 @@ src/ostan.egg-info/PKG-INFO
 src/ostan.egg-info/SOURCES.txt
 src/ostan.egg-info/dependency_links.txt
 src/ostan.egg-info/not-zip-safe
-src/ostan.egg-info/requires.txt
 src/ostan.egg-info/top_level.txt
 src/ostan/resources/land_codes.csv
 src/ostan/resources/mandatory_fields.csv

@@ -2,7 +2,9 @@ Metadata-Version: 2.1
 Name: ostan
 Version: 0.1.0
 Summary: OSTolaskujen ANalysointi -- package for analysing invoices of Finnish public organizations
+Home-page: https://github.com/TuomasBorman/ostan
 Author: Tuomas Borman
+Author-email: tvborm@utu.fi
 License: Artistic License 2.0
 Platform: unix
 Platform: linux
@@ -12,5 +14,9 @@ Platform: win32
 Classifier: Programming Language :: Python :: 3.8
 Classifier: Programming Language :: Python :: 3.9
 Requires-Python: >=3.8
-Provides-Extra: testing
+Description-Content-Type: text/markdown
 License-File: LICENSE
+
+# ostan (OSTolaskujen ANalysointi)
+
+A Python package for analysing invoices of Finnish public organizations.
