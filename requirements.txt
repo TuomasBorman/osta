@@ -1,2 +1,4 @@
 pandas==1.5.2
 fuzzywuzzy==0.18.0
+pkg_resources
+warnings
