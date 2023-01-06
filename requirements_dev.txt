@@ -6,3 +6,4 @@ mypy===0.991
 pandas==1.5.2
 fuzzywuzzy==0.18.0
 python-Levenshtein==0.20.8
+types-setuptools==65.6.0.3
