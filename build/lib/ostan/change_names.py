@@ -5,6 +5,7 @@ from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import pkg_resources
 
+
 def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
     """
     Change column names of pandas.DataFrame
@@ -191,15 +192,15 @@ def __get_fields_df(fields):
     """
     # If fields was not provided, open files that include fields
     if fields is None:
-        # Load data from /resources
-        path = pkg_resources.resource_filename('ostan',
-                                               "resources/" +
-                                               "mandatory_fields.csv")
+        # Load data from /resources of package ostan
+        path = pkg_resources.resource_filename(
+            "ostan",
+            "resources/" + "mandatory_fields.csv")
         mandatory_fields = pd.read_csv(path
                                        ).set_index("key")["value"].to_dict()
-        path = pkg_resources.resource_filename('ostan',
-                                               "resources/" +
-                                               "optional_fields.csv")
+        path = pkg_resources.resource_filename(
+            "ostan",
+            "resources/" + "optional_fields.csv")
         optional_fields = pd.read_csv(path
                                       ).set_index("key")["value"].to_dict()
         # Combine fields into one dictionary
@@ -224,7 +225,8 @@ def __guess_name(df, col, colnames, fields,
     # INPUT CHECK
     # Types of all other arguments are fixed
     # match_th must be numeric value 0-1
-    if not ((isinstance(match_th, int) or isinstance(match_th, float)) and
+    if not (((isinstance(match_th, int) or isinstance(match_th, float)) and
+             not isinstance(match_th, bool)) and
             (0 <= match_th <= 1)):
         raise Exception(
             "'match_th' must be a number between 0-1."
@@ -241,7 +243,7 @@ def __guess_name(df, col, colnames, fields,
     # Test if column includes country codes
     elif __test_if_country(df, col, colnames, **args):
         col = "country"
-    # Test if org_number
+    # # Test if org_number
     elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
                                        cols_match=["org_name", "org_id"],
                                        datatype=["int64"]
@@ -330,8 +332,8 @@ def __test_if_BID(df, col, bid_patt_th=0.8, **args):
     """
     # INPUT CHECK
     # bid_patt_th must be numeric value 0-100
-    if not ((isinstance(bid_patt_th, int) or
-             isinstance(bid_patt_th, float)) and
+    if not (((isinstance(bid_patt_th, int) or isinstance(bid_patt_th, float))
+             and not isinstance(bid_patt_th, bool)) and
             (0 <= bid_patt_th <= 1)):
         raise Exception(
             "'bid_patt_th' must be a number between 0-1."
@@ -388,6 +390,11 @@ def __org_or_suppl_BID(df, col, colnames):
             # these columns match
             if n_uniq == df.iloc[:, colnames.index(col_match)].nunique():
                 res = "org_id"
+    # If all the identifiers are missing, give "bid", because we cannot be sure
+    if all(list(name not in colnames for name in ["org_number", "org_name",
+                                                  "org_id", "suppl_name",
+                                                  "suppl_id"])):
+        res = "bid"
     # If there are supplier IDs already, try if they are differemt
     if "suppl_id" in colnames and all(df.iloc[:, colnames.index(col)] !=
                                       df.iloc[:, colnames.index("suppl_id")]):
@@ -479,10 +486,11 @@ def __test_if_sums(df, col, colnames, test_sum, match_with, datatype):
         # Take only specific columns
         ind = list(colnames.index(mw) for mw in match_with)
         ind.append(colnames.index(col))
+        # Preserve the order of indices
+        ind.sort()
         df_temp = df.iloc[:, ind]
         # Drop empty rows
         df_temp = df_temp.dropna()
-
         # If the datatypes are correct
         if all(df_temp.dtypes == datatype):
             # If VAT is tested and value is correct
@@ -514,8 +522,9 @@ def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
     """
     # INPUT CHECK
     # country_code_th must be numeric value 0-100
-    if not ((isinstance(country_code_th, int) or
-             isinstance(country_code_th, float)) and
+    if not (((isinstance(country_code_th, int) or
+              isinstance(country_code_th, float))
+             and not isinstance(country_code_th, bool)) and
             (0 <= country_code_th <= 1)):
         raise Exception(
             "'country_code_th' must be a number between 0-1."
@@ -528,9 +537,10 @@ def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
     df = df.iloc[:, colnames.index(col)]
     df = df.dropna()
     # Test if col values can be found from the table
-    path = pkg_resources.resource_filename('ostan',
-                                           "resources/" +
-                                           "land_codes.csv")
+    # Load codes from resources of package ostan
+    path = pkg_resources.resource_filename(
+        "ostan",
+        "resources/" + "land_codes.csv")
     codes = pd.read_csv(path, index_col=0)
     # Drop numeric codes, since we cannot be sure that they are land codes
     codes = codes.drop("Numeerinen koodi [2]", axis=1)
