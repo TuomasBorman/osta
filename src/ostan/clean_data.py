@@ -72,5 +72,33 @@ def clean_data(df, **args):
     return df
 
 
-def __calc_sums():
-    
+def __clean_sums(df):
+    # TODO CHECK IF VAT CATEGORY CAN BE FOUND --> VAT COULD BE POSSIBLE
+    # TO CALCULATE
+
+    # Columns that include sums
+    columns = ["total", "vat_amount", "price_ex_vat"]
+    # Get columns that are included in data
+    columns = list(n if n in df.columns else None for n in columns)
+    # Remove Nones
+    columns = list(filter(None, columns))
+
+    # If data is not float, try to make it as float
+    if not all(df.loc[:, columns].dtypes == "float64"):
+        # Get those column names that need to be modified
+        col_not_float = df.loc[:, columns].dtypes[
+            df.loc[:, columns].dtypes != "float64"].index
+        # Loop throug columns
+        for col in col_not_float:
+            # Replace "," with "." and remove spaces
+            df[col] = df[col].str.replace(
+                ",", ".").str.split().str.join("")
+            # Try to convert values as float
+            try:
+                df[col] = df[col].astype(float)
+            except ValueError:
+                warnings.warn(
+                    message=f"The following column cannot be converted into "
+                    f"float: {col}",
+                    category=Warning
+                    )
