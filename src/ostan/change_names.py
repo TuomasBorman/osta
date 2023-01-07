@@ -591,7 +591,7 @@ def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
         "resources/" + "land_codes.csv")
     codes = pd.read_csv(path, index_col=0)
     # Drop numeric codes, since we cannot be sure that they are land codes
-    codes = codes.drop("Numeerinen koodi [2]", axis=1)
+    codes = codes.drop("code_num", axis=1)
     res_df = pd.DataFrame()
     for name, data in codes.items():
         res_df[name] = (df.isin(data))
