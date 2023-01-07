@@ -68,4 +68,9 @@ def clean_data(df, **args):
             category=Warning
             )
     # Check org_number
+    
     return df
+
+
+def __calc_sums():
+    

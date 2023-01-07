@@ -536,28 +536,28 @@ def __test_if_sums(df, col, colnames, test_sum, match_with, datatype):
         ind.append(colnames.index(col))
         # Preserve the order of indices
         ind.sort()
-        df_temp = df.iloc[:, ind]
+        df = df.iloc[:, ind]
         # Drop empty rows
-        df_temp = df_temp.dropna()
+        df = df.dropna()
         # If the datatypes are correct
-        if all(df_temp.dtypes == datatype):
+        if all(df.dtypes == datatype):
             # If VAT is tested and value is correct
             if test_sum == "vat_amount" and\
-                all(df_temp.iloc[:, colnames.index(col)] ==
-                    df_temp.iloc[:, colnames.index("total")] -
-                    df_temp.iloc[:, colnames.index("price_ex_vat")]):
+                all(df.iloc[:, colnames.index(col)] ==
+                    df.iloc[:, colnames.index("total")] -
+                    df.iloc[:, colnames.index("price_ex_vat")]):
                 res = True
             # If total is tested and value is correct
             elif test_sum == "total" and\
-                all(df_temp.iloc[:, colnames.index(col)] ==
-                    df_temp.iloc[:, colnames.index("price_ex_vat")] +
-                    df_temp.iloc[:, colnames.index("vat_amount")]):
+                all(df.iloc[:, colnames.index(col)] ==
+                    df.iloc[:, colnames.index("price_ex_vat")] +
+                    df.iloc[:, colnames.index("vat_amount")]):
                 res = True
             # If price_ex_vat is tested and value is correct
             elif test_sum == "price_ex_vat" and\
-                all(df_temp.iloc[:, colnames.index(col)] ==
-                    df_temp.iloc[:, colnames.index("total")] -
-                    df_temp.iloc[:, colnames.index("vat_amount")]):
+                all(df.iloc[:, colnames.index(col)] ==
+                    df.iloc[:, colnames.index("total")] -
+                    df.iloc[:, colnames.index("vat_amount")]):
                 res = True
     return res
 
