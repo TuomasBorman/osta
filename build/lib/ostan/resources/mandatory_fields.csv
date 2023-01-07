@@ -10,7 +10,9 @@ kunnan/kuntayhtymän nimi,org_name
 yhtiö,org_name
 kunnan y-tunnus,org_id
 toimielin,org_sub_name
+kustannuspaikan nimi,org_sub_name
 toimielitunnus,org_sub_number
+kustannuspaikka,org_sub_number
 tositenumero,voucher
 tapahtumanumero,voucher
 tosite,voucher
@@ -52,5 +54,4 @@ rivin bruttosumma,total
 rivin osuus vero,vat_amount
 rivin alv-summa,vat_amount
 alv määrä euroina,vat_amount
-y-tunnus,id
 verkkolaskuosoite,invoice_account

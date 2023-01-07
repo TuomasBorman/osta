@@ -72,7 +72,12 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             country_code_th: A numeric value [0,1] specifying the strength of
             country code pattern. The observation specifies the portion of
             observations where the pattern must be present to conclude that
-            column includes country cides. (By default: country_code_th=0.2)
+            column includes country codes. (By default: country_code_th=0.2)
+
+            vat_number_th: A numeric value [0,1] specifying the strength of
+            VAT number pattern. The observation specifies the portion of
+            observations where the pattern must be present to conclude that
+            column includes VAT numbers. (By default: vat_number_th=0.2)
         ```
 
     Details:
@@ -303,6 +308,9 @@ def __guess_name(df, col, colnames, fields, match_th=0.9, **args):
     # Test if column includes country codes
     elif __test_if_country(df, col, colnames, **args):
         col = &#34;country&#34;
+    # Test if column includes VAT numbers
+    elif __test_if_vat_number(df, col, colnames, **args):
+        col = &#34;vat_number&#34;
     # # Test if org_number
     elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
                                        cols_match=[&#34;org_name&#34;, &#34;org_id&#34;],
@@ -499,21 +507,24 @@ def __test_if_date(df, col, colnames):
         res = True
     elif df.dtype in [&#34;int64&#34;, &#34;object&#34;]:
         patt_to_search = [
-            &#34;\\d\\d\\d\\d\\d\\d\\d\\d&#34;,
-            &#34;\\d\\d\\d\\d\\d\\d\\d&#34;,
-            &#34;\\d\\d\\d\\d&#34;,
+            &#34;^\\d\\d\\d\\d\\d\\d\\d\\d$&#34;,
+            &#34;^\\d\\d\\d\\d\\d\\d\\d$&#34;,
+            &#34;^\\d\\d\\d\\d$&#34;,
 
-            &#34;\\d\\d[.-/]\\d\\d[.-/]\\d\\d\\d\\d&#34;,
-            &#34;\\d[.-/]\\d\\d[.-/]\\d\\d\\d\\d&#34;,
-            &#34;\\d\\d[.-/]\\d[.-/]\\d\\d\\d\\d&#34;,
-            &#34;\\d[.-/]\\d[.-/]\\d\\d&#34;,
+            &#34;^\\d\\d[-/.]\\d\\d[-/.]\\d\\d\\d\\d$&#34;,
+            &#34;^\\d[-/.]\\d\\d[-/.]\\d\\d\\d\\d$&#34;,
+            &#34;^\\d\\d[-/.]\\d[-/.]\\d\\d\\d\\d$&#34;,
+            &#34;^\\d[-/.]\\d[-/.]\\d\\d\\d\\d$&#34;,
+            &#34;^\\d[-/.]\\d[-/.]\\d\\d$&#34;,
+            &#34;^\\d[-/.]\\d[-/.]\\d\\d\\d\\d$&#34;,
 
-            &#34;\\d\\d\\d\\d[.-/]\\d\\d[.-/]\\d\\d&#34;,
-            &#34;\\d\\d\\d\\d[.-/]\\d[.-/]\\d\\d&#34;,
-            &#34;\\d\\d\\d\\d[.-/]\\d\\d[.-/]\\d&#34;,
-            &#34;\\d\\d\\d[.-/]\\d[.-/]&#34;,
+            &#34;^\\d\\d\\d\\d[-/.]\\d\\d[-/.]\\d\\d$&#34;,
+            &#34;^\\d\\d\\d\\d[-/.]\\d[-/.]\\d\\d$&#34;,
+            &#34;^\\d\\d\\d\\d[-/.]\\d\\d[-/.]\\d$&#34;,
+            &#34;^\\d\\d[-/.]\\d[-/.]\\d$&#34;,
             ]
         patt_found = df.astype(str).str.contains(&#34;|&#34;.join(patt_to_search))
+        print(patt_found)
         if all(patt_found):
             res = True
     return res
@@ -564,28 +575,28 @@ def __test_if_sums(df, col, colnames, test_sum, match_with, datatype):
         ind.append(colnames.index(col))
         # Preserve the order of indices
         ind.sort()
-        df_temp = df.iloc[:, ind]
+        df = df.iloc[:, ind]
         # Drop empty rows
-        df_temp = df_temp.dropna()
+        df = df.dropna()
         # If the datatypes are correct
-        if all(df_temp.dtypes == datatype):
+        if all(df.dtypes == datatype):
             # If VAT is tested and value is correct
             if test_sum == &#34;vat_amount&#34; and\
-                all(df_temp.iloc[:, colnames.index(col)] ==
-                    df_temp.iloc[:, colnames.index(&#34;total&#34;)] -
-                    df_temp.iloc[:, colnames.index(&#34;price_ex_vat&#34;)]):
+                all(df.iloc[:, colnames.index(col)] ==
+                    df.iloc[:, colnames.index(&#34;total&#34;)] -
+                    df.iloc[:, colnames.index(&#34;price_ex_vat&#34;)]):
                 res = True
             # If total is tested and value is correct
             elif test_sum == &#34;total&#34; and\
-                all(df_temp.iloc[:, colnames.index(col)] ==
-                    df_temp.iloc[:, colnames.index(&#34;price_ex_vat&#34;)] +
-                    df_temp.iloc[:, colnames.index(&#34;vat_amount&#34;)]):
+                all(df.iloc[:, colnames.index(col)] ==
+                    df.iloc[:, colnames.index(&#34;price_ex_vat&#34;)] +
+                    df.iloc[:, colnames.index(&#34;vat_amount&#34;)]):
                 res = True
             # If price_ex_vat is tested and value is correct
             elif test_sum == &#34;price_ex_vat&#34; and\
-                all(df_temp.iloc[:, colnames.index(col)] ==
-                    df_temp.iloc[:, colnames.index(&#34;total&#34;)] -
-                    df_temp.iloc[:, colnames.index(&#34;vat_amount&#34;)]):
+                all(df.iloc[:, colnames.index(col)] ==
+                    df.iloc[:, colnames.index(&#34;total&#34;)] -
+                    df.iloc[:, colnames.index(&#34;vat_amount&#34;)]):
                 res = True
     return res
 
@@ -619,13 +630,64 @@ def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
         &#34;resources/&#34; + &#34;land_codes.csv&#34;)
     codes = pd.read_csv(path, index_col=0)
     # Drop numeric codes, since we cannot be sure that they are land codes
-    codes = codes.drop(&#34;Numeerinen koodi [2]&#34;, axis=1)
-    res_df = pd.DataFrame()
+    codes = codes.drop(&#34;code_num&#34;, axis=1)
+    # Initialize a data frame
+    df_res = pd.DataFrame()
+    # Loop over different codes
     for name, data in codes.items():
-        res_df[name] = (df.isin(data))
+        # Does the column include certain codes?
+        df_res[name] = (df.isin(data))
     # How many times the value was found from the codes? If enough, then we
     # can be sure that the column includes land codes
-    if sum(res_df.sum(axis=1) &gt; 0)/res_df.shape[0] &gt;= country_code_th:
+    if sum(df_res.sum(axis=1) &gt; 0)/df_res.shape[0] &gt;= country_code_th:
+        res = True
+    return res
+
+
+def __test_if_vat_number(df, col, colnames, vat_number_th=0.2, **args):
+    &#34;&#34;&#34;
+    This function checks if the column defines VAT numbers
+    Input: DataFrame, name of the column, found final column names
+    Output: Boolean value
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    # vat_number_th must be numeric value 0-100
+    if not (((isinstance(vat_number_th, int) or
+              isinstance(vat_number_th, float))
+             and not isinstance(vat_number_th, bool)) and
+            (0 &lt;= vat_number_th &lt;= 1)):
+        raise Exception(
+            &#34;&#39;vat_number_th&#39; must be a number between 0-1.&#34;
+            )
+    # INPUT CHECK END
+    # Initialize result
+    res = False
+    # Get specific column and remove NaNs
+    df = df.iloc[:, colnames.index(col)]
+    nrow = df.shape[0]
+    df = df.dropna()
+    # Load codes from resources of package ostan
+    path = pkg_resources.resource_filename(
+        &#34;ostan&#34;,
+        &#34;resources/&#34; + &#34;land_codes.csv&#34;)
+    codes = pd.read_csv(path, index_col=0)
+    # Get only land codes with 2 characters
+    codes = codes[&#34;code_2char&#34;]
+    codes = codes.dropna()
+    codes = codes.tolist()
+    # Try if land codes can be found from the data
+    land_code_found = df.astype(str).str.contains(&#34;|&#34;.join(codes))
+    # VAT number includes also specific pattern of characters along
+    # with land code. Test if it is found
+    patt_to_search = [
+        &#34;^[a-zA-Z0-9]{4,14}$&#34;,
+        ]
+    patt_found = df.astype(str).str.contains(&#34;|&#34;.join(patt_to_search))
+    # Combine results
+    res_patt = land_code_found &amp; patt_found
+    # How many times the pattern was found from values? If enough, then we
+    # can be sure that the column includes VAT numbers
+    if sum(res_patt)/nrow &gt;= vat_number_th:
         res = True
     return res
 
@@ -692,7 +754,7 @@ def __test_if_voucher_help(df, col, colnames, variables, voucher_th):
     &#34;&#34;&#34;
     # Initialize results
     res = False
-    # CHeck which variables are shared between variables and colnames
+    # Check which variables are shared between variables and colnames
     var_shared = list(set(colnames) &amp; set(variables))
     # If variables were found from the colnames
     if len(var_shared) &gt; 0:
@@ -761,7 +823,12 @@ function's default dictionary is used. (By default: fields=None)
     country_code_th: A numeric value [0,1] specifying the strength of
     country code pattern. The observation specifies the portion of
     observations where the pattern must be present to conclude that
-    column includes country cides. (By default: country_code_th=0.2)
+    column includes country codes. (By default: country_code_th=0.2)
+
+    vat_number_th: A numeric value [0,1] specifying the strength of
+    VAT number pattern. The observation specifies the portion of
+    observations where the pattern must be present to conclude that
+    column includes VAT numbers. (By default: vat_number_th=0.2)
 </code></pre>
 <h2 id="details">Details</h2>
 <p>This function changes the column names to standardized names that are
@@ -847,7 +914,12 @@ df = change_names(df, guess_names=True, make_unique=True,
             country_code_th: A numeric value [0,1] specifying the strength of
             country code pattern. The observation specifies the portion of
             observations where the pattern must be present to conclude that
-            column includes country cides. (By default: country_code_th=0.2)
+            column includes country codes. (By default: country_code_th=0.2)
+
+            vat_number_th: A numeric value [0,1] specifying the strength of
+            VAT number pattern. The observation specifies the portion of
+            observations where the pattern must be present to conclude that
+            column includes VAT numbers. (By default: vat_number_th=0.2)
         ```
 
     Details:

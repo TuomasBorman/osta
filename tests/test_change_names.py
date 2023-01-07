@@ -78,6 +78,18 @@ def test_check_names_wrong_arguments():
         df = change_names(df, country_code_th=None)
     with pytest.raises(Exception):
         df = change_names(df, country_code_th=True)
+    with pytest.raises(Exception):
+        df = change_names(df, vat_number_th=2)
+    with pytest.raises(Exception):
+        df = change_names(df, vat_number_th="0.1")
+    with pytest.raises(Exception):
+        df = change_names(df, vat_number_th=2)
+    with pytest.raises(Exception):
+        df = change_names(df, vat_number_th=-0.1)
+    with pytest.raises(Exception):
+        df = change_names(df, vat_number_th=None)
+    with pytest.raises(Exception):
+        df = change_names(df, vat_number_th=True)
 
 
 def test_change_names_all_wrong():
@@ -450,6 +462,47 @@ def test_change_names_country_code_th():
         df = change_names(df, country_code_th=0.65)
     # Expected names
     df_ref.columns = ["Test1", "Test2", "country"]
+    # Expect that are equal
+    assert_frame_equal(df, df_ref)
+
+    df = __create_dummy_data()
+    # Original names
+    df.columns = ["Kunnan_nimi", "Kunta numero", "Kokko.summa"]
+    df_ref = copy.copy(df)
+    # Expect a warning
+    with pytest.warns(Warning):
+        df = change_names(df, match_th=0.6)
+    # Expected names
+    df_ref.columns = ["org_name", "org_number", "total"]
+    # Expect that are equal
+    assert_frame_equal(df, df_ref)
+
+
+def test_change_names_vat_number_th():
+    data = {"test1": ["FI957585", "ATjfh727", "test"],
+            "test2": ["test1", "test2", "test3"],
+            "test3": ["FI", "FI", "test"]
+            }
+    df = pd.DataFrame(data)
+    # Original names
+    df.columns = ["Test1", "Test2", "Test3"]
+    df_ref = copy.copy(df)
+    # Expect a warning
+    with pytest.warns(Warning):
+        df = change_names(df, vat_number_th=0.67)
+    # Expected names
+    df_ref.columns = ["Test1", "Test2", "country"]
+    # Expect that are equal
+    assert_frame_equal(df, df_ref)
+
+    # Original names
+    df.columns = ["Test1", "Test2", "Test3"]
+    df_ref = copy.copy(df)
+    # Expect a warning
+    with pytest.warns(Warning):
+        df = change_names(df, vat_number_th=0.65)
+    # Expected names
+    df_ref.columns = ["vat_number", "Test2", "country"]
     # Expect that are equal
     assert_frame_equal(df, df_ref)
 
