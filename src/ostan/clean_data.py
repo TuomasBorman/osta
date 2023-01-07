@@ -62,6 +62,7 @@ def clean_data(df, **args):
         # that are being cleaned
         duplicated_disable = duplicated[list(dup in ["test1", "test3"]
                                              for dup in duplicated)]
+        print(duplicated_disable)
         warnings.warn(
             message=f"The following column names are duplicated. "
             f"Please check them for errors.\n {duplicated}",
@@ -73,21 +74,30 @@ def clean_data(df, **args):
 
 
 def __clean_sums(df):
+    """
+    This function checks that sums (total, vat, netsum) are in float format,
+    and tries to convert them if they are not. Futhermore, if one field is
+    missing, it is calculated based on others.
+    Input: df
+    Output: df
+    """
     # TODO CHECK IF VAT CATEGORY CAN BE FOUND --> VAT COULD BE POSSIBLE
     # TO CALCULATE
 
-    # Columns that include sums
-    columns = ["total", "vat_amount", "price_ex_vat"]
+    # Check which column is missing if any
+    col_to_check = ["total", "vat_amount", "price_ex_vat"]
     # Get columns that are included in data
-    columns = list(n if n in df.columns else None for n in columns)
+    col_found = (n if n in df.columns else None for n in col_to_check)
     # Remove Nones
-    columns = list(filter(None, columns))
+    col_found = list(filter(None, col_found))
+    # Get columns that are missing from the data
+    col_missing = set(col_to_check).difference(col_found)
 
     # If data is not float, try to make it as float
-    if not all(df.loc[:, columns].dtypes == "float64"):
+    if len(col_found) > 0 and not all(df.dtypes[col_found] == "float64"):
         # Get those column names that need to be modified
-        col_not_float = df.loc[:, columns].dtypes[
-            df.loc[:, columns].dtypes != "float64"].index
+        col_not_float = df.dtypes[col_found][
+            df.dtypes[col_found] != "float64"].index
         # Loop throug columns
         for col in col_not_float:
             # Replace "," with "." and remove spaces
@@ -102,3 +112,21 @@ def __clean_sums(df):
                     f"float: {col}",
                     category=Warning
                     )
+    # If there were some columns missing, calculate them
+    if len(col_missing) > 0 and all(df.dtypes[col_found] == "float64"):
+        # If total is missing
+        if "total" in col_missing and all(c in col_found
+                                          for c in ["price_ex_vat",
+                                                    "vat_amount"]):
+            df["test"] = df["price_ex_vat"] + df["vat_amount"]
+        # If price_ex_vat is missing
+        elif "price_ex_vat" in col_missing and all(c in col_found
+                                                   for c in ["total",
+                                                             "vat_amount"]):
+            df["price_ex_vat"] = df["total"] - df["vat_amount"]
+        # If vat_amount is missing
+        elif "vat_amount" in col_missing and all(c in col_found
+                                                 for c in ["total",
+                                                           "price_ex_vat"]):
+            df["vat_amount"] = df["total"] - df["price_ex_vat"]
+    return df
