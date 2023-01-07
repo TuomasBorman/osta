@@ -3,7 +3,7 @@ name: Tests
 on:
   push:
     branches:
-      - "*"
+      - main
   pull_request:
     branches:
       - main
@@ -28,5 +28,3 @@ jobs:
         pip install tox tox-gh-actions
     - name: Test with tox
       run: tox
-        if: ${{ github.event_name == 'pull_request' }}
-
