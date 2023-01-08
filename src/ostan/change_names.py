@@ -477,7 +477,7 @@ def __test_if_date(df, col, colnames):
     df = df.dropna()
     if df.dtype == "datetime64":
         res = True
-    elif df.dtype in ["int64", "object"]:
+    elif df.dtype in ["object"]:
         patt_to_search = [
             "^\\d\\d[-/.]\\d\\d[-/.]\\d\\d\\d\\d$",
             "^\\d[-/.]\\d\\d[-/.]\\d\\d\\d\\d$",
