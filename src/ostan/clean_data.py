@@ -144,6 +144,7 @@ def __standardize_dates(df, **args):
     date_format = __get_date_format(col, **args)
     day_first = date_format[0]
     year_first = date_format[1]
+    # If 
 
 
 def __get_date_format(df, dayfirst=True, yearfirst=False, **args):
@@ -203,5 +204,8 @@ def __get_date_format(df, dayfirst=True, yearfirst=False, **args):
                 dayfirst = True
             else:
                 dayfirst = False
-    res = [dayfirst, yearfirst]
+        res = [dayfirst, yearfirst]
+    # If the format cannot be detected, disabel date standardization
+    else:
+        res = [False, False]
     return res

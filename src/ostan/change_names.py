@@ -479,10 +479,6 @@ def __test_if_date(df, col, colnames):
         res = True
     elif df.dtype in ["int64", "object"]:
         patt_to_search = [
-            "^\\d\\d\\d\\d\\d\\d\\d\\d$",
-            "^\\d\\d\\d\\d\\d\\d\\d$",
-            "^\\d\\d\\d\\d$",
-
             "^\\d\\d[-/.]\\d\\d[-/.]\\d\\d\\d\\d$",
             "^\\d[-/.]\\d\\d[-/.]\\d\\d\\d\\d$",
             "^\\d\\d[-/.]\\d[-/.]\\d\\d\\d\\d$",
