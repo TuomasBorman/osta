@@ -1,0 +1,15 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+src/osta/__init__.py
+src/osta/change_names.py
+src/osta.egg-info/PKG-INFO
+src/osta.egg-info/SOURCES.txt
+src/osta.egg-info/dependency_links.txt
+src/osta.egg-info/not-zip-safe
+src/osta.egg-info/top_level.txt
+src/osta/resources/land_codes.csv
+src/osta/resources/mandatory_fields.csv
+src/osta/resources/optional_fields.csv

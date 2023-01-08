@@ -1,2 +1,5 @@
-TODO.txt
+__pycache__/
+src/osta/__pycache__/
+TOOO.txt
+.pytest_cache/
 .coverage

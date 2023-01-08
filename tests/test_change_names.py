@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ostan.change_names import change_names
+from osta.change_names import change_names
 import pandas as pd
 from pandas.testing import assert_frame_equal
 import pytest
