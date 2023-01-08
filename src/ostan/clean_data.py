@@ -139,6 +139,11 @@ def __standardize_date(df, date_format="%d-%m-%Y",
     Input: df
     Output: df
     """
+    # Check if column can be found and it is not duplicated
+    # If not, keep df unchanged
+    if not __col_present_and_not_duplicated("date", df.columns):
+        return df
+
     # Get date column
     df_date = df.loc[:, "date"]
     # Split dates from separator. Result is multiple columns
@@ -209,3 +214,31 @@ def __standardize_date(df, date_format="%d-%m-%Y",
             category=Warning
             )
     return df
+
+
+def __col_present_and_not_duplicated(col, colnames):
+    """
+    This function checks if column is present. Also it check if there
+    are duplicated column and gives corresponding warning
+    Input: column being checked and column names
+    Output: True or False
+    """
+    # Check if column is present
+    if col in colnames:
+        res = True
+    else:
+        res = False
+        warnings.warn(
+            message=f"The following column cannot be found from the data "
+            f": {col}",
+            category=Warning
+            )
+    # Check if it is duplicated
+    if sum(list(c == col for c in colnames)) > 1:
+        res = False
+        warnings.warn(
+            message=f"The following column is duplicated, and values will be "
+            f"unchanged. Please check it for errors: {col}",
+            category=Warning
+            )
+    return res
