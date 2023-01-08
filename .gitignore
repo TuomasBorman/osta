@@ -1,5 +1,5 @@
-__pycache__/
-src/osta/__pycache__/
+**/__pycache__/
+**/.pytest_cache/
+**/.coverage
 TOOO.txt
-.pytest_cache/
-.coverage
+

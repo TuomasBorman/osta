@@ -87,9 +87,7 @@ def __clean_sums(df):
     # Check which column is missing if any
     col_to_check = ["total", "vat_amount", "price_ex_vat"]
     # Get columns that are included in data
-    col_found = (n if n in df.columns else None for n in col_to_check)
-    # Remove Nones
-    col_found = [x for x in col_found if x is not None]
+    col_found = [x for x in col_to_check if x in df.columns]
     # Get columns that are missing from the data
     col_missing = set(col_to_check).difference(col_found)
 
