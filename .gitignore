@@ -1,5 +1,7 @@
 **/__pycache__/
 **/.pytest_cache/
 **/.coverage
+**/osta.egg-info/
 TOOO.txt
+build/
 
