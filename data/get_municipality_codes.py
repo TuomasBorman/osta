@@ -39,6 +39,5 @@ df["code"] = df["code"].astype(str).str.rjust(3, "0")
 df.drop("logo", axis=1, inplace=True)
 
 # Run in project root folder
-path = "./src/ostan/resources/municipality_codes.csv"
+path = "./src/osta/resources/municipality_codes.csv"
 df.to_csv(path)
-
