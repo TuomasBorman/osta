@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>ostan.src.osta.change_names API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ostan.src.osta.change_names</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># -*- coding: utf-8 -*-
+import pandas as pd
+import warnings
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
+import pkg_resources
+
+
+def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
+    &#34;&#34;&#34;
+    Change column names of pandas.DataFrame
+
+    This function is used to change column names of pandas.DataFrame.
+    The column names are changed into standardized format that all other
+    functions in osta package require.
+
+    Arguments:
+        ```
+        df: pandas.DataFrame containing invoice data.
+
+        guess_names: A boolean value specifying whether to guess column names
+        that did not have exact matches or not. (By default: guess_names=True)
+
+        make_unique: A boolean value specifying whether to add a suffix to
+        duplicated column names. (By default: make_unique=True)
+
+        fields: A dictionary containing matches between existing column
+        names (key) and standardized names (value) or None. When fields=None,
+        function&#39;s default dictionary is used. (By default: fields=None)
+
+        **args: Additional arguments passes into other functions:
+            match_th: A numeric value [0,1] specifying the threshold of enough
+            good match. Value over threshold have enough strong pattern and it
+            is interpreted to be a match.
+
+            scorer: A scorer function passed into fuzzywuzzy.process.extractOne
+            function. (By default: scorer=fuzz.token_sort_ratio)
+
+            bid_patt_th: A numeric value [0,1] specifying the strength of
+            business ID pattern. The observation specifies the portion of
+            observations where the pattern must be present to conclude that
+            column includes BIDs. (By default: bid_patt_th=0.8)
+
+            country_code_th: A numeric value [0,1] specifying the strength of
+            country code pattern. The observation specifies the portion of
+            observations where the pattern must be present to conclude that
+            column includes country cides. (By default: country_code_th=0.2)
+        ```
+
+    Details:
+        This function changes the column names to standardized names that are
+        required in other functions in osta package. If the names are already
+        in standardized format, the function works as checker as it gives
+        warnings if certain name was not detected or it has been changed with
+        non-exact match.
+
+        First, the function checks if exact match is found between existing
+        column names and names in dictionary. If the natch was found, certain
+        column name is replaced with standardizd name.
+
+        Secondly, if there are column names that did not have exact match, user
+        can specify whether matches are checked more loosely. The function
+        checks if a pattern of values of undetected column matches with pattern
+        of certain data types that are expected to be in invoice data. The
+        checking is done with &#34;fail-safe&#34; principle to be sure that matches are
+        found with the highest possible accuracy.
+
+        If a match is not detected, the function tries to find if
+        the column name resembles one of the names in dictionary.
+        If the signal is strong enough, the column name is is changed.
+        Otherwise, the column name stays unmodified.
+
+    Examples:
+        ```
+        # Create a dummy data
+        data = {&#34;name1&#34;: [&#34;FI&#34;, &#34;FI&#34;, &#34;FI&#34;],
+                &#34;päivämäärä&#34;: [&#34;02012023&#34;, &#34;2-1-2023&#34;, &#34;1.1.2023&#34;],
+                &#34;name3&#34;: [1, 2, 2],
+                &#34;org_name&#34;: [&#34;Turku&#34;, &#34;Turku&#34;, &#34;Turku&#34;],
+                &#34;supplier&#34;: [&#34;Myyjä&#34;, &#34;Supplier Oy&#34;, &#34;Myyjän tuote Oy&#34;],
+                &#34;summa&#34;: [100.21, 10.30, 50.50],
+                }
+        df = pd.DataFrame(data)
+        # Change those column names that are detected based on column name
+        # and pattern of the data.
+        df = change_names(df)
+
+        # To disable name guessing, use guess_names=False
+        df = change_names(df, guess_names=False)
+
+        # To control name matching, feed arguments
+        df = change_names(df, guess_names=True, make_unique=True,
+                          match_th=0.6, bid_patt_th=1)
+        ```
+
+    Output:
+        pandas.DataFrame with standardized column names.
+
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    # df must be pandas DataFrame
+    if not isinstance(df, pd.DataFrame) or\
+        df.shape[0] == 0 or\
+            df.shape[1] == 0:
+        raise Exception(
+            &#34;&#39;df&#39; must be non-empty pandas.DataFrame.&#34;
+            )
+    # guess_names must be boolean
+    if not isinstance(guess_names, bool):
+        raise Exception(
+            &#34;&#39;guess_names&#39; must be bool.&#34;
+            )
+    # make_unique must be boolean
+    if not isinstance(make_unique, bool):
+        raise Exception(
+            &#34;&#39;make_unique&#39; must be bool.&#34;
+            )
+    # fields must be dict or None
+    if not (isinstance(fields, dict) or fields is None):
+        raise Exception(
+            &#34;&#39;fields&#39; must be dict or None.&#34;
+            )
+    # INPUT CHECK END
+    # Get fields / matches between column names and standardized names
+    fields = __get_fields_df(fields)
+    # Initialize lists for column names
+    colnames = []
+    colnames_not_found = []
+    # Loop over column names
+    for col in df.columns:
+        # Column name to lower case and remove spaces from beginning and end
+        # Get matching value from the dictionary
+        col_name = fields.get(col.lower().strip())
+        # If exact match was not found
+        if col_name is None:
+            # Do not change the colum name,
+            # and add it to not-found column names list
+            col_name = col
+            colnames_not_found.append(col_name)
+        # Append the list of column names
+        colnames.append(col_name)
+
+    # If there are column names that were not detected and user wants them
+    # to be guessed
+    if len(colnames_not_found) &gt; 0 and guess_names:
+        # Initialize list for new and old column names for warning message
+        colnames_old = []
+        colnames_new = []
+        for col in colnames_not_found:
+            name = __guess_name(df=df,
+                                col=col,
+                                colnames=colnames,
+                                fields=fields, **args)
+            # if the column name was changed
+            if col != name:
+                # Change name
+                colnames[colnames.index(col)] = name
+                # Append old and new column name list
+                colnames_old.append(col)
+                colnames_new.append(name)
+        # If there are columns that were changed, give warning
+        if len(colnames_new) &gt; 0:
+            warnings.warn(
+                message=f&#34;The following column names... \n {colnames_old}\n&#34;
+                f&#34;... were replaced with \n {colnames_new}&#34;,
+                category=Warning
+                )
+        # Update not-found column names
+        colnames_not_found = [i for i in colnames_not_found
+                              if i not in colnames_old]
+    # Replace column names with new ones
+    df.columns = colnames
+
+    # Give warning if there were column names that were not identified
+    if len(colnames_not_found) &gt; 0:
+        warnings.warn(
+            message=f&#34;The following column names were not detected. &#34;
+            f&#34;Please check them for errors.\n {colnames_not_found}&#34;,
+            category=Warning
+            )
+
+    # If there are duplicated column names and user want to make them unique
+    if len(set(df.columns)) != df.shape[1] and make_unique:
+        # Initialize a list for new column names
+        colnames = []
+        colnames_old = []
+        colnames_new = []
+        # Loop over column names
+        for col in df.columns:
+            # If there are already column that has same name
+            if col in colnames:
+                # Add old name to list
+                colnames_old.append(col)
+                # Add suffix to name
+                col = col + &#34;_&#34; + str(colnames.count(col)+1)
+                # Add new column name to list
+                colnames_new.append(col)
+            # Add column name to list
+            colnames.append(col)
+        # Give warning
+        warnings.warn(
+            message=f&#34;The following duplicated column names... \n&#34;
+            f&#34;{colnames_old}\n... were replaced with \n {colnames_new}&#34;,
+            category=Warning
+            )
+        # Replace column names with new ones
+        df.columns = colnames
+    return df
+
+# HELP FUNCTIONS
+
+
+def __get_fields_df(fields):
+    &#34;&#34;&#34;
+    Fetch DataFrame that contains fields and create a dictionary from it.
+    Input: A dictionary of fields or nothing.
+    Output: A dictionary containing which column names are meaning the same
+    &#34;&#34;&#34;
+    # If fields was not provided, open files that include fields
+    if fields is None:
+        # Load data from /resources of package osta
+        path = pkg_resources.resource_filename(
+            &#34;osta&#34;,
+            &#34;resources/&#34; + &#34;mandatory_fields.csv&#34;)
+        mandatory_fields = pd.read_csv(path
+                                       ).set_index(&#34;key&#34;)[&#34;value&#34;].to_dict()
+        path = pkg_resources.resource_filename(
+            &#34;osta&#34;,
+            &#34;resources/&#34; + &#34;optional_fields.csv&#34;)
+        optional_fields = pd.read_csv(path
+                                      ).set_index(&#34;key&#34;)[&#34;value&#34;].to_dict()
+        # Combine fields into one dictionary
+        fields = {}
+        fields.update(mandatory_fields)
+        fields.update(optional_fields)
+        # Add field values as a key
+        add_fields = pd.DataFrame(fields.values(), fields.values())
+        add_fields = add_fields[0].to_dict()
+        fields.update(add_fields)
+    return fields
+
+
+def __guess_name(df, col, colnames, fields, match_th=0.9, **args):
+    &#34;&#34;&#34;
+    Guess column names based on pattern.
+    Input: DataFrame, column being guesses, current column names, match
+    between column names and standardized names.
+    Output: A guessed column name
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    # Types of all other arguments are fixed
+    # match_th must be numeric value 0-1
+    if not (((isinstance(match_th, int) or isinstance(match_th, float)) and
+             not isinstance(match_th, bool)) and
+            (0 &lt;= match_th &lt;= 1)):
+        raise Exception(
+            &#34;&#39;match_th&#39; must be a number between 0-1.&#34;
+            )
+    # INPUT CHECK END
+
+    # Try strict loose match (0.95) if match_th is smaller than 0.95
+    match_th_strict = 0.95 if match_th &lt;= 0.95 else match_th
+    res = __test_if_loose_match(col=col, fields=fields,
+                                match_th=match_th_strict, **args)
+    # If there were match, column is renamed
+    if res != col:
+        col = res
+    # Try if column is ID column
+    elif __test_if_BID(df=df, col=col, **args):
+        # BID can be from organization or supplier
+        col = __org_or_suppl_BID(df=df, col=col, colnames=colnames)
+    # Test if date
+    elif __test_if_date(df=df, col=col, colnames=colnames):
+        col = &#34;date&#34;
+    # Test if column includes country codes
+    elif __test_if_country(df, col, colnames, **args):
+        col = &#34;country&#34;
+    # # Test if org_number
+    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                       cols_match=[&#34;org_name&#34;, &#34;org_id&#34;],
+                                       datatype=[&#34;int64&#34;]
+                                       ):
+        col = &#34;org_number&#34;
+    # Test if org_name
+    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                       cols_match=[&#34;org_number&#34;, &#34;org_id&#34;],
+                                       datatype=[&#34;object&#34;]
+                                       ):
+        col = &#34;org_name&#34;
+    # Test if suppl_name
+    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                       cols_match=[&#34;suppl_id&#34;],
+                                       datatype=[&#34;object&#34;]
+                                       ):
+        col = &#34;suppl_name&#34;
+    # Test if service_cat
+    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                       cols_match=[&#34;service_cat_name&#34;],
+                                       datatype=[&#34;object&#34;, &#34;int64&#34;]
+                                       ):
+        col = &#34;service_cat&#34;
+    # Test if service_cat_name
+    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                       cols_match=[&#34;service_cat&#34;],
+                                       datatype=[&#34;object&#34;]
+                                       ):
+        col = &#34;service_cat_name&#34;
+    # Test if account_number
+    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                       cols_match=[&#34;account_name&#34;],
+                                       datatype=[&#34;int64&#34;]
+                                       ):
+        col = &#34;account_number&#34;
+    # Test if account_name
+    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+                                       cols_match=[&#34;account_number&#34;],
+                                       datatype=[&#34;object&#34;]
+                                       ):
+        col = &#34;account_name&#34;
+    # test if price_ex_vat
+    elif __test_if_sums(df=df, col=col, colnames=colnames,
+                        test_sum=&#34;price_ex_vat&#34;,
+                        match_with=[&#34;total&#34;, &#34;vat_amount&#34;],
+                        datatype=&#34;float64&#34;
+                        ):
+        col = &#34;price_ex_vat&#34;
+    # test if total
+    elif __test_if_sums(df=df, col=col, colnames=colnames,
+                        test_sum=&#34;total&#34;,
+                        match_with=[&#34;vat_amount&#34;, &#34;price_ex_vat&#34;],
+                        datatype=&#34;float64&#34;
+                        ):
+        col = &#34;total&#34;
+    # test if vat_amount
+    elif __test_if_sums(df=df, col=col, colnames=colnames,
+                        test_sum=&#34;vat_amount&#34;,
+                        match_with=[&#34;total&#34;, &#34;price_ex_vat&#34;],
+                        datatype=&#34;float64&#34;
+                        ):
+        col = &#34;vat_amount&#34;
+    # Test if voucher
+    elif __test_if_voucher(df=df, col=col, colnames=colnames):
+        col = &#34;voucher&#34;
+    else:
+        # Get match from partial matching
+        col = __test_if_loose_match(col=col, fields=fields, match_th=match_th,
+                                    **args)
+    return col
+
+
+def __test_if_loose_match(col, fields, match_th,
+                          scorer=fuzz.token_sort_ratio,
+                          **args):
+    &#34;&#34;&#34;
+    Guess column names based on pattern on it.
+    Input: Column name and names that are tried to be match with it
+    Output: A guessed column name
+    &#34;&#34;&#34;
+    # If column is not empty
+    if col.strip():
+        # Try partial match, get the most similar key value
+        col_name_part = process.extractOne(col, fields.keys(),
+                                           scorer=scorer)
+        # Value [0,1] to a number between 0-100
+        match_th = match_th*100
+        # If the matching score is over threshold
+        if col_name_part[1] &gt;= match_th:
+            # Get only the key name
+            col_name_part = col_name_part[0]
+            # Based on the key, get the value
+            col = fields.get(col_name_part)
+    return col
+
+
+def __test_if_BID(df, col, bid_patt_th=0.8, **args):
+    &#34;&#34;&#34;
+    This function checks if the column defines BIDs (y-tunnus)
+    Input: DataFrame, name of the column, found final column names
+    Output: Boolean value
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    # bid_patt_th must be numeric value 0-100
+    if not (((isinstance(bid_patt_th, int) or isinstance(bid_patt_th, float))
+             and not isinstance(bid_patt_th, bool)) and
+            (0 &lt;= bid_patt_th &lt;= 1)):
+        raise Exception(
+            &#34;&#39;bid_patt_th&#39; must be a number between 0-1.&#34;
+            )
+    # INPUT CHECK END
+
+    # Initialize result as False
+    res = False
+    # Test if pattern found
+    patt_found = df.loc[:, col].astype(str).str.contains(
+        &#34;\\d\\d\\d\\d\\d\\d\\d-\\d&#34;)
+    patt_found = patt_found.value_counts()/df.shape[0]
+    # Test of length correct
+    len_correct = df.loc[:, col].astype(str).str.len() == 9
+    len_correct = len_correct.value_counts()/df.shape[0]
+    # If Trues exist in both, get the smaller portion. Otherwise, True was not
+    # found and the result is 0 / not found
+    if True in patt_found.index and True in len_correct.index:
+        # Get portion of Trues and take only value
+        patt_found = patt_found[patt_found.index][0]
+        len_correct = len_correct[len_correct.index][0]
+        # Get smaller value
+        patt_found = min(patt_found, len_correct)
+    else:
+        patt_found = 0
+    # Check if over threshold
+    if patt_found &gt;= bid_patt_th:
+        res = True
+    return res
+
+
+def __org_or_suppl_BID(df, col, colnames):
+    &#34;&#34;&#34;
+    This function checks if the column defines BID of organization or supplier
+    Input: DataFrame, name of the column, found final column names
+    Output: The final colname of BID column
+    &#34;&#34;&#34;
+    # Initialize result as supplier ID
+    res = &#34;suppl_id&#34;
+    # List of columns that are matched
+    cols_match = [&#34;org_number&#34;, &#34;org_name&#34;]
+    # Loop over columns that should be matched
+    for col_match in cols_match:
+        # If the column is in colnames
+        if col_match in colnames:
+            # Subset the data by taking only specified columns
+            temp = df.iloc[:, [colnames.index(col),
+                               colnames.index(col_match)]]
+            # Drop rows with blank values
+            temp = temp.dropna()
+            # Number of unique combinations
+            n_uniq = temp.drop_duplicates().shape[0]
+            # If there are as many combinations as there are individual values
+            # these columns match
+            if n_uniq == df.iloc[:, colnames.index(col_match)].nunique():
+                res = &#34;org_id&#34;
+    # If all the identifiers are missing, give &#34;bid&#34;, because we cannot be sure
+    if all(list(name not in colnames for name in [&#34;org_number&#34;, &#34;org_name&#34;,
+                                                  &#34;org_id&#34;, &#34;suppl_name&#34;,
+                                                  &#34;suppl_id&#34;])):
+        res = &#34;bid&#34;
+    # If there are supplier IDs already, try if they are differemt
+    if &#34;suppl_id&#34; in colnames and all(df.iloc[:, colnames.index(col)] !=
+                                      df.iloc[:, colnames.index(&#34;suppl_id&#34;)]):
+        res = &#34;org_id&#34;
+    # If there are organization IDs already, try if they are differemt
+    if &#34;org_id&#34; in colnames and all(df.iloc[:, colnames.index(col)] ==
+                                    df.iloc[:, colnames.index(&#34;org_id&#34;)]):
+        res = &#34;org_id&#34;
+    # If there are not many unique values, it might be organization ID
+    if df.iloc[:, colnames.index(col)].nunique()/df.shape[0] &lt; 0.5:
+        res = &#34;org_id&#34;
+    return res
+
+
+def __test_if_date(df, col, colnames):
+    &#34;&#34;&#34;
+    This function checks if the column defines dates
+    Input: DataFrame, name of the column, found final column names
+    Output: Boolean value
+    &#34;&#34;&#34;
+    # Initialize result
+    res = False
+    df = df.iloc[:, colnames.index(col)]
+    df = df.dropna()
+    if df.dtype == &#34;datetime64&#34;:
+        res = True
+    elif df.dtype in [&#34;int64&#34;, &#34;object&#34;]:
+        patt_to_search = [
+            &#34;\\d\\d\\d\\d\\d\\d\\d\\d&#34;,
+            &#34;\\d\\d\\d\\d\\d\\d\\d&#34;,
+            &#34;\\d\\d\\d\\d&#34;,
+
+            &#34;\\d\\d[.-/]\\d\\d[.-/]\\d\\d\\d\\d&#34;,
+            &#34;\\d[.-/]\\d\\d[.-/]\\d\\d\\d\\d&#34;,
+            &#34;\\d\\d[.-/]\\d[.-/]\\d\\d\\d\\d&#34;,
+            &#34;\\d[.-/]\\d[.-/]\\d\\d&#34;,
+
+            &#34;\\d\\d\\d\\d[.-/]\\d\\d[.-/]\\d\\d&#34;,
+            &#34;\\d\\d\\d\\d[.-/]\\d[.-/]\\d\\d&#34;,
+            &#34;\\d\\d\\d\\d[.-/]\\d\\d[.-/]\\d&#34;,
+            &#34;\\d\\d\\d[.-/]\\d[.-/]&#34;,
+            ]
+        patt_found = df.astype(str).str.contains(&#34;|&#34;.join(patt_to_search))
+        if all(patt_found):
+            res = True
+    return res
+
+
+def __test_match_between_colnames(df, col, colnames, cols_match, datatype):
+    &#34;&#34;&#34;
+    This function checks if the column defines extra information of
+    another column / if the column is related to that
+    Input: DataFrame, name of the column, found final column names
+    Output: Boolean value
+    &#34;&#34;&#34;
+    # Initialize results as False
+    res = False
+    # Test the data type
+    if df.dtypes[colnames.index(col)] in datatype:
+        # Loop over columns that should be matched
+        for col_match in cols_match:
+            # If the column is in colnames
+            if col_match in colnames:
+                # Subset the data by taking only specified columns
+                temp = df.iloc[:, [colnames.index(col),
+                                   colnames.index(col_match)]]
+                # Drop rows with blank values
+                temp = temp.dropna()
+                # Number of unique combinations
+                n_uniq = temp.drop_duplicates().shape[0]
+                # If there are as many combinations as there are
+                # individual values these columns match
+                if n_uniq == df.iloc[:, colnames.index(col_match)].nunique():
+                    res = True
+    return res
+
+
+def __test_if_sums(df, col, colnames, test_sum, match_with, datatype):
+    &#34;&#34;&#34;
+    This function checks if the column defines total, net, or VAT sum,
+    the arguments defines what is searched
+    Input: DataFrame, name of the column, found final column names
+    Output: Boolean value
+    &#34;&#34;&#34;
+    # Initialize results as False
+    res = False
+    # If all columns are available
+    if all(mw in colnames for mw in match_with):
+        # Take only specific columns
+        ind = list(colnames.index(mw) for mw in match_with)
+        ind.append(colnames.index(col))
+        # Preserve the order of indices
+        ind.sort()
+        df_temp = df.iloc[:, ind]
+        # Drop empty rows
+        df_temp = df_temp.dropna()
+        # If the datatypes are correct
+        if all(df_temp.dtypes == datatype):
+            # If VAT is tested and value is correct
+            if test_sum == &#34;vat_amount&#34; and\
+                all(df_temp.iloc[:, colnames.index(col)] ==
+                    df_temp.iloc[:, colnames.index(&#34;total&#34;)] -
+                    df_temp.iloc[:, colnames.index(&#34;price_ex_vat&#34;)]):
+                res = True
+            # If total is tested and value is correct
+            elif test_sum == &#34;total&#34; and\
+                all(df_temp.iloc[:, colnames.index(col)] ==
+                    df_temp.iloc[:, colnames.index(&#34;price_ex_vat&#34;)] +
+                    df_temp.iloc[:, colnames.index(&#34;vat_amount&#34;)]):
+                res = True
+            # If price_ex_vat is tested and value is correct
+            elif test_sum == &#34;price_ex_vat&#34; and\
+                all(df_temp.iloc[:, colnames.index(col)] ==
+                    df_temp.iloc[:, colnames.index(&#34;total&#34;)] -
+                    df_temp.iloc[:, colnames.index(&#34;vat_amount&#34;)]):
+                res = True
+    return res
+
+
+def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
+    &#34;&#34;&#34;
+    This function checks if the column defines countries
+    Input: DataFrame, name of the column, found final column names
+    Output: Boolean value
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    # country_code_th must be numeric value 0-100
+    if not (((isinstance(country_code_th, int) or
+              isinstance(country_code_th, float))
+             and not isinstance(country_code_th, bool)) and
+            (0 &lt;= country_code_th &lt;= 1)):
+        raise Exception(
+            &#34;&#39;country_code_th&#39; must be a number between 0-1.&#34;
+            )
+    # INPUT CHECK END
+
+    # Initialize results as False
+    res = False
+    # Get specific column and remove NaNs
+    df = df.iloc[:, colnames.index(col)]
+    df = df.dropna()
+    # Test if col values can be found from the table
+    # Load codes from resources of package osta
+    path = pkg_resources.resource_filename(
+        &#34;osta&#34;,
+        &#34;resources/&#34; + &#34;land_codes.csv&#34;)
+    codes = pd.read_csv(path, index_col=0)
+    # Drop numeric codes, since we cannot be sure that they are land codes
+    codes = codes.drop(&#34;Numeerinen koodi [2]&#34;, axis=1)
+    res_df = pd.DataFrame()
+    for name, data in codes.items():
+        res_df[name] = (df.isin(data))
+    # How many times the value was found from the codes? If enough, then we
+    # can be sure that the column includes land codes
+    if sum(res_df.sum(axis=1) &gt; 0)/res_df.shape[0] &gt;= country_code_th:
+        res = True
+    return res
+
+
+def __test_if_voucher(df, col, colnames):
+    &#34;&#34;&#34;
+    This function checks if the column defines vouchers
+    Input: DataFrame, name of the column, found final column names
+    Output: Boolean value
+    &#34;&#34;&#34;
+    # Initialize result
+    res = False
+    # If data includes already dates and values of column are increasing
+    # and they are not dates,the column includes voucher values
+    if &#34;date&#34; in colnames and df.loc[:, col].is_monotonic_increasing and \
+            not df.loc[:, col].equals(df.iloc[:, colnames.index(&#34;date&#34;)]):
+        res = True
+    else:
+        test_res = []
+        # List variables that are matched/checked
+        variable_list = [
+            [&#34;org_number&#34;, &#34;org_id&#34;, &#34;org_name&#34;],  # Organization
+            [&#34;suppl_id&#34;, &#34;suppl_name&#34;],  # Supplier
+            [&#34;account_name&#34;, &#34;account_number&#34;],  # Account
+            [&#34;service_cat&#34;, &#34;service_cat_number&#34;],  # Service category
+            [&#34;date&#34;],   # Date
+            ]
+        # List thresholds that are used
+        thresholds = [
+            100,  # Organization
+            2,  # Supplier
+            5,  # Account
+            5,  # Service category
+            1.5,  # Date
+            ]
+        # If variables were found from the colnames
+        for i, variables in enumerate(variable_list):
+            # Test if column match with prerequisites of voucher column
+            temp_res = __test_if_voucher_help(df=df,
+                                              col=col,
+                                              colnames=colnames,
+                                              variables=variables,
+                                              voucher_th=thresholds[i],
+                                              )
+            test_res.append(temp_res)
+        # If not float, then  it is not sum
+        if df.dtypes[colnames.index(col)] == &#34;float64&#34;:
+            test_res.append(False)
+        else:
+            test_res.append(True)
+        # If all test were True, the result is True
+        if all(test_res):
+            res = True
+    return res
+
+
+def __test_if_voucher_help(df, col, colnames, variables, voucher_th):
+    &#34;&#34;&#34;
+    This function is a help function for voucher tester.
+    This function tests if there are more unique values than there are
+    tested values
+    Input: DataFrame, name of the column, found final column names
+    Output: Boolean value
+    &#34;&#34;&#34;
+    # Initialize results
+    res = False
+    # CHeck which variables are shared between variables and colnames
+    var_shared = list(set(colnames) &amp; set(variables))
+    # If variables were found from the colnames
+    if len(var_shared) &gt; 0:
+        # Get only specified columns
+        temp = df.iloc[:, [colnames.index(var) for var in var_shared]]
+        # Remove rows with NA
+        temp = temp.dropna()
+        # Drop duplicates, now we have unique rows
+        temp = temp.drop_duplicates()
+        # Add column to variables
+        var_shared.append(col)
+        # Get only specified columns with column that is being checked
+        temp_col = df.iloc[:, [colnames.index(var) for var in var_shared]]
+        # Remove rows with NA
+        temp_col = temp_col.dropna()
+        # Drop duplicates, now we have unique rows
+        temp_col = temp_col.drop_duplicates()
+        # If there are voucher_th times more unique rows, the column
+        # is not related to columns that are matched
+        if temp_col.shape[0] &gt; temp.shape[0]*voucher_th:
+            res = True
+    return res</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="ostan.src.osta.change_names.change_names"><code class="name flex">
+<span>def <span class="ident">change_names</span></span>(<span>df, guess_names=True, make_unique=True, fields=None, **args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Change column names of pandas.DataFrame</p>
+<p>This function is used to change column names of pandas.DataFrame.
+The column names are changed into standardized format that all other
+functions in osta package require.</p>
+<h2 id="arguments">Arguments</h2>
+<pre><code>df: pandas.DataFrame containing invoice data.
+
+guess_names: A boolean value specifying whether to guess column names
+that did not have exact matches or not. (By default: guess_names=True)
+
+make_unique: A boolean value specifying whether to add a suffix to
+duplicated column names. (By default: make_unique=True)
+
+fields: A dictionary containing matches between existing column
+names (key) and standardized names (value) or None. When fields=None,
+function's default dictionary is used. (By default: fields=None)
+
+**args: Additional arguments passes into other functions:
+    match_th: A numeric value [0,1] specifying the threshold of enough
+    good match. Value over threshold have enough strong pattern and it
+    is interpreted to be a match.
+
+    scorer: A scorer function passed into fuzzywuzzy.process.extractOne
+    function. (By default: scorer=fuzz.token_sort_ratio)
+
+    bid_patt_th: A numeric value [0,1] specifying the strength of
+    business ID pattern. The observation specifies the portion of
+    observations where the pattern must be present to conclude that
+    column includes BIDs. (By default: bid_patt_th=0.8)
+
+    country_code_th: A numeric value [0,1] specifying the strength of
+    country code pattern. The observation specifies the portion of
+    observations where the pattern must be present to conclude that
+    column includes country cides. (By default: country_code_th=0.2)
+</code></pre>
+<h2 id="details">Details</h2>
+<p>This function changes the column names to standardized names that are
+required in other functions in osta package. If the names are already
+in standardized format, the function works as checker as it gives
+warnings if certain name was not detected or it has been changed with
+non-exact match.</p>
+<p>First, the function checks if exact match is found between existing
+column names and names in dictionary. If the natch was found, certain
+column name is replaced with standardizd name.</p>
+<p>Secondly, if there are column names that did not have exact match, user
+can specify whether matches are checked more loosely. The function
+checks if a pattern of values of undetected column matches with pattern
+of certain data types that are expected to be in invoice data. The
+checking is done with "fail-safe" principle to be sure that matches are
+found with the highest possible accuracy.</p>
+<p>If a match is not detected, the function tries to find if
+the column name resembles one of the names in dictionary.
+If the signal is strong enough, the column name is is changed.
+Otherwise, the column name stays unmodified.</p>
+<h2 id="examples">Examples</h2>
+<pre><code># Create a dummy data
+data = {&quot;name1&quot;: [&quot;FI&quot;, &quot;FI&quot;, &quot;FI&quot;],
+        &quot;päivämäärä&quot;: [&quot;02012023&quot;, &quot;2-1-2023&quot;, &quot;1.1.2023&quot;],
+        &quot;name3&quot;: [1, 2, 2],
+        &quot;org_name&quot;: [&quot;Turku&quot;, &quot;Turku&quot;, &quot;Turku&quot;],
+        &quot;supplier&quot;: [&quot;Myyjä&quot;, &quot;Supplier Oy&quot;, &quot;Myyjän tuote Oy&quot;],
+        &quot;summa&quot;: [100.21, 10.30, 50.50],
+        }
+df = pd.DataFrame(data)
+# Change those column names that are detected based on column name
+# and pattern of the data.
+df = change_names(df)
+
+# To disable name guessing, use guess_names=False
+df = change_names(df, guess_names=False)
+
+# To control name matching, feed arguments
+df = change_names(df, guess_names=True, make_unique=True,
+                  match_th=0.6, bid_patt_th=1)
+</code></pre>
+<h2 id="output">Output</h2>
+<p>pandas.DataFrame with standardized column names.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
+    &#34;&#34;&#34;
+    Change column names of pandas.DataFrame
+
+    This function is used to change column names of pandas.DataFrame.
+    The column names are changed into standardized format that all other
+    functions in osta package require.
+
+    Arguments:
+        ```
+        df: pandas.DataFrame containing invoice data.
+
+        guess_names: A boolean value specifying whether to guess column names
+        that did not have exact matches or not. (By default: guess_names=True)
+
+        make_unique: A boolean value specifying whether to add a suffix to
+        duplicated column names. (By default: make_unique=True)
+
+        fields: A dictionary containing matches between existing column
+        names (key) and standardized names (value) or None. When fields=None,
+        function&#39;s default dictionary is used. (By default: fields=None)
+
+        **args: Additional arguments passes into other functions:
+            match_th: A numeric value [0,1] specifying the threshold of enough
+            good match. Value over threshold have enough strong pattern and it
+            is interpreted to be a match.
+
+            scorer: A scorer function passed into fuzzywuzzy.process.extractOne
+            function. (By default: scorer=fuzz.token_sort_ratio)
+
+            bid_patt_th: A numeric value [0,1] specifying the strength of
+            business ID pattern. The observation specifies the portion of
+            observations where the pattern must be present to conclude that
+            column includes BIDs. (By default: bid_patt_th=0.8)
+
+            country_code_th: A numeric value [0,1] specifying the strength of
+            country code pattern. The observation specifies the portion of
+            observations where the pattern must be present to conclude that
+            column includes country cides. (By default: country_code_th=0.2)
+        ```
+
+    Details:
+        This function changes the column names to standardized names that are
+        required in other functions in osta package. If the names are already
+        in standardized format, the function works as checker as it gives
+        warnings if certain name was not detected or it has been changed with
+        non-exact match.
+
+        First, the function checks if exact match is found between existing
+        column names and names in dictionary. If the natch was found, certain
+        column name is replaced with standardizd name.
+
+        Secondly, if there are column names that did not have exact match, user
+        can specify whether matches are checked more loosely. The function
+        checks if a pattern of values of undetected column matches with pattern
+        of certain data types that are expected to be in invoice data. The
+        checking is done with &#34;fail-safe&#34; principle to be sure that matches are
+        found with the highest possible accuracy.
+
+        If a match is not detected, the function tries to find if
+        the column name resembles one of the names in dictionary.
+        If the signal is strong enough, the column name is is changed.
+        Otherwise, the column name stays unmodified.
+
+    Examples:
+        ```
+        # Create a dummy data
+        data = {&#34;name1&#34;: [&#34;FI&#34;, &#34;FI&#34;, &#34;FI&#34;],
+                &#34;päivämäärä&#34;: [&#34;02012023&#34;, &#34;2-1-2023&#34;, &#34;1.1.2023&#34;],
+                &#34;name3&#34;: [1, 2, 2],
+                &#34;org_name&#34;: [&#34;Turku&#34;, &#34;Turku&#34;, &#34;Turku&#34;],
+                &#34;supplier&#34;: [&#34;Myyjä&#34;, &#34;Supplier Oy&#34;, &#34;Myyjän tuote Oy&#34;],
+                &#34;summa&#34;: [100.21, 10.30, 50.50],
+                }
+        df = pd.DataFrame(data)
+        # Change those column names that are detected based on column name
+        # and pattern of the data.
+        df = change_names(df)
+
+        # To disable name guessing, use guess_names=False
+        df = change_names(df, guess_names=False)
+
+        # To control name matching, feed arguments
+        df = change_names(df, guess_names=True, make_unique=True,
+                          match_th=0.6, bid_patt_th=1)
+        ```
+
+    Output:
+        pandas.DataFrame with standardized column names.
+
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    # df must be pandas DataFrame
+    if not isinstance(df, pd.DataFrame) or\
+        df.shape[0] == 0 or\
+            df.shape[1] == 0:
+        raise Exception(
+            &#34;&#39;df&#39; must be non-empty pandas.DataFrame.&#34;
+            )
+    # guess_names must be boolean
+    if not isinstance(guess_names, bool):
+        raise Exception(
+            &#34;&#39;guess_names&#39; must be bool.&#34;
+            )
+    # make_unique must be boolean
+    if not isinstance(make_unique, bool):
+        raise Exception(
+            &#34;&#39;make_unique&#39; must be bool.&#34;
+            )
+    # fields must be dict or None
+    if not (isinstance(fields, dict) or fields is None):
+        raise Exception(
+            &#34;&#39;fields&#39; must be dict or None.&#34;
+            )
+    # INPUT CHECK END
+    # Get fields / matches between column names and standardized names
+    fields = __get_fields_df(fields)
+    # Initialize lists for column names
+    colnames = []
+    colnames_not_found = []
+    # Loop over column names
+    for col in df.columns:
+        # Column name to lower case and remove spaces from beginning and end
+        # Get matching value from the dictionary
+        col_name = fields.get(col.lower().strip())
+        # If exact match was not found
+        if col_name is None:
+            # Do not change the colum name,
+            # and add it to not-found column names list
+            col_name = col
+            colnames_not_found.append(col_name)
+        # Append the list of column names
+        colnames.append(col_name)
+
+    # If there are column names that were not detected and user wants them
+    # to be guessed
+    if len(colnames_not_found) &gt; 0 and guess_names:
+        # Initialize list for new and old column names for warning message
+        colnames_old = []
+        colnames_new = []
+        for col in colnames_not_found:
+            name = __guess_name(df=df,
+                                col=col,
+                                colnames=colnames,
+                                fields=fields, **args)
+            # if the column name was changed
+            if col != name:
+                # Change name
+                colnames[colnames.index(col)] = name
+                # Append old and new column name list
+                colnames_old.append(col)
+                colnames_new.append(name)
+        # If there are columns that were changed, give warning
+        if len(colnames_new) &gt; 0:
+            warnings.warn(
+                message=f&#34;The following column names... \n {colnames_old}\n&#34;
+                f&#34;... were replaced with \n {colnames_new}&#34;,
+                category=Warning
+                )
+        # Update not-found column names
+        colnames_not_found = [i for i in colnames_not_found
+                              if i not in colnames_old]
+    # Replace column names with new ones
+    df.columns = colnames
+
+    # Give warning if there were column names that were not identified
+    if len(colnames_not_found) &gt; 0:
+        warnings.warn(
+            message=f&#34;The following column names were not detected. &#34;
+            f&#34;Please check them for errors.\n {colnames_not_found}&#34;,
+            category=Warning
+            )
+
+    # If there are duplicated column names and user want to make them unique
+    if len(set(df.columns)) != df.shape[1] and make_unique:
+        # Initialize a list for new column names
+        colnames = []
+        colnames_old = []
+        colnames_new = []
+        # Loop over column names
+        for col in df.columns:
+            # If there are already column that has same name
+            if col in colnames:
+                # Add old name to list
+                colnames_old.append(col)
+                # Add suffix to name
+                col = col + &#34;_&#34; + str(colnames.count(col)+1)
+                # Add new column name to list
+                colnames_new.append(col)
+            # Add column name to list
+            colnames.append(col)
+        # Give warning
+        warnings.warn(
+            message=f&#34;The following duplicated column names... \n&#34;
+            f&#34;{colnames_old}\n... were replaced with \n {colnames_new}&#34;,
+            category=Warning
+            )
+        # Replace column names with new ones
+        df.columns = colnames
+    return df</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ostan.src.osta" href="index.html">ostan.src.osta</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="ostan.src.osta.change_names.change_names" href="#ostan.src.osta.change_names.change_names">change_names</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
