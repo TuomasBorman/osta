@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+src/osta.egg-info/PKG-INFO
+src/osta.egg-info/SOURCES.txt
+src/osta.egg-info/dependency_links.txt
+src/osta.egg-info/not-zip-safe
+src/osta.egg-info/top_level.txt
+src/ostan/__init__.py
+src/ostan/change_names.py

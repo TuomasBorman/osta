@@ -12,7 +12,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
 
     This function is used to change column names of pandas.DataFrame.
     The column names are changed into standardized format that all other
-    functions in ostan package require.
+    functions in osta package require.
 
     Arguments:
         ```
@@ -49,7 +49,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
 
     Details:
         This function changes the column names to standardized names that are
-        required in other functions in ostan package. If the names are already
+        required in other functions in osta package. If the names are already
         in standardized format, the function works as checker as it gives
         warnings if certain name was not detected or it has been changed with
         non-exact match.
@@ -218,14 +218,14 @@ def __get_fields_df(fields):
     """
     # If fields was not provided, open files that include fields
     if fields is None:
-        # Load data from /resources of package ostan
+        # Load data from /resources of package osta
         path = pkg_resources.resource_filename(
-            "ostan",
+            "osta",
             "resources/" + "mandatory_fields.csv")
         mandatory_fields = pd.read_csv(path
                                        ).set_index("key")["value"].to_dict()
         path = pkg_resources.resource_filename(
-            "ostan",
+            "osta",
             "resources/" + "optional_fields.csv")
         optional_fields = pd.read_csv(path
                                       ).set_index("key")["value"].to_dict()
@@ -585,9 +585,9 @@ def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
     df = df.iloc[:, colnames.index(col)]
     df = df.dropna()
     # Test if col values can be found from the table
-    # Load codes from resources of package ostan
+    # Load codes from resources of package osta
     path = pkg_resources.resource_filename(
-        "ostan",
+        "osta",
         "resources/" + "land_codes.csv")
     codes = pd.read_csv(path, index_col=0)
     # Drop numeric codes, since we cannot be sure that they are land codes
