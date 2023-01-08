@@ -132,39 +132,26 @@ def __clean_sums(df):
     return df
 
 
-def __standardize_dates(df, **args):
+def __standardize_date(df, date_format="%d-%m-%Y",
+                       dayfirst=True, yearfirst=False, **args):
     """
-    This function converts dates into same format.
+    This function identifies the format of dates and standardize them.
     Input: df
     Output: df
     """
     # Get date column
-    col = df.loc[:, "date"]
-    # Get date format
-    date_format = __get_date_format(col, **args)
-    day_first = date_format[0]
-    year_first = date_format[1]
-    # If 
-
-
-def __get_date_format(df, dayfirst=True, yearfirst=False, **args):
-    """
-    This function identifies the format of dates.
-    Input: df
-    Output: dayfirst and yearfirst arguments that can be
-    passed into dateutils.parser
-    """
+    df_date = df.loc[:, "date"]
     # Split dates from separator. Result is multiple columns
     # with year, month and day separated
-    df = df.astype(str).str.split(r"[-/.]", expand=True)
+    df_date = df_date.astype(str).str.split(r"[-/.]", expand=True)
     # If the split was succesful
-    if df.shape[1] > 1:
+    if df_date.shape[1] > 1:
         # Remove columns that did have problems / did not split
-        df = df.dropna().copy()
-        # Convert columns to integer if possible
-        for col in df.columns:
-            if all(df.loc[:, col].astype(str).str.isdigit()):
-                df.loc[:, col] = df.loc[:, col].astype(int)
+        df_date = df_date.dropna().copy()
+        # Convert columns to numeric if possible
+        for c in df_date.columns:
+            if all(df_date.loc[:, c].astype(str).str.isnumeric()):
+                df_date[c] = pd.to_numeric(df_date[c])
         # Get years, months, and days
         year = list(range(1970, 2050))
         month = list(range(1, 13))
@@ -174,14 +161,16 @@ def __get_date_format(df, dayfirst=True, yearfirst=False, **args):
         day = list(set(day).difference(month))
         # Check if these values can be found from the data
         data = {
-            "any_in_day": list(any(df[col].isin(day)) for col in df.columns),
-            "any_in_year": list(any(df[col].isin(year)) for col in df.columns)
+            "any_in_day": list(any(df_date[c].isin(day))
+                               for c in df_date.columns),
+            "any_in_year": list(any(df_date[c].isin(year))
+                                for c in df_date.columns)
             }
         df_res = pd.DataFrame(data)
         # Initialize result list, loop over columns that have years,
         # months and days
         result = []
-        for i, col in enumerate(df.columns):
+        for i, c in enumerate(df_date.columns):
             # Get the result of specific column
             temp = df_res.iloc[i, :]
             # Check if it is year
@@ -200,12 +189,23 @@ def __get_date_format(df, dayfirst=True, yearfirst=False, **args):
             # If day comes before month
             if (yearfirst and
                 result.index("day") == 1) or (not yearfirst and
-                                              result.index("day") == 2):
+                                              result.index("day") == 0):
                 dayfirst = True
             else:
                 dayfirst = False
-        res = [dayfirst, yearfirst]
+        # Standardize dates
+        df_date = pd.to_datetime(df.loc[:, "date"],
+                                 dayfirst=dayfirst, yearfirst=yearfirst)
+        # Change the formatting
+        df_date = df_date.dt.strftime(date_format)
+        # Assign values back to data frame
+        df.loc[:, "date"] = df_date
     # If the format cannot be detected, disabel date standardization
     else:
-        res = [False, False]
-    return res
+        warnings.warn(
+            message="The format of dates where not detected, "
+            "and the 'date' column is unchanged. Please check that dates "
+            "have separators between days, months, and years.",
+            category=Warning
+            )
+    return df
