@@ -214,6 +214,73 @@ def __standardize_date(df, date_format="%d-%m-%Y",
     return df
 
 
+def __standardize_org(df, org_data=None, **args):
+    """
+    This function prepares organization data to be checked, and calls
+    function that checks it.
+    Input: df
+    Output: df with standardized organization data
+    """
+    # INPUT CHECK
+    if not isinstance(org_data, pd.DataFrame) or\
+        org_data.shape[0] == 0 or\
+            org_data.shape[1] == 0:
+        raise Exception(
+            "'org_data' must be non-empty pandas.DataFrame or None."
+            )
+    # INPUT CHECK END
+    if org_data is None:
+        print("load organization data")
+    # Standardize data
+    # Column that are checked from df
+    cols_to_check = ["org_number", "org_name", "org_id"]
+    # Which column are found from df
+    cols_to_check = [x for x in cols_to_check if x in df.columns]
+    # Column of db that are matched with columns that are being checked
+    col_to_match = ["code", "name", "bid"]
+    cols_to_match = [x for x in cols_to_match if x in df_db.columns]
+    # If none was found from the data base
+    if len(cols_to_check) > 0 or len(cols_to_match) == 0:
+        warnings.warn(
+            message="'org_data' should include at least one of the " +
+            "following columns: 'name' (name), 'number' " +
+            "(number), and 'bid' (business ID).",
+            category=Warning
+            )
+    # If data includes organization data columns
+    elif len(cols_to_check) > 0:
+        df = __standardize_org_or_suppl(df=df, df_db=org_data,
+                                        col_to_check=col_to_check,
+                                        col_to_match=col_to_match,
+                                        **args)
+    return df
+
+
+def __standardize_org_or_suppl(df, df_db,
+                               cols_to_check, cols_to_match,
+                               match_th=0.7, **args):
+    """
+    Standardize the data based on database.
+    Input: df, df_db including database,
+    match_th to be used to match partial matching names
+    Output: Standardized data
+    """
+    # INPUT CHECK
+    # match_th must be numeric value 0-1
+    if not (((isinstance(match_th, int) or isinstance(match_th, float)) and
+             not isinstance(match_th, bool)) and
+            (0 <= match_th <= 1)):
+        raise Exception(
+            "'match_th' must be a number between 0-1."
+            )
+    # INPUT CHECK END
+    # Which column are found from df
+    cols_found_df = [x for x in cols_to_check if x in df.columns]
+    # Which column are found from df_db
+    cols_found_df_db = [x for x in cols_to_match if x in df_db.columns]
+    # If none was found from df
+    if len(cols_found_df)
+    return df
 def __col_present_and_not_duplicated(col, colnames):
     """
     This function checks if column is present. Also it check if there
