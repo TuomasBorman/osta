@@ -234,29 +234,17 @@ def __standardize_org(df, org_data=None, **args):
     # Standardize data
     # Column that are checked from df
     cols_to_check = ["org_number", "org_name", "org_id"]
-    # Which column are found from df
-    cols_to_check = [x for x in cols_to_check if x in df.columns]
     # Column of db that are matched with columns that are being checked
-    col_to_match = ["code", "name", "bid"]
-    cols_to_match = [x for x in cols_to_match if x in df_db.columns]
-    # If none was found from the data base
-    if len(cols_to_check) > 0 or len(cols_to_match) == 0:
-        warnings.warn(
-            message="'org_data' should include at least one of the " +
-            "following columns: 'name' (name), 'number' " +
-            "(number), and 'bid' (business ID).",
-            category=Warning
-            )
-    # If data includes organization data columns
-    elif len(cols_to_check) > 0:
-        df = __standardize_org_or_suppl(df=df, df_db=org_data,
-                                        col_to_check=col_to_check,
-                                        col_to_match=col_to_match,
-                                        **args)
+    cols_to_match = ["code", "name", "bid"]
+    # Standardize organization data
+    df = __standardize_org_or_suppl(df=df, df_db=org_data, name_db="org_data",
+                                    cols_to_check=cols_to_check,
+                                    cols_to_match=cols_to_match,
+                                    **args)
     return df
 
 
-def __standardize_org_or_suppl(df, df_db,
+def __standardize_org_or_suppl(df, df_db, name_db,
                                cols_to_check, cols_to_match,
                                match_th=0.7, **args):
     """
@@ -274,12 +262,21 @@ def __standardize_org_or_suppl(df, df_db,
             "'match_th' must be a number between 0-1."
             )
     # INPUT CHECK END
-    # Which column are found from df
-    cols_found_df = [x for x in cols_to_check if x in df.columns]
-    # Which column are found from df_db
-    cols_found_df_db = [x for x in cols_to_match if x in df_db.columns]
-    # If none was found from df
-    if len(cols_found_df)
+    # Which column are found from df and df_db
+    cols_to_check = [x for x in cols_to_check if x in df.columns]
+    cols_to_match = [x for x in cols_to_match if x in df_db.columns]
+    # If none was found from the data base
+    if len(cols_to_check) > 0 or len(cols_to_match) == 0:
+        warnings.warn(
+            message=f"'{name_db}' should include at least one of the "
+            "following columns: 'name' (name), 'number' "
+            "(number), and 'bid' (business ID).",
+            category=Warning
+            )
+        return df
+    # If data includes organization data columns
+    elif len(cols_to_check) == 0:
+        return df
     return df
 def __col_present_and_not_duplicated(col, colnames):
     """
