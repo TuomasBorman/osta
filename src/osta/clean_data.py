@@ -238,7 +238,6 @@ def __standardize_org(df, org_data=None, **args):
     if org_data is None:
         path = "~/Python/osta/src/osta/resources/municipality_codes.csv"
         org_data = pd.read_csv(path, index_col=0)
-    # Standardize data
     # Column that are checked from df
     cols_to_check = ["org_number", "org_name", "org_id"]
     # Column of db that are matched with columns that are being checked
@@ -295,7 +294,7 @@ def __standardize_org_or_suppl(df, df_db,
         raise Exception(
             "'match_th' must be a number between 0-1."
             )
-    # Value [0,1] to a number between 0-100
+    # Value [0,1] to a number between 0-100, because fuzzywuzzy requires that
     match_th = match_th*100
     # INPUT CHECK END
     # Which column are found from df and df_db
@@ -308,8 +307,30 @@ def __standardize_org_or_suppl(df, df_db,
     else:
         cols_to_match = [cols_df_db[cols_to_check.index(x)] for x in cols_df]
         cols_to_check = cols_df
-    # If noe matching columns were found from the data base
-    if len(cols_to_check) > 0 and len(cols_to_match) == 0:
+    # If matching columns between df and data base were found
+    if len(cols_to_check) > 0 and len(cols_to_match) > 0:
+        # Subset the data
+        df_org = df.loc[:, cols_to_check]
+        # Drop duplicates so we can focus on unique rows
+        org_uniq = df_org.drop_duplicates()
+        # Get matching values from database; replace incorrect values in
+        # table including only unique values
+        org_uniq_mod = __get_matches_from_db(df=org_uniq,
+                                             df_db=df_db,
+                                             cols_to_check=cols_to_check,
+                                             cols_to_match=cols_to_match,
+                                             match_th=match_th,
+                                             scorer=scorer)
+        # Replace values in original DataFrame columns
+        df_org = __replace_old_values_with_new(df=df_org,
+                                               old_values=org_uniq,
+                                               new_values=org_uniq_mod,
+                                               cols_to_check=cols_to_check,
+                                               cols_to_match=cols_to_match)
+        # Assign data back to original data
+        df.loc[:, cols_to_check] = df_org
+    # If no matching columns were found from the data base
+    elif len(cols_to_match) == 0:
         temp = ("org_data" if re.search("org", cols_to_check[0])
                 else "suppl_data")
         warnings.warn(
@@ -318,24 +339,66 @@ def __standardize_org_or_suppl(df, df_db,
             "(number), and 'bid' (business ID).",
             category=Warning
             )
-        return df
-    # If data includes organization data columns
-    elif len(cols_to_check) == 0:
-        return df
-    # Subset the data
-    df_org = df.loc[:, cols_to_check]
-    # Drop duplicates so we can focus on unique rows
-    org_uniq = df_org.drop_duplicates()
+    return df
 
-    # Create copy so that we can modify other
-    org_uniq_mod = org_uniq.copy()
+
+def __replace_old_values_with_new(df,
+                                  old_values, new_values,
+                                  cols_to_check, cols_to_match):
+    """
+    Replace values of df with new_values based on corresponding old_values
+    Input: df, current values of it, and new values that replace old values
+    Output: df with new values
+    """
+    # Which values were modified?
+    # Get indices of those rows that are changed
+    ind_mod = (old_values.fillna("") != new_values.fillna("")).sum(axis=1) > 0
+    ind_mod = [i for i, x in enumerate(ind_mod) if x]
+    # Loop over those rows and replace the values of original data columns
+    for i in ind_mod:
+        # Get old and new rows
+        old_row = old_values.iloc[i, :].values
+        new_row = new_values.iloc[i, :].values
+        # Assign values based on bid, number or name whether they are
+        # found and not None
+        if ("bid" in cols_to_match
+            and old_row[cols_to_match.index("bid")
+                        ] is not None):
+            # Get which rows of df match the value
+            col = cols_to_match.index("bid")
+            ind = df.iloc[:, col] == old_row[col]
+        elif ("code" in cols_to_match and
+              old_row[cols_to_match.index("code")] is not None):
+            # Get which rows of df match the value
+            col = cols_to_match.index("code")
+            ind = df.iloc[:, col] == old_row[col]
+        else:
+            # Get which rows of df match the value
+            col = cols_to_match.index("name")
+            ind = df.iloc[:, col] == old_row[col]
+        # Replace values
+        df.loc[ind, :] = new_row
+    return df
+
+
+def __get_matches_from_db(df, df_db,
+                          cols_to_check, cols_to_match,
+                          match_th, scorer):
+    """
+    Is there some data missing or incorrect? Based on df_db, this function
+    replaces values of df.
+    Input: df, and data base
+    Output: df with correct values
+    """
+    # Create a copy that will be modified
+    df_mod = df.copy()
     # Initialize DF for warning messages
-    df_msg = pd.DataFrame()
+    mismatch = pd.DataFrame()
     not_detected = pd.DataFrame()
     part_match = pd.DataFrame()
 
     # Loop over rows
-    for i, row in org_uniq.iterrows():
+    for i, row in df.iterrows():
         # Get name, number and id if they are found from the df,
         # otherwise get False
         name = (row[cols_to_match.index("name")] if
@@ -344,24 +407,24 @@ def __standardize_org_or_suppl(df, df_db,
                   "code" in cols_to_match else False)
         bid = (row[cols_to_match.index("bid")] if
                "bid" in cols_to_match else False)
-        # Can name, number and BID be found from the df_db?
-        name_found = (name is not False and
-                      any(df_db.loc[:, "name"].astype(str).str.lower() ==
-                          name.lower()))
-        number_found = (number is not False and
-                        str(number).replace('.', '', 1).isdigit() and
-                        any(df_db.loc[:, "code"].astype(int) == int(number)))
-        bid_found = (bid is not False and any(df_db.loc[:, "bid"] == bid))
+        # Can name, number and BID be found from the df_db? Get True/False list
+        name_found_ind = (df_db.loc[:, "name"].astype(str).str.lower() ==
+                          name.lower() if name is not False else [False])
+        number_found_ind = (df_db.loc[:, "code"].astype(int) ==
+                            int(number) if number is not False and
+                            str(number).replace('.', '', 1).isdigit()
+                            else [False])
+        bid_found_ind = (df_db.loc[:, "bid"].astype(str).str.lower() ==
+                         name.lower() if bid is not False else [False])
 
         # If bid was found
-        if bid_found:
+        if any(bid_found_ind):
             # Take the row based on business id
-            row_db = (df_db.loc[df_db.loc[:, "bid"].astype(str).str.lower()
-                                == bid.lower(), cols_to_match])
+            row_db = df_db.loc[bid_found_ind, cols_to_match]
             # If name or number of df do not match to row of df_db
-            if ((name_found and name.lower() !=
-                row_db.loc[:, "name"].astype(str).str.lower()) or
-                (number_found and
+            if ((any(name_found_ind) and name.lower() !=
+                 row_db.loc[:, "name"].astype(str).str.lower()) or
+                (any(number_found_ind) and
                  int(bid) != int(row_db["bid"]))):
                 # Get values
                 temp = row.tolist()
@@ -371,17 +434,16 @@ def __standardize_org_or_suppl(df, df_db,
                 temp_name.extend(row_db.columns.to_list())
                 # Store data for warning message
                 temp = pd.DataFrame(temp, index=temp_name)
-                df_msg = pd.concat([df_msg, temp], ignore_index=True)
+                mismatch = pd.concat([mismatch, temp], ignore_index=True)
             else:
                 # Add row to final data
-                org_uniq_mod.iloc[i, :] = row_db
-        # If name was found, it takes precedence
-        elif name_found:
+                df_mod.iloc[i, :] = row_db
+        # If name was found
+        elif any(name_found_ind):
             # Take the row based on name
-            row_db = (df_db.loc[df_db.loc[:, "name"].astype(str).str.lower()
-                                == name.lower(), cols_to_match])
+            row_db = df_db.loc[name_found_ind, cols_to_match]
             # If number do not match to row (bid was not found)
-            if number_found and int(number) != int(row_db["code"]):
+            if any(number_found_ind) and int(number) != int(row_db["code"]):
                 # Get values
                 temp = row.tolist()
                 temp.extend(row_db.iloc[0, :].tolist())
@@ -390,17 +452,17 @@ def __standardize_org_or_suppl(df, df_db,
                 temp_name.extend(row_db.columns.to_list())
                 # Store data for warning message
                 temp = pd.DataFrame(temp, index=temp_name)
-                df_msg = pd.concat([df_msg, temp], axis=1, ignore_index=True)
+                mismatch = pd.concat([mismatch, temp], axis=1,
+                                     ignore_index=True)
             else:
                 # Add row to final data
-                org_uniq_mod.iloc[i, :] = row_db
+                df_mod.iloc[i, :] = row_db
         # If number was found
-        elif number_found:
+        elif any(number_found_ind):
             # Take the row based on number
-            row_db = (df_db.loc[df_db.loc[:, "code"].astype(int) ==
-                                int(number), cols_to_match])
+            row_db = df_db.loc[number_found_ind, cols_to_match]
             # Add row to final data (bid and name was not found)
-            org_uniq_mod.iloc[i, :] = row_db
+            df_mod.iloc[i, :] = row_db
         # Test partial matching to name if name was present
         elif name is not False or name is not None:
             # Try partial match, get the most similar name
@@ -414,7 +476,7 @@ def __standardize_org_or_suppl(df, df_db,
                 row_db = (df_db.loc[df_db.loc[:, "name"] == name_part,
                                     cols_to_match])
                 # Add row to final data
-                org_uniq_mod.iloc[i, :] = row_db
+                df_mod.iloc[i, :] = row_db
                 # Store info for warning message
                 temp = pd.DataFrame([name, name_part],
                                     index=[cols_to_check[
@@ -440,38 +502,7 @@ def __standardize_org_or_suppl(df, df_db,
             f"partial matching: \n{part_match.transpose().drop_duplicates()}",
             category=Warning
             )
-
-    # Which values were modified?
-    # Get indices of those rows that are changed
-    ind_mod = (org_uniq.fillna("") != org_uniq_mod.fillna("")).sum(axis=1) > 0
-    ind_mod = [i for i, x in enumerate(ind_mod) if x]
-    # Loop over those rows and replace the values of original data columns
-    for i in ind_mod:
-        # Get old and new rows
-        old_row = org_uniq.iloc[i, :].values
-        new_row = org_uniq_mod.iloc[i, :].values
-        # Assign values based on bid, number or name whether they are
-        # found and not None
-        if ("bid" in cols_to_match
-            and old_row[cols_to_match.index("bid")
-                        ] is not None):
-            # Get which rows of df match the value
-            col = cols_to_match.index("bid")
-            ind = df_org.iloc[:, col] == old_row[col]
-        elif ("code" in cols_to_match and
-              old_row[cols_to_match.index("code")] is not None):
-            # Get which rows of df match the value
-            col = cols_to_match.index("code")
-            ind = df_org.iloc[:, col] == old_row[col]
-        else:
-            # Get which rows of df match the value
-            col = cols_to_match.index("name")
-            ind = df_org.iloc[:, col] == old_row[col]
-        # Replace values
-        df_org.loc[ind, :] = new_row
-    # Assign data back to original data
-    df.loc[:, cols_to_check] = df_org
-    return df
+    return df_mod
 
 
 def __col_present_and_not_duplicated(col, colnames):
