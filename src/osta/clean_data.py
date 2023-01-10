@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import osta.utils as utils
+import osta.__utils as utils
 import pandas as pd
 import warnings
 import numpy as np

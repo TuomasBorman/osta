@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import osta.utils as utils
+import osta.__utils as utils
 import pandas as pd
 import warnings
 from fuzzywuzzy import fuzz
