@@ -254,9 +254,7 @@ def __guess_name(df, col, colnames, fields, match_th=0.9, **args):
     # INPUT CHECK
     # Types of all other arguments are fixed
     # match_th must be numeric value 0-1
-    if not (((isinstance(match_th, int) or isinstance(match_th, float)) and
-             not isinstance(match_th, bool)) and
-            (0 <= match_th <= 1)):
+    if not utils.__is_percentage(match_th):
         raise Exception(
             "'match_th' must be a number between 0-1."
             )
@@ -387,9 +385,7 @@ def __test_if_BID(df, col, bid_patt_th=0.8, **args):
     """
     # INPUT CHECK
     # bid_patt_th must be numeric value 0-100
-    if not (((isinstance(bid_patt_th, int) or isinstance(bid_patt_th, float))
-             and not isinstance(bid_patt_th, bool)) and
-            (0 <= bid_patt_th <= 1)):
+    if not utils.__is_percentage(bid_patt_th):
         raise Exception(
             "'bid_patt_th' must be a number between 0-1."
             )
@@ -576,10 +572,7 @@ def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
     """
     # INPUT CHECK
     # country_code_th must be numeric value 0-100
-    if not (((isinstance(country_code_th, int) or
-              isinstance(country_code_th, float))
-             and not isinstance(country_code_th, bool)) and
-            (0 <= country_code_th <= 1)):
+    if not utils.__is_percentage(country_code_th):
         raise Exception(
             "'country_code_th' must be a number between 0-1."
             )
@@ -618,10 +611,7 @@ def __test_if_vat_number(df, col, colnames, vat_number_th=0.2, **args):
     """
     # INPUT CHECK
     # vat_number_th must be numeric value 0-100
-    if not (((isinstance(vat_number_th, int) or
-              isinstance(vat_number_th, float))
-             and not isinstance(vat_number_th, bool)) and
-            (0 <= vat_number_th <= 1)):
+    if not utils.__is_percentage(vat_number_th):
         raise Exception(
             "'vat_number_th' must be a number between 0-1."
             )

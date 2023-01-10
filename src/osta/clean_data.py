@@ -10,6 +10,7 @@ from fuzzywuzzy import process
 import pkg_resources
 import utils
 
+
 def clean_data(df, **args):
     """
     Clean data
@@ -277,6 +278,7 @@ def __standardize_suppl(df, suppl_data=None, **args):
                                     **args)
     return df
 
+
 def __standardize_org_or_suppl(df, df_db,
                                cols_to_check, cols_to_match,
                                match_th=0.7, scorer=fuzz.token_sort_ratio,
@@ -289,9 +291,7 @@ def __standardize_org_or_suppl(df, df_db,
     """
     # INPUT CHECK
     # match_th must be numeric value 0-1
-    if not (((isinstance(match_th, int) or isinstance(match_th, float)) and
-             not isinstance(match_th, bool)) and
-            (0 <= match_th <= 1)):
+    if not utils.__is_percentage(match_th):
         raise Exception(
             "'match_th' must be a number between 0-1."
             )
