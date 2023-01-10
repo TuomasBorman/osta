@@ -25,9 +25,11 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         make_unique: A boolean value specifying whether to add a suffix to
         duplicated column names. (By default: make_unique=True)
 
-        fields: A dictionary containing matches between existing column
-        names (key) and standardized names (value) or None. When fields=None,
-        function's default dictionary is used. (By default: fields=None)
+        fields: A pandas.DataFrame or a dictionary containing
+        matches between existing column names (key) and
+        standardized names (value), a string specifying a path
+        to such CSV file or None. When fields=None,function's
+        default dictionary is used. (By default: fields=None)
 
         **args: Additional arguments passes into other functions:
             match_th: A numeric value [0,1] specifying the threshold of enough
@@ -120,9 +122,11 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             "'make_unique' must be bool."
             )
     # fields must be DataFrame or None
-    if not (utils.__is_non_empty_df(fields) or fields is None):
+    if not (utils.__is_non_empty_df(fields) or
+            isinstance(fields, dict) or isinstance(fields, str)
+            or fields is None):
         raise Exception(
-            "'fields' must be dict or None."
+            "'fields' must be pd.DataFrame, dict, string or None."
             )
     # INPUT CHECK END
     # Get fields / matches between column names and standardized names
@@ -216,8 +220,8 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
 
 def __get_fields_df(fields):
     """
-    Fetch DataFrame that contains fields and create a dictionary from it.
-    Input: A dictionary of fields or nothing.
+    Fetch dictionary that contains fields and create a dictionary from it.
+    Input: A DataFrame or dictionary of fields or nothing.
     Output: A dictionary containing which column names are meaning the same
     """
     # If fields was not provided, open files that include fields
@@ -241,6 +245,27 @@ def __get_fields_df(fields):
         add_fields = pd.DataFrame(fields.values(), fields.values())
         add_fields = add_fields[0].to_dict()
         fields.update(add_fields)
+    elif isinstance(fields, pd.DataFrame):
+        # If fields does not include key and values
+        if not all([i in fields.columns for i in ["key", "value"]]):
+            raise Exception(
+                "'fields' must include columns 'key' and 'value'."
+                )
+        # Convert DF to dict
+        fields = fields.set_index("key")["value"].to_dict()
+    elif isinstance(fields, str):
+        # Read data based on path
+        fields = pd.read_csv(fields)
+        # If fields does not include key and values
+        if not all([i in fields.columns for i in ["key", "value"]]):
+            raise Exception(
+                "'fields' must include columns 'key' and 'value'."
+                )
+        # Convert DF to dict
+        fields = fields.set_index("key")["value"].to_dict()
+    # The search is case insensitive --> make keys lowercase
+    # The key will be matched to value that is made lowercase
+    fields = {k.lower(): v for k, v in fields.items()}
     return fields
 
 

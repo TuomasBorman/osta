@@ -35,6 +35,8 @@ def test_check_names_wrong_arguments():
     with pytest.raises(Exception):
         df = change_names(df, fields=1)
     with pytest.raises(Exception):
+        df = change_names(df, fields=df)
+    with pytest.raises(Exception):
         df = change_names(df, fields="dict")
     with pytest.raises(Exception):
         df = change_names(df, fields=True)
@@ -128,6 +130,20 @@ def test_change_names_specify_fields():
     df = change_names(df, fields=own_field)
     # Expected names
     df_ref.columns = ["suppl_name", "testinimi", "voucher"]
+    # Expect that are equal
+    assert_frame_equal(df, df_ref)
+
+    df = __create_dummy_data()
+    # Original names
+    df.columns = ["Test1", "Test2", "Test3"]
+    df_ref = copy.copy(df)
+    # Create own fields as a DF
+    own_field = pd.DataFrame({"key": ["Test1", "Test2", "Test3"],
+                              "value": ["total", "date", "org_name"]})
+    # Do not expect a warning
+    df = change_names(df, fields=own_field)
+    # Expected names
+    df_ref.columns = ["total", "date", "org_name"]
     # Expect that are equal
     assert_frame_equal(df, df_ref)
 
