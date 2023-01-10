@@ -3,6 +3,7 @@
 import pandas as pd
 import warnings
 import numpy as np
+import re
 
 
 def clean_data(df, **args):
@@ -52,6 +53,10 @@ def clean_data(df, **args):
             "that are now removed.\n",
             category=Warning
             )
+    # Removespaces from beginning and end of the value
+    df_obj = df.select_dtypes(['object'])
+    df[df_obj.columns] = df_obj.apply(lambda x: x.str.strip())
+
     # Check if there are duplicated column names
     if len(set(df.columns)) != df.shape[1]:
         # Get unique values and their counts
@@ -230,21 +235,22 @@ def __standardize_org(df, org_data=None, **args):
             )
     # INPUT CHECK END
     if org_data is None:
-        print("load organization data")
+        path = "~/Python/osta/src/osta/resources/municipality_codes.csv"
+        org_data = pd.read_csv(path, index_col=0)
     # Standardize data
     # Column that are checked from df
     cols_to_check = ["org_number", "org_name", "org_id"]
     # Column of db that are matched with columns that are being checked
     cols_to_match = ["code", "name", "bid"]
     # Standardize organization data
-    df = __standardize_org_or_suppl(df=df, df_db=org_data, name_db="org_data",
+    df = __standardize_org_or_suppl(df=df, df_db=org_data,
                                     cols_to_check=cols_to_check,
                                     cols_to_match=cols_to_match,
                                     **args)
     return df
 
 
-def __standardize_org_or_suppl(df, df_db, name_db,
+def __standardize_org_or_suppl(df, df_db,
                                cols_to_check, cols_to_match,
                                match_th=0.7, **args):
     """
@@ -263,12 +269,21 @@ def __standardize_org_or_suppl(df, df_db, name_db,
             )
     # INPUT CHECK END
     # Which column are found from df and df_db
-    cols_to_check = [x for x in cols_to_check if x in df.columns]
-    cols_to_match = [x for x in cols_to_match if x in df_db.columns]
+    cols_df = [x for x in cols_to_check if x in df.columns]
+    cols_df_db = [x for x in cols_to_match if x in df_db.columns]
+    # Drop those columns that do not have match in other df
+    if len(cols_df) > len(cols_df_db):
+        cols_to_check = [cols_df[cols_to_match.index(x)] for x in cols_df_db]
+        cols_to_match = cols_df_db
+    else:
+        cols_to_match = [cols_df_db[cols_to_check.index(x)] for x in cols_df]
+        cols_to_check = cols_df
     # If none was found from the data base
-    if len(cols_to_check) > 0 or len(cols_to_match) == 0:
+    if len(cols_to_check) > 0 and len(cols_to_match) == 0:
+        temp = ("org_data" if re.search("org", cols_to_check[0])
+                else "suppl_data")
         warnings.warn(
-            message=f"'{name_db}' should include at least one of the "
+            message=f"'{temp}' should include at least one of the "
             "following columns: 'name' (name), 'number' "
             "(number), and 'bid' (business ID).",
             category=Warning
@@ -277,6 +292,57 @@ def __standardize_org_or_suppl(df, df_db, name_db,
     # If data includes organization data columns
     elif len(cols_to_check) == 0:
         return df
+    # Subset the data
+    df_org = df.loc[:, cols_to_check]
+    # Drop duplicates so we can focus on unique rows
+    org_uniq = df_org.drop_duplicates()
+    # Create copy so that we can modify other
+    org_uniq_mod = org_uniq.copy()
+    # Initialize lists for resutls
+    not_detected = []
+    part_match = []
+    # Loop over rows
+    for row in org_uniq.index:
+        # Get name, number and id
+        name = org_uniq.loc[row, "org_name"]
+        number = org_uniq.loc[row, "org_number"]
+        bid = org_uniq.loc[row, "org_id"]
+        # Can number be found from the list
+        number_found = str(number).replace('.', '', 1).isdigit() and\
+            any(mun_data.loc[:, "code"].astype(int) == int(number))
+        # Can name be found from the list
+        name_found = any(mun_data.loc[:, "name"] == name)
+        # If number was not found, but name was
+        if not number_found and name_found:
+            number = mun_data.loc[name == mun_data.loc[:, "name"], "code"]
+            # Assign value to df
+            org_uniq_temp.loc[row, "org_number"] = number.values[0]
+        # If name was not found, but number was
+        elif not name_found and number_found:
+            name = mun_data.loc[number == mun_data.loc[:, "code"], "name"]
+            # Assign value to df
+            org_uniq_temp.loc[row, "org_name"] = name.values[0]
+        # If both were not found, try partial match
+        elif not name_found and not number_found and (name.strip() and
+                                                      name is not None):
+            # Try partial match, get the most similar name
+            name_part = process.extractOne(name, mun_data.loc[:, "name"],
+                                           scorer=scorer)
+            # Value [0,1] to a number between 0-100
+            match_th = match_th*100
+            # If the matching score is over threshold
+            if name_part[1] >= 60:
+                # Get only the name
+                name_part = name_part[0]
+                part_match.append([name, name_part])
+                # Find number based on name
+                number = mun_data.loc[mun_data.loc[:, "name"] == name_part, "code"]
+                # Assign both to df
+                org_uniq_temp.loc[row, "org_name"] = name_part
+                org_uniq_temp.loc[row, "org_number"] = number.values[0]
+            else:
+                not_detected.append([number, name])
+    
     return df
 def __col_present_and_not_duplicated(col, colnames):
     """
