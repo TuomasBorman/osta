@@ -8,7 +8,6 @@ import re
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import pkg_resources
-import utils
 
 
 def clean_data(df, **args):
