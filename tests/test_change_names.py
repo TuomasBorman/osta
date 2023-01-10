@@ -253,7 +253,7 @@ def test_change_names_test_sums():
 def test_change_names_data_patterns():
     # matching land code, date, and voucher
     data = {"test1": ["FI", "FI", "FI"],
-            "test2": ["02012023", "2-1-2023", "20.1.2023"],
+            "test2": ["02/01/2023", "2-1-2023", "20.1.2023"],
             "test3": [1, 2, 2]
             }
     df = pd.DataFrame(data)

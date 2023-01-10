@@ -585,7 +585,6 @@ def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
             "'country_code_th' must be a number between 0-1."
             )
     # INPUT CHECK END
-
     # Initialize results as False
     res = False
     # Get specific column and remove NaNs
@@ -602,9 +601,9 @@ def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
     # Initialize a data frame
     df_res = pd.DataFrame()
     # Loop over different codes
-    for name, data in codes.items():
+    for i, data in codes.items():
         # Does the column include certain codes?
-        df_res[name] = (df.isin(data))
+        df_res[i] = (df.isin(data))
     # How many times the value was found from the codes? If enough, then we
     # can be sure that the column includes land codes
     if sum(df_res.sum(axis=1) > 0)/df_res.shape[0] >= country_code_th:
@@ -634,9 +633,9 @@ def __test_if_vat_number(df, col, colnames, vat_number_th=0.2, **args):
     df = df.iloc[:, colnames.index(col)]
     nrow = df.shape[0]
     df = df.dropna()
-    # Load codes from resources of package ostan
+    # Load codes from resources of package osta
     path = pkg_resources.resource_filename(
-        "ostan",
+        "osta",
         "resources/" + "land_codes.csv")
     codes = pd.read_csv(path, index_col=0)
     # Get only land codes with 2 characters

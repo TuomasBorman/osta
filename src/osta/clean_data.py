@@ -7,7 +7,7 @@ import re
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import pkg_resources
-
+import utils
 
 def clean_data(df, **args):
     """
@@ -56,28 +56,28 @@ def clean_data(df, **args):
             "that are now removed.\n",
             category=Warning
             )
-    # Removespaces from beginning and end of the value
+    # Remove spaces from beginning and end of the value
     df_obj = df.select_dtypes(['object'])
     df[df_obj.columns] = df_obj.apply(lambda x: x.str.strip())
 
-    # Check if there are duplicated column names
-    if len(set(df.columns)) != df.shape[1]:
-        # Get unique values and their counts
-        unique, counts = np.unique(df.columns, return_counts=True)
-        # Get duplicated values
-        duplicated = unique[counts > 1]
-        # Get those duplicated values that define columns
-        # that are being cleaned
-        duplicated_disable = duplicated[list(dup in ["test1", "test3"]
-                                             for dup in duplicated)]
-        print(duplicated_disable)
-        warnings.warn(
-            message=f"The following column names are duplicated. "
-            f"Please check them for errors.\n {duplicated}",
-            category=Warning
-            )
+    # # Check if there are duplicated column names
+    # if len(set(df.columns)) != df.shape[1]:
+    #     # Get unique values and their counts
+    #     unique, counts = np.unique(df.columns, return_counts=True)
+    #     # Get duplicated values
+    #     duplicated = unique[counts > 1]
+    #     # Get those duplicated values that define columns
+    #     # that are being cleaned
+    #     duplicated_disable = duplicated[list(dup in ["test1", "test3"]
+    #                                          for dup in duplicated)]
+    #     print(duplicated_disable)
+    #     warnings.warn(
+    #         message=f"The following column names are duplicated. "
+    #         f"Please check them for errors.\n {duplicated}",
+    #         category=Warning
+    #         )
     # Check org_number
-    
+    df = __standardize_org(df, **args)
     return df
 
 
@@ -230,9 +230,7 @@ def __standardize_org(df, org_data=None, **args):
     Output: df with standardized organization data
     """
     # INPUT CHECK
-    if not isinstance(org_data, pd.DataFrame) or\
-        org_data.shape[0] == 0 or\
-            org_data.shape[1] == 0:
+    if :
         raise Exception(
             "'org_data' must be non-empty pandas.DataFrame or None."
             )

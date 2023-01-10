@@ -2,8 +2,8 @@
 
 A Python package for analysing invoices of Finnish public organizations.
 
-[![PyPI Latest Release](https://img.shields.io/pypi/v/ostan.svg)](https://pypi.org/project/ostan/)
-[![Package Status](https://img.shields.io/pypi/status/ostan.svg)](https://pypi.org/project/ostan/)
-![License](https://img.shields.io/pypi/l/ostan.svg)](https://github.com/TuomasBorman/ostan/blob/main/LICENSE)
-[![Coverage](https://codecov.io/github/TuomasBorman/ostan/coverage.svg?branch=main)](https://codecov.io/gh/TuomasBorman/ostan)
-[![Tests](https://github.com/TuomasBorman/ostan/actions/workflows/tests.yml/badge.svg)](https://github.com/TuomasBorman/ostan/commits/main)
+[![PyPI Latest Release](https://img.shields.io/pypi/v/osta.svg)](https://pypi.org/project/osta/)
+[![Package Status](https://img.shields.io/pypi/status/osta.svg)](https://pypi.org/project/osta/)
+![License](https://img.shields.io/pypi/l/osta.svg)](https://github.com/TuomasBorman/osta/blob/main/LICENSE)
+[![Coverage](https://codecov.io/github/TuomasBorman/osta/coverage.svg?branch=main)](https://codecov.io/gh/TuomasBorman/osta)
+[![Tests](https://github.com/TuomasBorman/osta/actions/workflows/tests.yml/badge.svg)](https://github.com/TuomasBorman/osta/commits/main)
