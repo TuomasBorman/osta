@@ -253,6 +253,35 @@ def __standardize_org(df, org_data=None, **args):
     return df
 
 
+def __standardize_suppl(df, suppl_data=None, **args):
+    """
+    This function prepares supplier data to be checked, and calls
+    function that checks it.
+    Input: df
+    Output: df with standardized supplier data
+    """
+    # INPUT CHECK
+    if not isinstance(suppl_data, pd.DataFrame) or\
+        suppl_data.shape[0] == 0 or\
+            suppl_data.shape[1] == 0:
+        raise Exception(
+            "'org_data' must be non-empty pandas.DataFrame or None."
+            )
+    # INPUT CHECK END
+    if suppl_data is None:
+        return df
+    # Standardize data
+    # Column that are checked from df
+    cols_to_check = ["suppl_name", "suppl_id"]
+    # Column of db that are matched with columns that are being checked
+    cols_to_match = ["code", "name", "bid"]
+    # Standardize organization data
+    df = __standardize_org_or_suppl(df=df, df_db=suppl_data,
+                                    cols_to_check=cols_to_check,
+                                    cols_to_match=cols_to_match,
+                                    **args)
+    return df
+
 def __standardize_org_or_suppl(df, df_db,
                                cols_to_check, cols_to_match,
                                match_th=0.7, scorer=fuzz.token_sort_ratio,
@@ -284,7 +313,7 @@ def __standardize_org_or_suppl(df, df_db,
     else:
         cols_to_match = [cols_df_db[cols_to_check.index(x)] for x in cols_df]
         cols_to_check = cols_df
-    # If none was found from the data base
+    # If noe matching columns were found from the data base
     if len(cols_to_check) > 0 and len(cols_to_match) == 0:
         temp = ("org_data" if re.search("org", cols_to_check[0])
                 else "suppl_data")
@@ -393,7 +422,9 @@ def __standardize_org_or_suppl(df, df_db,
                 org_uniq_mod.iloc[i, :] = row_db
                 # Store info for warning message
                 temp = pd.DataFrame([name, name_part],
-                                    index=["original", "found match"])
+                                    index=[cols_to_check[
+                                        cols_to_match.index("name")],
+                                        "found match"])
                 part_match = pd.concat([part_match, temp], axis=1)
             else:
                 # Store data for warning message: data was not found
@@ -414,8 +445,40 @@ def __standardize_org_or_suppl(df, df_db,
             f"partial matching: \n{part_match.transpose().drop_duplicates()}",
             category=Warning
             )
-    
+
+    # Which values were modified?
+    # Get indices of those rows that are changed
+    ind_mod = (org_uniq.fillna("") != org_uniq_mod.fillna("")).sum(axis=1) > 0
+    ind_mod = [i for i, x in enumerate(ind_mod) if x]
+    # Loop over those rows and replace the values of original data columns
+    for i in ind_mod:
+        # Get old and new rows
+        old_row = org_uniq.iloc[i, :].values
+        new_row = org_uniq_mod.iloc[i, :].values
+        # Assign values based on bid, number or name whether they are
+        # found and not None
+        if ("bid" in cols_to_match
+            and old_row[cols_to_match.index("bid")
+                        ] is not None):
+            # Get which rows of df match the value
+            col = cols_to_match.index("bid")
+            ind = df_org.iloc[:, col] == old_row[col]
+        elif ("code" in cols_to_match and
+              old_row[cols_to_match.index("code")] is not None):
+            # Get which rows of df match the value
+            col = cols_to_match.index("code")
+            ind = df_org.iloc[:, col] == old_row[col]
+        else:
+            # Get which rows of df match the value
+            col = cols_to_match.index("name")
+            ind = df_org.iloc[:, col] == old_row[col]
+        # Replace values
+        df_org.loc[ind, :] = new_row
+    # Assign data back to original data
+    df.loc[:, cols_to_check] = df_org
     return df
+
+
 def __col_present_and_not_duplicated(col, colnames):
     """
     This function checks if column is present. Also it check if there
