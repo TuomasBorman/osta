@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import osta.utils as utils
 import pandas as pd
 import warnings
 import numpy as np
@@ -40,9 +41,7 @@ def clean_data(df, **args):
     """
     # INPUT CHECK
     # df must be pandas DataFrame
-    if not isinstance(df, pd.DataFrame) or\
-        df.shape[0] == 0 or\
-            df.shape[1] == 0:
+    if not utils.__is_non_empty_df(df):
         raise Exception(
             "'df' must be non-empty pandas.DataFrame."
             )
@@ -230,7 +229,7 @@ def __standardize_org(df, org_data=None, **args):
     Output: df with standardized organization data
     """
     # INPUT CHECK
-    if :
+    if not (utils.__is_non_empty_df(org_data) or org_data is None):
         raise Exception(
             "'org_data' must be non-empty pandas.DataFrame or None."
             )
@@ -259,9 +258,7 @@ def __standardize_suppl(df, suppl_data=None, **args):
     Output: df with standardized supplier data
     """
     # INPUT CHECK
-    if not isinstance(suppl_data, pd.DataFrame) or\
-        suppl_data.shape[0] == 0 or\
-            suppl_data.shape[1] == 0:
+    if not (utils.__is_non_empty_df(suppl_data) or suppl_data is None):
         raise Exception(
             "'org_data' must be non-empty pandas.DataFrame or None."
             )

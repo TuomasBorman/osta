@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import osta.utils as utils
 import pandas as pd
 import warnings
 from fuzzywuzzy import fuzz
@@ -104,9 +105,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
     """
     # INPUT CHECK
     # df must be pandas DataFrame
-    if not isinstance(df, pd.DataFrame) or\
-        df.shape[0] == 0 or\
-            df.shape[1] == 0:
+    if not utils.__is_non_empty_df(df):
         raise Exception(
             "'df' must be non-empty pandas.DataFrame."
             )
