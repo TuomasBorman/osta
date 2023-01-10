@@ -119,8 +119,8 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         raise Exception(
             "'make_unique' must be bool."
             )
-    # fields must be dict or None
-    if not (isinstance(fields, dict) or fields is None):
+    # fields must be DataFrame or None
+    if not (utils.__is_non_empty_df(fields) or fields is None):
         raise Exception(
             "'fields' must be dict or None."
             )
