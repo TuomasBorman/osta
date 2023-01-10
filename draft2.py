@@ -68,7 +68,7 @@ for i, row in org_uniq.iterrows():
             temp_name.extend(row_db.columns.to_list())
             # Add to DataFrame for warning message
             df_temp = pd.DataFrame(temp, index=temp_name)
-            df_msg = pd.concat([df_msg, df_temp], ignore_index=True)
+            df_msg = pd.concat([df_msg, df_temp], axis=1, ignore_index=True)
         else:
             # Add row to final data
             org_uniq_mod.iloc[i, :] = row_db
@@ -99,4 +99,19 @@ for i, row in org_uniq.iterrows():
             org_uniq_mod.iloc[i, :] = row_db
         else:
             # Add name, number and bid to DataFrame for warning message
-            not_detected = pd.concat([not_detected, row])
+            not_detected = pd.concat([not_detected, row], axis=1)
+
+if not_detected.shape[0] > 0:
+    warnings.warn(
+        message=f"The following organization number and name "
+        f"pairs were not detected. Please check them for errors: "
+        f"\n{not_detected}",
+        category=Warning
+        )
+if len(part_match) > 0:
+    warnings.warn(
+        message=f"The following organization names were detected based on "
+        f"partial matching: {part_match}",
+        category=Warning
+        )
+org_uniq_temp

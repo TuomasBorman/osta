@@ -4,6 +4,9 @@ import pandas as pd
 import warnings
 import numpy as np
 import re
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
+import pkg_resources
 
 
 def clean_data(df, **args):
@@ -252,7 +255,8 @@ def __standardize_org(df, org_data=None, **args):
 
 def __standardize_org_or_suppl(df, df_db,
                                cols_to_check, cols_to_match,
-                               match_th=0.7, **args):
+                               match_th=0.7, scorer=fuzz.token_sort_ratio,
+                               **args):
     """
     Standardize the data based on database.
     Input: df, df_db including database,
@@ -267,6 +271,8 @@ def __standardize_org_or_suppl(df, df_db,
         raise Exception(
             "'match_th' must be a number between 0-1."
             )
+    # Value [0,1] to a number between 0-100
+    match_th = match_th*100
     # INPUT CHECK END
     # Which column are found from df and df_db
     cols_df = [x for x in cols_to_check if x in df.columns]
@@ -296,52 +302,118 @@ def __standardize_org_or_suppl(df, df_db,
     df_org = df.loc[:, cols_to_check]
     # Drop duplicates so we can focus on unique rows
     org_uniq = df_org.drop_duplicates()
+
     # Create copy so that we can modify other
     org_uniq_mod = org_uniq.copy()
-    # Initialize lists for resutls
-    not_detected = []
-    part_match = []
+    # Initialize DF for warning messages
+    df_msg = pd.DataFrame()
+    not_detected = pd.DataFrame()
+    part_match = pd.DataFrame()
+
     # Loop over rows
-    for row in org_uniq.index:
-        # Get name, number and id
-        name = org_uniq.loc[row, "org_name"]
-        number = org_uniq.loc[row, "org_number"]
-        bid = org_uniq.loc[row, "org_id"]
-        # Can number be found from the list
-        number_found = str(number).replace('.', '', 1).isdigit() and\
-            any(mun_data.loc[:, "code"].astype(int) == int(number))
-        # Can name be found from the list
-        name_found = any(mun_data.loc[:, "name"] == name)
-        # If number was not found, but name was
-        if not number_found and name_found:
-            number = mun_data.loc[name == mun_data.loc[:, "name"], "code"]
-            # Assign value to df
-            org_uniq_temp.loc[row, "org_number"] = number.values[0]
-        # If name was not found, but number was
-        elif not name_found and number_found:
-            name = mun_data.loc[number == mun_data.loc[:, "code"], "name"]
-            # Assign value to df
-            org_uniq_temp.loc[row, "org_name"] = name.values[0]
-        # If both were not found, try partial match
-        elif not name_found and not number_found and (name.strip() and
-                                                      name is not None):
+    for i, row in org_uniq.iterrows():
+        # Get name, number and id if they are found from the df,
+        # otherwise get False
+        name = (row[cols_to_match.index("name")] if
+                "name" in cols_to_match else False)
+        number = (row[cols_to_match.index("code")] if
+                  "code" in cols_to_match else False)
+        bid = (row[cols_to_match.index("bid")] if
+               "bid" in cols_to_match else False)
+        # Can name, number and BID be found from the df_db?
+        name_found = (name is not False and
+                      any(df_db.loc[:, "name"].astype(str).str.lower() ==
+                          name.lower()))
+        number_found = (number is not False and
+                        str(number).replace('.', '', 1).isdigit() and
+                        any(df_db.loc[:, "code"].astype(int) == int(number)))
+        bid_found = (bid is not False and any(df_db.loc[:, "bid"] == bid))
+
+        # If bid was found
+        if bid_found:
+            # Take the row based on business id
+            row_db = (df_db.loc[df_db.loc[:, "bid"].astype(str).str.lower()
+                                == bid.lower(), cols_to_match])
+            # If name or number of df do not match to row of df_db
+            if ((name_found and name.lower() !=
+                row_db.loc[:, "name"].astype(str).str.lower()) or
+                (number_found and
+                 int(bid) != int(row_db["bid"]))):
+                # Get values
+                temp = row.tolist()
+                temp.extend(row_db.iloc[0, :].tolist())
+                # Get variable names
+                temp_name = row.index.tolist()
+                temp_name.extend(row_db.columns.to_list())
+                # Store data for warning message
+                temp = pd.DataFrame(temp, index=temp_name)
+                df_msg = pd.concat([df_msg, temp], ignore_index=True)
+            else:
+                # Add row to final data
+                org_uniq_mod.iloc[i, :] = row_db
+        # If name was found, it takes precedence
+        elif name_found:
+            # Take the row based on name
+            row_db = (df_db.loc[df_db.loc[:, "name"].astype(str).str.lower()
+                                == name.lower(), cols_to_match])
+            # If number do not match to row (bid was not found)
+            if number_found and int(number) != int(row_db["code"]):
+                # Get values
+                temp = row.tolist()
+                temp.extend(row_db.iloc[0, :].tolist())
+                # Get variable names
+                temp_name = row.index.tolist()
+                temp_name.extend(row_db.columns.to_list())
+                # Store data for warning message
+                temp = pd.DataFrame(temp, index=temp_name)
+                df_msg = pd.concat([df_msg, temp], axis=1, ignore_index=True)
+            else:
+                # Add row to final data
+                org_uniq_mod.iloc[i, :] = row_db
+        # If number was found
+        elif number_found:
+            # Take the row based on number
+            row_db = (df_db.loc[df_db.loc[:, "code"].astype(int) ==
+                                int(number), cols_to_match])
+            # Add row to final data (bid and name was not found)
+            org_uniq_mod.iloc[i, :] = row_db
+        # Test partial matching to name if name was present
+        elif name is not False or name is not None:
             # Try partial match, get the most similar name
-            name_part = process.extractOne(name, mun_data.loc[:, "name"],
+            name_part = process.extractOne(name, df_db.loc[:, "name"],
                                            scorer=scorer)
-            # Value [0,1] to a number between 0-100
-            match_th = match_th*100
             # If the matching score is over threshold
-            if name_part[1] >= 60:
+            if name_part[1] >= match_th:
                 # Get only the name
                 name_part = name_part[0]
-                part_match.append([name, name_part])
-                # Find number based on name
-                number = mun_data.loc[mun_data.loc[:, "name"] == name_part, "code"]
-                # Assign both to df
-                org_uniq_temp.loc[row, "org_name"] = name_part
-                org_uniq_temp.loc[row, "org_number"] = number.values[0]
+                # Find row based on name with partial match
+                row_db = (df_db.loc[df_db.loc[:, "name"] == name_part,
+                                    cols_to_match])
+                # Add row to final data
+                org_uniq_mod.iloc[i, :] = row_db
+                # Store info for warning message
+                temp = pd.DataFrame([name, name_part],
+                                    index=["original", "found match"])
+                part_match = pd.concat([part_match, temp], axis=1)
             else:
-                not_detected.append([number, name])
+                # Store data for warning message: data was not found
+                not_detected = pd.concat([not_detected, row], axis=1)
+
+    # If some data was not detected
+    if not_detected.shape[0] > 0:
+        warnings.warn(
+            message=f"The following organization data "
+            f"was not detected. Please check it for errors: "
+            f"\n{not_detected.transpose()}",
+            category=Warning
+            )
+    # If partial match of name was used
+    if part_match.shape[0] > 0:
+        warnings.warn(
+            message=f"The following organization names were detected based on "
+            f"partial matching: \n{part_match.transpose().drop_duplicates()}",
+            category=Warning
+            )
     
     return df
 def __col_present_and_not_duplicated(col, colnames):
