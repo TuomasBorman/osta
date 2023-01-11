@@ -261,18 +261,20 @@ def __standardize_suppl(df, suppl_data=None, **args):
             "'org_data' must be non-empty pandas.DataFrame or None."
             )
     # INPUT CHECK END
-    if suppl_data is None:
-        return df
-    # Standardize data
     # Column that are checked from df
     cols_to_check = ["suppl_name", "suppl_id"]
     # Column of db that are matched with columns that are being checked
     cols_to_match = ["code", "name", "bid"]
-    # Standardize organization data
-    df = __standardize_org_or_suppl(df=df, df_db=suppl_data,
-                                    cols_to_check=cols_to_check,
-                                    cols_to_match=cols_to_match,
-                                    **args)
+    if suppl_data is not None:
+        # Standardize organization data
+        df = __standardize_org_or_suppl(df=df, df_db=suppl_data,
+                                        cols_to_check=cols_to_check,
+                                        cols_to_match=cols_to_match,
+                                        **args)
+    else:
+        # Check that data is not duplicated, BID is correct, and there are not
+        # empty values. Get warning if there are.
+        __check_org_data(df, cols_to_check)
     return df
 
 
@@ -339,40 +341,70 @@ def __standardize_org_or_suppl(df, df_db,
             "(number), and 'bid' (business ID).",
             category=Warning
             )
-    # If bid was not in database, it is not checked.
-    # Check here that it has correct pattern
-    if ("bid" not in cols_to_match and
-        any(i in cols_df for i in ["org_id",
-                                   "suppl_id"])):
-        # Add bid column to cols_to_check
-        bid_col = [x for x in ["org_id", "suppl_id"] if x in cols_df][0]
-        cols_to_check.append(bid_col)
-        # Subset the data
-        df_org = df.loc[:, cols_to_check]
-        # Drop duplicates
-        df_org = df_org.drop_duplicates()
-        # Get BIDs
-        bids = df_org[bid_col]
-        # Check that bids are valid
-        valid = utils.__are_valid_bids(bids).values
-        # Is bid duplicated / same value assigned to multiple organization
-        # The bid does not match with other information
-        bid_duplicated = bids.values == bids[bids.duplicated()].values
-        # Is bid None?
-        is_na = df_org.loc[:, bid_col].isna().values
-        # Combine result
-        res = valid | bid_duplicated | is_na
-        # If there are any uncorrect bids, give warning
-        if any(res):
-            # Get only incorrect values
-            df_org = df_org.loc[res, :]
-            warnings.warn(
-                message=f"Following business IDs contain incorrect, "
-                f"duplicated, or empty values. Please check them for errors:\n"
-                f"{df_org}",
-                category=Warning
-                )
+    # If organization data was not in database, it is not checked.
+    # Check here that it has correct pattern, and it is not duplicated
+    __check_org_data(df, cols_df)
     return df
+
+
+def __check_org_data(df, cols_df):
+    """
+    Check if organization data is not duplicated, or has empty values, or
+    incorrect business IDs.
+    Input: df, columns that contain organization information
+    Output: which rows are incorrect?
+    """
+    # Subset the data
+    df = df.loc[:, cols_df]
+    # Drop duplicates
+    df = df.drop_duplicates()
+    # Are there None values
+    res = df.isna().sum(axis=1) > 0
+    # BIDs found?
+    if any(i in cols_df for i in ["org_id", "suppl_id"]):
+        # Get bid column
+        col = [x for x in ["org_id", "suppl_id"] if x in cols_df][0]
+        # Get BIDs
+        col = df[col]
+        # Check that bids are valid; True if not valid
+        valid = ~utils.__are_valid_bids(col).values
+        # Are bids duplicated?
+        duplicated = [val in col[col.duplicated()].values
+                      for val in col.values]
+        # Update result
+        res = res | valid | duplicated
+    # Name found?
+    if any(i in cols_df for i in ["org_name", "suppl_name"]):
+        # Get column
+        col = [x for x in ["org_name", "suppl_name"] if x in cols_df][0]
+        # Get names
+        col = df[col]
+        # Are names duplicated?
+        duplicated = [val in col[col.duplicated()].values
+                      for val in col.values]
+        # Update result
+        res = res | duplicated
+    # Number found?
+    if any(i in cols_df for i in ["org_number", "suppl_number"]):
+        # Get column
+        col = [x for x in ["org_number", "suppl_number"] if x in cols_df][0]
+        # Get numbers
+        col = df[col]
+        # Are numbers duplicated?
+        duplicated = [val in col[col.duplicated()].values
+                      for val in col.values]
+        # Update result
+        res = res | duplicated
+    if any(res):
+        # Get only incorrect values
+        df = df.loc[res, :]
+        warnings.warn(
+            message=f"Following organization data contains duplicated, "
+            f"or empty values or business IDs are incorrect. "
+            f"Please check them for errors: \n{df}",
+            category=Warning
+            )
+    return res
 
 
 def __replace_old_values_with_new(df,
