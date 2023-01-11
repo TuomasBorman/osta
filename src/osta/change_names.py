@@ -5,6 +5,7 @@ import warnings
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import pkg_resources
+import numpy as np
 
 
 def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
@@ -134,8 +135,9 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
     # Initialize lists for column names
     colnames = []
     colnames_not_found = []
+    colnames_not_found_i = []
     # Loop over column names
-    for col in df.columns:
+    for i, col in enumerate(df.columns):
         # Column name to lower case and remove spaces from beginning and end
         # Get matching value from the dictionary
         col_name = fields.get(col.lower().strip())
@@ -145,6 +147,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             # and add it to not-found column names list
             col_name = col
             colnames_not_found.append(col_name)
+            colnames_not_found_i.append(i)
         # Append the list of column names
         colnames.append(col_name)
 
@@ -154,15 +157,16 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         # Initialize list for new and old column names for warning message
         colnames_old = []
         colnames_new = []
-        for col in colnames_not_found:
+        for i in colnames_not_found_i:
+            col = df.columns[i]
             name = __guess_name(df=df,
-                                col=col,
+                                col_i=i,
                                 colnames=colnames,
                                 fields=fields, **args)
             # if the column name was changed
             if col != name:
                 # Change name
-                colnames[colnames.index(col)] = name
+                colnames[i] = name
                 # Append old and new column name list
                 colnames_old.append(col)
                 colnames_new.append(name)
@@ -269,10 +273,11 @@ def __get_fields_df(fields, **args):
     return fields
 
 
-def __guess_name(df, col, colnames, fields, match_th=0.9, **args):
+def __guess_name(df, col_i, colnames, fields, match_th=0.9, **args):
     """
     Guess column names based on pattern.
-    Input: DataFrame, column being guesses, current column names, match
+    Input: DataFrame, index of column being guesses,
+    current column names, match
     between column names and standardized names.
     Output: A guessed column name
     """
@@ -287,6 +292,8 @@ def __guess_name(df, col, colnames, fields, match_th=0.9, **args):
     # Remove spaces from beginning and end of the values
     df_obj = df.dtypes == "object"
     df.loc[:, df_obj] = df.loc[:, df_obj].apply(lambda x: x.str.strip())
+    # Get the name of the column
+    col = df.columns[col_i]
 
     # Try strict loose match (0.95) if match_th is smaller than 0.95
     match_th_strict = 0.95 if match_th <= 0.95 else match_th
@@ -296,83 +303,83 @@ def __guess_name(df, col, colnames, fields, match_th=0.9, **args):
     if res != col:
         col = res
     # Try if column is ID column
-    elif __test_if_BID(df=df, col=col, **args):
+    elif __test_if_BID(df=df, col_i=col_i, **args):
         # BID can be from organization or supplier
-        col = __org_or_suppl_BID(df=df, col=col, colnames=colnames)
+        col = __org_or_suppl_BID(df=df, col_i=col_i, colnames=colnames)
     # Test if date
-    elif __test_if_date(df=df, col=col, colnames=colnames):
+    elif __test_if_date(df=df, col_i=col_i, colnames=colnames):
         col = "date"
     # Test if column includes country codes
-    elif __test_if_country(df, col, colnames, **args):
+    elif __test_if_country(df=df, col_i=col_i, colnames=colnames, **args):
         col = "country"
     # Test if column includes VAT numbers
-    elif __test_if_vat_number(df, col, colnames, **args):
+    elif __test_if_vat_number(df=df, col_i=col_i, colnames=colnames, **args):
         col = "vat_number"
     # # Test if org_number
-    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
                                        cols_match=["org_name", "org_id"],
                                        datatype=["int64"]
                                        ):
         col = "org_number"
     # Test if org_name
-    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
                                        cols_match=["org_number", "org_id"],
                                        datatype=["object"]
                                        ):
         col = "org_name"
     # Test if suppl_name
-    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
                                        cols_match=["suppl_id"],
                                        datatype=["object"]
                                        ):
         col = "suppl_name"
     # Test if service_cat
-    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
                                        cols_match=["service_cat_name"],
                                        datatype=["object", "int64"]
                                        ):
         col = "service_cat"
     # Test if service_cat_name
-    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
                                        cols_match=["service_cat"],
                                        datatype=["object"]
                                        ):
         col = "service_cat_name"
     # Test if account_number
-    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
                                        cols_match=["account_name"],
                                        datatype=["int64"]
                                        ):
         col = "account_number"
     # Test if account_name
-    elif __test_match_between_colnames(df=df, col=col, colnames=colnames,
+    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
                                        cols_match=["account_number"],
                                        datatype=["object"]
                                        ):
         col = "account_name"
     # test if price_ex_vat
-    elif __test_if_sums(df=df, col=col, colnames=colnames,
+    elif __test_if_sums(df=df, col_i=col_i, colnames=colnames,
                         test_sum="price_ex_vat",
                         match_with=["total", "vat_amount"],
                         datatype="float64"
                         ):
         col = "price_ex_vat"
     # test if total
-    elif __test_if_sums(df=df, col=col, colnames=colnames,
+    elif __test_if_sums(df=df, col_i=col_i, colnames=colnames,
                         test_sum="total",
                         match_with=["vat_amount", "price_ex_vat"],
                         datatype="float64"
                         ):
         col = "total"
     # test if vat_amount
-    elif __test_if_sums(df=df, col=col, colnames=colnames,
+    elif __test_if_sums(df=df, col_i=col_i, colnames=colnames,
                         test_sum="vat_amount",
                         match_with=["total", "price_ex_vat"],
                         datatype="float64"
                         ):
         col = "vat_amount"
     # Test if voucher
-    elif __test_if_voucher(df=df, col=col, colnames=colnames):
+    elif __test_if_voucher(df=df, col_i=col_i, colnames=colnames):
         col = "voucher"
     else:
         # Get match from partial matching
@@ -405,10 +412,10 @@ def __test_if_loose_match(col, fields, match_th,
     return col
 
 
-def __test_if_BID(df, col, bid_patt_th=0.8, **args):
+def __test_if_BID(df, col_i, bid_patt_th=0.8, **args):
     """
     This function checks if the column defines BIDs (y-tunnus)
-    Input: DataFrame, name of the column, found final column names
+    Input: DataFrame, index of the column, found final column names
     Output: Boolean value
     """
     # INPUT CHECK
@@ -422,10 +429,10 @@ def __test_if_BID(df, col, bid_patt_th=0.8, **args):
     # Initialize result as False
     res = False
     # Test if pattern found
-    patt_found = utils.__are_valid_bids(df.loc[:, col])
+    patt_found = utils.__are_valid_bids(df.iloc[:, col_i])
     patt_found = patt_found.value_counts()/df.shape[0]
     # Test of length correct
-    len_correct = df.loc[:, col].astype(str).str.len() == 9
+    len_correct = df.iloc[:, col_i].astype(str).str.len() == 9
     len_correct = len_correct.value_counts()/df.shape[0]
     # If Trues exist in both, get the smaller portion. Otherwise, True was not
     # found and the result is 0 / not found
@@ -443,10 +450,10 @@ def __test_if_BID(df, col, bid_patt_th=0.8, **args):
     return res
 
 
-def __org_or_suppl_BID(df, col, colnames):
+def __org_or_suppl_BID(df, col_i, colnames):
     """
     This function checks if the column defines BID of organization or supplier
-    Input: DataFrame, name of the column, found final column names
+    Input: DataFrame, index of the column, found final column names
     Output: The final colname of BID column
     """
     # Initialize result as supplier ID
@@ -458,8 +465,7 @@ def __org_or_suppl_BID(df, col, colnames):
         # If the column is in colnames
         if col_match in colnames:
             # Subset the data by taking only specified columns
-            temp = df.iloc[:, [colnames.index(col),
-                               colnames.index(col_match)]]
+            temp = df.iloc[:, [col_i, colnames.index(col_match)]]
             # Drop rows with blank values
             temp = temp.dropna()
             # Number of unique combinations
@@ -474,28 +480,28 @@ def __org_or_suppl_BID(df, col, colnames):
                                                   "suppl_id"])):
         res = "bid"
     # If there are supplier IDs already, try if they are differemt
-    if "suppl_id" in colnames and all(df.iloc[:, colnames.index(col)] !=
+    if "suppl_id" in colnames and all(df.iloc[:, col_i] !=
                                       df.iloc[:, colnames.index("suppl_id")]):
         res = "org_id"
     # If there are organization IDs already, try if they are differemt
-    if "org_id" in colnames and all(df.iloc[:, colnames.index(col)] ==
+    if "org_id" in colnames and all(df.iloc[:, col_i] ==
                                     df.iloc[:, colnames.index("org_id")]):
         res = "org_id"
     # If there are not many unique values, it might be organization ID
-    if df.iloc[:, colnames.index(col)].nunique()/df.shape[0] < 0.5:
+    if df.iloc[:, col_i].nunique()/df.shape[0] < 0.5:
         res = "org_id"
     return res
 
 
-def __test_if_date(df, col, colnames):
+def __test_if_date(df, col_i, colnames):
     """
     This function checks if the column defines dates
-    Input: DataFrame, name of the column, found final column names
+    Input: DataFrame, index of the column, found final column names
     Output: Boolean value
     """
     # Initialize result
     res = False
-    df = df.iloc[:, colnames.index(col)]
+    df = df.iloc[:, col_i]
     df = df.dropna()
     if df.dtype == "datetime64":
         res = True
@@ -514,30 +520,28 @@ def __test_if_date(df, col, colnames):
             "^\\d\\d[-/.]\\d[-/.]\\d$",
             ]
         patt_found = df.astype(str).str.contains("|".join(patt_to_search))
-        print(patt_found)
         if all(patt_found):
             res = True
     return res
 
 
-def __test_match_between_colnames(df, col, colnames, cols_match, datatype):
+def __test_match_between_colnames(df, col_i, colnames, cols_match, datatype):
     """
     This function checks if the column defines extra information of
     another column / if the column is related to that
-    Input: DataFrame, name of the column, found final column names
+    Input: DataFrame, index of the column, found final column names
     Output: Boolean value
     """
     # Initialize results as False
     res = False
     # Test the data type
-    if df.dtypes[colnames.index(col)] in datatype:
+    if df.dtypes[col_i] in datatype:
         # Loop over columns that should be matched
         for col_match in cols_match:
             # If the column is in colnames
             if col_match in colnames:
                 # Subset the data by taking only specified columns
-                temp = df.iloc[:, [colnames.index(col),
-                                   colnames.index(col_match)]]
+                temp = df.iloc[:, [col_i, colnames.index(col_match)]]
                 # Drop rows with blank values
                 temp = temp.dropna()
                 # Number of unique combinations
@@ -549,11 +553,11 @@ def __test_match_between_colnames(df, col, colnames, cols_match, datatype):
     return res
 
 
-def __test_if_sums(df, col, colnames, test_sum, match_with, datatype):
+def __test_if_sums(df, col_i, colnames, test_sum, match_with, datatype):
     """
     This function checks if the column defines total, net, or VAT sum,
     the arguments defines what is searched
-    Input: DataFrame, name of the column, found final column names
+    Input: DataFrame, index of the column, found final column names
     Output: Boolean value
     """
     # Initialize results as False
@@ -562,7 +566,7 @@ def __test_if_sums(df, col, colnames, test_sum, match_with, datatype):
     if all(mw in colnames for mw in match_with):
         # Take only specific columns
         ind = list(colnames.index(mw) for mw in match_with)
-        ind.append(colnames.index(col))
+        ind.append(col_i)
         # Preserve the order of indices
         ind.sort()
         df = df.iloc[:, ind]
@@ -572,29 +576,29 @@ def __test_if_sums(df, col, colnames, test_sum, match_with, datatype):
         if all(df.dtypes == datatype):
             # If VAT is tested and value is correct
             if test_sum == "vat_amount" and\
-                all(df.iloc[:, colnames.index(col)] ==
+                all(df.iloc[:, col_i] ==
                     df.iloc[:, colnames.index("total")] -
                     df.iloc[:, colnames.index("price_ex_vat")]):
                 res = True
             # If total is tested and value is correct
             elif test_sum == "total" and\
-                all(df.iloc[:, colnames.index(col)] ==
+                all(df.iloc[:, col_i] ==
                     df.iloc[:, colnames.index("price_ex_vat")] +
                     df.iloc[:, colnames.index("vat_amount")]):
                 res = True
             # If price_ex_vat is tested and value is correct
             elif test_sum == "price_ex_vat" and\
-                all(df.iloc[:, colnames.index(col)] ==
+                all(df.iloc[:, col_i] ==
                     df.iloc[:, colnames.index("total")] -
                     df.iloc[:, colnames.index("vat_amount")]):
                 res = True
     return res
 
 
-def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
+def __test_if_country(df, col_i, colnames, country_code_th=0.2, **args):
     """
     This function checks if the column defines countries
-    Input: DataFrame, name of the column, found final column names
+    Input: DataFrame, index of the column, found final column names
     Output: Boolean value
     """
     # INPUT CHECK
@@ -607,7 +611,7 @@ def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
     # Initialize results as False
     res = False
     # Get specific column and remove NaNs
-    df = df.iloc[:, colnames.index(col)]
+    df = df.iloc[:, col_i]
     df = df.dropna()
     # Test if col values can be found from the table
     # Load codes from resources of package osta
@@ -630,10 +634,10 @@ def __test_if_country(df, col, colnames, country_code_th=0.2, **args):
     return res
 
 
-def __test_if_vat_number(df, col, colnames, vat_number_th=0.2, **args):
+def __test_if_vat_number(df, col_i, colnames, vat_number_th=0.2, **args):
     """
     This function checks if the column defines VAT numbers
-    Input: DataFrame, name of the column, found final column names
+    Input: DataFrame, index of the column, found final column names
     Output: Boolean value
     """
     # INPUT CHECK
@@ -646,7 +650,7 @@ def __test_if_vat_number(df, col, colnames, vat_number_th=0.2, **args):
     # Initialize result
     res = False
     # Get specific column and remove NaNs
-    df = df.iloc[:, colnames.index(col)]
+    df = df.iloc[:, col_i]
     nrow = df.shape[0]
     df = df.dropna()
     # Load codes from resources of package osta
@@ -675,18 +679,18 @@ def __test_if_vat_number(df, col, colnames, vat_number_th=0.2, **args):
     return res
 
 
-def __test_if_voucher(df, col, colnames):
+def __test_if_voucher(df, col_i, colnames):
     """
     This function checks if the column defines vouchers
-    Input: DataFrame, name of the column, found final column names
+    Input: DataFrame, index of the column, found final column names
     Output: Boolean value
     """
     # Initialize result
     res = False
     # If data includes already dates and values of column are increasing
     # and they are not dates,the column includes voucher values
-    if "date" in colnames and df.loc[:, col].is_monotonic_increasing and \
-            not df.loc[:, col].equals(df.iloc[:, colnames.index("date")]):
+    if "date" in colnames and df.iloc[:, col_i].is_monotonic_increasing and \
+            not df.iloc[:, col_i].equals(df.iloc[:, colnames.index("date")]):
         res = True
     else:
         test_res = []
@@ -710,14 +714,14 @@ def __test_if_voucher(df, col, colnames):
         for i, variables in enumerate(variable_list):
             # Test if column match with prerequisites of voucher column
             temp_res = __test_if_voucher_help(df=df,
-                                              col=col,
+                                              col_i=col_i,
                                               colnames=colnames,
                                               variables=variables,
                                               voucher_th=thresholds[i],
                                               )
             test_res.append(temp_res)
         # If not float, then  it is not sum
-        if df.dtypes[colnames.index(col)] == "float64":
+        if df.dtypes[col_i] == "float64":
             test_res.append(False)
         else:
             test_res.append(True)
@@ -727,12 +731,12 @@ def __test_if_voucher(df, col, colnames):
     return res
 
 
-def __test_if_voucher_help(df, col, colnames, variables, voucher_th):
+def __test_if_voucher_help(df, col_i, colnames, variables, voucher_th):
     """
     This function is a help function for voucher tester.
     This function tests if there are more unique values than there are
     tested values
-    Input: DataFrame, name of the column, found final column names
+    Input: DataFrame, index of the column, found final column names
     Output: Boolean value
     """
     # Initialize results
@@ -748,7 +752,7 @@ def __test_if_voucher_help(df, col, colnames, variables, voucher_th):
         # Drop duplicates, now we have unique rows
         temp = temp.drop_duplicates()
         # Add column to variables
-        var_shared.append(col)
+        var_shared.append(np.unique(df.columns[col_i])[0])
         # Get only specified columns with column that is being checked
         temp_col = df.iloc[:, [colnames.index(var) for var in var_shared]]
         # Remove rows with NA
