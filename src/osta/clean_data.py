@@ -351,12 +351,27 @@ def __standardize_org_or_suppl(df, df_db,
         df_org = df.loc[:, cols_to_check]
         # Drop duplicates
         df_org = df_org.drop_duplicates()
+        # Get BIDs
+        bids = df_org[bid_col]
         # Check that bids are valid
-        
+        valid = utils.__are_valid_bids(bids).values
         # Is bid duplicated / same value assigned to multiple organization
         # The bid does not match with other information
-        df_org.loc[:, bid_col].duplicated()
-        # If bid is None?
+        bid_duplicated = bids.values == bids[bids.duplicated()].values
+        # Is bid None?
+        is_na = df_org.loc[:, bid_col].isna().values
+        # Combine result
+        res = valid | bid_duplicated | is_na
+        # If there are any uncorrect bids, give warning
+        if any(res):
+            # Get only incorrect values
+            df_org = df_org.loc[res, :]
+            warnings.warn(
+                message=f"Following business IDs contain incorrect, "
+                f"duplicated, or empty values. Please check them for errors:\n"
+                f"{df_org}",
+                category=Warning
+                )
     return df
 
 

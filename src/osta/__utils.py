@@ -20,7 +20,7 @@ def __is_percentage(value):
     Output: True or False
     """
     res = ((isinstance(value, int) or isinstance(value, float)) and
-            (0 <= value <= 1))
+           (0 <= value <= 1))
     res2 = not isinstance(value, bool)
     res = res and res2
     return res
