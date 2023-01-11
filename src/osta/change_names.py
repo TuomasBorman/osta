@@ -284,6 +284,9 @@ def __guess_name(df, col, colnames, fields, match_th=0.9, **args):
             "'match_th' must be a number between 0-1."
             )
     # INPUT CHECK END
+    # Remove spaces from beginning and end of the values
+    df_obj = df.dtypes == "object"
+    df.loc[:, df_obj] = df.loc[:, df_obj].apply(lambda x: x.str.strip())
 
     # Try strict loose match (0.95) if match_th is smaller than 0.95
     match_th_strict = 0.95 if match_th <= 0.95 else match_th

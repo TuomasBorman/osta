@@ -55,8 +55,8 @@ def clean_data(df, **args):
             category=Warning
             )
     # Remove spaces from beginning and end of the value
-    df_obj = df.select_dtypes(['object'])
-    df[df_obj.columns] = df_obj.apply(lambda x: x.str.strip())
+    df_obj = df.dtypes == "object"
+    df.loc[:, df_obj] = df.loc[:, df_obj].apply(lambda x: x.str.strip())
 
     # # Check if there are duplicated column names
     # if len(set(df.columns)) != df.shape[1]:
@@ -106,7 +106,7 @@ def __clean_sums(df):
         for col in col_not_float:
             # Replace "," with "." and remove spaces
             df[col] = df[col].str.replace(
-                ",", ".").str.split().str.join("")
+                ",", ".")
             # Try to convert values as float
             try:
                 df[col] = df[col].astype(float)
