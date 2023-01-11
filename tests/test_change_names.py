@@ -495,7 +495,7 @@ def test_change_names_country_code_th():
 
 
 def test_change_names_vat_number_th():
-    data = {"test1": ["FI957585", "ATjfh727", "test"],
+    data = {"test1": ["FI00009578", "BE4448596870", "test"],
             "test2": ["test1", "test2", "test3"],
             "test3": ["FI", "FI", "test"]
             }

@@ -653,25 +653,8 @@ def __test_if_vat_number(df, col_i, colnames, vat_number_th=0.2, **args):
     df = df.iloc[:, col_i]
     nrow = df.shape[0]
     df = df.dropna()
-    # Load codes from resources of package osta
-    path = pkg_resources.resource_filename(
-        "osta",
-        "resources/" + "land_codes.csv")
-    codes = pd.read_csv(path, index_col=0)
-    # Get only land codes with 2 characters
-    codes = codes["code_2char"]
-    codes = codes.dropna()
-    codes = codes.tolist()
-    # Try if land codes can be found from the data
-    land_code_found = df.astype(str).str.contains("|".join(codes))
-    # VAT number includes also specific pattern of characters along
-    # with land code. Test if it is found
-    patt_to_search = [
-        "^[a-zA-Z0-9]{4,14}$",
-        ]
-    patt_found = df.astype(str).str.contains("|".join(patt_to_search))
-    # Combine results
-    res_patt = land_code_found & patt_found
+    # Check if values are VAT numbers
+    res_patt = utils.__are_valid_vat_numbers(df)
     # How many times the pattern was found from values? If enough, then we
     # can be sure that the column includes VAT numbers
     if sum(res_patt)/nrow >= vat_number_th:

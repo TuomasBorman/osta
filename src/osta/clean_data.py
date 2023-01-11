@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import osta.__utils as utils
+import osta.change_names as cn
 import pandas as pd
 import warnings
 import re
@@ -57,6 +58,29 @@ def clean_data(df, **args):
     # Remove spaces from beginning and end of the value
     df_obj = df.dtypes == "object"
     df.loc[:, df_obj] = df.loc[:, df_obj].apply(lambda x: x.str.strip())
+
+    # Test if voucher is correct
+    if ("voucher" in df.columns
+        and not cn.__test_if_voucher(df=df,
+                                     col_i=df.columns.tolist(
+                                         ).index("voucher"),
+                                     colnames=df.columns)):
+        warnings.warn(
+            message="It seems that 'voucher' column does not include " +
+            "voucher values. Please check it for errors.",
+            category=Warning
+            )
+    # CHeck that accounts are correct
+    if any(col in ["account", "account_name"] for col in df.columns):
+        __check_variable_pair(df,
+                              cols_to_check=["account", "account_name"],
+                              dtypes=["int64", "object"])
+    # Check that service categories are correct
+    if any(col in ["service_cat", "service_cat_name"] for col in df.columns):
+        __check_variable_pair(df,
+                              cols_to_check=["service_cat",
+                                             "service_cat_name"],
+                              dtypes=["int64", "object"])
 
     # # Check if there are duplicated column names
     # if len(set(df.columns)) != df.shape[1]:
@@ -570,12 +594,44 @@ def __get_matches_from_db(df, df_db,
     return df_mod
 
 
+def __check_variable_pair(df, cols_to_check, dtypes):
+    """
+    This function checks variable pair that their data type is correct.
+    Input: df, columns being checked, and expected data types
+    Output: df
+    """
+    # Subset so that only available columns are checked
+    ind = [i for i, x in enumerate(cols_to_check) if x in df.columns]
+    cols_to_check = list(cols_to_check[i] for i in ind)
+    dtypes = list(dtypes[i] for i in ind)
+    # Check if data types match
+    ind = [i for i in ind if df[cols_to_check[i]].dtype != dtypes[i]]
+    # If not, give warning
+    if len(ind) > 0:
+        # Subset to include only missmatches
+        cols_to_check = list(cols_to_check[i] for i in ind)
+        dtypes = list(dtypes[i] for i in ind)
+        warnings.warn(
+            message=f"The following data has incorrect data types."
+            f"Data types of {cols_to_check} should be {dtypes}, respectively.",
+            category=Warning
+            )
+    return df
+
+
+def __check_vat_number(df):
+    """
+    This function checks that VAT number matches with business ID.
+    Input: df
+    Output: df
+    """
+
 def __col_present_and_not_duplicated(col, colnames):
     """
     This function checks if column is present. Also it check if there
     are duplicated column and gives corresponding warning
     Input: column being checked and column names
-    Output: True or False
+    Output: df
     """
     # Check if column is present
     if col in colnames:

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import pandas as pd
+import pkg_resources
+import re
 
 
 def __is_non_empty_df(df):
@@ -44,7 +46,7 @@ def __are_valid_bids(values):
     # If there were values that include the pattern
     if len(values) > 0:
         # Split values from "-" to extract BID's first part and its check mark
-        values = values.str.split("-", expand=True)
+        values = values.astype(str).str.split("-", expand=True)
         # Get check marks
         check_marks = values.iloc[:, 1]
         # Divide first part's numbers to own columns
@@ -68,4 +70,89 @@ def __are_valid_bids(values):
         res = pd.concat([res, values])
     # Preserve the order
     res = res[ind]
+    return res
+
+
+def __are_valid_vat_numbers(values):
+    """
+    This function checks if values are valid VAT numbers.
+    Input: pd.Series
+    Output: pd.Series of boolean values
+    """
+    # VAT number includes specific pattern of characters along
+    # with land code. Test if it is found
+    patt_to_search = [
+        # Finland
+        "^FI\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Belgium
+        "^BE\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Bulgaria
+        "^BG\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        "^BG\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Spain
+        "^ES[A-Z0-9]\\d\\d\\d\\d\\d\\d\\d[A-Z0-9]$",
+        # Netherlands
+        "^NL\\d\\d\\d\\d\\d\\d\\d\\d\\d[B]\\d\\d$",
+        # Ireland
+        "^IE\\d[A-Z0-9_.-/\\+=(){}?!]\\d\\d\\d\\d\\d[A-Z]$",
+        "^IE\\d[A-Z0-9_.-/\\+=(){}?!]\\d\\d\\d\\d\\d[A-Z][A-Z]$",
+        # Great Britain
+        "^GB\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        "^GB\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        "^GBGD\\d\\d\\d$",
+        "^GBHA\\d\\d\\d$",
+        # Northern Ireland
+        "^XI\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        "^XI\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        "^XIGD\\d\\d\\d$",
+        "^XIHA\\d\\d\\d$",
+        # Italy
+        "^IT\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Austria
+        "^ATU\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Greece
+        "^EL\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Croatia
+        "^HR\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Cypros
+        "^CY\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d[A-Z]$",
+        # Latvia
+        "^LV\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Lithuenia
+        "^LT\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        "^LT\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Luxemburg
+        "^LU\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Malta
+        "^MT\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Portugal
+        "^PT\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Poland
+        "^PL\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # France
+        "^FR[A-Z0-9][A-Z0-9]\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Romania
+        "^RO[0-9]{2,10}$",
+        # Sweden
+        "^SE\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d01$",
+        # Germany
+        "^DE\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Slovakia
+        "^SK\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Slovenia
+        "^SI\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Denmark
+        "^DK\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Czech Republic
+        "^CZ[0-9]{9,10}$"
+        # Hungary
+        "^HU\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        # Estonia
+        "^EE\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d$",
+        ]
+    # Remove spaces if there are any; find patterns with case
+    # insensitive search
+    res = values.astype(str).str.replace(" ", "").str.contains(
+        "|".join(patt_to_search), flags=re.IGNORECASE)
+    # Combine results
     return res
