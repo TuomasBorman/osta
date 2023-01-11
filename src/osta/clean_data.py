@@ -81,7 +81,10 @@ def clean_data(df, **args):
                               cols_to_check=["service_cat",
                                              "service_cat_name"],
                               dtypes=["int64", "object"])
-
+    # Check VAT numbers
+    if any(col in ["vat_number"] for col in df.columns):
+        cols_to_check = ["suppl_id", "vat_number", "country"]
+        __check_vat_number(df, cols_to_check)
     # # Check if there are duplicated column names
     # if len(set(df.columns)) != df.shape[1]:
     #     # Get unique values and their counts
@@ -619,12 +622,67 @@ def __check_variable_pair(df, cols_to_check, dtypes):
     return df
 
 
-def __check_vat_number(df):
+def __check_vat_number(df, cols_to_check):
     """
-    This function checks that VAT number matches with business ID.
+    This function checks that VAT numbers has correct patterns
+    and match with business IDs.
     Input: df
     Output: df
     """
+    # Get only those values that are present
+    cols_to_check = [x for x in cols_to_check if x in df.columns]
+
+    # Get vat number and bid column names
+    # (do it this way, if orgaization gets also vat_number)
+    vat_number_col = [x for x in cols_to_check if x in ["vat_number"]][0]
+    bid_col = [x for x in cols_to_check if x in ["suppl_id", "org_id"]][0]
+    country_col = [x for x in cols_to_check if x in ["country"]][0]
+
+    # Drop NA
+    df = df.loc[:, cols_to_check]
+    df = df.dropna(subset=vat_number_col)
+
+    # Test iv valid VAT number
+    res = -utils.__are_valid_vat_numbers(df[vat_number_col])
+
+    # If BIDs are available
+    if bid_col and country_col:
+        # Get bids
+        bids = df[bid_col]
+        # Remove "-"
+        bids = bids.astype(str).str.replace("-", "")
+
+        # Get country codes from data base
+        path = pkg_resources.resource_filename(
+            "osta",
+            "resources/" + "land_codes.csv")
+        codes = pd.read_csv(path, index_col=0)
+
+        # Get unique countries
+        uniq_countries = df[country_col].drop_duplicates()
+        for country in uniq_countries:
+            # Get the country from data base and get 2 character code
+            temp = codes.loc[(codes == country).sum(axis=1) == 1, "code_2char"]
+            temp = temp.values
+            temp = temp[0] if len(temp) == 1 else ""
+            # Add to data
+            df.loc[df[country_col] == temp, "2_char_code"] = temp
+        # Add country code to bid
+        bids = df["2_char_code"] + bids
+        # Check that it is same as VAT number
+        not_vat = df[vat_number_col] != bids
+        res = res | not_vat
+    # If there were some VAT numbers that were incorrect, give a warning
+    if any(res):
+        df = df.loc[res, :]
+        warnings.warn(
+            message=f"The following VAT numbers were incorrect. They did not "
+            f"match the correct pattern or match BIDs. "
+            f"Please check them for errors: {df}",
+            category=Warning
+            )
+    return df
+
 
 def __col_present_and_not_duplicated(col, colnames):
     """
