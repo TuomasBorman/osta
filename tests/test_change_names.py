@@ -288,7 +288,7 @@ def test_change_names_data_patterns():
 def test_change_names_data_patterns2():
     data = {"test1": [10, 10, 10],
             "test2": ["test", "test", "test"],
-            "test3": ["0000009-7", "0000009-7", "0000009-7"]
+            "test3": ["0000000-0", "0000000-0", "0000000-0"]
             }
     df = pd.DataFrame(data)
     # Original names
@@ -326,7 +326,7 @@ def test_change_names_data_patterns2():
 
     data = {"test1": [10, 10, 10],
             "test2": ["test1", "test2", "test3"],
-            "test3": ["7000009-7", "0040009-7", "0001009-7"]
+            "test3": ["0000000-0", "0204819-8", "0133226-9"]
             }
     df = pd.DataFrame(data)
     # Original names
@@ -353,7 +353,7 @@ def test_change_names_data_patterns2():
 
     data = {"test1": [10, 13, 1],
             "test2": ["test1", "test2", "test3"],
-            "test3": ["7000009-7", "0040009-7", "0001009-7"]
+            "test3": ["0133226-9", "0204819-8", "0133226-9"]
             }
     df = pd.DataFrame(data)
     # Original names
@@ -415,7 +415,7 @@ def test_change_names_data_patterns2():
 def test_change_names_bid_patt_th():
     data = {"test1": [10, 12, 10],
             "test2": ["test1", "test2", "test3"],
-            "test3": ["7000009-7", "0040009-7", "test"]
+            "test3": ["0204819-8", "0133226-9", "test"]
             }
     df = pd.DataFrame(data)
     # Original names

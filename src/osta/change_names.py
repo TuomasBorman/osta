@@ -218,7 +218,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
 # HELP FUNCTIONS
 
 
-def __get_fields_df(fields):
+def __get_fields_df(fields, **args):
     """
     Fetch dictionary that contains fields and create a dictionary from it.
     Input: A DataFrame or dictionary of fields or nothing.
@@ -255,7 +255,7 @@ def __get_fields_df(fields):
         fields = fields.set_index("key")["value"].to_dict()
     elif isinstance(fields, str):
         # Read data based on path
-        fields = pd.read_csv(fields)
+        fields = pd.read_csv(fields, **args)
         # If fields does not include key and values
         if not all([i in fields.columns for i in ["key", "value"]]):
             raise Exception(
@@ -419,8 +419,7 @@ def __test_if_BID(df, col, bid_patt_th=0.8, **args):
     # Initialize result as False
     res = False
     # Test if pattern found
-    patt_found = df.loc[:, col].astype(str).str.contains(
-        "\\d\\d\\d\\d\\d\\d\\d-\\d")
+    patt_found = utils.__are_valid_bids(df.loc[:, col])
     patt_found = patt_found.value_counts()/df.shape[0]
     # Test of length correct
     len_correct = df.loc[:, col].astype(str).str.len() == 9

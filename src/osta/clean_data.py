@@ -3,7 +3,6 @@
 import osta.__utils as utils
 import pandas as pd
 import warnings
-import numpy as np
 import re
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
@@ -326,8 +325,10 @@ def __standardize_org_or_suppl(df, df_db,
                                                new_values=org_uniq_mod,
                                                cols_to_check=cols_to_check,
                                                cols_to_match=cols_to_match)
-        # Assign data back to original data
-        df.loc[:, cols_to_check] = df_org
+        # Assign data back to original data, if some values were changed
+        if any((df.loc[:, cols_to_check].fillna("") !=
+                df_org.fillna("")).sum(axis=1) > 0):
+            df.loc[:, cols_to_check] = df_org
     # If no matching columns were found from the data base
     elif len(cols_to_match) == 0:
         temp = ("org_data" if re.search("org", cols_to_check[0])
@@ -338,6 +339,24 @@ def __standardize_org_or_suppl(df, df_db,
             "(number), and 'bid' (business ID).",
             category=Warning
             )
+    # If bid was not in database, it is not checked.
+    # Check here that it has correct pattern
+    if ("bid" not in cols_to_match and
+        any(i in cols_df for i in ["org_id",
+                                   "suppl_id"])):
+        # Add bid column to cols_to_check
+        bid_col = [x for x in ["org_id", "suppl_id"] if x in cols_df][0]
+        cols_to_check.append(bid_col)
+        # Subset the data
+        df_org = df.loc[:, cols_to_check]
+        # Drop duplicates
+        df_org = df_org.drop_duplicates()
+        # Check that bids are valid
+        
+        # Is bid duplicated / same value assigned to multiple organization
+        # The bid does not match with other information
+        df_org.loc[:, bid_col].duplicated()
+        # If bid is None?
     return df
 
 
@@ -436,7 +455,7 @@ def __get_matches_from_db(df, df_db,
                 mismatch = pd.concat([mismatch, temp], ignore_index=True)
             else:
                 # Add row to final data
-                df_mod.iloc[i, :] = row_db
+                df_mod.iloc[i, :] = row_db.values.tolist()[0]
         # If name was found
         elif any(name_found_ind):
             # Take the row based on name
@@ -455,13 +474,13 @@ def __get_matches_from_db(df, df_db,
                                      ignore_index=True)
             else:
                 # Add row to final data
-                df_mod.iloc[i, :] = row_db
+                df_mod.iloc[i, :] = row_db.values.tolist()[0]
         # If number was found
         elif any(number_found_ind):
             # Take the row based on number
             row_db = df_db.loc[number_found_ind, cols_to_match]
             # Add row to final data (bid and name was not found)
-            df_mod.iloc[i, :] = row_db
+            df_mod.iloc[i, :] = row_db.values.tolist()[0]
         # Test partial matching to name if name was present
         elif name is not False or name is not None:
             # Try partial match, get the most similar name
@@ -475,7 +494,7 @@ def __get_matches_from_db(df, df_db,
                 row_db = (df_db.loc[df_db.loc[:, "name"] == name_part,
                                     cols_to_match])
                 # Add row to final data
-                df_mod.iloc[i, :] = row_db
+                df_mod.iloc[i, :] = row_db.values.tolist()[0]
                 # Store info for warning message
                 temp = pd.DataFrame([name, name_part],
                                     index=[cols_to_check[
