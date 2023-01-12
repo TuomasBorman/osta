@@ -290,8 +290,7 @@ def __guess_name(df, col_i, colnames, fields, match_th=0.9, **args):
             )
     # INPUT CHECK END
     # Remove spaces from beginning and end of the values
-    df_obj = df.dtypes == "object"
-    df.loc[:, df_obj] = df.loc[:, df_obj].apply(lambda x: x.str.strip())
+    df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
     # Get the name of the column
     col = df.columns[col_i]
 
