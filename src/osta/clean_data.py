@@ -56,8 +56,7 @@ def clean_data(df, **args):
             category=Warning
             )
     # Remove spaces from beginning and end of the value
-    df_obj = df.dtypes == "object"
-    df.loc[:, df_obj] = df.loc[:, df_obj].apply(lambda x: x.str.strip())
+    df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
 
     # Test if voucher is correct
     if ("voucher" in df.columns
