@@ -12,8 +12,8 @@ def read_service_code(path, sheet_name, year, column_names=None):
     # Read file
     df = pd.read_excel(path, sheet_name=sheet_name)
     # Drop empty rows and columns
-    df = df.dropna(axis=0, thresh=df.shape[1]-2)
-    df = df.dropna(axis=1, thresh=df.shape[1]-2)
+    df = df.dropna(axis=0, thresh=2)
+    df = df.dropna(axis=1, thresh=2)
     # If first rows were additional information, adjust column names
     if all(df.index != 0):
         df.columns = df.iloc[0, :]
