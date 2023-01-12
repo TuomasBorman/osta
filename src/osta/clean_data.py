@@ -48,8 +48,8 @@ def clean_data(df, **args):
     # INPUT CHECK END
     # Check if there are empty rows or columns, and remove them
     if any(df.isna().all(axis=0)) or any(df.isna().all(axis=1)):
-        df = df.dropna(axis=0)
-        df = df.dropna(axis=1)
+        df = df.dropna(axis=0, how="all")
+        df = df.dropna(axis=1, how="all")
         warnings.warn(
             message="'df' contained empty rows or/and columns \n" +
             "that are now removed.\n",
@@ -101,8 +101,9 @@ def clean_data(df, **args):
     #         f"Please check them for errors.\n {duplicated}",
     #         category=Warning
     #         )
-    # Check org_number
+    # Check org information
     df = __standardize_org(df, **args)
+    
     return df
 
 
