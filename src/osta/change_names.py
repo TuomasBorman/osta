@@ -305,8 +305,10 @@ def __guess_name(df, col_i, colnames, fields, pattern_th=0.9, match_th=0.8,
     elif __test_if_date(df=df, col_i=col_i, colnames=colnames):
         col = "date"
     # Test if column includes country codes
-    elif __test_if_country(df=df, col_i=col_i, colnames=colnames,
-                           match_th=match_th):
+    elif __test_if_in_db(df=df, col_i=col_i, colnames=colnames,
+                         db_file="land_codes.csv",
+                         test="country", match_th=match_th,
+                         **args):
         col = "country"
     # Test if column includes VAT numbers
     elif __test_if_vat_number(df=df, col_i=col_i, colnames=colnames,
@@ -595,38 +597,6 @@ def __test_if_sums(df, col_i, colnames, test_sum, match_with, datatype):
     return res
 
 
-def __test_if_country(df, col_i, colnames, match_th):
-    """
-    This function checks if the column defines countries
-    Input: DataFrame, index of the column, found final column names
-    Output: Boolean value
-    """
-    # Initialize results as False
-    res = False
-    # Get specific column and remove NaNs
-    df = df.iloc[:, col_i]
-    df = df.dropna()
-    # Test if col values can be found from the table
-    # Load codes from resources of package osta
-    path = pkg_resources.resource_filename(
-        "osta",
-        "resources/" + "land_codes.csv")
-    codes = pd.read_csv(path, index_col=0)
-    # Drop numeric codes, since we cannot be sure that they are land codes
-    codes = codes.drop("code_num", axis=1)
-    # Initialize a data frame
-    df_res = pd.DataFrame()
-    # Loop over different codes
-    for i, data in codes.items():
-        # Does the column include certain codes?
-        df_res[i] = (df.isin(data))
-    # How many times the value was found from the codes? If enough, then we
-    # can be sure that the column includes land codes
-    if sum(df_res.sum(axis=1) > 0)/df_res.shape[0] >= match_th:
-        res = True
-    return res
-
-
 def __test_if_vat_number(df, col_i, colnames, match_th):
     """
     This function checks if the column defines VAT numbers
@@ -768,14 +738,18 @@ def __test_if_in_db(df, col_i, colnames, test, db_file, match_th,
     # Does the column include integers
     res_list = df.astype(str).str.isdigit()
     if ((any(res_list) and test == "number") or (all(
-            -res_list) and test == "name")):
+            -res_list) and test != "number")):
         # Test if col values can be found from the table
         # Load codes from resources of package osta
         path = pkg_resources.resource_filename(
             "osta",
             "resources/" + db_file)
         db = pd.read_csv(path, index_col=0)
-        db = db[[test]]
+        # If countries, take whole data, otherwise get only specific column
+        if test == "country":
+            db = db.drop("code_num", axis=1)
+        else:
+            db = db[[test]]
         # Initialize a data frame
         df_res = pd.DataFrame()
         # Loop over columns of database
