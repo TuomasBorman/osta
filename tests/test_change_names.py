@@ -41,15 +41,15 @@ def test_check_names_wrong_arguments():
     with pytest.raises(Exception):
         df = change_names(df, fields=True)
     with pytest.raises(Exception):
-        df = change_names(df, match_th=None)
+        df = change_names(df, pattern_th=None)
     with pytest.raises(Exception):
-        df = change_names(df, match_th=2)
+        df = change_names(df, pattern_th=2)
     with pytest.raises(Exception):
-        df = change_names(df, match_th=True)
+        df = change_names(df, pattern_th=True)
     with pytest.raises(Exception):
-        df = change_names(df, match_th="0.1")
+        df = change_names(df, pattern_th="0.1")
     with pytest.raises(Exception):
-        df = change_names(df, match_th=-0.5)
+        df = change_names(df, pattern_th=-0.5)
     with pytest.raises(Exception):
         df = change_names(df, scorer=None)
     with pytest.raises(Exception):
@@ -59,39 +59,17 @@ def test_check_names_wrong_arguments():
     with pytest.raises(Exception):
         df = change_names(df, scorer=True)
     with pytest.raises(Exception):
-        df = change_names(df, bid_patt_th="0.1")
+        df = change_names(df, match_th=2)
     with pytest.raises(Exception):
-        df = change_names(df, bid_patt_th=True)
+        df = change_names(df, match_th="0.1")
     with pytest.raises(Exception):
-        df = change_names(df, bid_patt_th=2)
+        df = change_names(df, match_th=2)
     with pytest.raises(Exception):
-        df = change_names(df, bid_patt_th=None)
+        df = change_names(df, match_th=-0.1)
     with pytest.raises(Exception):
-        df = change_names(df, bid_patt_th=-0.5)
+        df = change_names(df, match_th=None)
     with pytest.raises(Exception):
-        df = change_names(df, country_code_th=2)
-    with pytest.raises(Exception):
-        df = change_names(df, country_code_th="0.1")
-    with pytest.raises(Exception):
-        df = change_names(df, country_code_th=2)
-    with pytest.raises(Exception):
-        df = change_names(df, country_code_th=-0.1)
-    with pytest.raises(Exception):
-        df = change_names(df, country_code_th=None)
-    with pytest.raises(Exception):
-        df = change_names(df, country_code_th=True)
-    with pytest.raises(Exception):
-        df = change_names(df, vat_number_th=2)
-    with pytest.raises(Exception):
-        df = change_names(df, vat_number_th="0.1")
-    with pytest.raises(Exception):
-        df = change_names(df, vat_number_th=2)
-    with pytest.raises(Exception):
-        df = change_names(df, vat_number_th=-0.1)
-    with pytest.raises(Exception):
-        df = change_names(df, vat_number_th=None)
-    with pytest.raises(Exception):
-        df = change_names(df, vat_number_th=True)
+        df = change_names(df, match_th=True)
 
 
 def test_change_names_all_wrong():
@@ -198,14 +176,14 @@ def test_change_names_guess_names():
     assert_frame_equal(df, df_ref)
 
 
-def test_change_names_match_th():
+def test_change_names_pattern_th():
     df = __create_dummy_data()
     # Original names
     df.columns = ["Kunnan_nimi", "Kunta numero", "Kokko.summa"]
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, match_th=1)
+        df = change_names(df, pattern_th=1)
     # Expected names
     df_ref.columns = ["Kunnan_nimi", "Kunta numero", "Kokko.summa"]
     # Expect that are equal
@@ -217,7 +195,7 @@ def test_change_names_match_th():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, match_th=0.6)
+        df = change_names(df, pattern_th=0.6)
     # Expected names
     df_ref.columns = ["org_name", "org_number", "total"]
     # Expect that are equal
@@ -351,33 +329,6 @@ def test_change_names_data_patterns2():
     # Expect that are equal
     assert_frame_equal(df, df_ref)
 
-    data = {"test1": [10, 13, 1],
-            "test2": ["test1", "test2", "test3"],
-            "test3": ["0133226-9", "0204819-8", "0133226-9"]
-            }
-    df = pd.DataFrame(data)
-    # Original names
-    df.columns = ["Test1", "service_cat_name", "Test3"]
-    df_ref = copy.copy(df)
-    # Expect a warning
-    with pytest.warns(Warning):
-        df = change_names(df)
-    # Expected names
-    df_ref.columns = ["service_cat", "service_cat_name", "bid"]
-    # Expect that are equal
-    assert_frame_equal(df, df_ref)
-
-    # Original names
-    df.columns = ["service_cat", "Test2", "Test3"]
-    df_ref = copy.copy(df)
-    # Expect a warning
-    with pytest.warns(Warning):
-        df = change_names(df)
-    # Expected names
-    df_ref.columns = ["service_cat", "service_cat_name", "bid"]
-    # Expect that are equal
-    assert_frame_equal(df, df_ref)
-
     # Original names
     df.columns = ["Test1", "Test2", "Test3"]
     df_ref = copy.copy(df)
@@ -390,7 +341,38 @@ def test_change_names_data_patterns2():
     assert_frame_equal(df, df_ref)
 
 
-def test_change_names_account_th():
+def test_change_names_match_th():
+    data = {"test1": [2191, 2191, 3710],
+            "test2": [2282, 2251, 2191],
+            "test3": ["test", "test", "test"],
+            "test4": ["Henkilökohtainen apu", "test", "vammaisten perhehoito"]
+            }
+    df = pd.DataFrame(data)
+    # Original names
+    df.columns = ["Test1", "Test2", "Test3", "Test4"]
+    df_ref = copy.copy(df)
+    # Expect a warning
+    with pytest.warns(Warning):
+        df = change_names(df, account_th=0.67)
+    # Expected names
+    df_ref.columns = ["Test1", "service_cat", "Test3", "Test4"]
+    # Expect that are equal
+    assert_frame_equal(df, df_ref)
+
+    # Original names
+    df.columns = ["Test1", "Test2", "Test3", "Test4"]
+    df_ref = copy.copy(df)
+    # Expect a warning
+    with pytest.warns(Warning):
+        df = change_names(df, account_th=0.65)
+    # Expected names
+    df_ref.columns = ["service_cat", "service_cat_2",
+                      "Test3", "service_cat_name"]
+    # Expect that are equal
+    assert_frame_equal(df, df_ref)
+
+
+def test_change_names_match_th1():
     data = {"test1": [3710, 3005, "test"],
             "test2": [3710, 3005, 3710],
             "test3": ["test", "test", "test"],
@@ -421,7 +403,7 @@ def test_change_names_account_th():
     assert_frame_equal(df, df_ref)
 
 
-def test_change_names_bid_patt_th():
+def test_change_names_match_th2():
     data = {"test1": [10, 12, 10],
             "test2": ["test1", "test2", "test3"],
             "test3": ["0204819-8", "0133226-9", "test"]
@@ -432,7 +414,7 @@ def test_change_names_bid_patt_th():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, bid_patt_th=0.67)
+        df = change_names(df, match_th=0.67)
     # Expected names
     df_ref.columns = ["Test1", "Test2", "Test3"]
     # Expect that are equal
@@ -443,7 +425,7 @@ def test_change_names_bid_patt_th():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, bid_patt_th=0.65)
+        df = change_names(df, match_th=0.65)
     # Expected names
     df_ref.columns = ["Test1", "Test2", "bid"]
     # Expect that are equal
@@ -455,14 +437,14 @@ def test_change_names_bid_patt_th():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, match_th=0.6)
+        df = change_names(df, pattern_th=0.6)
     # Expected names
     df_ref.columns = ["org_name", "org_number", "total"]
     # Expect that are equal
     assert_frame_equal(df, df_ref)
 
 
-def test_change_names_country_code_th():
+def test_change_names_match_th3():
     data = {"test1": [10, 12, 10],
             "test2": ["test1", "test2", "test3"],
             "test3": ["FI", "FI", "test"]
@@ -473,7 +455,7 @@ def test_change_names_country_code_th():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, country_code_th=0.67)
+        df = change_names(df, match_th=0.67)
     # Expected names
     df_ref.columns = ["Test1", "Test2", "Test3"]
     # Expect that are equal
@@ -484,7 +466,7 @@ def test_change_names_country_code_th():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, country_code_th=0.65)
+        df = change_names(df, match_th=0.65)
     # Expected names
     df_ref.columns = ["Test1", "Test2", "country"]
     # Expect that are equal
@@ -496,14 +478,14 @@ def test_change_names_country_code_th():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, match_th=0.6)
+        df = change_names(df, pattern_th=0.6)
     # Expected names
     df_ref.columns = ["org_name", "org_number", "total"]
     # Expect that are equal
     assert_frame_equal(df, df_ref)
 
 
-def test_change_names_vat_number_th():
+def test_change_names_match_th4():
     data = {"test1": ["FI00009578", "BE4448596870", "test"],
             "test2": ["test1", "test2", "test3"],
             "test3": ["FI", "FI", "test"]
@@ -514,9 +496,9 @@ def test_change_names_vat_number_th():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, vat_number_th=0.67)
+        df = change_names(df, match_th=0.67)
     # Expected names
-    df_ref.columns = ["Test1", "Test2", "country"]
+    df_ref.columns = ["Test1", "Test2", "Test3"]
     # Expect that are equal
     assert_frame_equal(df, df_ref)
 
@@ -525,7 +507,7 @@ def test_change_names_vat_number_th():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, vat_number_th=0.65)
+        df = change_names(df, match_th=0.65)
     # Expected names
     df_ref.columns = ["vat_number", "Test2", "country"]
     # Expect that are equal
@@ -537,7 +519,7 @@ def test_change_names_vat_number_th():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, match_th=0.6)
+        df = change_names(df, pattern_th=0.6)
     # Expected names
     df_ref.columns = ["org_name", "org_number", "total"]
     # Expect that are equal

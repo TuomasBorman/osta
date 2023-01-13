@@ -33,27 +33,17 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         default dictionary is used. (By default: fields=None)
 
         **args: Additional arguments passes into other functions:
-            match_th: A numeric value [0,1] specifying the threshold of enough
-            good match. Value over threshold have enough strong pattern and it
-            is interpreted to be a match.
+            pattern_th: A numeric value [0,1] specifying the threshold of
+            enough good match. Value over threshold have enough strong
+            pattern and it is interpreted to be a match.
 
             scorer: A scorer function passed into fuzzywuzzy.process.extractOne
             function. (By default: scorer=fuzz.token_sort_ratio)
 
-            bid_patt_th: A numeric value [0,1] specifying the strength of
-            business ID pattern. The observation specifies the portion of
+            match_th: A numeric value [0,1] specifying the strength of
+            pattern in the data. The observation specifies the portion of
             observations where the pattern must be present to conclude that
-            column includes BIDs. (By default: bid_patt_th=0.8)
-
-            country_code_th: A numeric value [0,1] specifying the strength of
-            country code pattern. The observation specifies the portion of
-            observations where the pattern must be present to conclude that
-            column includes country codes. (By default: country_code_th=0.2)
-
-            vat_number_th: A numeric value [0,1] specifying the strength of
-            VAT number pattern. The observation specifies the portion of
-            observations where the pattern must be present to conclude that
-            column includes VAT numbers. (By default: vat_number_th=0.2)
+            column includes specific type of data. (By default: match_th=0.2)
         ```
 
     Details:
@@ -99,7 +89,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
 
         # To control name matching, feed arguments
         df = change_names(df, guess_names=True, make_unique=True,
-                          match_th=0.6, bid_patt_th=1)
+                          pattern_th=0.6, match_th=1)
         ```
 
     Output:
@@ -273,7 +263,8 @@ def __get_fields_df(fields, **args):
     return fields
 
 
-def __guess_name(df, col_i, colnames, fields, match_th=0.9, **args):
+def __guess_name(df, col_i, colnames, fields, pattern_th=0.9, match_th=0.8,
+                 **args):
     """
     Guess column names based on pattern.
     Input: DataFrame, index of column being guesses,
@@ -283,7 +274,12 @@ def __guess_name(df, col_i, colnames, fields, match_th=0.9, **args):
     """
     # INPUT CHECK
     # Types of all other arguments are fixed
-    # match_th must be numeric value 0-1
+    # pattern_th must be numeric value 0-1
+    if not utils.__is_percentage(pattern_th):
+        raise Exception(
+            "'pattern_th' must be a number between 0-1."
+            )
+    # match_th must be numeric value 0-100
     if not utils.__is_percentage(match_th):
         raise Exception(
             "'match_th' must be a number between 0-1."
@@ -294,25 +290,27 @@ def __guess_name(df, col_i, colnames, fields, match_th=0.9, **args):
     # Get the name of the column
     col = df.columns[col_i]
 
-    # Try strict loose match (0.95) if match_th is smaller than 0.95
-    match_th_strict = 0.95 if match_th <= 0.95 else match_th
+    # Try strict loose match (0.95) if pattern_th is smaller than 0.95
+    pattern_th_strict = 0.95 if pattern_th <= 0.95 else pattern_th
     res = __test_if_loose_match(col=col, fields=fields,
-                                match_th=match_th_strict, **args)
+                                pattern_th=pattern_th_strict, **args)
     # If there were match, column is renamed
     if res != col:
         col = res
     # Try if column is ID column
-    elif __test_if_BID(df=df, col_i=col_i, **args):
+    elif __test_if_BID(df=df, col_i=col_i, match_th=match_th):
         # BID can be from organization or supplier
         col = __org_or_suppl_BID(df=df, col_i=col_i, colnames=colnames)
     # Test if date
     elif __test_if_date(df=df, col_i=col_i, colnames=colnames):
         col = "date"
     # Test if column includes country codes
-    elif __test_if_country(df=df, col_i=col_i, colnames=colnames, **args):
+    elif __test_if_country(df=df, col_i=col_i, colnames=colnames,
+                           match_th=match_th):
         col = "country"
     # Test if column includes VAT numbers
-    elif __test_if_vat_number(df=df, col_i=col_i, colnames=colnames, **args):
+    elif __test_if_vat_number(df=df, col_i=col_i, colnames=colnames,
+                              match_th=match_th):
         col = "vat_number"
     # # Test if org_number
     elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
@@ -333,24 +331,27 @@ def __guess_name(df, col_i, colnames, fields, match_th=0.9, **args):
                                        ):
         col = "suppl_name"
     # Test if service_cat
-    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
-                                       cols_match=["service_cat_name"],
-                                       datatype=["object", "int64"]
-                                       ):
+    elif __test_if_in_db(df=df, col_i=col_i, colnames=colnames,
+                         db_file="service_codes.csv",
+                         test="number", match_th=match_th,
+                         do_not_match=["account_number", "account_name"],
+                         datatype=["int64"],
+                         **args):
         col = "service_cat"
     # Test if service_cat_name
-    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
-                                       cols_match=["service_cat"],
-                                       datatype=["object"]
-                                       ):
+    elif __test_if_in_db(df=df, col_i=col_i, colnames=colnames,
+                         db_file="service_codes.csv", match_th=match_th,
+                         test="name", **args):
         col = "service_cat_name"
     # Test if account_number
-    elif __test_if_account(df=df, col_i=col_i, colnames=colnames,
-                           test="account", **args):
+    elif __test_if_in_db(df=df, col_i=col_i, colnames=colnames,
+                         db_file="account_info.csv", match_th=match_th,
+                         test="number", **args):
         col = "account_number"
     # Test if account_name
-    elif __test_if_account(df=df, col_i=col_i, colnames=colnames,
-                           test="name", **args):
+    elif __test_if_in_db(df=df, col_i=col_i, colnames=colnames,
+                         db_file="account_info.csv", match_th=match_th,
+                         test="name", **args):
         col = "account_name"
     # test if price_ex_vat
     elif __test_if_sums(df=df, col_i=col_i, colnames=colnames,
@@ -378,12 +379,12 @@ def __guess_name(df, col_i, colnames, fields, match_th=0.9, **args):
         col = "voucher"
     else:
         # Get match from partial matching
-        col = __test_if_loose_match(col=col, fields=fields, match_th=match_th,
-                                    **args)
+        col = __test_if_loose_match(col=col, fields=fields,
+                                    pattern_th=pattern_th, **args)
     return col
 
 
-def __test_if_loose_match(col, fields, match_th,
+def __test_if_loose_match(col, fields, pattern_th,
                           scorer=fuzz.token_sort_ratio,
                           **args):
     """
@@ -397,9 +398,9 @@ def __test_if_loose_match(col, fields, match_th,
         col_name_part = process.extractOne(col, fields.keys(),
                                            scorer=scorer)
         # Value [0,1] to a number between 0-100
-        match_th = match_th*100
+        pattern_th = pattern_th*100
         # If the matching score is over threshold
-        if col_name_part[1] >= match_th:
+        if col_name_part[1] >= pattern_th:
             # Get only the key name
             col_name_part = col_name_part[0]
             # Based on the key, get the value
@@ -407,20 +408,12 @@ def __test_if_loose_match(col, fields, match_th,
     return col
 
 
-def __test_if_BID(df, col_i, bid_patt_th=0.8, **args):
+def __test_if_BID(df, col_i, match_th):
     """
     This function checks if the column defines BIDs (y-tunnus)
     Input: DataFrame, index of the column, found final column names
     Output: Boolean value
     """
-    # INPUT CHECK
-    # bid_patt_th must be numeric value 0-100
-    if not utils.__is_percentage(bid_patt_th):
-        raise Exception(
-            "'bid_patt_th' must be a number between 0-1."
-            )
-    # INPUT CHECK END
-
     # Initialize result as False
     res = False
     # Test if pattern found
@@ -440,7 +433,7 @@ def __test_if_BID(df, col_i, bid_patt_th=0.8, **args):
     else:
         patt_found = 0
     # Check if over threshold
-    if patt_found >= bid_patt_th:
+    if patt_found >= match_th:
         res = True
     return res
 
@@ -590,19 +583,12 @@ def __test_if_sums(df, col_i, colnames, test_sum, match_with, datatype):
     return res
 
 
-def __test_if_country(df, col_i, colnames, country_code_th=0.2, **args):
+def __test_if_country(df, col_i, colnames, match_th):
     """
     This function checks if the column defines countries
     Input: DataFrame, index of the column, found final column names
     Output: Boolean value
     """
-    # INPUT CHECK
-    # country_code_th must be numeric value 0-100
-    if not utils.__is_percentage(country_code_th):
-        raise Exception(
-            "'country_code_th' must be a number between 0-1."
-            )
-    # INPUT CHECK END
     # Initialize results as False
     res = False
     # Get specific column and remove NaNs
@@ -624,24 +610,17 @@ def __test_if_country(df, col_i, colnames, country_code_th=0.2, **args):
         df_res[i] = (df.isin(data))
     # How many times the value was found from the codes? If enough, then we
     # can be sure that the column includes land codes
-    if sum(df_res.sum(axis=1) > 0)/df_res.shape[0] >= country_code_th:
+    if sum(df_res.sum(axis=1) > 0)/df_res.shape[0] >= match_th:
         res = True
     return res
 
 
-def __test_if_vat_number(df, col_i, colnames, vat_number_th=0.2, **args):
+def __test_if_vat_number(df, col_i, colnames, match_th):
     """
     This function checks if the column defines VAT numbers
     Input: DataFrame, index of the column, found final column names
     Output: Boolean value
     """
-    # INPUT CHECK
-    # vat_number_th must be numeric value 0-100
-    if not utils.__is_percentage(vat_number_th):
-        raise Exception(
-            "'vat_number_th' must be a number between 0-1."
-            )
-    # INPUT CHECK END
     # Initialize result
     res = False
     # Get specific column and remove NaNs
@@ -652,7 +631,7 @@ def __test_if_vat_number(df, col_i, colnames, vat_number_th=0.2, **args):
     res_patt = utils.__are_valid_vat_numbers(df)
     # How many times the pattern was found from values? If enough, then we
     # can be sure that the column includes VAT numbers
-    if sum(res_patt)/nrow >= vat_number_th:
+    if sum(res_patt)/nrow >= match_th:
         res = True
     return res
 
@@ -744,43 +723,63 @@ def __test_if_voucher_help(df, col_i, colnames, variables, voucher_th):
     return res
 
 
-def __test_if_account(df, col_i, colnames, test, account_th=0.8, **args):
+def __test_if_in_db(df, col_i, colnames, test, db_file, match_th,
+                    datatype=None, do_not_match=None,
+                    **args):
     """
-    This function tests if the column includes account columns.
+    This function tests if the column includes account or service category info
     Input: DataFrame, index of the column, found final column names, account
-    data type to search
+    or service data type to search
     Output: Boolean value
     """
-    # INPUT CHECK
-    # account_th must be numeric value 0-100
-    if not utils.__is_percentage(account_th):
-        raise Exception(
-            "'account_th' must be a number between 0-1."
-            )
-    # INPUT CHECK END
     # Initialize results as False
     res = False
+    match = False
+    # Check that the column does not match with other columns if specified
+    if do_not_match is not None:
+        print(1111111111111111111111)
+        print(do_not_match)
+        print(datatype)
+        match = __test_match_between_colnames(df=df, col_i=col_i,
+                                              colnames=colnames,
+                                              cols_match=do_not_match,
+                                              datatype=datatype)
     # Get specific column and remove NaNs
     df = df.iloc[:, col_i]
     df = df.dropna()
     df.drop_duplicates()
     # Does the column include integers
     res_list = df.astype(str).str.isdigit()
-    if (any(res_list) and test == "account") or (all(
-            -res_list) and test == "name"):
+    if not match and ((any(res_list) and test == "number") or (all(
+            -res_list) and test == "name")):
         # Test if col values can be found from the table
         # Load codes from resources of package osta
         path = pkg_resources.resource_filename(
             "osta",
-            "resources/" + "account_info.csv")
-        accounts = pd.read_csv(path, index_col=0)
+            "resources/" + db_file)
+        db = pd.read_csv(path, index_col=0)
+        db = db[[test]]
         # Test if values can be found from specifc column
-        if test == "name":
-            res_list = df.astype(str).str.lower().isin(
-                accounts.loc[:, test].astype(str).str.lower())
-        else:
-            res_list = df.isin(accounts.loc[:, test])
-        # If theere were found more values than the threshold is
-        if sum(res_list)/res_list.shape[0] >= account_th:
+        # if test == "naghhhme":
+        #     res_list = df.astype(str).str.lower().isin(
+        #         db.loc[:, test].astype(str).str.lower())
+        # else:
+        #     res_list = df.isin(db.loc[:, test])
+        # Initialize a data frame
+        df_res = pd.DataFrame()
+        # Loop over different codes
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print(db)
+        for i, data in db.items():
+            # Does the column include certain codes?
+            df_res[i] = df.astype(str).str.lower().isin(
+                data.astype(str).str.lower())
+        # How many times the value was found from the codes? If enough, then we
+        # can be sure that the column includes land codes
+        print("aaaaaaaaaaadfdggggggggggggggggggggggggg")
+        print(df_res)
+        print(sum(df_res.sum(axis=1) > 0)/df_res.shape[0])
+        if sum(df_res.sum(axis=1) > 0)/df_res.shape[0] >= match_th:
             res = True
+        return res
     return res

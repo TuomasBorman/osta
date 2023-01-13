@@ -70,6 +70,30 @@ df_2023 = read_service_code(path, sheet_name="Palveluluokitus 2023",
 # Combine all DFs
 df = pd.concat([df_2021, df_2022, df_2023])
 
+# Rename
+columns = [
+    "name_higher",
+    "number",
+    "name",
+    "short",
+    "desc",
+    "info",
+    "info2",
+    "year"
+    ]
+df.columns = columns
+# Reorder
+columns = [
+    "number",
+    "name",
+    "name_higher",
+    "short",
+    "desc",
+    "info",
+    "info2",
+    "year"
+    ]
+df = df.loc[:, columns]
 # Run in project root folder
-path = "./src/osta/resources/service_codes.csv"
+path = "../src/osta/resources/service_codes.csv"
 df.to_csv(path)

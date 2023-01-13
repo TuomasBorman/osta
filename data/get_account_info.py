@@ -274,7 +274,7 @@ df_2022.columns = columns
 sheet = "Tililuettelo tilikaudelle 2023"
 df_2023 = get_accounts(file=path, sheet_name=sheet, year=2023)
 columns = [
-    "account",
+    "number",
     "info",
     "cat1",
     "cat2",
@@ -292,7 +292,7 @@ df = pd.concat([df_2021, df_2022, df_2023])
 
 # Order columns
 columns = [
-    "account",
+    "number",
     "name",
     "cat1",
     "cat2",
