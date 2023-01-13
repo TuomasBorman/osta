@@ -340,18 +340,27 @@ def __guess_name(df, col_i, colnames, fields, pattern_th=0.9, match_th=0.8,
         col = "service_cat"
     # Test if service_cat_name
     elif __test_if_in_db(df=df, col_i=col_i, colnames=colnames,
-                         db_file="service_codes.csv", match_th=match_th,
-                         test="name", **args):
+                         db_file="service_codes.csv",
+                         test="name", match_th=match_th,
+                         do_not_match=["account_number", "account_name"],
+                         datatype=["object"],
+                         **args):
         col = "service_cat_name"
     # Test if account_number
     elif __test_if_in_db(df=df, col_i=col_i, colnames=colnames,
-                         db_file="account_info.csv", match_th=match_th,
-                         test="number", **args):
+                         db_file="account_info.csv",
+                         test="number", match_th=match_th,
+                         do_not_match=["service_cat", "service_cat_name"],
+                         datatype=["int64"],
+                         **args):
         col = "account_number"
     # Test if account_name
     elif __test_if_in_db(df=df, col_i=col_i, colnames=colnames,
-                         db_file="account_info.csv", match_th=match_th,
-                         test="name", **args):
+                         db_file="account_info.csv",
+                         test="name", match_th=match_th,
+                         do_not_match=["service_cat", "service_cat_name"],
+                         datatype=["object"],
+                         **args):
         col = "account_name"
     # test if price_ex_vat
     elif __test_if_sums(df=df, col_i=col_i, colnames=colnames,
@@ -737,9 +746,6 @@ def __test_if_in_db(df, col_i, colnames, test, db_file, match_th,
     match = False
     # Check that the column does not match with other columns if specified
     if do_not_match is not None:
-        print(1111111111111111111111)
-        print(do_not_match)
-        print(datatype)
         match = __test_match_between_colnames(df=df, col_i=col_i,
                                               colnames=colnames,
                                               cols_match=do_not_match,
@@ -767,18 +773,17 @@ def __test_if_in_db(df, col_i, colnames, test, db_file, match_th,
         #     res_list = df.isin(db.loc[:, test])
         # Initialize a data frame
         df_res = pd.DataFrame()
-        # Loop over different codes
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        print(db)
+        # Loop over columns of database
         for i, data in db.items():
             # Does the column include certain codes?
-            df_res[i] = df.astype(str).str.lower().isin(
-                data.astype(str).str.lower())
+            if data.dtype == "object" and df.dtype == "object":
+                temp = df.astype(str).str.lower().isin(
+                    data.astype(str).str.lower())
+            else:
+                temp = df.isin(data)
+            df_res[i] = temp
         # How many times the value was found from the codes? If enough, then we
         # can be sure that the column includes land codes
-        print("aaaaaaaaaaadfdggggggggggggggggggggggggg")
-        print(df_res)
-        print(sum(df_res.sum(axis=1) > 0)/df_res.shape[0])
         if sum(df_res.sum(axis=1) > 0)/df_res.shape[0] >= match_th:
             res = True
         return res

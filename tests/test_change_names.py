@@ -353,7 +353,7 @@ def test_change_names_match_th():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, account_th=0.67)
+        df = change_names(df, match_th=0.67)
     # Expected names
     df_ref.columns = ["Test1", "service_cat", "Test3", "Test4"]
     # Expect that are equal
@@ -364,7 +364,7 @@ def test_change_names_match_th():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, account_th=0.65)
+        df = change_names(df, match_th=0.65)
     # Expected names
     df_ref.columns = ["service_cat", "service_cat_2",
                       "Test3", "service_cat_name"]
@@ -384,7 +384,7 @@ def test_change_names_match_th1():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, account_th=0.67)
+        df = change_names(df, match_th=0.67)
     # Expected names
     df_ref.columns = ["Test1", "account_number", "Test3", "Test4"]
     # Expect that are equal
@@ -395,7 +395,7 @@ def test_change_names_match_th1():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, account_th=0.65)
+        df = change_names(df, match_th=0.65)
     # Expected names
     df_ref.columns = ["account_number", "account_number_2",
                       "Test3", "account_name"]
