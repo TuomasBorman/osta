@@ -345,16 +345,12 @@ def __guess_name(df, col_i, colnames, fields, match_th=0.9, **args):
                                        ):
         col = "service_cat_name"
     # Test if account_number
-    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
-                                       cols_match=["account_name"],
-                                       datatype=["int64"]
-                                       ):
+    elif __test_if_account(df=df, col_i=col_i, colnames=colnames,
+                           test="account", **args):
         col = "account_number"
     # Test if account_name
-    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
-                                       cols_match=["account_number"],
-                                       datatype=["object"]
-                                       ):
+    elif __test_if_account(df=df, col_i=col_i, colnames=colnames,
+                           test="name", **args):
         col = "account_name"
     # test if price_ex_vat
     elif __test_if_sums(df=df, col_i=col_i, colnames=colnames,
@@ -744,5 +740,47 @@ def __test_if_voucher_help(df, col_i, colnames, variables, voucher_th):
         # If there are voucher_th times more unique rows, the column
         # is not related to columns that are matched
         if temp_col.shape[0] > temp.shape[0]*voucher_th:
+            res = True
+    return res
+
+
+def __test_if_account(df, col_i, colnames, test, account_th=0.8, **args):
+    """
+    This function tests if the column includes account columns.
+    Input: DataFrame, index of the column, found final column names, account
+    data type to search
+    Output: Boolean value
+    """
+    # INPUT CHECK
+    # account_th must be numeric value 0-100
+    if not utils.__is_percentage(account_th):
+        raise Exception(
+            "'account_th' must be a number between 0-1."
+            )
+    # INPUT CHECK END
+    # Initialize results as False
+    res = False
+    # Get specific column and remove NaNs
+    df = df.iloc[:, col_i]
+    df = df.dropna()
+    df.drop_duplicates()
+    # Does the column include integers
+    res_list = df.astype(str).str.isdigit()
+    if (any(res_list) and test == "account") or (all(
+            -res_list) and test == "name"):
+        # Test if col values can be found from the table
+        # Load codes from resources of package osta
+        path = pkg_resources.resource_filename(
+            "osta",
+            "resources/" + "account_info.csv")
+        accounts = pd.read_csv(path, index_col=0)
+        # Test if values can be found from specifc column
+        if test == "name":
+            res_list = df.astype(str).str.lower().isin(
+                accounts.loc[:, test].astype(str).str.lower())
+        else:
+            res_list = df.isin(accounts.loc[:, test])
+        # If theere were found more values than the threshold is
+        if sum(res_list)/res_list.shape[0] >= account_th:
             res = True
     return res

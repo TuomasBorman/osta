@@ -379,28 +379,6 @@ def test_change_names_data_patterns2():
     assert_frame_equal(df, df_ref)
 
     # Original names
-    df.columns = ["account_number", "Test2", "Test3"]
-    df_ref = copy.copy(df)
-    # Expect a warning
-    with pytest.warns(Warning):
-        df = change_names(df)
-    # Expected names
-    df_ref.columns = ["account_number", "account_name", "bid"]
-    # Expect that are equal
-    assert_frame_equal(df, df_ref)
-
-    # Original names
-    df.columns = ["Test1", "account_name", "Test3"]
-    df_ref = copy.copy(df)
-    # Expect a warning
-    with pytest.warns(Warning):
-        df = change_names(df)
-    # Expected names
-    df_ref.columns = ["account_number", "account_name", "bid"]
-    # Expect that are equal
-    assert_frame_equal(df, df_ref)
-
-    # Original names
     df.columns = ["Test1", "Test2", "Test3"]
     df_ref = copy.copy(df)
     # Expect a warning
@@ -408,6 +386,37 @@ def test_change_names_data_patterns2():
         df = change_names(df)
     # Expected names
     df_ref.columns = ["Test1", "Test2", "bid"]
+    # Expect that are equal
+    assert_frame_equal(df, df_ref)
+
+
+def test_change_names_account_th():
+    data = {"test1": [3710, 3005, "test"],
+            "test2": [3710, 3005, 3710],
+            "test3": ["test", "test", "test"],
+            "test4": ["myyntituotot", "test", "palkkatuki"]
+            }
+    df = pd.DataFrame(data)
+    # Original names
+    df.columns = ["Test1", "Test2", "Test3", "Test4"]
+    df_ref = copy.copy(df)
+    # Expect a warning
+    with pytest.warns(Warning):
+        df = change_names(df, account_th=0.67)
+    # Expected names
+    df_ref.columns = ["Test1", "account_number", "Test3", "Test4"]
+    # Expect that are equal
+    assert_frame_equal(df, df_ref)
+
+    # Original names
+    df.columns = ["Test1", "Test2", "Test3", "Test4"]
+    df_ref = copy.copy(df)
+    # Expect a warning
+    with pytest.warns(Warning):
+        df = change_names(df, account_th=0.65)
+    # Expected names
+    df_ref.columns = ["account_number", "account_number_2",
+                      "Test3", "account_name"]
     # Expect that are equal
     assert_frame_equal(df, df_ref)
 
