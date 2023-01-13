@@ -23,14 +23,16 @@ df.columns = [
     ]
 
 # Floats to correct format
-df["area_total_km2"] = df["area_total_km2"].str.replace(
+df["area_total_km2"] = df["area_total_km2"].astype(str).str.replace(
     ",", ".").str.split().str.join("").astype(float)
-df["area_land_km2"] = df["area_land_km2"].str.replace(
+df["area_land_km2"] = df["area_land_km2"].astype(str).str.replace(
     ",", ".").str.split().str.join("").astype(float)
-df["population_density_km-2"] = df["population_density_km-2"].str.replace(
+df["population_density_km-2"] = df["population_density_km-2"].astype(
+    str).str.replace(
     ",", ".").str.split().str.join("").astype(float)
 # Integer to correct format
-df["population"] = df["population"].str.split().str.join("").astype(int)
+df["population"] = df["population"].astype(str).str.split(
+    ).str.join("").astype(int)
 # Remove pattern (citation)
 df = df.replace(r"\[.*?\]", "", regex=True)
 # Add leading zeroes to code
@@ -38,6 +40,6 @@ df["code"] = df["code"].astype(str).str.rjust(3, "0")
 # Remove logo
 df.drop("logo", axis=1, inplace=True)
 
-# Run in project root folder
-path = "./src/osta/resources/municipality_codes.csv"
+# Run in data folder
+path = "../src/osta/resources/municipality_codes.csv"
 df.to_csv(path)

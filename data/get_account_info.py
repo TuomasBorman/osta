@@ -51,11 +51,87 @@ def add_third_cat(df, account_col):
         ]
     row_i = df.loc[:, account_col].astype(str).str.contains(
         "|".join(patt))
+    # Or find sttrings with uppercase tasetilissä uppercasetasot
+    # row_i = row_i or df.iloc[:, 0].str.upper() == df.iloc[:, 0].str
     df.loc[row_i, "account_cat3"] = df.iloc[df.index[row_i], 0]
     df.loc[:, "account_cat3"] = df.loc[:, "account_cat3"].fillna(
         method="ffill")
     df = df.drop(df.index[row_i])
     df.reset_index(drop=True, inplace=True)
+    return df
+
+
+def add_third_cat2(df, account_col):
+    # Add account category 3 to own column
+    df = df.assign(account_cat3=None)
+    # Find trings with uppercase
+    row_i = df.iloc[:, 0].str.upper() == df.iloc[:, 0]
+    df.loc[row_i, "account_cat3"] = df.iloc[df.index[row_i], 0]
+    df.loc[:, "account_cat3"] = df.loc[:, "account_cat3"].fillna(
+        method="ffill")
+    df = df.drop(df.index[row_i])
+    df.reset_index(drop=True, inplace=True)
+    return df
+
+
+def add_tase_cats(df, account_col, cat_i):
+    # Get onlu higher level categories from the data
+    patt = [
+        "\\d\\d\\d\\d[‒\\-]\\d\\d\\d\\d",
+        "\\d\\d\\d\\d [‒\\-] \\d\\d\\d\\d",
+        ]
+    row_i = df.loc[:, account_col].astype(str).str.contains(
+        "|".join(patt))
+    cats = df.iloc[df.index[row_i], :]
+    # Combine data to one column
+    cats = add_account_name(cats)
+    # Remove higher level categories from the original data
+    df = df.loc[-row_i, :]
+    # Get only account numbers from the data, and split them to
+    # start and end index
+    val = cats.loc[:, account_col].astype(str).str.split("[‒\\-]", expand=True)
+    val = val.astype(int)
+    # Add to data
+    cats[["ind1", "ind2"]] = val
+    # Initialize DF for results
+    df = df.dropna(subset=account_col)
+    df[account_col] = df[account_col].astype(int)
+    df_cat = pd.DataFrame(index=df[account_col])
+    # Loop over higher level categories
+    for i in cats.index:
+        # Get indices of correct values
+        ind = (df_cat.index >= cats.loc[cats.index[i], "ind1"]) & (
+            df_cat.index <= cats.loc[cats.index[i], "ind2"])
+        # Create as many categories needed to fill the values
+        cat_i_temp = cat_i
+        true_value = True
+        while true_value:
+            # Get category column name
+            temp_i = "cat_" + str(cat_i_temp)
+            # If the column does not exist yet
+            if temp_i not in df_cat.columns:
+                df_cat = df_cat.assign(temp=None)
+                df_cat = df_cat.rename(columns={"temp": temp_i})
+            # Get category values
+            temp = df_cat.loc[ind, temp_i]
+            # If category is empty
+            if all(x is None for x in temp):
+                # Add category tot this level and continue with other
+                # categories
+                df_cat.loc[ind, temp_i] = cats.loc[i, "account_name"]
+                true_value = False
+                cat_i_temp = cat_i
+            else:
+                # Else put the category to next level
+                cat_i_temp = cat_i_temp + 1
+    # Add to original DF based on account number
+    if not all(df_cat.index == df[account_col]):
+        raise Exception(
+            "Error."
+            )
+    df_cat.reset_index(inplace=True)
+    df.reset_index(drop=True, inplace=True)
+    df = df.merge(df_cat, on=account_col)
     return df
 
 
@@ -144,7 +220,8 @@ def get_accounts(file, sheet_name, year,
     # Add categories for 2nd set
     df2 = df2.assign(account_cat1="tase")
     df2 = add_second_cat2(df2)
-    df2 = add_third_cat(df2, account_col)
+    df2 = add_third_cat2(df2, account_col)
+    df2 = add_tase_cats(df2, account_col, 4)
     df2 = add_account_name(df2)
     # Add year
     df1 = df1.assign(year=year)
@@ -169,7 +246,10 @@ columns = [
     "cat2",
     "cat3",
     "name",
-    "year"
+    "year",
+    "cat4",
+    "cat5",
+    "cat6",
     ]
 df_2021.columns = columns
 
@@ -183,7 +263,10 @@ columns = [
     "cat2",
     "cat3",
     "name",
-    "year"
+    "year",
+    "cat4",
+    "cat5",
+    "cat6",
     ]
 df_2022.columns = columns
 
@@ -197,7 +280,10 @@ columns = [
     "cat2",
     "cat3",
     "name",
-    "year"
+    "year",
+    "cat4",
+    "cat5",
+    "cat6",
     ]
 df_2023.columns = columns
 
@@ -211,11 +297,17 @@ columns = [
     "cat1",
     "cat2",
     "cat3",
+    "cat4",
+    "cat5",
+    "cat6",
     "info",
     "year"
     ]
 df = df.loc[:, columns]
 
-# Run in project root folder
-path = "./src/osta/resources/account_info.csv"
+# Remove spaces from beginning and end of the value
+df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+
+# Run in data folder
+path = "../src/osta/resources/account_info.csv"
 df.to_csv(path)

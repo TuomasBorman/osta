@@ -16,5 +16,5 @@ df.columns = [
     "code_iso",
     ]
 # Run in project root folder
-path = "./src/osta/resources/land_codes.csv"
+path = "../src/osta/resources/land_codes.csv"
 df.to_csv(path)
