@@ -312,24 +312,15 @@ def __guess_name(df, col_i, colnames, fields, pattern_th=0.9, match_th=0.8,
     elif __test_if_vat_number(df=df, col_i=col_i, colnames=colnames,
                               match_th=match_th):
         col = "vat_number"
-    # # Test if org_number
-    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
-                                       cols_match=["org_name", "org_id"],
-                                       datatype=["int64"]
-                                       ):
-        col = "org_number"
     # Test if org_name
-    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
-                                       cols_match=["org_number", "org_id"],
-                                       datatype=["object"]
-                                       ):
+    elif __test_if_in_db(df=df, col_i=col_i, colnames=colnames,
+                         db_file="municipality_codes.csv",
+                         test="name", match_th=match_th,
+                         cols_not_match=["suppl_name", "suppl_number"],
+                         cols_to_match=["org_number", "org_id"],
+                         datatype=["object"],
+                         **args):
         col = "org_name"
-    # Test if suppl_name
-    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
-                                       cols_match=["suppl_id"],
-                                       datatype=["object"]
-                                       ):
-        col = "suppl_name"
     # Test if service_cat
     elif __test_if_in_db(df=df, col_i=col_i, colnames=colnames,
                          db_file="service_codes.csv",
@@ -362,6 +353,18 @@ def __guess_name(df, col_i, colnames, fields, pattern_th=0.9, match_th=0.8,
                          datatype=["object"],
                          **args):
         col = "account_name"
+    # # Test if org_number
+    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
+                                       cols_match=["org_name", "org_id"],
+                                       datatype=["int64"]
+                                       ):
+        col = "org_number"
+    # Test if suppl_name
+    elif __test_match_between_colnames(df=df, col_i=col_i, colnames=colnames,
+                                       cols_match=["suppl_id"],
+                                       datatype=["object"]
+                                       ):
+        col = "suppl_name"
     # test if price_ex_vat
     elif __test_if_sums(df=df, col_i=col_i, colnames=colnames,
                         test_sum="price_ex_vat",
@@ -733,7 +736,7 @@ def __test_if_voucher_help(df, col_i, colnames, variables, voucher_th):
 
 
 def __test_if_in_db(df, col_i, colnames, test, db_file, match_th,
-                    datatype=None, do_not_match=None,
+                    datatype=None, cols_not_match=None, cols_to_match=None,
                     **args):
     """
     This function tests if the column includes account or service category info
@@ -743,20 +746,28 @@ def __test_if_in_db(df, col_i, colnames, test, db_file, match_th,
     """
     # Initialize results as False
     res = False
-    match = False
-    # Check that the column does not match with other columns if specified
-    if do_not_match is not None:
-        match = __test_match_between_colnames(df=df, col_i=col_i,
-                                              colnames=colnames,
-                                              cols_match=do_not_match,
-                                              datatype=datatype)
+    res2 = False
+    res3 = False
+    # Check that the column does not match with other specified columns
+    if cols_not_match is not None:
+        res2 = __test_match_between_colnames(df=df, col_i=col_i,
+                                             colnames=colnames,
+                                             cols_match=cols_not_match,
+                                             datatype=datatype)
+    # Check if other columns that specify same instance are found
+    if cols_to_match is not None:
+        if cols_to_match is not None:
+            res3 = __test_match_between_colnames(df=df, col_i=col_i,
+                                                 colnames=colnames,
+                                                 cols_match=cols_to_match,
+                                                 datatype=datatype)
     # Get specific column and remove NaNs
     df = df.iloc[:, col_i]
     df = df.dropna()
     df.drop_duplicates()
     # Does the column include integers
     res_list = df.astype(str).str.isdigit()
-    if not match and ((any(res_list) and test == "number") or (all(
+    if ((any(res_list) and test == "number") or (all(
             -res_list) and test == "name")):
         # Test if col values can be found from the table
         # Load codes from resources of package osta
@@ -765,12 +776,6 @@ def __test_if_in_db(df, col_i, colnames, test, db_file, match_th,
             "resources/" + db_file)
         db = pd.read_csv(path, index_col=0)
         db = db[[test]]
-        # Test if values can be found from specifc column
-        # if test == "naghhhme":
-        #     res_list = df.astype(str).str.lower().isin(
-        #         db.loc[:, test].astype(str).str.lower())
-        # else:
-        #     res_list = df.isin(db.loc[:, test])
         # Initialize a data frame
         df_res = pd.DataFrame()
         # Loop over columns of database
@@ -786,5 +791,9 @@ def __test_if_in_db(df, col_i, colnames, test, db_file, match_th,
         # can be sure that the column includes land codes
         if sum(df_res.sum(axis=1) > 0)/df_res.shape[0] >= match_th:
             res = True
-        return res
+    # Combine result
+    if res2 is False and (res or res3):
+        res = True
+    else:
+        res = False
     return res

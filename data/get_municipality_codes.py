@@ -9,7 +9,7 @@ df = pd.read_html(page.text, decimal=",")[0]
 # Rename
 df.columns = [
     "logo",
-    "code",
+    "number",
     "name",
     "city_or_mun",
     "language",
