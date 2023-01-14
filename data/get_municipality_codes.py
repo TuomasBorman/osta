@@ -40,6 +40,28 @@ df["code"] = df["code"].astype(str).str.rjust(3, "0")
 # Remove logo
 df.drop("logo", axis=1, inplace=True)
 
+# Load BIDs
+path = "../src/osta/osta/resources/municipality_bids.csv"
+bids = pd.read_csv(path, index_col=0)
+# Add BIDs
+df = df.merge(bids, on="name")
+
+columns = [
+    "number",
+    "name",
+    "bid",
+    "city_or_mun",
+    "language",
+    "mun_center",
+    "province",
+    "subregion",
+    "population",
+    "area_total_km2",
+    "area_land_km2",
+    "population_density_km-2",
+    ]
+
+df = df.loc[:, columns]
 # Run in data folder
 path = "../src/osta/resources/municipality_codes.csv"
 df.to_csv(path)

@@ -1,310 +1,310 @@
-,number,name,city_or_mun,language,mun_center,province,subregion,population,area_total_km2,area_land_km2,population_density_km-2
-0,20,Akaa,kaupunki,suomi,Toijalan keskustaajama,Pirkanmaa,Etelä-Pirkanmaan seutukunta,16440,31438.0,29326.0,561.0
-1,5,Alajärvi,kaupunki,suomi,Alajärven keskustaajama,Etelä-Pohjanmaa,Järviseudun seutukunta,9270,1056.75,1008.77,92.0
-2,9,Alavieska,kunta,suomi,Alavieskan kirkonkylä,Pohjois-Pohjanmaa,Ylivieskan seutukunta,2484,25302.0,25150.0,99.0
-3,10,Alavus,kaupunki,suomi,Alavuden keskustaajama,Etelä-Pohjanmaa,Kuusiokuntien seutukunta,11210,1151.5,1087.24,103.0
-4,16,Asikkala,kunta,suomi,Vääksy,Päijät-Häme,Lahden seutukunta,8043,75555.0,56334.0,143.0
-5,18,Askola,kunta,suomi,Askolan kirkonkylä,Uusimaa,Porvoon seutukunta,4819,21803.0,21244.0,227.0
-6,19,Aura,kunta,suomi,Auran asemanseutu,Varsinais-Suomi,Loimaan seutukunta,3975,9558.0,9501.0,418.0
-7,35,Brändö,kunta,ruotsi,Åva,Ahvenanmaa,Ålands skärgård,444,10844.0,10818.0,41.0
-8,43,Eckerö,kunta,ruotsi,Överby,Ahvenanmaa,Ålands landsbygd,935,10918.0,10772.0,87.0
-9,46,Enonkoski,kunta,suomi,Enonkosken kirkonkylä,Etelä-Savo,Savonlinnan seutukunta,1355,41921.0,30555.0,44.0
-10,47,Enontekiö,kunta,"suomi, pohjoissaame",Hetta,Lappi,Tunturi-Lapin seutukunta,1808,8391.31,7953.44,2.0
-11,49,Espoo,kaupunki,"suomi, ruotsi",Espoon keskus,Uusimaa,Helsingin seutukunta,300748,33025.0,31234.0,9629.0
-12,50,Eura,kunta,suomi,Euran keskustaajama,Satakunta,Rauman seutukunta,11379,63020.0,57887.0,197.0
-13,51,Eurajoki,kunta,suomi,Eurajoen kirkonkylä,Satakunta,Rauman seutukunta,9250,52091.0,51500.0,18.0
-14,52,Evijärvi,kunta,suomi,Evijärven kirkonkylä,Etelä-Pohjanmaa,Järviseudun seutukunta,2376,39071.0,35415.0,67.0
-15,60,Finström,kunta,ruotsi,Godby,Ahvenanmaa,Ålands landsbygd,2597,13286.0,12332.0,211.0
-16,61,Forssa,kaupunki,suomi,Forssan keskustaajama,Kanta-Häme,Forssan seutukunta,16484,25336.0,24883.0,662.0
-17,62,Föglö,kunta,ruotsi,Degerby,Ahvenanmaa,Ålands skärgård,499,13499.0,13477.0,37.0
-18,65,Geta,kunta,ruotsi,Vestergeta,Ahvenanmaa,Ålands landsbygd,498,8747.0,8455.0,59.0
-19,69,Haapajärvi,kaupunki,suomi,Haapajärven keskustaajama,Pohjois-Pohjanmaa,Nivala–Haapajärven seutukunta,6784,78931.0,76642.0,89.0
-20,71,Haapavesi,kaupunki,suomi,Haapaveden keskustaajama,Pohjois-Pohjanmaa,Haapaveden-Siikalatvan seutukunta,6608,1086.53,1050.59,63.0
-21,72,Hailuoto,kunta,suomi,Hailuodon kirkonkylä,Pohjois-Pohjanmaa,Oulun seutukunta,955,20735.0,20566.0,46.0
-22,74,Halsua,kunta,suomi,Halsuan kirkonkylä,Keski-Pohjanmaa,Kaustisen seutukunta,1075,42834.0,41301.0,26.0
-23,75,Hamina,kaupunki,suomi,Haminan keskustaajama,Kymenlaakso,Kotka–Haminan seutukunta,19626,63371.0,60994.0,322.0
-24,76,Hammarland,kunta,ruotsi,Kattby,Ahvenanmaa,Ålands landsbygd,1636,14029.0,13855.0,118.0
-25,77,Hankasalmi,kunta,suomi,Hankasalmen kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,4650,68774.0,57169.0,81.0
-26,78,Hanko,kaupunki,"suomi, ruotsi",Hangon keskustaajama,Uusimaa,Raaseporin seutukunta,7934,11899.0,11746.0,675.0
-27,79,Harjavalta,kaupunki,suomi,Harjavallan keskustaajama,Satakunta,Porin seutukunta,6762,12774.0,12348.0,548.0
-28,81,Hartola,kunta,suomi,Hartolan kirkonkylä,Päijät-Häme,Lahden seutukunta,2604,67548.0,54281.0,48.0
-29,82,Hattula,kunta,suomi,Parola,Kanta-Häme,Hämeenlinnan seutukunta,9402,42739.0,35779.0,263.0
-30,86,Hausjärvi,kunta,suomi,Oitti,Kanta-Häme,Riihimäen seutukunta,8110,39877.0,38942.0,208.0
-31,111,Heinola,kaupunki,suomi,Heinolan keskustaajama,Päijät-Häme,Lahden seutukunta,18245,83928.0,67600.0,27.0
-32,90,Heinävesi,kunta,suomi,Heinäveden kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,3123,1319.57,1029.95,3.0
-33,91,Helsinki,kaupunki,"suomi, ruotsi",Helsingin keskustaajama,Uusimaa,Helsingin seutukunta,660821,21508.0,21419.0,3085.2
-34,97,Hirvensalmi,kunta,suomi,Hirvensalmen kirkonkylä,Etelä-Savo,Mikkelin seutukunta,2109,74659.0,46509.0,45.0
-35,98,Hollola,kunta,suomi,Salpakangas,Päijät-Häme,Lahden seutukunta,23104,72746.0,65123.0,355.0
-36,102,Huittinen,kaupunki,suomi,Lauttakylä,Satakunta,Porin seutukunta,9811,53955.0,53261.0,184.0
-37,103,Humppila,kunta,suomi,Humppilan asemanseutu,Kanta-Häme,Forssan seutukunta,2176,14861.0,14796.0,147.0
-38,105,Hyrynsalmi,kunta,suomi,Hyrynsalmen kirkonkylä,Kainuu,Kehys-Kainuun seutukunta,2106,1521.37,1421.25,15.0
-39,106,Hyvinkää,kaupunki,suomi,Hyvinkään keskustaajama,Uusimaa,Helsingin seutukunta,46858,33677.0,32269.0,1452.0
-40,108,Hämeenkyrö,kunta,suomi,Pappila,Pirkanmaa,Tampereen seutukunta,10291,50510.0,46399.0,222.0
-41,109,Hämeenlinna,kaupunki,suomi,Hämeenlinnan keskustaajama,Kanta-Häme,Hämeenlinnan seutukunta,67919,2031.57,1785.34,38.0
-42,139,Ii,kunta,suomi,Iin Hamina,Pohjois-Pohjanmaa,Oulunkaaren seutukunta,9916,1668.05,1615.72,61.0
-43,140,Iisalmi,kaupunki,suomi,Iisalmen keskustaajama,Pohjois-Savo,Ylä-Savon seutukunta,20946,87217.0,76299.0,275.0
-44,142,Iitti,kunta,suomi,Kausala,Päijät-Häme,Lahden seutukunta,6516,68709.0,58979.0,11.0
-45,143,Ikaalinen,kaupunki,suomi,Ikaalisten keskustaajama,Pirkanmaa,Luoteis-Pirkanmaan seutukunta,6832,84340.0,75048.0,91.0
-46,145,Ilmajoki,kunta,suomi,Ilmajoen kirkonkylä,Etelä-Pohjanmaa,Seinäjoen seutukunta,12321,57963.0,57674.0,214.0
-47,146,Ilomantsi,kunta,suomi,Ilomantsin kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,4585,3172.68,2763.38,17.0
-48,153,Imatra,kaupunki,suomi,Mansikkala,Etelä-Karjala,Imatran seutukunta,25430,19128.0,15499.0,1641.0
-49,148,Inari,kunta,"suomi, pohjoissaame, inarinsaame, koltansaame",Ivalo,Lappi,Pohjois-Lapin seutukunta,7009,17333.62,15058.35,5.0
-50,149,Inkoo,kunta,"ruotsi, suomi",Inkoon kirkonkylä,Uusimaa,Raaseporin seutukunta,5343,35800.0,34989.0,153.0
-51,151,Isojoki,kunta,suomi,Isojoen kirkonkylä,Etelä-Pohjanmaa,Suupohjan seutukunta,1898,64743.0,64238.0,3.0
-52,152,Isokyrö,kunta,suomi,Isonkyrön kirkonkylä,Etelä-Pohjanmaa,Seinäjoen seutukunta,4438,35691.0,35413.0,125.0
-53,165,Janakkala,kunta,suomi,Turenki,Kanta-Häme,Hämeenlinnan seutukunta,16365,58607.0,54741.0,299.0
-54,167,Joensuu,kaupunki,suomi,Joensuun keskustaajama,Pohjois-Karjala,Joensuun seutukunta,76790,2750.96,2381.73,322.0
-55,169,Jokioinen,kunta,suomi,Jokioisten keskustaajama,Kanta-Häme,Forssan seutukunta,5058,18194.0,18042.0,28.0
-56,170,Jomala,kunta,ruotsi,Prästgården,Ahvenanmaa,Ålands landsbygd,5572,14366.0,14265.0,391.0
-57,171,Joroinen,kunta,suomi,Joroisten kirkonkylä,Pohjois-Savo,Varkauden seutukunta,4606,71175.0,57490.0,8.0
-58,172,Joutsa,kunta,suomi,Joutsan kirkonkylä,Keski-Suomi,Joutsan seutukunta,4266,1066.43,86701.0,49.0
-59,176,Juuka,kunta,suomi,Juuan kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,4398,1846.58,1501.7,29.0
-60,177,Juupajoki,kunta,suomi,Korkeakoski,Pirkanmaa,Ylä-Pirkanmaan seutukunta,1787,27495.0,25849.0,69.0
-61,178,Juva,kunta,suomi,Juvan kirkonkylä,Etelä-Savo,Pieksämäen seutukunta,5851,1345.69,1163.19,5.0
-62,179,Jyväskylä,kaupunki,suomi,Jyväskylän keskustaajama,Keski-Suomi,Jyväskylän seutukunta,144299,1466.35,1171.02,1232.0
-63,181,Jämijärvi,kunta,suomi,Jämijärven kirkonkylä,Satakunta,Pohjois-Satakunnan seutukunta,1679,22461.0,21509.0,78.0
-64,182,Jämsä,kaupunki,suomi,Seppola,Keski-Suomi,Jämsän seutukunta,19631,1823.9,1571.39,125.0
-65,186,Järvenpää,kaupunki,suomi,Järvenpään keskustaajama,Uusimaa,Helsingin seutukunta,45675,3993.0,3754.0,1216.7
-66,202,Kaarina,kaupunki,suomi,Kaarinan keskusta,Varsinais-Suomi,Turun seutukunta,35691,15162.0,15057.0,237.0
-67,204,Kaavi,kunta,suomi,Kaavin kirkonkylä,Pohjois-Savo,Koillis-Savon seutukunta,2762,78960.0,67407.0,41.0
-68,205,Kajaani,kaupunki,suomi,Kajaanin keskustaajama,Kainuu,Kajaanin seutukunta,36322,2263.82,1834.73,198.0
-69,208,Kalajoki,kaupunki,suomi,Kalajoen kirkonkylä,Pohjois-Pohjanmaa,Ylivieskan seutukunta,12334,93105.0,92413.0,133.0
-70,211,Kangasala,kaupunki,suomi,Kangasalan kirkonkylä,Pirkanmaa,Tampereen seutukunta,32833,87088.0,65808.0,499.0
-71,213,Kangasniemi,kunta,suomi,Kangasniemen kirkonkylä,Etelä-Savo,Mikkelin seutukunta,5217,1326.75,1068.89,49.0
-72,214,Kankaanpää,kaupunki,suomi,Kankaanpään keskustaajama,Satakunta,Pohjois-Satakunnan seutukunta,12631,1037.87,1021.24,124.0
-73,216,Kannonkoski,kunta,suomi,Kannonkosken kirkonkylä,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,1294,54988.0,44501.0,29.0
-74,217,Kannus,kaupunki,suomi,Kannuksen keskustaajama,Keski-Pohjanmaa,Kokkolan seutukunta,5386,47034.0,46804.0,115.0
-75,218,Karijoki,kunta,suomi,Karijoen kirkonkylä,Etelä-Pohjanmaa,Suupohjan seutukunta,1198,18635.0,18558.0,65.0
-76,224,Karkkila,kaupunki,suomi,Karkkilan keskustaajama,Uusimaa,Helsingin seutukunta,8717,25532.0,24235.0,36.0
-77,226,Karstula,kunta,suomi,Karstulan kirkonkylä,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,3733,96320.0,88707.0,42.0
-78,230,Karvia,kunta,suomi,Karvian kirkonkylä,Satakunta,Pohjois-Satakunnan seutukunta,2271,51990.0,50222.0,45.0
-79,231,Kaskinen,kaupunki,"suomi, ruotsi",Kaskisten keskustaajama,Pohjanmaa,Suupohjan rannikkoseutu,1288,1078.0,1063.0,1212.0
-80,232,Kauhajoki,kaupunki,suomi,Kauhajoen keskustaajama,Etelä-Pohjanmaa,Suupohjan seutukunta,12840,1315.54,1298.99,99.0
-81,233,Kauhava,kaupunki,suomi,Kauhavan keskustaajama,Etelä-Pohjanmaa,Seinäjoen seutukunta,15293,1328.38,1313.85,116.0
-82,235,Kauniainen,kaupunki,"suomi, ruotsi",Kauniainen,Uusimaa,Helsingin seutukunta,10306,600.0,589.0,1749.7
-83,236,Kaustinen,kunta,suomi,Kaustisen kirkonkylä,Keski-Pohjanmaa,Kaustisen seutukunta,4230,36109.0,35391.0,12.0
-84,239,Keitele,kunta,suomi,Keiteleen kirkonkylä,Pohjois-Savo,Ylä-Savon seutukunta,2061,57830.0,48291.0,43.0
-85,240,Kemi,kaupunki,suomi,Kemin keskustaajama,Lappi,Kemi–Tornion seutukunta,19724,10235.0,9532.0,2069.0
-86,320,Kemijärvi,kaupunki,suomi,Kemijärven keskustaajama,Lappi,Itä-Lapin seutukunta,7059,3931.15,3504.37,2.0
-87,241,Keminmaa,kunta,suomi,Laurila,Lappi,Kemi–Tornion seutukunta,7888,64812.0,62717.0,126.0
-88,322,Kemiönsaari,kunta,"ruotsi, suomi",Kemiön kirkonkylä,Varsinais-Suomi,Turunmaan seutukunta,6638,69780.0,68690.0,97.0
-89,244,Kempele,kunta,suomi,Asemanseutu,Pohjois-Pohjanmaa,Oulun seutukunta,19237,11031.0,11014.0,1747.0
-90,245,Kerava,kaupunki,suomi,Keravan keskustaajama,Uusimaa,Helsingin seutukunta,37350,3079.0,3063.0,1219.4
-91,249,Keuruu,kaupunki,suomi,Keuruun keskustaajama,Keski-Suomi,Keuruun seutukunta,9343,1430.56,1257.97,74.0
-92,250,Kihniö,kunta,suomi,Kihniön kirkonkylä,Pirkanmaa,Luoteis-Pirkanmaan seutukunta,1812,39050.0,35722.0,51.0
-93,256,Kinnula,kunta,suomi,Kinnulan kirkonkylä,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,1570,49573.0,46020.0,34.0
-94,257,Kirkkonummi,kunta,"suomi, ruotsi",Kirkkonummen keskusta,Uusimaa,Helsingin seutukunta,40654,39354.0,36623.0,111.0
-95,260,Kitee,kaupunki,suomi,Kiteen keskustaajama,Pohjois-Karjala,Keski-Karjalan seutukunta,9853,1724.38,1253.82,79.0
-96,261,Kittilä,kunta,suomi,Kittilän kirkonkylä,Lappi,Tunturi-Lapin seutukunta,6554,8263.15,8095.28,8.0
-97,263,Kiuruvesi,kaupunki,suomi,Kiuruveden keskustaajama,Pohjois-Savo,Ylä-Savon seutukunta,7718,1422.9,1328.17,58.0
-98,265,Kivijärvi,kunta,suomi,Kivijärven kirkonkylä,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,1078,59988.0,48396.0,22.0
-99,271,Kokemäki,kaupunki,suomi,Tulkkila,Satakunta,Porin seutukunta,6939,53126.0,48041.0,144.0
-100,272,Kokkola,kaupunki,"suomi, ruotsi",Kokkolan keskustaajama,Keski-Pohjanmaa,Kokkolan seutukunta,48055,1492.45,1445.96,332.0
-101,273,Kolari,kunta,suomi,Kolarin kirkonkylä,Lappi,Tunturi-Lapin seutukunta,3955,2617.74,2559.29,15.0
-102,275,Konnevesi,kunta,suomi,Konneveden kirkonkylä,Keski-Suomi,Äänekosken seutukunta,2573,68085.0,51294.0,5.0
-103,276,Kontiolahti,kunta,suomi,Kontiolahden kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,15123,1029.82,79964.0,189.0
-104,280,Korsnäs,kunta,"ruotsi, suomi",Korsnäsin kirkonkylä,Pohjanmaa,Vaasan seutukunta,2043,23980.0,23603.0,87.0
-105,284,Koski Tl,kunta,suomi,Kosken Tl kirkonkylä,Varsinais-Suomi,Loimaan seutukunta,2253,19242.0,19150.0,118.0
-106,285,Kotka,kaupunki,suomi,Kotkan keskustaajama,Kymenlaakso,Kotka–Haminan seutukunta,50891,27777.0,27195.0,1871.0
-107,286,Kouvola,kaupunki,suomi,Kouvolan keskustaajama,Kymenlaakso,Kouvolan seutukunta,80010,2883.29,2557.7,313.0
-108,287,Kristiinankaupunki,kaupunki,"ruotsi, suomi",Kristiinankaupungin keskustaajama,Pohjanmaa,Suupohjan rannikkoseutu,6325,69772.0,68325.0,93.0
-109,288,Kruunupyy,kunta,"ruotsi, suomi",Kruunupyyn kirkonkylä,Pohjanmaa,Jakobstadsregionen,6436,75269.0,71287.0,9.0
-110,290,Kuhmo,kaupunki,suomi,Kuhmon keskustaajama,Kainuu,Kehys-Kainuun seutukunta,7852,5456.87,4806.45,16.0
-111,291,Kuhmoinen,kunta,suomi,Kuhmoisten kirkonkylä,Pirkanmaa,Tampereen seutukunta,2140,93669.0,66094.0,32.0
-112,295,Kumlinge,kunta,ruotsi,Kumlinge,Ahvenanmaa,Ålands skärgård,307,9944.0,9907.0,31.0
-113,297,Kuopio,kaupunki,suomi,Kuopion keskustaajama,Pohjois-Savo,Kuopion seutukunta,121383,4326.35,3241.05,375.0
-114,300,Kuortane,kunta,suomi,Kuortaneen kirkonkylä,Etelä-Pohjanmaa,Kuusiokuntien seutukunta,3486,48485.0,46237.0,75.0
-115,301,Kurikka,kaupunki,suomi,Kurikan keskustaajama,Etelä-Pohjanmaa,Seinäjoen seutukunta,20035,1743.91,1724.63,116.0
-116,304,Kustavi,kunta,suomi,Kustavin kirkonkylä,Varsinais-Suomi,Vakka-Suomen seutukunta,965,16767.0,16584.0,58.0
-117,305,Kuusamo,kaupunki,suomi,Kuusamon keskustaajama,Pohjois-Pohjanmaa,Koillismaan seutukunta,15128,5808.98,4978.57,3.0
-118,312,Kyyjärvi,kunta,suomi,Kyyjärven kirkonkylä,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,1219,46961.0,44818.0,27.0
-119,316,Kärkölä,kunta,suomi,Järvelä,Päijät-Häme,Lahden seutukunta,4242,25930.0,25650.0,165.0
-120,317,Kärsämäki,kunta,suomi,Kärsämäen kirkonkylä,Pohjois-Pohjanmaa,Nivala–Haapajärven seutukunta,2506,70142.0,69650.0,36.0
-121,318,Kökar,kunta,ruotsi,Karlby,Ahvenanmaa,Ålands skärgård,225,6394.0,6357.0,35.0
-122,398,Lahti,kaupunki,suomi,Lahden keskustaajama,Päijät-Häme,Lahden seutukunta,120050,51763.0,45949.0,2613.0
-123,399,Laihia,kunta,suomi,Laihian kirkonkylä,Pohjanmaa,Vaasan seutukunta,7910,50844.0,50515.0,157.0
-124,400,Laitila,kaupunki,suomi,Laitilan keskustaajama,Varsinais-Suomi,Vakka-Suomen seutukunta,8500,54533.0,53187.0,16.0
-125,407,Lapinjärvi,kunta,"suomi, ruotsi",Lapinjärven kirkonkylä,Uusimaa,Loviisan seutukunta,2550,33931.0,32989.0,77.0
-126,402,Lapinlahti,kunta,suomi,Lapinlahden kirkonkylä,Pohjois-Savo,Ylä-Savon seutukunta,9195,1245.16,1096.7,84.0
-127,403,Lappajärvi,kunta,suomi,Lappajärven kirkonkylä,Etelä-Pohjanmaa,Järviseudun seutukunta,2860,52373.0,42089.0,68.0
-128,405,Lappeenranta,kaupunki,suomi,Lappeenrannan keskustaajama,Etelä-Karjala,Lappeenrannan seutukunta,72231,1723.57,1433.97,504.0
-129,408,Lapua,kaupunki,suomi,Lapuan keskustaajama,Etelä-Pohjanmaa,Seinäjoen seutukunta,14259,75078.0,73716.0,193.0
-130,410,Laukaa,kunta,suomi,Laukaan kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,18843,82560.0,64851.0,291.0
-131,416,Lemi,kunta,suomi,Lemin kirkonkylä,Etelä-Karjala,Lappeenrannan seutukunta,2914,26248.0,21796.0,134.0
-132,417,Lemland,kunta,ruotsi,Söderby,Ahvenanmaa,Ålands landsbygd,2140,11410.0,11322.0,189.0
-133,418,Lempäälä,kunta,suomi,Lempäälän kirkonkylä,Pirkanmaa,Tampereen seutukunta,24453,30706.0,26958.0,907.0
-134,420,Leppävirta,kunta,suomi,Leppävirran kirkonkylä,Pohjois-Savo,Varkauden seutukunta,9267,1519.64,1135.99,82.0
-135,421,Lestijärvi,kunta,suomi,Lestijärven kirkonkylä,Keski-Pohjanmaa,Kaustisen seutukunta,717,55885.0,48002.0,15.0
-136,422,Lieksa,kaupunki,suomi,Lieksan keskustaajama,Pohjois-Karjala,Pielisen Karjalan seutukunta,10471,4067.7,3417.86,31.0
-137,423,Lieto,kaupunki,suomi,Liedon kirkonkylä,Varsinais-Suomi,Turun seutukunta,20415,30256.0,30054.0,679.0
-138,425,Liminka,kunta,suomi,Limingan kirkonkylä,Pohjois-Pohjanmaa,Oulun seutukunta,10264,64263.0,63727.0,161.0
-139,426,Liperi,kunta,suomi,Liperin kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,11978,1161.23,72720.0,165.0
-140,444,Lohja,kaupunki,"suomi, ruotsi",Lohjan keskustaajama,Uusimaa,Helsingin seutukunta,46020,1109.73,93944.0,49.0
-141,430,Loimaa,kaupunki,suomi,Loimaan keskustaajama,Varsinais-Suomi,Loimaan seutukunta,15517,85185.0,84806.0,183.0
-142,433,Loppi,kunta,suomi,Lopen kirkonkylä,Kanta-Häme,Riihimäen seutukunta,7815,65597.0,59769.0,131.0
-143,434,Loviisa,kaupunki,"suomi, ruotsi",Loviisan keskustaajama,Uusimaa,Loviisan seutukunta,14680,84564.0,81981.0,179.0
-144,435,Luhanka,kunta,suomi,Luhangan kirkonkylä,Keski-Suomi,Joutsan seutukunta,694,31328.0,21451.0,32.0
-145,436,Lumijoki,kunta,suomi,Lumijoen kirkonkylä,Pohjois-Pohjanmaa,Oulun seutukunta,2033,21436.0,21412.0,95.0
-146,438,Lumparland,kunta,ruotsi,Klemetsby,Ahvenanmaa,Ålands landsbygd,371,3639.0,3635.0,102.0
-147,440,Luoto,kunta,"ruotsi, suomi",Holm,Pohjanmaa,Jakobstadsregionen,5696,17654.0,14245.0,40.0
-148,441,Luumäki,kunta,suomi,Taavetti,Etelä-Karjala,Lappeenrannan seutukunta,4448,85983.0,75009.0,59.0
-149,475,Maalahti,kunta,"ruotsi, suomi",Maalahden kirkonkylä,Pohjanmaa,Vaasan seutukunta,5493,52583.0,52175.0,105.0
-150,478,Maarianhamina,kaupunki,ruotsi,Maarianhaminan keskustaajama,Ahvenanmaa,Mariehamns stad,11776,1181.0,1181.0,9971.0
-151,480,Marttila,kunta,suomi,Marttilan kirkonkylä,Varsinais-Suomi,Loimaan seutukunta,1967,19599.0,19531.0,101.0
-152,481,Masku,kunta,suomi,Maskun kirkonkylä,Varsinais-Suomi,Turun seutukunta,9656,17600.0,17489.0,552.0
-153,483,Merijärvi,kunta,suomi,Merijärven kirkonkylä,Pohjois-Pohjanmaa,Ylivieskan seutukunta,1070,23163.0,22997.0,47.0
-154,484,Merikarvia,kunta,suomi,Merikarvian kirkonkylä,Satakunta,Porin seutukunta,3033,45074.0,44616.0,68.0
-155,489,Miehikkälä,kunta,suomi,Miehikkälän kirkonkylä,Kymenlaakso,Kotka–Haminan seutukunta,1819,44037.0,42251.0,43.0
-156,491,Mikkeli,kaupunki,suomi,Mikkelin keskustaajama,Etelä-Savo,Mikkelin seutukunta,52077,3229.57,2548.18,204.0
-157,494,Muhos,kunta,suomi,Muhoksen kirkonkylä,Pohjois-Pohjanmaa,Oulun seutukunta,8906,79810.0,78458.0,114.0
-158,495,Multia,kunta,suomi,Multian kirkonkylä,Keski-Suomi,Keuruun seutukunta,1483,76563.0,73324.0,2.0
-159,498,Muonio,kunta,suomi,Muonion kirkonkylä,Lappi,Tunturi-Lapin seutukunta,2309,2037.78,1904.05,12.0
-160,499,Mustasaari,kunta,"ruotsi, suomi",Sepänkylä,Pohjanmaa,Vaasan seutukunta,19615,86656.0,84917.0,231.0
-161,500,Muurame,kunta,suomi,Muuramen kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,10427,19406.0,14406.0,724.0
-162,503,Mynämäki,kunta,suomi,Mynämäen kirkonkylä,Varsinais-Suomi,Turun seutukunta,7603,52232.0,51982.0,146.0
-163,504,Myrskylä,kunta,"suomi, ruotsi",Myrskylän kirkonkylä,Uusimaa,Porvoon seutukunta,1805,20635.0,20044.0,9.0
-164,505,Mäntsälä,kunta,suomi,Mäntsälän kirkonkylä,Uusimaa,Helsingin seutukunta,21036,59611.0,58085.0,362.0
-165,508,Mänttä-Vilppula,kaupunki,suomi,Mäntän keskustaajama,Pirkanmaa,Ylä-Pirkanmaan seutukunta,9490,65709.0,53484.0,177.0
-166,507,Mäntyharju,kunta,suomi,Mäntyharjun asemanseutu,Etelä-Savo,Mikkelin seutukunta,5625,1210.98,98121.0,57.0
-167,529,Naantali,kaupunki,suomi,Naantalin keskustaajama,Varsinais-Suomi,Turun seutukunta,19613,31643.0,31257.0,627.0
-168,531,Nakkila,kunta,suomi,Nakkilan kirkonkylä,Satakunta,Porin seutukunta,5138,18488.0,18293.0,281.0
-169,535,Nivala,kaupunki,suomi,Nivalan keskustaajama,Pohjois-Pohjanmaa,Nivala–Haapajärven seutukunta,10423,53624.0,52718.0,198.0
-170,536,Nokia,kaupunki,suomi,Nokian keskustaajama,Pirkanmaa,Tampereen seutukunta,35176,34784.0,28831.0,122.0
-171,538,Nousiainen,kunta,suomi,Nummi,Varsinais-Suomi,Turun seutukunta,4679,19949.0,19893.0,235.0
-172,541,Nurmes,kaupunki,suomi,Nurmeksen keskustaajama,Pohjois-Karjala,Pielisen Karjalan seutukunta,9640,2692.85,2401.36,39.0
-173,543,Nurmijärvi,kunta,suomi,Nurmijärven kirkonkylä,Uusimaa,Helsingin seutukunta,44358,36726.0,36190.0,1226.0
-174,545,Närpiö,kaupunki,"ruotsi, suomi",Närpiön keskustaajama,Pohjanmaa,Suupohjan rannikkoseutu,9597,98548.0,97782.0,98.0
-175,560,Orimattila,kaupunki,suomi,Orimattilan keskustaajama,Päijät-Häme,Lahden seutukunta,15774,81401.0,78526.0,201.0
-176,561,Oripää,kunta,suomi,Oripään kirkonkylä,Varsinais-Suomi,Loimaan seutukunta,1341,11783.0,11775.0,114.0
-177,562,Orivesi,kaupunki,suomi,Oriveden keskustaajama,Pirkanmaa,Tampereen seutukunta,8980,96008.0,79963.0,112.0
-178,563,Oulainen,kaupunki,suomi,Oulaisten keskustaajama,Pohjois-Pohjanmaa,Ylivieskan seutukunta,7079,59754.0,58784.0,12.0
-179,564,Oulu,kaupunki,suomi,Oulun keskustaajama,Pohjois-Pohjanmaa,Oulun seutukunta,209934,3052.77,2972.45,706.0
-180,309,Outokumpu,kaupunki,suomi,Outokummun keskustaajama,Pohjois-Karjala,Joensuun seutukunta,6525,58406.0,44586.0,146.0
-181,576,Padasjoki,kunta,suomi,Padasjoen kirkonkylä,Päijät-Häme,Lahden seutukunta,2784,72981.0,52309.0,53.0
-182,577,Paimio,kaupunki,suomi,Vista,Varsinais-Suomi,Turun seutukunta,11127,24004.0,23851.0,467.0
-183,578,Paltamo,kunta,suomi,Paltamon kirkonkylä,Kainuu,Kajaanin seutukunta,3139,1139.74,91879.0,34.0
-184,445,Parainen,kaupunki,"ruotsi, suomi",Paraisten keskustaajama,Varsinais-Suomi,Turunmaan seutukunta,15096,89390.0,88404.0,171.0
-185,580,Parikkala,kunta,suomi,Parikkalan kirkonkylä,Etelä-Karjala,Imatran seutukunta,4541,76071.0,59191.0,77.0
-186,581,Parkano,kaupunki,suomi,Parkanon keskustaajama,Pirkanmaa,Luoteis-Pirkanmaan seutukunta,6274,90957.0,85319.0,74.0
-187,599,Pedersören kunta,kunta,"ruotsi, suomi",Pännäinen,Pohjanmaa,Jakobstadsregionen,11167,82605.0,79426.0,141.0
-188,583,Pelkosenniemi,kunta,suomi,Pelkosenniemen kirkonkylä,Lappi,Itä-Lapin seutukunta,931,1881.82,1836.4,5.0
-189,854,Pello,kunta,suomi,Pellon kirkonkylä,Lappi,Torniolaakson seutukunta,3265,1863.72,1737.73,19.0
-190,584,Perho,kunta,suomi,Perhon kirkonkylä,Keski-Pohjanmaa,Kaustisen seutukunta,2676,77519.0,74787.0,36.0
-191,588,Pertunmaa,kunta,suomi,Pertunmaan kirkonkylä,Etelä-Savo,Mikkelin seutukunta,1624,45418.0,37443.0,43.0
-192,592,Petäjävesi,kunta,suomi,Petäjäveden kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,3676,49541.0,45642.0,81.0
-193,593,Pieksämäki,kaupunki,suomi,Pieksämäen keskustaajama,Etelä-Savo,Pieksämäen seutukunta,17216,1836.24,1569.03,11.0
-194,595,Pielavesi,kunta,suomi,Pielaveden kirkonkylä,Pohjois-Savo,Ylä-Savon seutukunta,4214,1406.51,1153.23,37.0
-195,598,Pietarsaari,kaupunki,"ruotsi, suomi",Pietarsaaren keskustaajama,Pohjanmaa,Jakobstadsregionen,19183,9188.0,8845.0,2169.0
-196,601,Pihtipudas,kunta,suomi,Pihtiputaan kirkonkylä,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,3856,1247.5,1074.92,36.0
-197,604,Pirkkala,kunta,suomi,Naistenmatka,Pirkanmaa,Tampereen seutukunta,20281,10397.0,8142.0,2491.0
-198,607,Polvijärvi,kunta,suomi,Polvijärven kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,4137,95833.0,80491.0,51.0
-199,608,Pomarkku,kunta,suomi,Pomarkun kirkonkylä,Satakunta,Porin seutukunta,1997,33205.0,30119.0,66.0
-200,609,Pori,kaupunki,suomi,Porin keskustaajama,Satakunta,Porin seutukunta,83297,1217.99,1156.16,72.0
-201,611,Pornainen,kunta,suomi,Pornaisten kirkonkylä,Uusimaa,Helsingin seutukunta,5026,15009.0,14653.0,343.0
-202,638,Porvoo,kaupunki,"suomi, ruotsi",Porvoon keskustaajama,Uusimaa,Porvoon seutukunta,51332,66472.0,65456.0,784.0
-203,614,Posio,kunta,suomi,Ahola,Lappi,Itä-Lapin seutukunta,3035,3544.65,3039.73,1.0
-204,615,Pudasjärvi,kaupunki,suomi,Kurenalus,Pohjois-Pohjanmaa,Oulunkaaren seutukunta,7670,5867.36,5638.35,14.0
-205,616,Pukkila,kunta,suomi,Pukkilan kirkonkylä,Uusimaa,Porvoon seutukunta,1835,14594.0,14509.0,126.0
-206,619,Punkalaidun,kunta,suomi,Punkalaitumen kirkonkylä,Pirkanmaa,Lounais-Pirkanmaan seutukunta,2707,36405.0,36110.0,75.0
-207,620,Puolanka,kunta,suomi,Puolangan kirkonkylä,Kainuu,Kehys-Kainuun seutukunta,2405,2598.71,2461.21,1.0
-208,623,Puumala,kunta,suomi,Puumalan kirkonkylä,Etelä-Savo,Mikkelin seutukunta,2121,1237.75,79411.0,27.0
-209,624,Pyhtää,kunta,"suomi, ruotsi",Siltakylä,Kymenlaakso,Kotka–Haminan seutukunta,5128,33640.0,32463.0,158.0
-210,625,Pyhäjoki,kunta,suomi,Pyhäjoen kirkonkylä,Pohjois-Pohjanmaa,Raahen seutukunta,3028,54921.0,54321.0,56.0
-211,626,Pyhäjärvi,kaupunki,suomi,Pyhäsalmi,Pohjois-Pohjanmaa,Nivala–Haapajärven seutukunta,4918,1459.0,1310.31,38.0
-212,630,Pyhäntä,kunta,suomi,Pyhännän kirkonkylä,Pohjois-Pohjanmaa,Haapaveden-Siikalatvan seutukunta,1659,84675.0,81020.0,2.0
-213,631,Pyhäranta,kunta,suomi,Rohdainen,Varsinais-Suomi,Vakka-Suomen seutukunta,1972,14838.0,14351.0,137.0
-214,635,Pälkäne,kunta,suomi,Onkkaala,Pirkanmaa,Tampereen seutukunta,6428,73812.0,56072.0,115.0
-215,636,Pöytyä,kunta,suomi,Kyrö ja Riihikoski,Varsinais-Suomi,Loimaan seutukunta,8218,77355.0,74995.0,11.0
-216,678,Raahe,kaupunki,suomi,Raahen keskustaajama,Pohjois-Pohjanmaa,Raahen seutukunta,24286,1028.22,1015.33,239.0
-217,710,Raasepori,kaupunki,"ruotsi, suomi",Tammisaaren keskustaajama,Uusimaa,Raaseporin seutukunta,27445,1215.45,1148.34,239.0
-218,680,Raisio,kaupunki,suomi,Raision keskustaajama,Varsinais-Suomi,Turun seutukunta,25025,4934.0,4876.0,5132.0
-219,681,Rantasalmi,kunta,suomi,Rantasalmen kirkonkylä,Etelä-Savo,Savonlinnan seutukunta,3341,92518.0,55931.0,6.0
-220,683,Ranua,kunta,suomi,Ranuan kirkonkylä,Lappi,Rovaniemen seutukunta,3653,3694.79,3453.39,11.0
-221,684,Rauma,kaupunki,suomi,Rauman keskustaajama,Satakunta,Rauman seutukunta,38838,51010.0,49635.0,782.0
-222,686,Rautalampi,kunta,suomi,Rautalammin kirkonkylä,Pohjois-Savo,Sisä-Savon seutukunta,3007,76199.0,53896.0,56.0
-223,687,Rautavaara,kunta,suomi,Rautavaaran kirkonkylä,Pohjois-Savo,Koillis-Savon seutukunta,1495,1235.25,1150.64,13.0
-224,689,Rautjärvi,kunta,suomi,Simpele,Etelä-Karjala,Imatran seutukunta,3100,40190.0,35147.0,88.0
-225,691,Reisjärvi,kunta,suomi,Reisjärven kirkonkylä,Pohjois-Pohjanmaa,Nivala–Haapajärven seutukunta,2677,50332.0,47462.0,56.0
-226,694,Riihimäki,kaupunki,suomi,Riihimäen keskustaajama,Kanta-Häme,Riihimäen seutukunta,28515,12555.0,12101.0,2356.0
-227,697,Ristijärvi,kunta,suomi,Ristijärven kirkonkylä,Kainuu,Kajaanin seutukunta,1197,89794.0,83580.0,14.0
-228,698,Rovaniemi,kaupunki,suomi,Rovaniemen keskustaajama,Lappi,Rovaniemen seutukunta,64022,8016.62,7581.37,84.0
-229,700,Ruokolahti,kunta,suomi,Rasila,Etelä-Karjala,Imatran seutukunta,4883,1219.85,94210.0,52.0
-230,702,Ruovesi,kunta,suomi,Ruoveden kirkonkylä,Pirkanmaa,Ylä-Pirkanmaan seutukunta,4152,95017.0,77699.0,53.0
-231,704,Rusko,kunta,suomi,Ruskon kirkonkylä,Varsinais-Suomi,Turun seutukunta,6427,12790.0,12716.0,505.0
-232,707,Rääkkylä,kunta,suomi,Rääkkylän kirkonkylä,Pohjois-Karjala,Keski-Karjalan seutukunta,2003,69968.0,42778.0,47.0
-233,729,Saarijärvi,kaupunki,suomi,Saarijärven keskustaajama,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,9100,1422.72,1251.72,73.0
-234,732,Salla,kunta,suomi,Sallan kirkonkylä,Lappi,Itä-Lapin seutukunta,3357,5872.41,5729.83,6.0
-235,734,Salo,kaupunki,suomi,Salon keskustaajama,Varsinais-Suomi,Salon seutukunta,51339,2061.84,1987.47,258.0
-236,736,Saltvik,kunta,ruotsi,Nääs,Ahvenanmaa,Ålands landsbygd,1818,15962.0,15225.0,119.0
-237,790,Sastamala,kaupunki,suomi,Vammalan keskustaajama,Pirkanmaa,Lounais-Pirkanmaan seutukunta,23901,1531.74,1429.15,167.0
-238,738,Sauvo,kunta,suomi,Sauvon kirkonkylä,Varsinais-Suomi,Turun seutukunta,2949,25397.0,25274.0,117.0
-239,739,Savitaipale,kunta,suomi,Savitaipaleen kirkonkylä,Etelä-Karjala,Lappeenrannan seutukunta,3247,69056.0,53912.0,6.0
-240,740,Savonlinna,kaupunki,suomi,Savonlinnan keskustaajama,Etelä-Savo,Savonlinnan seutukunta,32349,3597.69,2238.11,145.0
-241,742,Savukoski,kunta,suomi,Savukosken kirkonkylä,Lappi,Itä-Lapin seutukunta,1003,6496.57,6440.01,16.0
-242,743,Seinäjoki,kaupunki,suomi,Seinäjoen keskustaajama,Etelä-Pohjanmaa,Seinäjoen seutukunta,64827,1469.22,1431.77,453.0
-243,746,Sievi,kunta,suomi,Sievin kirkonkylä,Pohjois-Pohjanmaa,Ylivieskan seutukunta,4801,79988.0,78640.0,61.0
-244,747,Siikainen,kunta,suomi,Siikaisten kirkonkylä,Satakunta,Pohjois-Satakunnan seutukunta,1338,49131.0,46330.0,29.0
-245,748,Siikajoki,kunta,suomi,Ruukki,Pohjois-Pohjanmaa,Raahen seutukunta,4984,1062.61,1053.89,47.0
-246,791,Siikalatva,kunta,suomi,Pulkkilan kirkonkylä,Pohjois-Pohjanmaa,Haapaveden-Siikalatvan seutukunta,5093,2229.88,2173.27,23.0
-247,749,Siilinjärvi,kunta,suomi,Siilinjärven kirkonkylä,Pohjois-Savo,Kuopion seutukunta,21363,50781.0,40097.0,533.0
-248,751,Simo,kunta,suomi,Simon asemanseutu,Lappi,Kemi–Tornion seutukunta,2903,1466.55,1446.59,2.0
-249,753,Sipoo,kunta,"suomi, ruotsi",Nikkilä,Uusimaa,Helsingin seutukunta,22269,34267.0,33967.0,656.0
-250,755,Siuntio,kunta,"suomi, ruotsi",Siuntion asemanseutu,Uusimaa,Helsingin seutukunta,6237,24995.0,24111.0,259.0
-251,758,Sodankylä,kunta,"suomi, pohjoissaame",Sodankylän kirkonkylä,Lappi,Pohjois-Lapin seutukunta,8178,12415.32,11692.96,7.0
-252,759,Soini,kunta,suomi,Soinin kirkonkylä,Etelä-Pohjanmaa,Kuusiokuntien seutukunta,1962,57422.0,55195.0,36.0
-253,761,Somero,kaupunki,suomi,Someron keskustaajama,Varsinais-Suomi,Salon seutukunta,8541,69768.0,66798.0,128.0
-254,762,Sonkajärvi,kunta,suomi,Sonkajärven kirkonkylä,Pohjois-Savo,Ylä-Savon seutukunta,3768,1576.79,1465.93,26.0
-255,765,Sotkamo,kunta,suomi,Sotkamon kirkonkylä,Kainuu,Kajaanin seutukunta,10344,2951.84,2648.97,39.0
-256,766,Sottunga,kunta,ruotsi,Sottunga,Ahvenanmaa,Ålands skärgård,113,2806.0,2804.0,4.0
-257,768,Sulkava,kunta,suomi,Sulkavan kirkonkylä,Etelä-Savo,Savonlinnan seutukunta,2412,76920.0,58447.0,41.0
-258,771,Sund,kunta,ruotsi,Björby,Ahvenanmaa,Ålands landsbygd,1022,11249.0,10820.0,94.0
-259,777,Suomussalmi,kunta,suomi,Ämmänsaari,Kainuu,Kehys-Kainuun seutukunta,7459,5857.59,5270.43,14.0
-260,778,Suonenjoki,kaupunki,suomi,Suonenjoen keskustaajama,Pohjois-Savo,Sisä-Savon seutukunta,6857,86234.0,71356.0,96.0
-261,781,Sysmä,kunta,suomi,Sysmän kirkonkylä,Päijät-Häme,Lahden seutukunta,3535,93607.0,66622.0,53.0
-262,783,Säkylä,kunta,suomi,Säkylän kirkonkylä,Satakunta,Rauman seutukunta,6556,52781.0,40685.0,161.0
-263,831,Taipalsaari,kunta,suomi,Taipalsaaren kirkonkylä,Etelä-Karjala,Lappeenrannan seutukunta,4604,76195.0,34469.0,134.0
-264,832,Taivalkoski,kunta,suomi,Taivalkosken kirkonkylä,Pohjois-Pohjanmaa,Koillismaan seutukunta,3875,2650.61,2438.21,16.0
-265,833,Taivassalo,kunta,suomi,Taivassalon kirkonkylä,Varsinais-Suomi,Vakka-Suomen seutukunta,1687,14200.0,14033.0,12.0
-266,834,Tammela,kunta,suomi,Tammelan kirkonkylä,Kanta-Häme,Forssan seutukunta,5937,71515.0,64061.0,93.0
-267,837,Tampere,kaupunki,suomi,Tampereen keskustaajama,Pirkanmaa,Tampereen seutukunta,245027,68959.0,52489.0,4668.0
-268,844,Tervo,kunta,suomi,Tervon kirkonkylä,Pohjois-Savo,Sisä-Savon seutukunta,1462,49430.0,34775.0,42.0
-269,845,Tervola,kunta,suomi,Tervolan kirkonkylä,Lappi,Kemi–Tornion seutukunta,2858,1592.05,1559.71,18.0
-270,846,Teuva,kunta,suomi,Teuvan kirkonkylä,Etelä-Pohjanmaa,Suupohjan seutukunta,4931,55605.0,55473.0,89.0
-271,848,Tohmajärvi,kunta,suomi,Kemie,Pohjois-Karjala,Keski-Karjalan seutukunta,4213,89536.0,83775.0,5.0
-272,849,Toholampi,kunta,suomi,Toholammin kirkonkylä,Keski-Pohjanmaa,Kaustisen seutukunta,2951,61705.0,60898.0,48.0
-273,850,Toivakka,kunta,suomi,Toivakan kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,2416,41394.0,36146.0,67.0
-274,851,Tornio,kaupunki,suomi,Tornion keskustaajama,Lappi,Kemi–Tornion seutukunta,21326,1227.86,1188.7,179.0
-275,853,Turku,kaupunki,"suomi, ruotsi",Turun keskustaajama,Varsinais-Suomi,Turun seutukunta,195047,24910.0,24563.0,7941.0
-276,857,Tuusniemi,kunta,suomi,Tuusniemen kirkonkylä,Pohjois-Savo,Koillis-Savon seutukunta,2411,69942.0,54318.0,44.0
-277,858,Tuusula,kunta,suomi,Hyrylä,Uusimaa,Helsingin seutukunta,40118,22545.0,21953.0,1827.0
-278,859,Tyrnävä,kunta,suomi,Tyrnävän kirkonkylä,Pohjois-Pohjanmaa,Oulun seutukunta,6602,49487.0,49182.0,134.0
-279,886,Ulvila,kaupunki,suomi,Vanhakylä,Satakunta,Porin seutukunta,12659,42251.0,40082.0,316.0
-280,887,Urjala,kunta,suomi,Urjalan kirkonkylä,Pirkanmaa,Etelä-Pirkanmaan seutukunta,4651,50541.0,47553.0,98.0
-281,889,Utajärvi,kunta,suomi,Utajärven kirkonkylä,Pohjois-Pohjanmaa,Oulunkaaren seutukunta,2562,1735.02,1669.47,15.0
-282,890,Utsjoki,kunta,"suomi, pohjoissaame",Utsjoen kirkonkylä,Lappi,Pohjois-Lapin seutukunta,1175,5372.0,5146.08,2.0
-283,892,Uurainen,kunta,suomi,Uuraisten kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,3618,37225.0,34798.0,104.0
-284,893,Uusikaarlepyy,kaupunki,"ruotsi, suomi",Uudenkaarlepyyn keskustaajama,Pohjanmaa,Jakobstadsregionen,7518,73721.0,73271.0,103.0
-285,895,Uusikaupunki,kaupunki,suomi,Uudenkaupungin keskustaajama,Varsinais-Suomi,Vakka-Suomen seutukunta,15403,55153.0,50320.0,306.0
-286,785,Vaala,kunta,suomi,Vaalan kirkonkylä,Pohjois-Pohjanmaa,Oulunkaaren seutukunta,2679,1763.57,1302.38,21.0
-287,905,Vaasa,kaupunki,"suomi, ruotsi",Vaasan keskustaajama,Pohjanmaa,Vaasan seutukunta,67067,36954.0,36473.0,1839.0
-288,908,Valkeakoski,kaupunki,suomi,Valkeakosken keskustaajama,Pirkanmaa,Etelä-Pirkanmaan seutukunta,20717,37203.0,27205.0,762.0
-289,92,Vantaa,kaupunki,"suomi, ruotsi",Tikkurila,Uusimaa,Helsingin seutukunta,241061,24035.0,23838.0,1011.2
-290,915,Varkaus,kaupunki,suomi,Varkauden keskustaajama,Pohjois-Savo,Varkauden seutukunta,19917,52448.0,38562.0,516.0
-291,918,Vehmaa,kunta,suomi,Vinkkilä,Varsinais-Suomi,Vakka-Suomen seutukunta,2254,19206.0,18888.0,119.0
-292,921,Vesanto,kunta,suomi,Vesannon kirkonkylä,Pohjois-Savo,Sisä-Savon seutukunta,1928,56981.0,42263.0,46.0
-293,922,Vesilahti,kunta,suomi,Vesilahden kirkonkylä,Pirkanmaa,Tampereen seutukunta,4474,35393.0,30104.0,149.0
-294,924,Veteli,kunta,suomi,Kainu,Keski-Pohjanmaa,Kaustisen seutukunta,2991,52091.0,50213.0,6.0
-295,925,Vieremä,kunta,suomi,Vieremän kirkonkylä,Pohjois-Savo,Ylä-Savon seutukunta,3473,97338.0,92528.0,38.0
-296,927,Vihti,kunta,suomi,Nummela,Uusimaa,Helsingin seutukunta,29162,56706.0,52201.0,559.0
-297,931,Viitasaari,kaupunki,suomi,Viitasaaren keskustaajama,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,6042,1589.12,1248.54,48.0
-298,934,Vimpeli,kunta,suomi,Vimpelin kirkonkylä,Etelä-Pohjanmaa,Järviseudun seutukunta,2752,32879.0,28732.0,96.0
-299,935,Virolahti,kunta,suomi,Virojoki,Kymenlaakso,Kotka–Haminan seutukunta,3014,37624.0,37199.0,81.0
-300,936,Virrat,kaupunki,suomi,Virtain keskustaajama,Pirkanmaa,Ylä-Pirkanmaan seutukunta,6445,1299.07,1162.68,55.0
-301,941,Vårdö,kunta,ruotsi,Vårdö,Ahvenanmaa,Ålands skärgård,461,10210.0,10171.0,45.0
-302,946,Vöyri,kunta,"ruotsi, suomi",Vöyrin kirkonkylä,Pohjanmaa,Vaasan seutukunta,6356,79133.0,78214.0,81.0
-303,976,Ylitornio,kunta,suomi,Ylitornion kirkonkylä,Lappi,Torniolaakson seutukunta,3812,2212.77,2028.29,19.0
-304,977,Ylivieska,kaupunki,suomi,Ylivieskan keskustaajama,Pohjois-Pohjanmaa,Ylivieskan seutukunta,15345,57420.0,56983.0,269.0
-305,980,Ylöjärvi,kaupunki,suomi,Ylöjärven kirkonkylä,Pirkanmaa,Tampereen seutukunta,33730,1323.96,1115.75,302.0
-306,981,Ypäjä,kunta,suomi,Ypäjän kirkonkylä,Kanta-Häme,Forssan seutukunta,2266,18325.0,18276.0,124.0
-307,989,Ähtäri,kaupunki,suomi,Ähtärin keskustaajama,Etelä-Pohjanmaa,Kuusiokuntien seutukunta,5463,91087.0,80582.0,68.0
-308,992,Äänekoski,kaupunki,suomi,Äänekosken keskustaajama,Keski-Suomi,Äänekosken seutukunta,18249,1138.38,88462.0,206.0
+,number,name,bid,city_or_mun,language,mun_center,province,subregion,population,area_total_km2,area_land_km2,population_density_km-2
+0,20,Akaa,2050864-5,kaupunki,suomi,Toijalan keskustaajama,Pirkanmaa,Etelä-Pirkanmaan seutukunta,16440,31438.0,29326.0,561.0
+1,5,Alajärvi,0177619-3,kaupunki,suomi,Alajärven keskustaajama,Etelä-Pohjanmaa,Järviseudun seutukunta,9270,1056.75,1008.77,92.0
+2,9,Alavieska,0184674-5,kunta,suomi,Alavieskan kirkonkylä,Pohjois-Pohjanmaa,Ylivieskan seutukunta,2484,25302.0,25150.0,99.0
+3,10,Alavus,0177736-4,kaupunki,suomi,Alavuden keskustaajama,Etelä-Pohjanmaa,Kuusiokuntien seutukunta,11210,1151.5,1087.24,103.0
+4,16,Asikkala,0145208-4,kunta,suomi,Vääksy,Päijät-Häme,Lahden seutukunta,8043,75555.0,56334.0,143.0
+5,18,Askola,9000162-0,kunta,suomi,Askolan kirkonkylä,Uusimaa,Porvoon seutukunta,4819,21803.0,21244.0,227.0
+6,19,Aura,0132103-3,kunta,suomi,Auran asemanseutu,Varsinais-Suomi,Loimaan seutukunta,3975,9558.0,9501.0,418.0
+7,35,Brändö,0204999-1,kunta,ruotsi,Åva,Ahvenanmaa,Ålands skärgård,444,10844.0,10818.0,41.0
+8,43,Eckerö,0144682-1,kunta,ruotsi,Överby,Ahvenanmaa,Ålands landsbygd,935,10918.0,10772.0,87.0
+9,46,Enonkoski,0163687-9,kunta,suomi,Enonkosken kirkonkylä,Etelä-Savo,Savonlinnan seutukunta,1355,41921.0,30555.0,44.0
+10,47,Enontekiö,0190662-1,kunta,"suomi, pohjoissaame",Hetta,Lappi,Tunturi-Lapin seutukunta,1808,8391.31,7953.44,2.0
+11,49,Espoo,0101263-6,kaupunki,"suomi, ruotsi",Espoon keskus,Uusimaa,Helsingin seutukunta,300748,33025.0,31234.0,9629.0
+12,50,Eura,0132239-4,kunta,suomi,Euran keskustaajama,Satakunta,Rauman seutukunta,11379,63020.0,57887.0,197.0
+13,51,Eurajoki,0132322-3,kunta,suomi,Eurajoen kirkonkylä,Satakunta,Rauman seutukunta,9250,52091.0,51500.0,18.0
+14,52,Evijärvi,0177804-1,kunta,suomi,Evijärven kirkonkylä,Etelä-Pohjanmaa,Järviseudun seutukunta,2376,39071.0,35415.0,67.0
+15,60,Finström,0205003-6,kunta,ruotsi,Godby,Ahvenanmaa,Ålands landsbygd,2597,13286.0,12332.0,211.0
+16,61,Forssa,0145626-1,kaupunki,suomi,Forssan keskustaajama,Kanta-Häme,Forssan seutukunta,16484,25336.0,24883.0,662.0
+17,62,Föglö,0282394-0,kunta,ruotsi,Degerby,Ahvenanmaa,Ålands skärgård,499,13499.0,13477.0,37.0
+18,65,Geta,0205012-4,kunta,ruotsi,Vestergeta,Ahvenanmaa,Ålands landsbygd,498,8747.0,8455.0,59.0
+19,69,Haapajärvi,0209756-3,kaupunki,suomi,Haapajärven keskustaajama,Pohjois-Pohjanmaa,Nivala–Haapajärven seutukunta,6784,78931.0,76642.0,89.0
+20,71,Haapavesi,0184872-4,kaupunki,suomi,Haapaveden keskustaajama,Pohjois-Pohjanmaa,Haapaveden-Siikalatvan seutukunta,6608,1086.53,1050.59,63.0
+21,72,Hailuoto,0184918-8,kunta,suomi,Hailuodon kirkonkylä,Pohjois-Pohjanmaa,Oulun seutukunta,955,20735.0,20566.0,46.0
+22,74,Halsua,0177826-0,kunta,suomi,Halsuan kirkonkylä,Keski-Pohjanmaa,Kaustisen seutukunta,1075,42834.0,41301.0,26.0
+23,75,Hamina,0242496-6,kaupunki,suomi,Haminan keskustaajama,Kymenlaakso,Kotka–Haminan seutukunta,19626,63371.0,60994.0,322.0
+24,76,Hammarland,0205014-0,kunta,ruotsi,Kattby,Ahvenanmaa,Ålands landsbygd,1636,14029.0,13855.0,118.0
+25,77,Hankasalmi,0174035-0,kunta,suomi,Hankasalmen kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,4650,68774.0,57169.0,81.0
+26,78,Hanko,0103166-9,kaupunki,"suomi, ruotsi",Hangon keskustaajama,Uusimaa,Raaseporin seutukunta,7934,11899.0,11746.0,675.0
+27,79,Harjavalta,0132585-1,kaupunki,suomi,Harjavallan keskustaajama,Satakunta,Porin seutukunta,6762,12774.0,12348.0,548.0
+28,81,Hartola,0163734-5,kunta,suomi,Hartolan kirkonkylä,Päijät-Häme,Lahden seutukunta,2604,67548.0,54281.0,48.0
+29,82,Hattula,0145801-3,kunta,suomi,Parola,Kanta-Häme,Hämeenlinnan seutukunta,9402,42739.0,35779.0,263.0
+30,86,Hausjärvi,0145997-2,kunta,suomi,Oitti,Kanta-Häme,Riihimäen seutukunta,8110,39877.0,38942.0,208.0
+31,111,Heinola,0178718-3,kaupunki,suomi,Heinolan keskustaajama,Päijät-Häme,Lahden seutukunta,18245,83928.0,67600.0,27.0
+32,90,Heinävesi,0164308-3,kunta,suomi,Heinäveden kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,3123,1319.57,1029.95,3.0
+33,91,Helsinki,0164308-3,kaupunki,"suomi, ruotsi",Helsingin keskustaajama,Uusimaa,Helsingin seutukunta,660821,21508.0,21419.0,3085.2
+34,97,Hirvensalmi,0164384-1,kunta,suomi,Hirvensalmen kirkonkylä,Etelä-Savo,Mikkelin seutukunta,2109,74659.0,46509.0,45.0
+35,98,Hollola,0146248-5,kunta,suomi,Salpakangas,Päijät-Häme,Lahden seutukunta,23104,72746.0,65123.0,355.0
+36,102,Huittinen,0203762-4,kaupunki,suomi,Lauttakylä,Satakunta,Porin seutukunta,9811,53955.0,53261.0,184.0
+37,103,Humppila,0146456-0,kunta,suomi,Humppilan asemanseutu,Kanta-Häme,Forssan seutukunta,2176,14861.0,14796.0,147.0
+38,105,Hyrynsalmi,0185075-2,kunta,suomi,Hyrynsalmen kirkonkylä,Kainuu,Kehys-Kainuun seutukunta,2106,1521.37,1421.25,15.0
+39,106,Hyvinkää,0125866-0,kaupunki,suomi,Hyvinkään keskustaajama,Uusimaa,Helsingin seutukunta,46858,33677.0,32269.0,1452.0
+40,108,Hämeenkyrö,0132947-3,kunta,suomi,Pappila,Pirkanmaa,Tampereen seutukunta,10291,50510.0,46399.0,222.0
+41,109,Hämeenlinna,0146921-4,kaupunki,suomi,Hämeenlinnan keskustaajama,Kanta-Häme,Hämeenlinnan seutukunta,67919,2031.57,1785.34,38.0
+42,139,Ii,2054621-1,kunta,suomi,Iin Hamina,Pohjois-Pohjanmaa,Oulunkaaren seutukunta,9916,1668.05,1615.72,61.0
+43,140,Iisalmi,9086071-6,kaupunki,suomi,Iisalmen keskustaajama,Pohjois-Savo,Ylä-Savon seutukunta,20946,87217.0,76299.0,275.0
+44,142,Iitti,0158766-7,kunta,suomi,Kausala,Päijät-Häme,Lahden seutukunta,6516,68709.0,58979.0,11.0
+45,143,Ikaalinen,0203797-4,kaupunki,suomi,Ikaalisten keskustaajama,Pirkanmaa,Luoteis-Pirkanmaan seutukunta,6832,84340.0,75048.0,91.0
+46,145,Ilmajoki,0178008-8,kunta,suomi,Ilmajoen kirkonkylä,Etelä-Pohjanmaa,Seinäjoen seutukunta,12321,57963.0,57674.0,214.0
+47,146,Ilomantsi,0167589-4,kunta,suomi,Ilomantsin kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,4585,3172.68,2763.38,17.0
+48,153,Imatra,0159216-7,kaupunki,suomi,Mansikkala,Etelä-Karjala,Imatran seutukunta,25430,19128.0,15499.0,1641.0
+49,148,Inari,0190758-7,kunta,"suomi, pohjoissaame, inarinsaame, koltansaame",Ivalo,Lappi,Pohjois-Lapin seutukunta,7009,17333.62,15058.35,5.0
+50,149,Inkoo,0126293-4,kunta,"ruotsi, suomi",Inkoon kirkonkylä,Uusimaa,Raaseporin seutukunta,5343,35800.0,34989.0,153.0
+51,151,Isojoki,0178071-5,kunta,suomi,Isojoen kirkonkylä,Etelä-Pohjanmaa,Suupohjan seutukunta,1898,64743.0,64238.0,3.0
+52,152,Isokyrö,0178131-2,kunta,suomi,Isonkyrön kirkonkylä,Etelä-Pohjanmaa,Seinäjoen seutukunta,4438,35691.0,35413.0,125.0
+53,165,Janakkala,0147510-4,kunta,suomi,Turenki,Kanta-Häme,Hämeenlinnan seutukunta,16365,58607.0,54741.0,299.0
+54,167,Joensuu,0242746-2,kaupunki,suomi,Joensuun keskustaajama,Pohjois-Karjala,Joensuun seutukunta,76790,2750.96,2381.73,322.0
+55,169,Jokioinen,0147645-7,kunta,suomi,Jokioisten keskustaajama,Kanta-Häme,Forssan seutukunta,5058,18194.0,18042.0,28.0
+56,170,Jomala,0205023-9,kunta,ruotsi,Prästgården,Ahvenanmaa,Ålands landsbygd,5572,14366.0,14265.0,391.0
+57,171,Joroinen,0207112-8,kunta,suomi,Joroisten kirkonkylä,Pohjois-Savo,Varkauden seutukunta,4606,71175.0,57490.0,8.0
+58,172,Joutsa,0174108-9,kunta,suomi,Joutsan kirkonkylä,Keski-Suomi,Joutsan seutukunta,4266,1066.43,86701.0,49.0
+59,176,Juuka,0168654-2,kunta,suomi,Juuan kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,4398,1846.58,1501.7,29.0
+60,177,Juupajoki,0147705-4,kunta,suomi,Korkeakoski,Pirkanmaa,Ylä-Pirkanmaan seutukunta,1787,27495.0,25849.0,69.0
+61,178,Juva,0164551-3,kunta,suomi,Juvan kirkonkylä,Etelä-Savo,Pieksämäen seutukunta,5851,1345.69,1163.19,5.0
+62,179,Jyväskylä,0174666-4,kaupunki,suomi,Jyväskylän keskustaajama,Keski-Suomi,Jyväskylän seutukunta,144299,1466.35,1171.02,1232.0
+63,181,Jämijärvi,0133127-4,kunta,suomi,Jämijärven kirkonkylä,Satakunta,Pohjois-Satakunnan seutukunta,1679,22461.0,21509.0,78.0
+64,182,Jämsä,0175622-1,kaupunki,suomi,Seppola,Keski-Suomi,Jämsän seutukunta,19631,1823.9,1571.39,125.0
+65,186,Järvenpää,0126541-4,kaupunki,suomi,Järvenpään keskustaajama,Uusimaa,Helsingin seutukunta,45675,3993.0,3754.0,1216.7
+66,202,Kaarina,0133226-9,kaupunki,suomi,Kaarinan keskusta,Varsinais-Suomi,Turun seutukunta,35691,15162.0,15057.0,237.0
+67,204,Kaavi,0170664-6,kunta,suomi,Kaavin kirkonkylä,Pohjois-Savo,Koillis-Savon seutukunta,2762,78960.0,67407.0,41.0
+68,205,Kajaani,0214958-9,kaupunki,suomi,Kajaanin keskustaajama,Kainuu,Kajaanin seutukunta,36322,2263.82,1834.73,198.0
+69,208,Kalajoki,0185924-7,kaupunki,suomi,Kalajoen kirkonkylä,Pohjois-Pohjanmaa,Ylivieskan seutukunta,12334,93105.0,92413.0,133.0
+70,211,Kangasala,1923299-5,kaupunki,suomi,Kangasalan kirkonkylä,Pirkanmaa,Tampereen seutukunta,32833,87088.0,65808.0,499.0
+71,213,Kangasniemi,0164690-3,kunta,suomi,Kangasniemen kirkonkylä,Etelä-Savo,Mikkelin seutukunta,5217,1326.75,1068.89,49.0
+72,214,Kankaanpää,0133596-1,kaupunki,suomi,Kankaanpään keskustaajama,Satakunta,Pohjois-Satakunnan seutukunta,12631,1037.87,1021.24,124.0
+73,216,Kannonkoski,0175798-8,kunta,suomi,Kannonkosken kirkonkylä,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,1294,54988.0,44501.0,29.0
+74,217,Kannus,0178455-6,kaupunki,suomi,Kannuksen keskustaajama,Keski-Pohjanmaa,Kokkolan seutukunta,5386,47034.0,46804.0,115.0
+75,218,Karijoki,0178498-6,kunta,suomi,Karijoen kirkonkylä,Etelä-Pohjanmaa,Suupohjan seutukunta,1198,18635.0,18558.0,65.0
+76,224,Karkkila,0127046-7,kaupunki,suomi,Karkkilan keskustaajama,Uusimaa,Helsingin seutukunta,8717,25532.0,24235.0,36.0
+77,226,Karstula,9094917-1,kunta,suomi,Karstulan kirkonkylä,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,3733,96320.0,88707.0,42.0
+78,230,Karvia,0133735-0,kunta,suomi,Karvian kirkonkylä,Satakunta,Pohjois-Satakunnan seutukunta,2271,51990.0,50222.0,45.0
+79,231,Kaskinen,0208787-5,kaupunki,"suomi, ruotsi",Kaskisten keskustaajama,Pohjanmaa,Suupohjan rannikkoseutu,1288,1078.0,1063.0,1212.0
+80,232,Kauhajoki,0178718-3,kaupunki,suomi,Kauhajoen keskustaajama,Etelä-Pohjanmaa,Suupohjan seutukunta,12840,1315.54,1298.99,99.0
+81,233,Kauhava,0208852-8,kaupunki,suomi,Kauhavan keskustaajama,Etelä-Pohjanmaa,Seinäjoen seutukunta,15293,1328.38,1313.85,116.0
+82,235,Kauniainen,0203026-2,kaupunki,"suomi, ruotsi",Kauniainen,Uusimaa,Helsingin seutukunta,10306,600.0,589.0,1749.7
+83,236,Kaustinen,0178981-6,kunta,suomi,Kaustisen kirkonkylä,Keski-Pohjanmaa,Kaustisen seutukunta,4230,36109.0,35391.0,12.0
+84,239,Keitele,0170773-7,kunta,suomi,Keiteleen kirkonkylä,Pohjois-Savo,Ylä-Savon seutukunta,2061,57830.0,48291.0,43.0
+85,240,Kemi,0210427-6,kaupunki,suomi,Kemin keskustaajama,Lappi,Kemi–Tornion seutukunta,19724,10235.0,9532.0,2069.0
+86,320,Kemijärvi,0191717-9,kaupunki,suomi,Kemijärven keskustaajama,Lappi,Itä-Lapin seutukunta,7059,3931.15,3504.37,2.0
+87,241,Keminmaa,0210469-8,kunta,suomi,Laurila,Lappi,Kemi–Tornion seutukunta,7888,64812.0,62717.0,126.0
+88,322,Kemiönsaari,9038213-6,kunta,"ruotsi, suomi",Kemiön kirkonkylä,Varsinais-Suomi,Turunmaan seutukunta,6638,69780.0,68690.0,97.0
+89,244,Kempele,0186002-9,kunta,suomi,Asemanseutu,Pohjois-Pohjanmaa,Oulun seutukunta,19237,11031.0,11014.0,1747.0
+90,245,Kerava,0127485-5,kaupunki,suomi,Keravan keskustaajama,Uusimaa,Helsingin seutukunta,37350,3079.0,3063.0,1219.4
+91,249,Keuruu,0208388-2,kaupunki,suomi,Keuruun keskustaajama,Keski-Suomi,Keuruun seutukunta,9343,1430.56,1257.97,74.0
+92,250,Kihniö,0133862-8,kunta,suomi,Kihniön kirkonkylä,Pirkanmaa,Luoteis-Pirkanmaan seutukunta,1812,39050.0,35722.0,51.0
+93,256,Kinnula,0242816-6,kunta,suomi,Kinnulan kirkonkylä,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,1570,49573.0,46020.0,34.0
+94,257,Kirkkonummi,0203107-0,kunta,"suomi, ruotsi",Kirkkonummen keskusta,Uusimaa,Helsingin seutukunta,40654,39354.0,36623.0,111.0
+95,260,Kitee,0168900-6,kaupunki,suomi,Kiteen keskustaajama,Pohjois-Karjala,Keski-Karjalan seutukunta,9853,1724.38,1253.82,79.0
+96,261,Kittilä,0191406-6,kunta,suomi,Kittilän kirkonkylä,Lappi,Tunturi-Lapin seutukunta,6554,8263.15,8095.28,8.0
+97,263,Kiuruvesi,0170843-0,kaupunki,suomi,Kiuruveden keskustaajama,Pohjois-Savo,Ylä-Savon seutukunta,7718,1422.9,1328.17,58.0
+98,265,Kivijärvi,0176150-6,kunta,suomi,Kivijärven kirkonkylä,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,1078,59988.0,48396.0,22.0
+99,271,Kokemäki,0203925-9,kaupunki,suomi,Tulkkila,Satakunta,Porin seutukunta,6939,53126.0,48041.0,144.0
+100,272,Kokkola,0179377-8,kaupunki,"suomi, ruotsi",Kokkolan keskustaajama,Keski-Pohjanmaa,Kokkolan seutukunta,48055,1492.45,1445.96,332.0
+101,273,Kolari,0191528-8,kunta,suomi,Kolarin kirkonkylä,Lappi,Tunturi-Lapin seutukunta,3955,2617.74,2559.29,15.0
+102,275,Konnevesi,0176227-7,kunta,suomi,Konneveden kirkonkylä,Keski-Suomi,Äänekosken seutukunta,2573,68085.0,51294.0,5.0
+103,276,Kontiolahti,0169048-8,kunta,suomi,Kontiolahden kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,15123,1029.82,79964.0,189.0
+104,280,Korsnäs,0179699-5,kunta,"ruotsi, suomi",Korsnäsin kirkonkylä,Pohjanmaa,Vaasan seutukunta,2043,23980.0,23603.0,87.0
+105,284,Koski Tl,0213007-9,kunta,suomi,Kosken Tl kirkonkylä,Varsinais-Suomi,Loimaan seutukunta,2253,19242.0,19150.0,118.0
+106,285,Kotka,0160225-7,kaupunki,suomi,Kotkan keskustaajama,Kymenlaakso,Kotka–Haminan seutukunta,50891,27777.0,27195.0,1871.0
+107,286,Kouvola,0512766-8,kaupunki,suomi,Kouvolan keskustaajama,Kymenlaakso,Kouvolan seutukunta,80010,2883.29,2557.7,313.0
+108,287,Kristiinankaupunki,0216509-5,kaupunki,"ruotsi, suomi",Kristiinankaupungin keskustaajama,Pohjanmaa,Suupohjan rannikkoseutu,6325,69772.0,68325.0,93.0
+109,288,Kruunupyy,0180065-9,kunta,"ruotsi, suomi",Kruunupyyn kirkonkylä,Pohjanmaa,Jakobstadsregionen,6436,75269.0,71287.0,9.0
+110,290,Kuhmo,0186204-0,kaupunki,suomi,Kuhmon keskustaajama,Kainuu,Kehys-Kainuun seutukunta,7852,5456.87,4806.45,16.0
+111,291,Kuhmoinen,0176357-9,kunta,suomi,Kuhmoisten kirkonkylä,Pirkanmaa,Tampereen seutukunta,2140,93669.0,66094.0,32.0
+112,295,Kumlinge,0205030-0,kunta,ruotsi,Kumlinge,Ahvenanmaa,Ålands skärgård,307,9944.0,9907.0,31.0
+113,297,Kuopio,0171450-7,kaupunki,suomi,Kuopion keskustaajama,Pohjois-Savo,Kuopion seutukunta,121383,4326.35,3241.05,375.0
+114,300,Kuortane,0180117-6,kunta,suomi,Kuortaneen kirkonkylä,Etelä-Pohjanmaa,Kuusiokuntien seutukunta,3486,48485.0,46237.0,75.0
+115,301,Kurikka,0209046-8,kaupunki,suomi,Kurikan keskustaajama,Etelä-Pohjanmaa,Seinäjoen seutukunta,20035,1743.91,1724.63,116.0
+116,304,Kustavi,0134349-4,kunta,suomi,Kustavin kirkonkylä,Varsinais-Suomi,Vakka-Suomen seutukunta,965,16767.0,16584.0,58.0
+117,305,Kuusamo,0186418-5,kaupunki,suomi,Kuusamon keskustaajama,Pohjois-Pohjanmaa,Koillismaan seutukunta,15128,5808.98,4978.57,3.0
+118,312,Kyyjärvi,0176410-9,kunta,suomi,Kyyjärven kirkonkylä,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,1219,46961.0,44818.0,27.0
+119,316,Kärkölä,0148268-9,kunta,suomi,Järvelä,Päijät-Häme,Lahden seutukunta,4242,25930.0,25650.0,165.0
+120,317,Kärsämäki,0186511-0,kunta,suomi,Kärsämäen kirkonkylä,Pohjois-Pohjanmaa,Nivala–Haapajärven seutukunta,2506,70142.0,69650.0,36.0
+121,318,Kökar,0205032-7,kunta,ruotsi,Karlby,Ahvenanmaa,Ålands skärgård,225,6394.0,6357.0,35.0
+122,398,Lahti,0149669-3,kaupunki,suomi,Lahden keskustaajama,Päijät-Häme,Lahden seutukunta,120050,51763.0,45949.0,2613.0
+123,399,Laihia,0180451-0,kunta,suomi,Laihian kirkonkylä,Pohjanmaa,Vaasan seutukunta,7910,50844.0,50515.0,157.0
+124,400,Laitila,0134480-9,kaupunki,suomi,Laitilan keskustaajama,Varsinais-Suomi,Vakka-Suomen seutukunta,8500,54533.0,53187.0,16.0
+125,407,Lapinjärvi,0203135-3,kunta,"suomi, ruotsi",Lapinjärven kirkonkylä,Uusimaa,Loviisan seutukunta,2550,33931.0,32989.0,77.0
+126,402,Lapinlahti,0172127-2,kunta,suomi,Lapinlahden kirkonkylä,Pohjois-Savo,Ylä-Savon seutukunta,9195,1245.16,1096.7,84.0
+127,403,Lappajärvi,0180516-9,kunta,suomi,Lappajärven kirkonkylä,Etelä-Pohjanmaa,Järviseudun seutukunta,2860,52373.0,42089.0,68.0
+128,405,Lappeenranta,0162193-3,kaupunki,suomi,Lappeenrannan keskustaajama,Etelä-Karjala,Lappeenrannan seutukunta,72231,1723.57,1433.97,504.0
+129,408,Lapua,0209113-7,kaupunki,suomi,Lapuan keskustaajama,Etelä-Pohjanmaa,Seinäjoen seutukunta,14259,75078.0,73716.0,193.0
+130,410,Laukaa,0176478-2,kunta,suomi,Laukaan kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,18843,82560.0,64851.0,291.0
+131,416,Lemi,0162576-6,kunta,suomi,Lemin kirkonkylä,Etelä-Karjala,Lappeenrannan seutukunta,2914,26248.0,21796.0,134.0
+132,417,Lemland,0205034-3,kunta,ruotsi,Söderby,Ahvenanmaa,Ålands landsbygd,2140,11410.0,11322.0,189.0
+133,418,Lempäälä,0150783-1,kunta,suomi,Lempäälän kirkonkylä,Pirkanmaa,Tampereen seutukunta,24453,30706.0,26958.0,907.0
+134,420,Leppävirta,0172231-2,kunta,suomi,Leppävirran kirkonkylä,Pohjois-Savo,Varkauden seutukunta,9267,1519.64,1135.99,82.0
+135,421,Lestijärvi,0180774-6,kunta,suomi,Lestijärven kirkonkylä,Keski-Pohjanmaa,Kaustisen seutukunta,717,55885.0,48002.0,15.0
+136,422,Lieksa,0169321-6,kaupunki,suomi,Lieksan keskustaajama,Pohjois-Karjala,Pielisen Karjalan seutukunta,10471,4067.7,3417.86,31.0
+137,423,Lieto,0134698-6,kaupunki,suomi,Liedon kirkonkylä,Varsinais-Suomi,Turun seutukunta,20415,30256.0,30054.0,679.0
+138,425,Liminka,0186553-2,kunta,suomi,Limingan kirkonkylä,Pohjois-Pohjanmaa,Oulun seutukunta,10264,64263.0,63727.0,161.0
+139,426,Liperi,0169583-6,kunta,suomi,Liperin kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,11978,1161.23,72720.0,165.0
+140,444,Lohja,1068322-0,kaupunki,"suomi, ruotsi",Lohjan keskustaajama,Uusimaa,Helsingin seutukunta,46020,1109.73,93944.0,49.0
+141,430,Loimaa,1927453-8,kaupunki,suomi,Loimaan keskustaajama,Varsinais-Suomi,Loimaan seutukunta,15517,85185.0,84806.0,183.0
+142,433,Loppi,0150919-1,kunta,suomi,Lopen kirkonkylä,Kanta-Häme,Riihimäen seutukunta,7815,65597.0,59769.0,131.0
+143,434,Loviisa,0203263-9,kaupunki,"suomi, ruotsi",Loviisan keskustaajama,Uusimaa,Loviisan seutukunta,14680,84564.0,81981.0,179.0
+144,435,Luhanka,0176592-9,kunta,suomi,Luhangan kirkonkylä,Keski-Suomi,Joutsan seutukunta,694,31328.0,21451.0,32.0
+145,436,Lumijoki,0186580-7,kunta,suomi,Lumijoen kirkonkylä,Pohjois-Pohjanmaa,Oulun seutukunta,2033,21436.0,21412.0,95.0
+146,438,Lumparland,0205038-6,kunta,ruotsi,Klemetsby,Ahvenanmaa,Ålands landsbygd,371,3639.0,3635.0,102.0
+147,440,Luoto,0180857-0,kunta,"ruotsi, suomi",Holm,Pohjanmaa,Jakobstadsregionen,5696,17654.0,14245.0,40.0
+148,441,Luumäki,0162631-2,kunta,suomi,Taavetti,Etelä-Karjala,Lappeenrannan seutukunta,4448,85983.0,75009.0,59.0
+149,475,Maalahti,0180948-5,kunta,"ruotsi, suomi",Maalahden kirkonkylä,Pohjanmaa,Vaasan seutukunta,5493,52583.0,52175.0,105.0
+150,478,Maarianhamina,0205071-4,kaupunki,ruotsi,Maarianhaminan keskustaajama,Ahvenanmaa,Mariehamns stad,11776,1181.0,1181.0,9971.0
+151,480,Marttila,0135086-2,kunta,suomi,Marttilan kirkonkylä,Varsinais-Suomi,Loimaan seutukunta,1967,19599.0,19531.0,101.0
+152,481,Masku,0204064-7,kunta,suomi,Maskun kirkonkylä,Varsinais-Suomi,Turun seutukunta,9656,17600.0,17489.0,552.0
+153,483,Merijärvi,0186588-2,kunta,suomi,Merijärven kirkonkylä,Pohjois-Pohjanmaa,Ylivieskan seutukunta,1070,23163.0,22997.0,47.0
+154,484,Merikarvia,0135202-4,kunta,suomi,Merikarvian kirkonkylä,Satakunta,Porin seutukunta,3033,45074.0,44616.0,68.0
+155,489,Miehikkälä,0162675-0,kunta,suomi,Miehikkälän kirkonkylä,Kymenlaakso,Kotka–Haminan seutukunta,1819,44037.0,42251.0,43.0
+156,491,Mikkeli,0165116-3,kaupunki,suomi,Mikkelin keskustaajama,Etelä-Savo,Mikkelin seutukunta,52077,3229.57,2548.18,204.0
+157,494,Muhos,0186646-3,kunta,suomi,Muhoksen kirkonkylä,Pohjois-Pohjanmaa,Oulun seutukunta,8906,79810.0,78458.0,114.0
+158,495,Multia,0208471-1,kunta,suomi,Multian kirkonkylä,Keski-Suomi,Keuruun seutukunta,1483,76563.0,73324.0,2.0
+159,498,Muonio,0191824-3,kunta,suomi,Muonion kirkonkylä,Lappi,Tunturi-Lapin seutukunta,2309,2037.78,1904.05,12.0
+160,499,Mustasaari,0181101-6,kunta,"ruotsi, suomi",Sepänkylä,Pohjanmaa,Vaasan seutukunta,19615,86656.0,84917.0,231.0
+161,500,Muurame,0176699-9,kunta,suomi,Muuramen kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,10427,19406.0,14406.0,724.0
+162,503,Mynämäki,2048364-4,kunta,suomi,Mynämäen kirkonkylä,Varsinais-Suomi,Turun seutukunta,7603,52232.0,51982.0,146.0
+163,504,Myrskylä,0203282-3,kunta,"suomi, ruotsi",Myrskylän kirkonkylä,Uusimaa,Porvoon seutukunta,1805,20635.0,20044.0,9.0
+164,505,Mäntsälä,0129261-5,kunta,suomi,Mäntsälän kirkonkylä,Uusimaa,Helsingin seutukunta,21036,59611.0,58085.0,362.0
+165,508,Mänttä-Vilppula,0157867-2,kaupunki,suomi,Mäntän keskustaajama,Pirkanmaa,Ylä-Pirkanmaan seutukunta,9490,65709.0,53484.0,177.0
+166,507,Mäntyharju,0165761-0,kunta,suomi,Mäntyharjun asemanseutu,Etelä-Savo,Mikkelin seutukunta,5625,1210.98,98121.0,57.0
+167,529,Naantali,0135457-2,kaupunki,suomi,Naantalin keskustaajama,Varsinais-Suomi,Turun seutukunta,19613,31643.0,31257.0,627.0
+168,531,Nakkila,0135662-3,kunta,suomi,Nakkilan kirkonkylä,Satakunta,Porin seutukunta,5138,18488.0,18293.0,281.0
+169,535,Nivala,0186757-0,kaupunki,suomi,Nivalan keskustaajama,Pohjois-Pohjanmaa,Nivala–Haapajärven seutukunta,10423,53624.0,52718.0,198.0
+170,536,Nokia,0205717-4,kaupunki,suomi,Nokian keskustaajama,Pirkanmaa,Tampereen seutukunta,35176,34784.0,28831.0,122.0
+171,538,Nousiainen,0135821-5,kunta,suomi,Nummi,Varsinais-Suomi,Turun seutukunta,4679,19949.0,19893.0,235.0
+172,541,Nurmes,0207669-0,kaupunki,suomi,Nurmeksen keskustaajama,Pohjois-Karjala,Pielisen Karjalan seutukunta,9640,2692.85,2401.36,39.0
+173,543,Nurmijärvi,9014643-2,kunta,suomi,Nurmijärven kirkonkylä,Uusimaa,Helsingin seutukunta,44358,36726.0,36190.0,1226.0
+174,545,Närpiö,0181367-9,kaupunki,"ruotsi, suomi",Närpiön keskustaajama,Pohjanmaa,Suupohjan rannikkoseutu,9597,98548.0,97782.0,98.0
+175,560,Orimattila,0129920-0,kaupunki,suomi,Orimattilan keskustaajama,Päijät-Häme,Lahden seutukunta,15774,81401.0,78526.0,201.0
+176,561,Oripää,0135869-6,kunta,suomi,Oripään kirkonkylä,Varsinais-Suomi,Loimaan seutukunta,1341,11783.0,11775.0,114.0
+177,562,Orivesi,0151789-6,kaupunki,suomi,Oriveden keskustaajama,Pirkanmaa,Tampereen seutukunta,8980,96008.0,79963.0,112.0
+178,563,Oulainen,0186852-2,kaupunki,suomi,Oulaisten keskustaajama,Pohjois-Pohjanmaa,Ylivieskan seutukunta,7079,59754.0,58784.0,12.0
+179,564,Oulu,0187690-1,kaupunki,suomi,Oulun keskustaajama,Pohjois-Pohjanmaa,Oulun seutukunta,209934,3052.77,2972.45,706.0
+180,309,Outokumpu,0207604-1,kaupunki,suomi,Outokummun keskustaajama,Pohjois-Karjala,Joensuun seutukunta,6525,58406.0,44586.0,146.0
+181,576,Padasjoki,0151924-2,kunta,suomi,Padasjoen kirkonkylä,Päijät-Häme,Lahden seutukunta,2784,72981.0,52309.0,53.0
+182,577,Paimio,0136169-2,kaupunki,suomi,Vista,Varsinais-Suomi,Turun seutukunta,11127,24004.0,23851.0,467.0
+183,578,Paltamo,0188808-0,kunta,suomi,Paltamon kirkonkylä,Kainuu,Kajaanin seutukunta,3139,1139.74,91879.0,34.0
+184,445,Parainen,9038213-6,kaupunki,"ruotsi, suomi",Paraisten keskustaajama,Varsinais-Suomi,Turunmaan seutukunta,15096,89390.0,88404.0,171.0
+185,580,Parikkala,1913642-6,kunta,suomi,Parikkalan kirkonkylä,Etelä-Karjala,Imatran seutukunta,4541,76071.0,59191.0,77.0
+186,581,Parkano,0136311-0,kaupunki,suomi,Parkanon keskustaajama,Pirkanmaa,Luoteis-Pirkanmaan seutukunta,6274,90957.0,85319.0,74.0
+187,599,Pedersören kunta,0198517-1,kunta,"ruotsi, suomi",Pännäinen,Pohjanmaa,Jakobstadsregionen,11167,82605.0,79426.0,141.0
+188,583,Pelkosenniemi,0191866-5,kunta,suomi,Pelkosenniemen kirkonkylä,Lappi,Itä-Lapin seutukunta,931,1881.82,1836.4,5.0
+189,854,Pello,0193729-2,kunta,suomi,Pellon kirkonkylä,Lappi,Torniolaakson seutukunta,3265,1863.72,1737.73,19.0
+190,584,Perho,0181464-7,kunta,suomi,Perhon kirkonkylä,Keski-Pohjanmaa,Kaustisen seutukunta,2676,77519.0,74787.0,36.0
+191,588,Pertunmaa,0165867-2,kunta,suomi,Pertunmaan kirkonkylä,Etelä-Savo,Mikkelin seutukunta,1624,45418.0,37443.0,43.0
+192,592,Petäjävesi,0176769-2,kunta,suomi,Petäjäveden kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,3676,49541.0,45642.0,81.0
+193,593,Pieksämäki,2048903-4,kaupunki,suomi,Pieksämäen keskustaajama,Etelä-Savo,Pieksämäen seutukunta,17216,1836.24,1569.03,11.0
+194,595,Pielavesi,0172446-5,kunta,suomi,Pielaveden kirkonkylä,Pohjois-Savo,Ylä-Savon seutukunta,4214,1406.51,1153.23,37.0
+195,598,Pietarsaari,0172446-5,kaupunki,"ruotsi, suomi",Pietarsaaren keskustaajama,Pohjanmaa,Jakobstadsregionen,19183,9188.0,8845.0,2169.0
+196,601,Pihtipudas,0243027-4,kunta,suomi,Pihtiputaan kirkonkylä,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,3856,1247.5,1074.92,36.0
+197,604,Pirkkala,0152084-1,kunta,suomi,Naistenmatka,Pirkanmaa,Tampereen seutukunta,20281,10397.0,8142.0,2491.0
+198,607,Polvijärvi,0169823-6,kunta,suomi,Polvijärven kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,4137,95833.0,80491.0,51.0
+199,608,Pomarkku,0136610-0,kunta,suomi,Pomarkun kirkonkylä,Satakunta,Porin seutukunta,1997,33205.0,30119.0,66.0
+200,609,Pori,0137323-9,kaupunki,suomi,Porin keskustaajama,Satakunta,Porin seutukunta,83297,1217.99,1156.16,72.0
+201,611,Pornainen,0130095-3,kunta,suomi,Pornaisten kirkonkylä,Uusimaa,Helsingin seutukunta,5026,15009.0,14653.0,343.0
+202,638,Porvoo,0130095-3,kaupunki,"suomi, ruotsi",Porvoon keskustaajama,Uusimaa,Porvoon seutukunta,51332,66472.0,65456.0,784.0
+203,614,Posio,0191908-6,kunta,suomi,Ahola,Lappi,Itä-Lapin seutukunta,3035,3544.65,3039.73,1.0
+204,615,Pudasjärvi,0188962-2,kaupunki,suomi,Kurenalus,Pohjois-Pohjanmaa,Oulunkaaren seutukunta,7670,5867.36,5638.35,14.0
+205,616,Pukkila,0130729-0,kunta,suomi,Pukkilan kirkonkylä,Uusimaa,Porvoon seutukunta,1835,14594.0,14509.0,126.0
+206,619,Punkalaidun,0138037-5,kunta,suomi,Punkalaitumen kirkonkylä,Pirkanmaa,Lounais-Pirkanmaan seutukunta,2707,36405.0,36110.0,75.0
+207,620,Puolanka,0189081-8,kunta,suomi,Puolangan kirkonkylä,Kainuu,Kehys-Kainuun seutukunta,2405,2598.71,2461.21,1.0
+208,623,Puumala,0166400-1,kunta,suomi,Puumalan kirkonkylä,Etelä-Savo,Mikkelin seutukunta,2121,1237.75,79411.0,27.0
+209,624,Pyhtää,0162798-0,kunta,"suomi, ruotsi",Siltakylä,Kymenlaakso,Kotka–Haminan seutukunta,5128,33640.0,32463.0,158.0
+210,625,Pyhäjoki,0189127-1,kunta,suomi,Pyhäjoen kirkonkylä,Pohjois-Pohjanmaa,Raahen seutukunta,3028,54921.0,54321.0,56.0
+211,626,Pyhäjärvi,0210261-7,kaupunki,suomi,Pyhäsalmi,Pohjois-Pohjanmaa,Nivala–Haapajärven seutukunta,4918,1459.0,1310.31,38.0
+212,630,Pyhäntä,0189226-6,kunta,suomi,Pyhännän kirkonkylä,Pohjois-Pohjanmaa,Haapaveden-Siikalatvan seutukunta,1659,84675.0,81020.0,2.0
+213,631,Pyhäranta,0204403-1,kunta,suomi,Rohdainen,Varsinais-Suomi,Vakka-Suomen seutukunta,1972,14838.0,14351.0,137.0
+214,635,Pälkäne,2050961-3,kunta,suomi,Onkkaala,Pirkanmaa,Tampereen seutukunta,6428,73812.0,56072.0,115.0
+215,636,Pöytyä,1929519-5,kunta,suomi,Kyrö ja Riihikoski,Varsinais-Suomi,Loimaan seutukunta,8218,77355.0,74995.0,11.0
+216,678,Raahe,1791817-6,kaupunki,suomi,Raahen keskustaajama,Pohjois-Pohjanmaa,Raahen seutukunta,24286,1028.22,1015.33,239.0
+217,710,Raasepori,0131297-0,kaupunki,"ruotsi, suomi",Tammisaaren keskustaajama,Uusimaa,Raaseporin seutukunta,27445,1215.45,1148.34,239.0
+218,680,Raisio,0204428-5,kaupunki,suomi,Raision keskustaajama,Varsinais-Suomi,Turun seutukunta,25025,4934.0,4876.0,5132.0
+219,681,Rantasalmi,0166507-1,kunta,suomi,Rantasalmen kirkonkylä,Etelä-Savo,Savonlinnan seutukunta,3341,92518.0,55931.0,6.0
+220,683,Ranua,0191974-8,kunta,suomi,Ranuan kirkonkylä,Lappi,Rovaniemen seutukunta,3653,3694.79,3453.39,11.0
+221,684,Rauma,0138780-9,kaupunki,suomi,Rauman keskustaajama,Satakunta,Rauman seutukunta,38838,51010.0,49635.0,782.0
+222,686,Rautalampi,0172586-3,kunta,suomi,Rautalammin kirkonkylä,Pohjois-Savo,Sisä-Savon seutukunta,3007,76199.0,53896.0,56.0
+223,687,Rautavaara,0172646-0,kunta,suomi,Rautavaaran kirkonkylä,Pohjois-Savo,Koillis-Savon seutukunta,1495,1235.25,1150.64,13.0
+224,689,Rautjärvi,0206951-1,kunta,suomi,Simpele,Etelä-Karjala,Imatran seutukunta,3100,40190.0,35147.0,88.0
+225,691,Reisjärvi,0189548-3,kunta,suomi,Reisjärven kirkonkylä,Pohjois-Pohjanmaa,Nivala–Haapajärven seutukunta,2677,50332.0,47462.0,56.0
+226,694,Riihimäki,0152563-4,kaupunki,suomi,Riihimäen keskustaajama,Kanta-Häme,Riihimäen seutukunta,28515,12555.0,12101.0,2356.0
+227,697,Ristijärvi,0189576-6,kunta,suomi,Ristijärven kirkonkylä,Kainuu,Kajaanin seutukunta,1197,89794.0,83580.0,14.0
+228,698,Rovaniemi,1978283-1,kaupunki,suomi,Rovaniemen keskustaajama,Lappi,Rovaniemen seutukunta,64022,8016.62,7581.37,84.0
+229,700,Ruokolahti,0163013-5,kunta,suomi,Rasila,Etelä-Karjala,Imatran seutukunta,4883,1219.85,94210.0,52.0
+230,702,Ruovesi,0152842-1,kunta,suomi,Ruoveden kirkonkylä,Pirkanmaa,Ylä-Pirkanmaan seutukunta,4152,95017.0,77699.0,53.0
+231,704,Rusko,0204524-5,kunta,suomi,Ruskon kirkonkylä,Varsinais-Suomi,Turun seutukunta,6427,12790.0,12716.0,505.0
+232,707,Rääkkylä,0169967-7,kunta,suomi,Rääkkylän kirkonkylä,Pohjois-Karjala,Keski-Karjalan seutukunta,2003,69968.0,42778.0,47.0
+233,729,Saarijärvi,0176975-1,kaupunki,suomi,Saarijärven keskustaajama,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,9100,1422.72,1251.72,73.0
+234,732,Salla,0192936-4,kunta,suomi,Sallan kirkonkylä,Lappi,Itä-Lapin seutukunta,3357,5872.41,5729.83,6.0
+235,734,Salo,0139991-4,kaupunki,suomi,Salon keskustaajama,Varsinais-Suomi,Salon seutukunta,51339,2061.84,1987.47,258.0
+236,736,Saltvik,0205119-4,kunta,ruotsi,Nääs,Ahvenanmaa,Ålands landsbygd,1818,15962.0,15225.0,119.0
+237,790,Sastamala,0144411-3,kaupunki,suomi,Vammalan keskustaajama,Pirkanmaa,Lounais-Pirkanmaan seutukunta,23901,1531.74,1429.15,167.0
+238,738,Sauvo,9038213-6,kunta,suomi,Sauvon kirkonkylä,Varsinais-Suomi,Turun seutukunta,2949,25397.0,25274.0,117.0
+239,739,Savitaipale,0163109-0,kunta,suomi,Savitaipaleen kirkonkylä,Etelä-Karjala,Lappeenrannan seutukunta,3247,69056.0,53912.0,6.0
+240,740,Savonlinna,0166906-4,kaupunki,suomi,Savonlinnan keskustaajama,Etelä-Savo,Savonlinnan seutukunta,32349,3597.69,2238.11,145.0
+241,742,Savukoski,0210704-7,kunta,suomi,Savukosken kirkonkylä,Lappi,Itä-Lapin seutukunta,1003,6496.57,6440.01,16.0
+242,743,Seinäjoki,0210704-7,kaupunki,suomi,Seinäjoen keskustaajama,Etelä-Pohjanmaa,Seinäjoen seutukunta,64827,1469.22,1431.77,453.0
+243,746,Sievi,0189615-2,kunta,suomi,Sievin kirkonkylä,Pohjois-Pohjanmaa,Ylivieskan seutukunta,4801,79988.0,78640.0,61.0
+244,747,Siikainen,0139842-8,kunta,suomi,Siikaisten kirkonkylä,Satakunta,Pohjois-Satakunnan seutukunta,1338,49131.0,46330.0,29.0
+245,748,Siikajoki,2047359-3,kunta,suomi,Ruukki,Pohjois-Pohjanmaa,Raahen seutukunta,4984,1062.61,1053.89,47.0
+246,791,Siikalatva,0189019-9,kunta,suomi,Pulkkilan kirkonkylä,Pohjois-Pohjanmaa,Haapaveden-Siikalatvan seutukunta,5093,2229.88,2173.27,23.0
+247,749,Siilinjärvi,0172718-0,kunta,suomi,Siilinjärven kirkonkylä,Pohjois-Savo,Kuopion seutukunta,21363,50781.0,40097.0,533.0
+248,751,Simo,0193015-4,kunta,suomi,Simon asemanseutu,Lappi,Kemi–Tornion seutukunta,2903,1466.55,1446.59,2.0
+249,753,Sipoo,0193015-4,kunta,"suomi, ruotsi",Nikkilä,Uusimaa,Helsingin seutukunta,22269,34267.0,33967.0,656.0
+250,755,Siuntio,0131156-4,kunta,"suomi, ruotsi",Siuntion asemanseutu,Uusimaa,Helsingin seutukunta,6237,24995.0,24111.0,259.0
+251,758,Sodankylä,0193169-1,kunta,"suomi, pohjoissaame",Sodankylän kirkonkylä,Lappi,Pohjois-Lapin seutukunta,8178,12415.32,11692.96,7.0
+252,759,Soini,0182637-3,kunta,suomi,Soinin kirkonkylä,Etelä-Pohjanmaa,Kuusiokuntien seutukunta,1962,57422.0,55195.0,36.0
+253,761,Somero,0153082-0,kaupunki,suomi,Someron keskustaajama,Varsinais-Suomi,Salon seutukunta,8541,69768.0,66798.0,128.0
+254,762,Sonkajärvi,9090160-2,kunta,suomi,Sonkajärven kirkonkylä,Pohjois-Savo,Ylä-Savon seutukunta,3768,1576.79,1465.93,26.0
+255,765,Sotkamo,0189766-5,kunta,suomi,Sotkamon kirkonkylä,Kainuu,Kajaanin seutukunta,10344,2951.84,2648.97,39.0
+256,766,Sottunga,0205121-5,kunta,ruotsi,Sottunga,Ahvenanmaa,Ålands skärgård,113,2806.0,2804.0,4.0
+257,768,Sulkava,0167265-0,kunta,suomi,Sulkavan kirkonkylä,Etelä-Savo,Savonlinnan seutukunta,2412,76920.0,58447.0,41.0
+258,771,Sund,0205125-8,kunta,ruotsi,Björby,Ahvenanmaa,Ålands landsbygd,1022,11249.0,10820.0,94.0
+259,777,Suomussalmi,0189925-7,kunta,suomi,Ämmänsaari,Kainuu,Kehys-Kainuun seutukunta,7459,5857.59,5270.43,14.0
+260,778,Suonenjoki,0208061-4,kaupunki,suomi,Suonenjoen keskustaajama,Pohjois-Savo,Sisä-Savon seutukunta,6857,86234.0,71356.0,96.0
+261,781,Sysmä,0167352-2,kunta,suomi,Sysmän kirkonkylä,Päijät-Häme,Lahden seutukunta,3535,93607.0,66622.0,53.0
+262,783,Säkylä,0139937-5,kunta,suomi,Säkylän kirkonkylä,Satakunta,Rauman seutukunta,6556,52781.0,40685.0,161.0
+263,831,Taipalsaari,0163320-5,kunta,suomi,Taipalsaaren kirkonkylä,Etelä-Karjala,Lappeenrannan seutukunta,4604,76195.0,34469.0,134.0
+264,832,Taivalkoski,0190100-3,kunta,suomi,Taivalkosken kirkonkylä,Pohjois-Pohjanmaa,Koillismaan seutukunta,3875,2650.61,2438.21,16.0
+265,833,Taivassalo,0139991-4,kunta,suomi,Taivassalon kirkonkylä,Varsinais-Suomi,Vakka-Suomen seutukunta,1687,14200.0,14033.0,12.0
+266,834,Tammela,0153179-4,kunta,suomi,Tammelan kirkonkylä,Kanta-Häme,Forssan seutukunta,5937,71515.0,64061.0,93.0
+267,837,Tampere,0211675-2,kaupunki,suomi,Tampereen keskustaajama,Pirkanmaa,Tampereen seutukunta,245027,68959.0,52489.0,4668.0
+268,844,Tervo,0173081-4,kunta,suomi,Tervon kirkonkylä,Pohjois-Savo,Sisä-Savon seutukunta,1462,49430.0,34775.0,42.0
+269,845,Tervola,0193249-1,kunta,suomi,Tervolan kirkonkylä,Lappi,Kemi–Tornion seutukunta,2858,1592.05,1559.71,18.0
+270,846,Teuva,0182734-1,kunta,suomi,Teuvan kirkonkylä,Etelä-Pohjanmaa,Suupohjan seutukunta,4931,55605.0,55473.0,89.0
+271,848,Tohmajärvi,1919717-3,kunta,suomi,Kemie,Pohjois-Karjala,Keski-Karjalan seutukunta,4213,89536.0,83775.0,5.0
+272,849,Toholampi,0182779-8,kunta,suomi,Toholammin kirkonkylä,Keski-Pohjanmaa,Kaustisen seutukunta,2951,61705.0,60898.0,48.0
+273,850,Toivakka,0177201-0,kunta,suomi,Toivakan kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,2416,41394.0,36146.0,67.0
+274,851,Tornio,0193524-6,kaupunki,suomi,Tornion keskustaajama,Lappi,Kemi–Tornion seutukunta,21326,1227.86,1188.7,179.0
+275,853,Turku,9038213-6,kaupunki,"suomi, ruotsi",Turun keskustaajama,Varsinais-Suomi,Turun seutukunta,195047,24910.0,24563.0,7941.0
+276,857,Tuusniemi,0173128-6,kunta,suomi,Tuusniemen kirkonkylä,Pohjois-Savo,Koillis-Savon seutukunta,2411,69942.0,54318.0,44.0
+277,858,Tuusula,0131661-3,kunta,suomi,Hyrylä,Uusimaa,Helsingin seutukunta,40118,22545.0,21953.0,1827.0
+278,859,Tyrnävä,0190140-9,kunta,suomi,Tyrnävän kirkonkylä,Pohjois-Pohjanmaa,Oulun seutukunta,6602,49487.0,49182.0,134.0
+279,886,Ulvila,0204910-7,kaupunki,suomi,Vanhakylä,Satakunta,Porin seutukunta,12659,42251.0,40082.0,316.0
+280,887,Urjala,0157323-0,kunta,suomi,Urjalan kirkonkylä,Pirkanmaa,Etelä-Pirkanmaan seutukunta,4651,50541.0,47553.0,98.0
+281,889,Utajärvi,0190224-1,kunta,suomi,Utajärven kirkonkylä,Pohjois-Pohjanmaa,Oulunkaaren seutukunta,2562,1735.02,1669.47,15.0
+282,890,Utsjoki,9129466-4,kunta,"suomi, pohjoissaame",Utsjoen kirkonkylä,Lappi,Pohjois-Lapin seutukunta,1175,5372.0,5146.08,2.0
+283,892,Uurainen,0177224-8,kunta,suomi,Uuraisten kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,3618,37225.0,34798.0,104.0
+284,893,Uusikaarlepyy,0183077-8,kaupunki,"ruotsi, suomi",Uudenkaarlepyyn keskustaajama,Pohjanmaa,Jakobstadsregionen,7518,73721.0,73271.0,103.0
+285,895,Uusikaupunki,0144036-6,kaupunki,suomi,Uudenkaupungin keskustaajama,Varsinais-Suomi,Vakka-Suomen seutukunta,15403,55153.0,50320.0,306.0
+286,785,Vaala,0190027-0,kunta,suomi,Vaalan kirkonkylä,Pohjois-Pohjanmaa,Oulunkaaren seutukunta,2679,1763.57,1302.38,21.0
+287,905,Vaasa,0190027-0,kaupunki,"suomi, ruotsi",Vaasan keskustaajama,Pohjanmaa,Vaasan seutukunta,67067,36954.0,36473.0,1839.0
+288,908,Valkeakoski,0157568-2,kaupunki,suomi,Valkeakosken keskustaajama,Pirkanmaa,Etelä-Pirkanmaan seutukunta,20717,37203.0,27205.0,762.0
+289,92,Vantaa,0124610-9,kaupunki,"suomi, ruotsi",Tikkurila,Uusimaa,Helsingin seutukunta,241061,24035.0,23838.0,1011.2
+290,915,Varkaus,0173416-1,kaupunki,suomi,Varkauden keskustaajama,Pohjois-Savo,Varkauden seutukunta,19917,52448.0,38562.0,516.0
+291,918,Vehmaa,0144561-8,kunta,suomi,Vinkkilä,Varsinais-Suomi,Vakka-Suomen seutukunta,2254,19206.0,18888.0,119.0
+292,921,Vesanto,0173787-2,kunta,suomi,Vesannon kirkonkylä,Pohjois-Savo,Sisä-Savon seutukunta,1928,56981.0,42263.0,46.0
+293,922,Vesilahti,0157711-9,kunta,suomi,Vesilahden kirkonkylä,Pirkanmaa,Tampereen seutukunta,4474,35393.0,30104.0,149.0
+294,924,Veteli,0184278-7,kunta,suomi,Kainu,Keski-Pohjanmaa,Kaustisen seutukunta,2991,52091.0,50213.0,6.0
+295,925,Vieremä,0173835-7,kunta,suomi,Vieremän kirkonkylä,Pohjois-Savo,Ylä-Savon seutukunta,3473,97338.0,92528.0,38.0
+296,927,Vihti,0131905-6,kunta,suomi,Nummela,Uusimaa,Helsingin seutukunta,29162,56706.0,52201.0,559.0
+297,931,Viitasaari,0208573-0,kaupunki,suomi,Viitasaaren keskustaajama,Keski-Suomi,Saarijärven–Viitasaaren seutukunta,6042,1589.12,1248.54,48.0
+298,934,Vimpeli,0184318-1,kunta,suomi,Vimpelin kirkonkylä,Etelä-Pohjanmaa,Järviseudun seutukunta,2752,32879.0,28732.0,96.0
+299,935,Virolahti,0207033-6,kunta,suomi,Virojoki,Kymenlaakso,Kotka–Haminan seutukunta,3014,37624.0,37199.0,81.0
+300,936,Virrat,0206333-9,kaupunki,suomi,Virtain keskustaajama,Pirkanmaa,Ylä-Pirkanmaan seutukunta,6445,1299.07,1162.68,55.0
+301,941,Vårdö,0205126-6,kunta,ruotsi,Vårdö,Ahvenanmaa,Ålands skärgård,461,10210.0,10171.0,45.0
+302,946,Vöyri,2050514-5,kunta,"ruotsi, suomi",Vöyrin kirkonkylä,Pohjanmaa,Vaasan seutukunta,6356,79133.0,78214.0,81.0
+303,976,Ylitornio,0210826-9,kunta,suomi,Ylitornion kirkonkylä,Lappi,Torniolaakson seutukunta,3812,2212.77,2028.29,19.0
+304,977,Ylivieska,0190557-3,kaupunki,suomi,Ylivieskan keskustaajama,Pohjois-Pohjanmaa,Ylivieskan seutukunta,15345,57420.0,56983.0,269.0
+305,980,Ylöjärvi,0158221-7,kaupunki,suomi,Ylöjärven kirkonkylä,Pirkanmaa,Tampereen seutukunta,33730,1323.96,1115.75,302.0
+306,981,Ypäjä,0158301-7,kunta,suomi,Ypäjän kirkonkylä,Kanta-Häme,Forssan seutukunta,2266,18325.0,18276.0,124.0
+307,989,Ähtäri,0184622-7,kaupunki,suomi,Ähtärin keskustaajama,Etelä-Pohjanmaa,Kuusiokuntien seutukunta,5463,91087.0,80582.0,68.0
+308,992,Äänekoski,2045520-5,kaupunki,suomi,Äänekosken keskustaajama,Keski-Suomi,Äänekosken seutukunta,18249,1138.38,88462.0,206.0
