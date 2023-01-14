@@ -4,7 +4,6 @@ import osta.__utils as utils
 import osta.change_names as cn
 import pandas as pd
 import warnings
-import re
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import pkg_resources
@@ -108,6 +107,52 @@ def clean_data(df, **args):
     df = __standardize_account(df, **args)
     # Check service data
     df = __standardize_service(df, **args)
+    # Check country data
+    df = __standardize_country(df, **args)
+    return df
+
+
+def __standardize_country(df, country_format="code_2char", **args):
+    """
+    This function check standardize the used country format.
+    Input: df
+    Output: df
+    """
+    # INPUT CHECK
+    # Load data base
+    path = "~/Python/osta/src/osta/resources/land_codes.csv"
+    country_codes = pd.read_csv(path, index_col=0)
+    # country_format must be one of the database columns
+    if not (isinstance(country_format, str) and
+            country_format in country_codes.columns):
+        raise Exception(
+            f"'country_format' must be one of the following options\n."
+            f"{country_codes.columns.tolist()}"
+            )
+    # INPUT CHECK END
+    # Get country data from df
+    df_country = df[["country"]]
+    # Get unique countries
+    df_country = df_country.drop_duplicates()
+    # Loop over values and add info on them
+    not_found = pd.DataFrame()
+    for i, x in df_country.iterrows():
+        # Get the country from data base
+        ind = country_codes.isin([x[0]]).sum(axis=1) > 0
+        if any(ind):
+            temp = country_codes.loc[ind, :]
+            # Assing result to original DF
+            df.loc[df["country"] == x[0], "country"] = temp[
+                country_format].values[0]
+        else:
+            not_found = pd.concat([not_found, x], axis=1)
+    # If some countries were not detected
+    if not_found.shape[1] > 0:
+        warnings.warn(
+            message=f"The following countries were not detected. Please check "
+            f"them for errors: \n{not_found}",
+            category=Warning
+            )
     return df
 
 
