@@ -300,7 +300,8 @@ def __guess_name(df, col_i, colnames, fields, pattern_th=0.9, match_th=0.8,
     # Try if column is ID column
     elif __test_if_BID(df=df, col_i=col_i, match_th=match_th):
         # BID can be from organization or supplier
-        col = __org_or_suppl_BID(df=df, col_i=col_i, colnames=colnames)
+        col = __org_or_suppl_BID(df=df, col_i=col_i, colnames=colnames,
+                                 match_th=match_th)
     # Test if date
     elif __test_if_date(df=df, col_i=col_i, colnames=colnames):
         col = "date"
@@ -452,46 +453,54 @@ def __test_if_BID(df, col_i, match_th):
     return res
 
 
-def __org_or_suppl_BID(df, col_i, colnames):
+def __org_or_suppl_BID(df, col_i, colnames, match_th):
     """
     This function checks if the column defines BID of organization or supplier
     Input: DataFrame, index of the column, found final column names
     Output: The final colname of BID column
     """
-    # Initialize result as supplier ID
-    res = "suppl_id"
-    # List of columns that are matched
-    cols_match = ["org_number", "org_name"]
-    # Loop over columns that should be matched
-    for col_match in cols_match:
-        # If the column is in colnames
-        if col_match in colnames:
-            # Subset the data by taking only specified columns
-            temp = df.iloc[:, [col_i, colnames.index(col_match)]]
-            # Drop rows with blank values
-            temp = temp.dropna()
-            # Number of unique combinations
-            n_uniq = temp.drop_duplicates().shape[0]
-            # If there are as many combinations as there are individual values
-            # these columns match
-            if n_uniq == df.iloc[:, colnames.index(col_match)].nunique():
-                res = "org_id"
-    # If all the identifiers are missing, give "bid", because we cannot be sure
-    if all(list(name not in colnames for name in ["org_number", "org_name",
-                                                  "org_id", "suppl_name",
-                                                  "suppl_id"])):
-        res = "bid"
-    # If there are supplier IDs already, try if they are differemt
-    if "suppl_id" in colnames and all(df.iloc[:, col_i] !=
-                                      df.iloc[:, colnames.index("suppl_id")]):
-        res = "org_id"
-    # If there are organization IDs already, try if they are differemt
-    if "org_id" in colnames and all(df.iloc[:, col_i] ==
-                                    df.iloc[:, colnames.index("org_id")]):
-        res = "org_id"
-    # If there are not many unique values, it might be organization ID
-    if df.iloc[:, col_i].nunique()/df.shape[0] < 0.5:
-        res = "org_id"
+    # If BID can be found from the database
+    if __test_if_in_db(df=df, col_i=col_i, colnames=colnames,
+                       db_file="municipality_codes.csv",
+                       test="bid", match_th=match_th):
+        res = "org_bid"
+    else:
+        # Initialize result as supplier ID
+        res = "suppl_id"
+        # List of columns that are matched
+        cols_match = ["org_number", "org_name"]
+        # Loop over columns that should be matched
+        for col_match in cols_match:
+            # If the column is in colnames
+            if col_match in colnames:
+                # Subset the data by taking only specified columns
+                temp = df.iloc[:, [col_i, colnames.index(col_match)]]
+                # Drop rows with blank values
+                temp = temp.dropna()
+                # Number of unique combinations
+                n_uniq = temp.drop_duplicates().shape[0]
+                # If there are as many combinations as there are
+                # individual values these columns match
+                if n_uniq == df.iloc[:, colnames.index(col_match)].nunique():
+                    res = "org_id"
+        # If all the identifiers are missing, give "bid", because we
+        # cannot be sure
+        if all(list(name not in colnames for name in ["org_number", "org_name",
+                                                      "org_id", "suppl_name",
+                                                      "suppl_id"])):
+            res = "bid"
+        # If there are supplier IDs already, try if they are differemt
+        if "suppl_id" in colnames and all(df.iloc[:, col_i] !=
+                                          df.iloc[:, colnames.index(
+                                              "suppl_id")]):
+            res = "org_id"
+        # If there are organization IDs already, try if they are differemt
+        if "org_id" in colnames and all(df.iloc[:, col_i] ==
+                                        df.iloc[:, colnames.index("org_id")]):
+            res = "org_id"
+        # If there are not many unique values, it might be organization ID
+        if df.iloc[:, col_i].nunique()/df.shape[0] < 0.5:
+            res = "org_id"
     return res
 
 
