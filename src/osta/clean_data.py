@@ -102,7 +102,12 @@ def clean_data(df, **args):
     #         )
     # Check org information
     df = __standardize_org(df, **args)
-    
+    # Check supplier info
+    df = __standardize_suppl(df, **args)
+    # CHeck account info
+    df = __standardize_account(df, **args)
+    # Check service data
+    df = __standardize_service(df, **args)
     return df
 
 
@@ -267,8 +272,7 @@ def __standardize_org(df, org_data=None, **args):
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=org_data,
                                    cols_to_check=cols_to_check,
-                                   cols_to_match=cols_to_match,
-                                   **args)
+                                   cols_to_match=cols_to_match)
     return df
 
 
@@ -295,8 +299,7 @@ def __standardize_account(df, account_data=None, **args):
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=account_data,
                                    cols_to_check=cols_to_check,
-                                   cols_to_match=cols_to_match,
-                                   **args)
+                                   cols_to_match=cols_to_match)
     return df
 
 
@@ -324,7 +327,7 @@ def __standardize_service(df, service_data=None, **args):
     df = __standardize_based_on_db(df=df, df_db=service_data,
                                    cols_to_check=cols_to_check,
                                    cols_to_match=cols_to_match,
-                                   **args, not_org=True)
+                                   not_org=True)
     return df
 
 
@@ -349,8 +352,7 @@ def __standardize_suppl(df, suppl_data=None, **args):
         # Standardize organization data
         df = __standardize_based_on_db(df=df, df_db=suppl_data,
                                        cols_to_check=cols_to_check,
-                                       cols_to_match=cols_to_match,
-                                       **args)
+                                       cols_to_match=cols_to_match)
     else:
         # Check that data is not duplicated, BID is correct, and there are not
         # empty values. Get warning if there are.
@@ -361,8 +363,7 @@ def __standardize_suppl(df, suppl_data=None, **args):
 def __standardize_based_on_db(df, df_db,
                               cols_to_check, cols_to_match,
                               match_th=0.7, scorer=fuzz.token_sort_ratio,
-                              not_org=False,
-                              **args):
+                              not_org=False):
     """
     Standardize the data based on database.
     Input: df, df_db including database,
@@ -413,14 +414,13 @@ def __standardize_based_on_db(df, df_db,
                 df_org.fillna("")).sum(axis=1) > 0):
             df.loc[:, cols_to_check] = df_org
     # If no matching columns were found from the data base
-    # TODO split from "_" take first part
     elif len(cols_to_match) == 0:
-        temp = ("org_data" if re.search("org", cols_to_check[0])
-                else "suppl_data")
+        temp = cols_to_check[0].split("_")[0]
         warnings.warn(
             message=f"'{temp}' should include at least one of the "
             "following columns: 'name' (name), 'number' "
-            "(number), and 'bid' (business ID).",
+            "(number), and 'bid' (business ID for organization and "
+            f"supplier data).",
             category=Warning
             )
     # If organization data was not in database, it is not checked.
@@ -505,27 +505,10 @@ def __replace_old_values_with_new(df,
     # Loop over those rows and replace the values of original data columns
     for i in ind_mod:
         # Get old and new rows
-        old_row = old_values.iloc[i, :].values
-        new_row = new_values.iloc[i, :].values
-        # Assign values based on bid, number or name whether they are
-        # found and not None
-        if ("bid" in cols_to_match
-            and old_row[cols_to_match.index("bid")
-                        ] is not None):
-            # Get which rows of df match the value
-            col = cols_to_match.index("bid")
-            ind = df.iloc[:, col] == old_row[col]
-        elif ("number" in cols_to_match and
-              old_row[cols_to_match.index("number")] is not None):
-            # Get which rows of df match the value
-            col = cols_to_match.index("number")
-            ind = df.iloc[:, col] == old_row[col]
-        else:
-            # Get which rows of df match the value
-            col = cols_to_match.index("name")
-            ind = df.iloc[:, col] == old_row[col]
-        # Replace values
-        df.loc[ind, :] = new_row
+        old_row = old_values.iloc[i, :].values.tolist()
+        new_row = new_values.iloc[i, :].values.tolist()
+        # Replace values with new ones
+        df.loc[(df == old_row).sum(axis=1) == df.shape[1], :] = new_row
     return df
 
 
@@ -556,8 +539,10 @@ def __get_matches_from_db(df, df_db,
             # otherwise get False
             var_df = row[df.columns == cols_to_check[j]]
             var_df = var_df.astype(str).str.lower().values
-            # Can name, number and BID be found from the df_db? Get True/False list
-            var_db = df_db.loc[:, cols_to_match[j]].astype(str).str.lower().values
+            # Can name, number and BID be found from the df_db?
+            # Get True/False list
+            var_db = df_db.loc[:, cols_to_match[j]].astype(
+                str).str.lower().values
             var_db = var_db == var_df
             # Add to DF
             temp[x] = var_db
@@ -573,23 +558,39 @@ def __get_matches_from_db(df, df_db,
                 # check if they match with data base
                 # values acquired by jth variable
                 if temp.shape[1] > 1:
-                    # Data frame and data base values of other variables
-                    temp_df = df.loc[[i], [x for x in cols_to_check if
-                                           x not in cols_to_check[j]]]
-                    temp_db = df_db.loc[temp[x], [x for x in cols_to_match if
-                                                  x not in cols_to_match[j]]]
-                    # Convert to list; take only values
-                    temp_df = temp_df.values.tolist()[0]
-                    temp_db = temp_db.values.tolist()[0]
-                    # Check if they equal
-                    if temp_df != temp_db:
-                        # Get values
-                        row.extend(row_db)
-                        # Store data for warning message
-                        temp = pd.DataFrame(row)
-                        missmatch_df = pd.concat([missmatch_df, temp], axis=1,
-                                                 ignore_index=True)
-                        missmatch = True
+                    # Take other columns that j
+                    temp = temp.loc[:, [x for x in cols_to_check
+                                        if x not in cols_to_check[j]]]
+                    temp = temp.loc[:, temp.sum(axis=0) > 0]
+                    # If other variables had also matches
+                    if temp.shape[1] > 0:
+                        # Loop over variables
+                        for k, c in enumerate(temp.columns):
+                            # Get variable from database
+                            temp_db = df_db.loc[
+                                temp[c], [x for x in cols_to_match if x not
+                                          in cols_to_match[j]]
+                                ].values.tolist()[0]
+                            # Get variable that was in values that will be
+                            # added to the final data if everything's OK
+                            value = [row_db[num] for num, x in
+                                     enumerate(cols_to_match) if x not in
+                                     cols_to_match[j]]
+                        # Check if they equal
+                        if value != temp_db:
+                            # Get values
+                            row = row.values.tolist()
+                            row.extend(row_db)
+                            # Store data for warning message
+                            name1 = [x for x in cols_to_check if x not in
+                                     cols_to_check[j]]
+                            name2 = ["Found " + x for x in cols_to_check if x
+                                     not in cols_to_check[j]]
+                            name1.append(name2)
+                            temp = pd.DataFrame(row, index=name1)
+                            missmatch_df = pd.concat([missmatch_df, temp],
+                                                     axis=1, ignore_index=True)
+                            missmatch = True
             # If match was found, break for loop; do not check other variables
             if found:
                 break
@@ -625,16 +626,27 @@ def __get_matches_from_db(df, df_db,
             # Store data for warning message: data was not found
             row = pd.DataFrame(row)
             not_detected_df = pd.concat([not_detected_df, row], axis=1)
+    # If some data had missmatch
+    if missmatch_df.shape[0] > 0:
+        missmatch_df = missmatch_df.drop_duplicates()
+        warnings.warn(
+            message=f"The following data "
+            f"did not match. Please check it for errors: "
+            f"\n{missmatch_df.transpose()}",
+            category=Warning
+            )
     # If some data was not detected
     if not_detected_df.shape[0] > 0:
+        not_detected_df = not_detected_df.drop_duplicates()
         warnings.warn(
-            message=f"The following organization data "
+            message=f"The following data "
             f"was not detected. Please check it for errors: "
             f"\n{not_detected_df.transpose()}",
             category=Warning
             )
     # If partial match of name was used
     if part_match_df.shape[0] > 0:
+        part_match_df = part_match_df.drop_duplicates()
         warnings.warn(
             message=f"The following organization names were detected "
             f"based on partial matching:"
