@@ -240,7 +240,7 @@ path = ("https://vkazprodwordpressstacc01.blob.core.windows.net/" +
 sheet = "Tililuettelo tilikaudelle 2021"
 df_2021 = get_accounts(file=path, sheet_name=sheet, year=2021)
 columns = [
-    "account",
+    "number",
     "info",
     "cat1",
     "cat2",
@@ -257,7 +257,7 @@ df_2021.columns = columns
 sheet = "Tililuettelo tilikaudelle 2022"
 df_2022 = get_accounts(file=path, sheet_name=sheet, year=2022)
 columns = [
-    "account",
+    "number",
     "info",
     "cat1",
     "cat2",

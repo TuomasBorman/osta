@@ -114,9 +114,6 @@ def __clean_sums(df):
     Input: df
     Output: df
     """
-    # TODO CHECK IF VAT CATEGORY CAN BE FOUND --> VAT COULD BE POSSIBLE
-    # TO CALCULATE
-
     # Check which column is missing if any
     col_to_check = ["total", "vat_amount", "price_ex_vat"]
     # Get columns that are included in data
@@ -266,12 +263,68 @@ def __standardize_org(df, org_data=None, **args):
     # Column that are checked from df
     cols_to_check = ["org_number", "org_name", "org_id"]
     # Column of db that are matched with columns that are being checked
-    cols_to_match = ["code", "name", "bid"]
+    cols_to_match = ["number", "name", "bid"]
     # Standardize organization data
-    df = __standardize_org_or_suppl(df=df, df_db=org_data,
-                                    cols_to_check=cols_to_check,
-                                    cols_to_match=cols_to_match,
-                                    **args)
+    df = __standardize_based_on_db(df=df, df_db=org_data,
+                                   cols_to_check=cols_to_check,
+                                   cols_to_match=cols_to_match,
+                                   **args)
+    return df
+
+
+def __standardize_account(df, account_data=None, **args):
+    """
+    This function prepares account data to be checked, and calls
+    function that checks it.
+    Input: df
+    Output: df with standardized organization data
+    """
+    # INPUT CHECK
+    if not (utils.__is_non_empty_df(account_data) or account_data is None):
+        raise Exception(
+            "'account_data' must be non-empty pandas.DataFrame or None."
+            )
+    # INPUT CHECK END
+    if account_data is None:
+        path = "~/Python/osta/src/osta/resources/account_info.csv"
+        account_data = pd.read_csv(path, index_col=0)
+    # Column that are checked from df
+    cols_to_check = ["account_number", "account_name"]
+    # Column of db that are matched with columns that are being checked
+    cols_to_match = ["number", "name"]
+    # Standardize organization data
+    df = __standardize_based_on_db(df=df, df_db=account_data,
+                                   cols_to_check=cols_to_check,
+                                   cols_to_match=cols_to_match,
+                                   **args)
+    return df
+
+
+def __standardize_service(df, service_data=None, **args):
+    """
+    This function prepares service data to be checked, and calls
+    function that checks it.
+    Input: df
+    Output: df with standardized organization data
+    """
+    # INPUT CHECK
+    if not (utils.__is_non_empty_df(service_data) or service_data is None):
+        raise Exception(
+            "'service_data' must be non-empty pandas.DataFrame or None."
+            )
+    # INPUT CHECK END
+    if service_data is None:
+        path = "~/Python/osta/src/osta/resources/service_codes.csv"
+        service_data = pd.read_csv(path, index_col=0)
+    # Column that are checked from df
+    cols_to_check = ["service_cat", "service_cat_name"]
+    # Column of db that are matched with columns that are being checked
+    cols_to_match = ["number", "name"]
+    # Standardize organization data
+    df = __standardize_based_on_db(df=df, df_db=service_data,
+                                   cols_to_check=cols_to_check,
+                                   cols_to_match=cols_to_match,
+                                   **args, not_org=True)
     return df
 
 
@@ -294,10 +347,10 @@ def __standardize_suppl(df, suppl_data=None, **args):
     cols_to_match = ["code", "name", "bid"]
     if suppl_data is not None:
         # Standardize organization data
-        df = __standardize_org_or_suppl(df=df, df_db=suppl_data,
-                                        cols_to_check=cols_to_check,
-                                        cols_to_match=cols_to_match,
-                                        **args)
+        df = __standardize_based_on_db(df=df, df_db=suppl_data,
+                                       cols_to_check=cols_to_check,
+                                       cols_to_match=cols_to_match,
+                                       **args)
     else:
         # Check that data is not duplicated, BID is correct, and there are not
         # empty values. Get warning if there are.
@@ -305,10 +358,11 @@ def __standardize_suppl(df, suppl_data=None, **args):
     return df
 
 
-def __standardize_org_or_suppl(df, df_db,
-                               cols_to_check, cols_to_match,
-                               match_th=0.7, scorer=fuzz.token_sort_ratio,
-                               **args):
+def __standardize_based_on_db(df, df_db,
+                              cols_to_check, cols_to_match,
+                              match_th=0.7, scorer=fuzz.token_sort_ratio,
+                              not_org=False,
+                              **args):
     """
     Standardize the data based on database.
     Input: df, df_db including database,
@@ -317,10 +371,10 @@ def __standardize_org_or_suppl(df, df_db,
     """
     # INPUT CHECK
     # match_th must be numeric value 0-1
-    if not utils.__is_percentage(match_th):
-        raise Exception(
-            "'match_th' must be a number between 0-1."
-            )
+    # if not utils.__is_percentage(match_th):
+    #     raise Exception(
+    #         "'match_th' must be a number between 0-1."
+    #         )
     # Value [0,1] to a number between 0-100, because fuzzywuzzy requires that
     match_th = match_th*100
     # INPUT CHECK END
@@ -359,6 +413,7 @@ def __standardize_org_or_suppl(df, df_db,
                 df_org.fillna("")).sum(axis=1) > 0):
             df.loc[:, cols_to_check] = df_org
     # If no matching columns were found from the data base
+    # TODO split from "_" take first part
     elif len(cols_to_match) == 0:
         temp = ("org_data" if re.search("org", cols_to_check[0])
                 else "suppl_data")
@@ -370,7 +425,8 @@ def __standardize_org_or_suppl(df, df_db,
             )
     # If organization data was not in database, it is not checked.
     # Check here that it has correct pattern, and it is not duplicated
-    __check_org_data(df, cols_df)
+    if not_org is False:
+        __check_org_data(df, cols_df)
     return df
 
 
@@ -459,10 +515,10 @@ def __replace_old_values_with_new(df,
             # Get which rows of df match the value
             col = cols_to_match.index("bid")
             ind = df.iloc[:, col] == old_row[col]
-        elif ("code" in cols_to_match and
-              old_row[cols_to_match.index("code")] is not None):
+        elif ("number" in cols_to_match and
+              old_row[cols_to_match.index("number")] is not None):
             # Get which rows of df match the value
-            col = cols_to_match.index("code")
+            col = cols_to_match.index("number")
             ind = df.iloc[:, col] == old_row[col]
         else:
             # Get which rows of df match the value
@@ -483,83 +539,68 @@ def __get_matches_from_db(df, df_db,
     Output: df with correct values
     """
     # Create a copy that will be modified
+    df.reset_index(drop=True, inplace=True)
     df_mod = df.copy()
     # Initialize DF for warning messages
-    mismatch = pd.DataFrame()
-    not_detected = pd.DataFrame()
-    part_match = pd.DataFrame()
+    missmatch_df = pd.DataFrame()
+    not_detected_df = pd.DataFrame()
+    part_match_df = pd.DataFrame()
 
     # Loop over rows
     for i, row in df.iterrows():
-        # Get name, number and id if they are found from the df,
-        # otherwise get False
-        name = (row[cols_to_match.index("name")] if
-                "name" in cols_to_match else False)
-        number = (row[cols_to_match.index("code")] if
-                  "code" in cols_to_match else False)
-        bid = (row[cols_to_match.index("bid")] if
-               "bid" in cols_to_match else False)
-        # Can name, number and BID be found from the df_db? Get True/False list
-        name_found_ind = (df_db.loc[:, "name"].astype(str).str.lower() ==
-                          name.lower() if name is not False else [False])
-        number_found_ind = (df_db.loc[:, "code"].astype(int) ==
-                            int(number) if number is not False and
-                            str(number).replace('.', '', 1).isdigit()
-                            else [False])
-        bid_found_ind = (df_db.loc[:, "bid"].astype(str).str.lower() ==
-                         name.lower() if bid is not False else [False])
-
-        # If bid was found
-        if any(bid_found_ind):
-            # Take the row based on business id
-            row_db = df_db.loc[bid_found_ind, cols_to_match]
-            # If name or number of df do not match to row of df_db
-            if ((any(name_found_ind) and name.lower() !=
-                 row_db.loc[:, "name"].astype(str).str.lower()) or
-                (any(number_found_ind) and
-                 int(bid) != int(row_db["bid"]))):
-                # Get values
-                temp = row.tolist()
-                temp.extend(row_db.iloc[0, :].tolist())
-                # Get variable names
-                temp_name = row.index.tolist()
-                temp_name.extend(row_db.columns.to_list())
-                # Store data for warning message
-                temp = pd.DataFrame(temp, index=temp_name)
-                mismatch = pd.concat([mismatch, temp], ignore_index=True)
-            else:
-                # Add row to final data
-                df_mod.iloc[i, :] = row_db.values.tolist()[0]
-        # If name was found
-        elif any(name_found_ind):
-            # Take the row based on name
-            row_db = df_db.loc[name_found_ind, cols_to_match]
-            # If number do not match to row (bid was not found)
-            if any(number_found_ind) and int(number) != int(row_db["code"]):
-                # Get values
-                temp = row.tolist()
-                temp.extend(row_db.iloc[0, :].tolist())
-                # Get variable names
-                temp_name = row.index.tolist()
-                temp_name.extend(row_db.columns.to_list())
-                # Store data for warning message
-                temp = pd.DataFrame(temp, index=temp_name)
-                mismatch = pd.concat([mismatch, temp], axis=1,
-                                     ignore_index=True)
-            else:
-                # Add row to final data
-                df_mod.iloc[i, :] = row_db.values.tolist()[0]
-        # If number was found
-        elif any(number_found_ind):
-            # Take the row based on number
-            row_db = df_db.loc[number_found_ind, cols_to_match]
-            # Add row to final data (bid and name was not found)
-            df_mod.iloc[i, :] = row_db.values.tolist()[0]
-        # Test partial matching to name if name was present
-        elif name is not False or name is not None:
+        # Intialize a DF for variables' position in data base
+        temp = pd.DataFrame()
+        # Loop over variables
+        for j, x in enumerate(cols_to_check):
+            # Get name, number and id if they are found from the df,
+            # otherwise get False
+            var_df = row[df.columns == cols_to_check[j]]
+            var_df = var_df.astype(str).str.lower().values
+            # Can name, number and BID be found from the df_db? Get True/False list
+            var_db = df_db.loc[:, cols_to_match[j]].astype(str).str.lower().values
+            var_db = var_db == var_df
+            # Add to DF
+            temp[x] = var_db
+        # Loop over variables
+        found = False
+        missmatch = False
+        for j, x in enumerate(cols_to_check):
+            # If 1st, 2nd... or nth variable was found from database
+            if any(temp[x]):
+                row_db = df_db.loc[temp[x], cols_to_match].values.tolist()[0]
+                found = True
+                # If there were other variables,
+                # check if they match with data base
+                # values acquired by jth variable
+                if temp.shape[1] > 1:
+                    # Data frame and data base values of other variables
+                    temp_df = df.loc[[i], [x for x in cols_to_check if
+                                           x not in cols_to_check[j]]]
+                    temp_db = df_db.loc[temp[x], [x for x in cols_to_match if
+                                                  x not in cols_to_match[j]]]
+                    # Convert to list; take only values
+                    temp_df = temp_df.values.tolist()[0]
+                    temp_db = temp_db.values.tolist()[0]
+                    # Check if they equal
+                    if temp_df != temp_db:
+                        # Get values
+                        row.extend(row_db)
+                        # Store data for warning message
+                        temp = pd.DataFrame(row)
+                        missmatch_df = pd.concat([missmatch_df, temp], axis=1,
+                                                 ignore_index=True)
+                        missmatch = True
+            # If match was found, break for loop; do not check other variables
+            if found:
+                break
+        # If false, try partial match if values include names
+        if found is False and "name" in cols_to_match:
+            # Get name from df and database
+            name_df = row[df.columns == cols_to_check[
+                cols_to_match.index("name")]]
+            name_db = df_db.loc[:, "name"]
             # Try partial match, get the most similar name
-            name_part = process.extractOne(name, df_db.loc[:, "name"],
-                                           scorer=scorer)
+            name_part = process.extractOne(name_df, name_db, scorer=scorer)
             # If the matching score is over threshold
             if name_part[1] >= match_th:
                 # Get only the name
@@ -570,28 +611,34 @@ def __get_matches_from_db(df, df_db,
                 # Add row to final data
                 df_mod.iloc[i, :] = row_db.values.tolist()[0]
                 # Store info for warning message
-                temp = pd.DataFrame([name, name_part],
+                temp = pd.DataFrame([name_df, name_part],
                                     index=[cols_to_check[
                                         cols_to_match.index("name")],
                                         "found match"])
-                part_match = pd.concat([part_match, temp], axis=1)
-            else:
-                # Store data for warning message: data was not found
-                not_detected = pd.concat([not_detected, row], axis=1)
-
+                part_match_df = pd.concat([part_match_df, temp], axis=1)
+                found = True
+        # If match was found
+        # Add row to final data
+        if found and not missmatch:
+            df_mod.iloc[i, :] = row_db
+        else:
+            # Store data for warning message: data was not found
+            row = pd.DataFrame(row)
+            not_detected_df = pd.concat([not_detected_df, row], axis=1)
     # If some data was not detected
-    if not_detected.shape[0] > 0:
+    if not_detected_df.shape[0] > 0:
         warnings.warn(
             message=f"The following organization data "
             f"was not detected. Please check it for errors: "
-            f"\n{not_detected.transpose()}",
+            f"\n{not_detected_df.transpose()}",
             category=Warning
             )
     # If partial match of name was used
-    if part_match.shape[0] > 0:
+    if part_match_df.shape[0] > 0:
         warnings.warn(
-            message=f"The following organization names were detected based on "
-            f"partial matching: \n{part_match.transpose().drop_duplicates()}",
+            message=f"The following organization names were detected "
+            f"based on partial matching:"
+            f"\n{part_match_df.transpose().drop_duplicates()}",
             category=Warning
             )
     return df_mod
