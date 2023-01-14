@@ -7,6 +7,7 @@ import warnings
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import pkg_resources
+import numpy as np
 
 
 def clean_data(df, **args):
@@ -56,59 +57,54 @@ def clean_data(df, **args):
             )
     # Remove spaces from beginning and end of the value
     df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+    # Check if there are duplicated column names
+    if len(set(df.columns)) != df.shape[1]:
+        # Get unique values and their counts
+        unique, counts = np.unique(df.columns, return_counts=True)
+        # Get duplicated values
+        duplicated = unique[counts > 1]
+        warnings.warn(
+            message=f"The following column names are duplicated. "
+            f"Please check them for errors.\n {duplicated.tolist()}",
+            category=Warning
+            )
 
     # Test if voucher is correct
-    if ("voucher" in df.columns
-        and not cn.__test_if_voucher(df=df,
-                                     col_i=df.columns.tolist(
-                                         ).index("voucher"),
-                                     colnames=df.columns)):
+    if ("voucher" not in duplicated and
+        ("voucher" in df.columns and not
+         cn.__test_if_voucher(df=df,
+                              col_i=df.columns.tolist.index("voucher"),
+                              colnames=df.columns))):
         warnings.warn(
             message="It seems that 'voucher' column does not include " +
             "voucher values. Please check it for errors.",
             category=Warning
             )
-    # CHeck that accounts are correct
-    if any(col in ["account", "account_name"] for col in df.columns):
-        __check_variable_pair(df,
-                              cols_to_check=["account", "account_name"],
-                              dtypes=["int64", "object"])
-    # Check that service categories are correct
-    if any(col in ["service_cat", "service_cat_name"] for col in df.columns):
-        __check_variable_pair(df,
-                              cols_to_check=["service_cat",
-                                             "service_cat_name"],
-                              dtypes=["int64", "object"])
     # Check VAT numbers
-    if any(col in ["vat_number"] for col in df.columns):
+    if "vat_number" not in duplicated and any(
+            col in ["vat_number"] for col in df.columns):
         cols_to_check = ["suppl_id", "vat_number", "country"]
         __check_vat_number(df, cols_to_check)
-    # # Check if there are duplicated column names
-    # if len(set(df.columns)) != df.shape[1]:
-    #     # Get unique values and their counts
-    #     unique, counts = np.unique(df.columns, return_counts=True)
-    #     # Get duplicated values
-    #     duplicated = unique[counts > 1]
-    #     # Get those duplicated values that define columns
-    #     # that are being cleaned
-    #     duplicated_disable = duplicated[list(dup in ["test1", "test3"]
-    #                                          for dup in duplicated)]
-    #     print(duplicated_disable)
-    #     warnings.warn(
-    #         message=f"The following column names are duplicated. "
-    #         f"Please check them for errors.\n {duplicated}",
-    #         category=Warning
-    #         )
+    # Check dates
+    if (all(x not in duplicated for x in ["date"]) and "date" in df.columns):
+        df = __standardize_date(df, **args)
     # Check org information
-    df = __standardize_org(df, **args)
+    if all(x not in duplicated for x in ["org_name", "org_number", "org_id"]):
+        df = __standardize_org(df, **args)
     # Check supplier info
-    df = __standardize_suppl(df, **args)
-    # CHeck account info
-    df = __standardize_account(df, **args)
+    if all(x not in duplicated for x in ["suppl_name",
+                                         "suppl_number", "suppl_id"]):
+        df = __standardize_suppl(df, **args)
+    # Check account info
+    if all(x not in duplicated for x in ["account_name", "account_number"]):
+        df = __standardize_account(df, **args)
     # Check service data
-    df = __standardize_service(df, **args)
+    if all(x not in duplicated for x in ["service_cat_name", "service_cat"]):
+        df = __standardize_service(df, **args)
     # Check country data
-    df = __standardize_country(df, **args)
+    if all(x not in duplicated for x in [
+           "country"]) and "country" in df.columns:
+        df = __standardize_country(df, **args)
     return df
 
 
@@ -217,11 +213,6 @@ def __standardize_date(df, date_format="%d-%m-%Y",
     Input: df
     Output: df
     """
-    # Check if column can be found and it is not duplicated
-    # If not, keep df unchanged
-    if not __col_present_and_not_duplicated("date", df.columns):
-        return df
-
     # Get date column
     df_date = df.loc[:, "date"]
     # Split dates from separator. Result is multiple columns
@@ -311,9 +302,9 @@ def __standardize_org(df, org_data=None, **args):
         path = "~/Python/osta/src/osta/resources/municipality_codes.csv"
         org_data = pd.read_csv(path, index_col=0)
     # Column that are checked from df
-    cols_to_check = ["org_number", "org_name", "org_id"]
+    cols_to_check = ["org_id", "org_number", "org_name"]
     # Column of db that are matched with columns that are being checked
-    cols_to_match = ["number", "name", "bid"]
+    cols_to_match = ["bid", "number", "name"]
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=org_data,
                                    cols_to_check=cols_to_check,
@@ -341,10 +332,13 @@ def __standardize_account(df, account_data=None, **args):
     cols_to_check = ["account_number", "account_name"]
     # Column of db that are matched with columns that are being checked
     cols_to_match = ["number", "name"]
+    # Data types to check
+    dtypes = ["int64", "object"]
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=account_data,
                                    cols_to_check=cols_to_check,
-                                   cols_to_match=cols_to_match)
+                                   cols_to_match=cols_to_match,
+                                   not_org=True, dtypes=dtypes)
     return df
 
 
@@ -368,11 +362,13 @@ def __standardize_service(df, service_data=None, **args):
     cols_to_check = ["service_cat", "service_cat_name"]
     # Column of db that are matched with columns that are being checked
     cols_to_match = ["number", "name"]
+    # Data types to check
+    dtypes = ["int64", "object"]
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=service_data,
                                    cols_to_check=cols_to_check,
                                    cols_to_match=cols_to_match,
-                                   not_org=True)
+                                   not_org=True, dtypes=dtypes)
     return df
 
 
@@ -386,13 +382,13 @@ def __standardize_suppl(df, suppl_data=None, **args):
     # INPUT CHECK
     if not (utils.__is_non_empty_df(suppl_data) or suppl_data is None):
         raise Exception(
-            "'org_data' must be non-empty pandas.DataFrame or None."
+            "'suppl_data' must be non-empty pandas.DataFrame or None."
             )
     # INPUT CHECK END
     # Column that are checked from df
-    cols_to_check = ["suppl_name", "suppl_id"]
+    cols_to_check = ["suppl_id", "suppl_number", "suppl_name"]
     # Column of db that are matched with columns that are being checked
-    cols_to_match = ["code", "name", "bid"]
+    cols_to_match = ["bid", "number", "name"]
     if suppl_data is not None:
         # Standardize organization data
         df = __standardize_based_on_db(df=df, df_db=suppl_data,
@@ -408,7 +404,7 @@ def __standardize_suppl(df, suppl_data=None, **args):
 def __standardize_based_on_db(df, df_db,
                               cols_to_check, cols_to_match,
                               match_th=0.7, scorer=fuzz.token_sort_ratio,
-                              not_org=False):
+                              not_org=False, **args):
     """
     Standardize the data based on database.
     Input: df, df_db including database,
@@ -417,10 +413,10 @@ def __standardize_based_on_db(df, df_db,
     """
     # INPUT CHECK
     # match_th must be numeric value 0-1
-    # if not utils.__is_percentage(match_th):
-    #     raise Exception(
-    #         "'match_th' must be a number between 0-1."
-    #         )
+    if not utils.__is_percentage(match_th):
+        raise Exception(
+            "'match_th' must be a number between 0-1."
+            )
     # Value [0,1] to a number between 0-100, because fuzzywuzzy requires that
     match_th = match_th*100
     # INPUT CHECK END
@@ -472,6 +468,10 @@ def __standardize_based_on_db(df, df_db,
     # Check here that it has correct pattern, and it is not duplicated
     if not_org is False:
         __check_org_data(df, cols_df)
+    else:
+        __check_variable_pair(df,
+                              cols_to_check=cols_df,
+                              **args)
     return df
 
 
@@ -701,7 +701,7 @@ def __get_matches_from_db(df, df_db,
     return df_mod
 
 
-def __check_variable_pair(df, cols_to_check, dtypes):
+def __check_variable_pair(df, cols_to_check, dtypes, **args):
     """
     This function checks variable pair that their data type is correct.
     Input: df, columns being checked, and expected data types
@@ -786,31 +786,3 @@ def __check_vat_number(df, cols_to_check):
             category=Warning
             )
     return df
-
-
-def __col_present_and_not_duplicated(col, colnames):
-    """
-    This function checks if column is present. Also it check if there
-    are duplicated column and gives corresponding warning
-    Input: column being checked and column names
-    Output: df
-    """
-    # Check if column is present
-    if col in colnames:
-        res = True
-    else:
-        res = False
-        warnings.warn(
-            message=f"The following column cannot be found from the data "
-            f": {col}",
-            category=Warning
-            )
-    # Check if it is duplicated
-    if sum(list(c == col for c in colnames)) > 1:
-        res = False
-        warnings.warn(
-            message=f"The following column is duplicated, and values will be "
-            f"unchanged. Please check it for errors: {col}",
-            category=Warning
-            )
-    return res
