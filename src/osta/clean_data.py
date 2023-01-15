@@ -489,23 +489,25 @@ def __standardize_based_on_db(df, df_db,
     return df
 
 
-def __check_org_data(df, cols_df):
+def __check_org_data(df, cols_to_check):
     """
     Check if organization data is not duplicated, or has empty values, or
     incorrect business IDs.
     Input: df, columns that contain organization information
     Output: which rows are incorrect?
     """
+    # Which column are found from df
+    cols_to_check = [x for x in cols_to_check if x in df.columns]
     # Subset the data
-    df = df.loc[:, cols_df]
+    df = df.loc[:, cols_to_check]
     # Drop duplicates
     df = df.drop_duplicates()
     # Are there None values
     res = df.isna().sum(axis=1) > 0
     # BIDs found?
-    if any(i in cols_df for i in ["org_id", "suppl_id"]):
+    if any(i in cols_to_check for i in ["org_id", "suppl_id"]):
         # Get bid column
-        col = [x for x in ["org_id", "suppl_id"] if x in cols_df][0]
+        col = [x for x in ["org_id", "suppl_id"] if x in cols_to_check][0]
         # Get BIDs
         col = df[col]
         # Check that bids are valid; True if not valid
@@ -516,9 +518,9 @@ def __check_org_data(df, cols_df):
         # Update result
         res = res | valid | duplicated
     # Name found?
-    if any(i in cols_df for i in ["org_name", "suppl_name"]):
+    if any(i in cols_to_check for i in ["org_name", "suppl_name"]):
         # Get column
-        col = [x for x in ["org_name", "suppl_name"] if x in cols_df][0]
+        col = [x for x in ["org_name", "suppl_name"] if x in cols_to_check][0]
         # Get names
         col = df[col]
         # Are names duplicated?
@@ -527,9 +529,10 @@ def __check_org_data(df, cols_df):
         # Update result
         res = res | duplicated
     # Number found?
-    if any(i in cols_df for i in ["org_number", "suppl_number"]):
+    if any(i in cols_to_check for i in ["org_number", "suppl_number"]):
         # Get column
-        col = [x for x in ["org_number", "suppl_number"] if x in cols_df][0]
+        col = [x for x in [
+            "org_number", "suppl_number"] if x in cols_to_check][0]
         # Get numbers
         col = df[col]
         # Are numbers duplicated?
