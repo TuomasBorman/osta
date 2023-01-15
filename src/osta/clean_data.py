@@ -59,9 +59,10 @@ def clean_data(df, **args):
     df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
 
     # Test if voucher is correct
-    __check_voucher(df)
+    __check_voucher(df, **args)
     # Check VAT numbers
-    __check_vat_number(df, cols_to_check=["suppl_id", "vat_number", "country"])
+    __check_vat_number(df, cols_to_check=["suppl_id", "vat_number", "country"],
+                       **args)
     # Check dates
     df = __standardize_date(df, **args)
     # Check org information:
@@ -77,17 +78,22 @@ def clean_data(df, **args):
     return df
 
 
-def __standardize_country(df, duplicated, country_format="code_2char", **args):
+def __standardize_country(df, duplicated, disable_country=False,
+                          country_format="code_2char", **args):
     """
     This function check standardize the used country format.
     Input: df
     Output: df
     """
     # INPUT CHECK
+    if not isinstance(disable_country, bool):
+        raise Exception(
+            "'disable_country' must be True or False."
+            )
     # Check if column(s) is found as non-duplicated
     cols_to_check = ["country"]
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
-    if len(cols_to_check) == 0:
+    if disable_country or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
     # Load data base
@@ -127,7 +133,7 @@ def __standardize_country(df, duplicated, country_format="code_2char", **args):
     return df
 
 
-def __clean_sums(df):
+def __clean_sums(df, disable_sums=False, **args):
     """
     This function checks that sums (total, vat, netsum) are in float format,
     and tries to convert them if they are not. Futhermore, if one field is
@@ -136,10 +142,14 @@ def __clean_sums(df):
     Output: df
     """
     # INPUT CHECK
+    if not isinstance(disable_sums, bool):
+        raise Exception(
+            "'disable_sums' must be True or False."
+            )
     # Check if column(s) is found as non-duplicated
     cols_to_check = ["total", "vat_amount", "price_ex_vat"]
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
-    if len(cols_to_check) == 0:
+    if disable_sums or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
     # Get columns that are missing from the data
@@ -200,7 +210,8 @@ def __clean_sums(df):
     return df
 
 
-def __standardize_date(df, duplicated, date_format="%d-%m-%Y",
+def __standardize_date(df, duplicated, disable_date=False,
+                       date_format="%d-%m-%Y",
                        dayfirst=True, yearfirst=False, **args):
     """
     This function identifies the format of dates and standardize them.
@@ -208,10 +219,14 @@ def __standardize_date(df, duplicated, date_format="%d-%m-%Y",
     Output: df
     """
     # INPUT CHECK
+    if not isinstance(disable_date, bool):
+        raise Exception(
+            "'disable_date' must be True or False."
+            )
     # Check if column(s) is found as non-duplicated
     cols_to_check = ["date"]
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
-    if len(cols_to_check) == 0:
+    if disable_date or len(cols_to_check) == 0:
         return df
     cols_to_check = cols_to_check[0]
     # INPUT CHECK END
@@ -287,7 +302,7 @@ def __standardize_date(df, duplicated, date_format="%d-%m-%Y",
     return df
 
 
-def __standardize_org(df, org_data=None, **args):
+def __standardize_org(df, disable_org=False, org_data=None, **args):
     """
     This function prepares organization data to be checked, and calls
     function that checks it.
@@ -299,10 +314,14 @@ def __standardize_org(df, org_data=None, **args):
         raise Exception(
             "'org_data' must be non-empty pandas.DataFrame or None."
             )
+    if not isinstance(disable_org, bool):
+        raise Exception(
+            "'disable_org' must be True or False."
+            )
     # Check if column(s) is found as non-duplicated
     cols_to_check = ["org_id", "org_number", "org_name"]
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
-    if len(cols_to_check) == 0:
+    if disable_org or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
     if org_data is None:
@@ -320,7 +339,8 @@ def __standardize_org(df, org_data=None, **args):
     return df
 
 
-def __standardize_account(df, account_data=None, **args):
+def __standardize_account(df, disable_account=False,
+                          account_data=None, **args):
     """
     This function prepares account data to be checked, and calls
     function that checks it.
@@ -332,10 +352,14 @@ def __standardize_account(df, account_data=None, **args):
         raise Exception(
             "'account_data' must be non-empty pandas.DataFrame or None."
             )
+    if not isinstance(disable_account, bool):
+        raise Exception(
+            "'disable_account' must be True or False."
+            )
     # Check if column(s) is found as non-duplicated
     cols_to_check = ["account_number", "account_name"]
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
-    if len(cols_to_check) == 0:
+    if disable_account or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
     if account_data is None:
@@ -358,7 +382,8 @@ def __standardize_account(df, account_data=None, **args):
     return df
 
 
-def __standardize_service(df, service_data=None, **args):
+def __standardize_service(df, disable_service=False,
+                          service_data=None, **args):
     """
     This function prepares service data to be checked, and calls
     function that checks it.
@@ -370,10 +395,14 @@ def __standardize_service(df, service_data=None, **args):
         raise Exception(
             "'service_data' must be non-empty pandas.DataFrame or None."
             )
+    if not isinstance(disable_service, bool):
+        raise Exception(
+            "'disable_service' must be True or False."
+            )
     # Check if column(s) is found as non-duplicated
     cols_to_check = ["account_number", "account_name"]
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
-    if len(cols_to_check) == 0:
+    if disable_service or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
     if service_data is None:
@@ -396,7 +425,7 @@ def __standardize_service(df, service_data=None, **args):
     return df
 
 
-def __standardize_suppl(df, suppl_data=None, **args):
+def __standardize_suppl(df, disable_suppl=False, suppl_data=None, **args):
     """
     This function prepares supplier data to be checked, and calls
     function that checks it.
@@ -408,10 +437,14 @@ def __standardize_suppl(df, suppl_data=None, **args):
         raise Exception(
             "'suppl_data' must be non-empty pandas.DataFrame or None."
             )
+    if not isinstance(disable_suppl, bool):
+        raise Exception(
+            "'disable_suppl' must be True or False."
+            )
     # Check if column(s) is found as non-duplicated
     cols_to_check = ["suppl_id", "suppl_number", "suppl_name"]
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
-    if len(cols_to_check) == 0:
+    if disable_suppl or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
     # Column of db that are matched with columns that are being checked
@@ -747,7 +780,7 @@ def __check_variable_pair(df, cols_to_check, dtypes, **args):
     return df
 
 
-def __check_vat_number(df, cols_to_check):
+def __check_vat_number(df, cols_to_check, disable_vat_number=False, **args):
     """
     This function checks that VAT numbers has correct patterns
     and match with business IDs.
@@ -755,10 +788,14 @@ def __check_vat_number(df, cols_to_check):
     Output: df
     """
     # INPUT CHECK
+    if not isinstance(disable_vat_number, bool):
+        raise Exception(
+            "'disable_vat_number' must be True or False."
+            )
     # Check if column(s) is found as non-duplicated
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
     # All columns must be present
-    if len(cols_to_check) != 3:
+    if disable_vat_number or len(cols_to_check) != 3:
         return df
     # INPUT CHECK END
     # Get vat number and bid column names
@@ -813,17 +850,21 @@ def __check_vat_number(df, cols_to_check):
     return df
 
 
-def __check_voucher(df):
+def __check_voucher(df, disable_voucher=False, **args):
     """
     This function checks if voucher column includes vouchers.
     Input: df
     Output: df
     """
     # INPUT CHECK
+    if not isinstance(disable_voucher, bool):
+        raise Exception(
+            "'disable_voucher' must be True or False."
+            )
     cols_to_check = ["voucher"]
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
     # All columns must be present
-    if len(cols_to_check) > 0:
+    if disable_voucher or len(cols_to_check) > 0:
         return df
     cols_to_check == cols_to_check[0]
     # INPUT CHECK END
