@@ -308,7 +308,8 @@ df = df.loc[:, columns]
 # Remove spaces from beginning and end of the value
 df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
 # Order data, the newest year first
-df = df.sort_values("year", ascending=False)
+df = df.sort_values(["year", "number"], ascending=[False, True])
+df.reset_index(drop=True, inplace=True)
 # Run in data folder
 path = "../src/osta/resources/account_info.csv"
 df.to_csv(path)
