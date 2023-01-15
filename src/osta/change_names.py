@@ -520,7 +520,7 @@ def __test_if_date(df, col_i, colnames):
         patt_to_search = [
             "\\d\\d\\d\\d\\d\\d\\d\\d",
             "\\d\\d\\d\\d\\d\\d\\d",
-            "\\d\\d\\d\\d",
+            "\\d\\d\\d\\d\\d\\d",
 
             "^\\d\\d[-/.]\\d\\d[-/.]\\d\\d\\d\\d$",
             "^\\d[-/.]\\d\\d[-/.]\\d\\d\\d\\d$",
