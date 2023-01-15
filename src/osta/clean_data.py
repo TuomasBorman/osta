@@ -341,6 +341,9 @@ def __standardize_account(df, account_data=None, **args):
     if account_data is None:
         path = "~/Python/osta/src/osta/resources/account_info.csv"
         account_data = pd.read_csv(path, index_col=0)
+        # Subset by taking only specific years
+        account_data = __subset_data_based_on_year(df, df_db=account_data,
+                                                   **args)
     # Column of db that are matched with columns that are being checked
     cols_to_match = ["number", "name"]
     # Data types to check
