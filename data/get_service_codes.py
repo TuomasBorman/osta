@@ -94,6 +94,9 @@ columns = [
     "year"
     ]
 df = df.loc[:, columns]
+
+# Order data, the newest year first
+df = df.sort_values("year", ascending=False)
 # Run in project root folder
 path = "../src/osta/resources/service_codes.csv"
 df.to_csv(path)

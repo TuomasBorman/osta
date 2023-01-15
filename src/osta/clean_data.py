@@ -57,64 +57,39 @@ def clean_data(df, **args):
             )
     # Remove spaces from beginning and end of the value
     df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
-    # Check if there are duplicated column names
-    if len(set(df.columns)) != df.shape[1]:
-        # Get unique values and their counts
-        unique, counts = np.unique(df.columns, return_counts=True)
-        # Get duplicated values
-        duplicated = unique[counts > 1]
-        warnings.warn(
-            message=f"The following column names are duplicated. "
-            f"Please check them for errors.\n {duplicated.tolist()}",
-            category=Warning
-            )
 
     # Test if voucher is correct
-    if ("voucher" not in duplicated and
-        ("voucher" in df.columns and not
-         cn.__test_if_voucher(df=df,
-                              col_i=df.columns.tolist.index("voucher"),
-                              colnames=df.columns))):
-        warnings.warn(
-            message="It seems that 'voucher' column does not include " +
-            "voucher values. Please check it for errors.",
-            category=Warning
-            )
+    __check_voucher(df)
     # Check VAT numbers
-    if "vat_number" not in duplicated and any(
-            col in ["vat_number"] for col in df.columns):
-        cols_to_check = ["suppl_id", "vat_number", "country"]
-        __check_vat_number(df, cols_to_check)
+    __check_vat_number(df, cols_to_check=["suppl_id", "vat_number", "country"])
     # Check dates
-    if (all(x not in duplicated for x in ["date"]) and "date" in df.columns):
-        df = __standardize_date(df, **args)
-    # Check org information
-    if all(x not in duplicated for x in ["org_name", "org_number", "org_id"]):
-        df = __standardize_org(df, **args)
+    df = __standardize_date(df, **args)
+    # Check org information:
+    df = __standardize_org(df, **args)
     # Check supplier info
-    if all(x not in duplicated for x in ["suppl_name",
-                                         "suppl_number", "suppl_id"]):
-        df = __standardize_suppl(df, **args)
+    df = __standardize_suppl(df, **args)
     # Check account info
-    if all(x not in duplicated for x in ["account_name", "account_number"]):
-        df = __standardize_account(df, **args)
+    df = __standardize_account(df, **args)
     # Check service data
-    if all(x not in duplicated for x in ["service_cat_name", "service_cat"]):
-        df = __standardize_service(df, **args)
+    df = __standardize_service(df, **args)
     # Check country data
-    if all(x not in duplicated for x in [
-           "country"]) and "country" in df.columns:
-        df = __standardize_country(df, **args)
+    df = __standardize_country(df, **args)
     return df
 
 
-def __standardize_country(df, country_format="code_2char", **args):
+def __standardize_country(df, duplicated, country_format="code_2char", **args):
     """
     This function check standardize the used country format.
     Input: df
     Output: df
     """
     # INPUT CHECK
+    # Check if column(s) is found as non-duplicated
+    cols_to_check = ["country"]
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    if len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
     # Load data base
     path = "~/Python/osta/src/osta/resources/land_codes.csv"
     country_codes = pd.read_csv(path, index_col=0)
@@ -127,7 +102,7 @@ def __standardize_country(df, country_format="code_2char", **args):
             )
     # INPUT CHECK END
     # Get country data from df
-    df_country = df[["country"]]
+    df_country = df[cols_to_check]
     # Get unique countries
     df_country = df_country.drop_duplicates()
     # Loop over values and add info on them
@@ -138,7 +113,7 @@ def __standardize_country(df, country_format="code_2char", **args):
         if any(ind):
             temp = country_codes.loc[ind, :]
             # Assing result to original DF
-            df.loc[df["country"] == x[0], "country"] = temp[
+            df.loc[df[cols_to_check[0]] == x[0], cols_to_check[0]] = temp[
                 country_format].values[0]
         else:
             not_found = pd.concat([not_found, x], axis=1)
@@ -160,18 +135,22 @@ def __clean_sums(df):
     Input: df
     Output: df
     """
-    # Check which column is missing if any
+    # INPUT CHECK
+    # Check if column(s) is found as non-duplicated
     cols_to_check = ["total", "vat_amount", "price_ex_vat"]
-    # Get columns that are included in data
-    cols_found = [x for x in cols_to_check if x in df.columns]
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    if len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
     # Get columns that are missing from the data
-    cols_missing = set(cols_to_check).difference(cols_found)
+    cols_missing = set(cols_to_check).difference(cols_to_check)
 
     # If data is not float, try to make it as float
-    if len(cols_found) > 0 and not all(df.dtypes[cols_found] == "float64"):
+    if len(cols_to_check) > 0 and not all(df.dtypes[
+            cols_to_check] == "float64"):
         # Get those column names that need to be modified
-        cols_not_float = df.dtypes[cols_found][
-            df.dtypes[cols_found] != "float64"].index
+        cols_not_float = df.dtypes[cols_to_check][
+            df.dtypes[cols_to_check] != "float64"].index
         # Loop throug columns
         for col in cols_not_float:
             # Replace "," with "." and remove spaces
@@ -206,10 +185,10 @@ def __clean_sums(df):
     #         df["vat_amount"] = df["total"] - df["price_ex_vat"]
 
     # Calcute the expected value, and check if it's matching
-    if len(cols_missing) == 0 and all(df.dtypes[cols_found] == "float64"):
+    if len(cols_missing) == 0 and all(df.dtypes[cols_to_check] == "float64"):
         test = df["price_ex_vat"] + df["vat_amount"]
         # Get columns that do not match
-        temp = df.loc[df["total"] != test, cols_found]
+        temp = df.loc[df["total"] != test, cols_to_check]
         # If any unmatching was found
         if temp.shape[0] > 0:
             temp = temp.drop_duplicates()
@@ -221,15 +200,23 @@ def __clean_sums(df):
     return df
 
 
-def __standardize_date(df, date_format="%d-%m-%Y",
+def __standardize_date(df, duplicated, date_format="%d-%m-%Y",
                        dayfirst=True, yearfirst=False, **args):
     """
     This function identifies the format of dates and standardize them.
     Input: df
     Output: df
     """
+    # INPUT CHECK
+    # Check if column(s) is found as non-duplicated
+    cols_to_check = ["date"]
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    if len(cols_to_check) == 0:
+        return df
+    cols_to_check = cols_to_check[0]
+    # INPUT CHECK END
     # Get date column
-    df_date = df.loc[:, "date"]
+    df_date = df.loc[:, cols_to_check]
     # Split dates from separator. Result is multiple columns
     # with year, month and day separated
     df_date = df_date.astype(str).str.split(r"[-/.]", expand=True)
@@ -283,12 +270,12 @@ def __standardize_date(df, date_format="%d-%m-%Y",
             else:
                 dayfirst = False
         # Standardize dates
-        df_date = pd.to_datetime(df.loc[:, "date"],
+        df_date = pd.to_datetime(df.loc[:, cols_to_check],
                                  dayfirst=dayfirst, yearfirst=yearfirst)
         # Change the formatting
         df_date = df_date.dt.strftime(date_format)
         # Assign values back to data frame
-        df.loc[:, "date"] = df_date
+        df.loc[:, cols_to_check] = df_date
     # If the format cannot be detected, disabel date standardization
     else:
         warnings.warn(
@@ -312,12 +299,15 @@ def __standardize_org(df, org_data=None, **args):
         raise Exception(
             "'org_data' must be non-empty pandas.DataFrame or None."
             )
+    # Check if column(s) is found as non-duplicated
+    cols_to_check = ["org_id", "org_number", "org_name"]
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    if len(cols_to_check) == 0:
+        return df
     # INPUT CHECK END
     if org_data is None:
         path = "~/Python/osta/src/osta/resources/municipality_codes.csv"
         org_data = pd.read_csv(path, index_col=0)
-    # Column that are checked from df
-    cols_to_check = ["org_id", "org_number", "org_name"]
     # Column of db that are matched with columns that are being checked
     cols_to_match = ["bid", "number", "name"]
     # Standardize organization data
@@ -342,12 +332,15 @@ def __standardize_account(df, account_data=None, **args):
         raise Exception(
             "'account_data' must be non-empty pandas.DataFrame or None."
             )
+    # Check if column(s) is found as non-duplicated
+    cols_to_check = ["account_number", "account_name"]
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    if len(cols_to_check) == 0:
+        return df
     # INPUT CHECK END
     if account_data is None:
         path = "~/Python/osta/src/osta/resources/account_info.csv"
         account_data = pd.read_csv(path, index_col=0)
-    # Column that are checked from df
-    cols_to_check = ["account_number", "account_name"]
     # Column of db that are matched with columns that are being checked
     cols_to_match = ["number", "name"]
     # Data types to check
@@ -374,12 +367,15 @@ def __standardize_service(df, service_data=None, **args):
         raise Exception(
             "'service_data' must be non-empty pandas.DataFrame or None."
             )
+    # Check if column(s) is found as non-duplicated
+    cols_to_check = ["account_number", "account_name"]
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    if len(cols_to_check) == 0:
+        return df
     # INPUT CHECK END
     if service_data is None:
         path = "~/Python/osta/src/osta/resources/service_codes.csv"
         service_data = pd.read_csv(path, index_col=0)
-    # Column that are checked from df
-    cols_to_check = ["service_cat", "service_cat_name"]
     # Column of db that are matched with columns that are being checked
     cols_to_match = ["number", "name"]
     # Data types to check
@@ -406,9 +402,12 @@ def __standardize_suppl(df, suppl_data=None, **args):
         raise Exception(
             "'suppl_data' must be non-empty pandas.DataFrame or None."
             )
-    # INPUT CHECK END
-    # Column that are checked from df
+    # Check if column(s) is found as non-duplicated
     cols_to_check = ["suppl_id", "suppl_number", "suppl_name"]
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    if len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
     # Column of db that are matched with columns that are being checked
     cols_to_match = ["bid", "number", "name"]
     if suppl_data is not None:
@@ -680,8 +679,7 @@ def __get_matches_from_db(df, df_db,
                                         "found match"])
                 part_match_df = pd.concat([part_match_df, temp], axis=1)
                 found = True
-        # If match was found
-        # Add row to final data
+        # If match was found add row to final data
         if found and not missmatch:
             df_mod.iloc[i, :] = row_db
         else:
@@ -750,9 +748,13 @@ def __check_vat_number(df, cols_to_check):
     Input: df
     Output: df
     """
-    # Get only those values that are present
-    cols_to_check = [x for x in cols_to_check if x in df.columns]
-
+    # INPUT CHECK
+    # Check if column(s) is found as non-duplicated
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    # All columns must be present
+    if len(cols_to_check) != 3:
+        return df
+    # INPUT CHECK END
     # Get vat number and bid column names
     # (do it this way, if orgaization gets also vat_number)
     vat_number_col = [x for x in cols_to_check if x in ["vat_number"]][0]
@@ -805,11 +807,51 @@ def __check_vat_number(df, cols_to_check):
     return df
 
 
-def not_duplicated_columns_found(df, duplicated):
+def __check_voucher(df):
+    """
+    This function checks if voucher column includes vouchers.
+    Input: df
+    Output: df
+    """
+    # INPUT CHECK
+    cols_to_check = ["voucher"]
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    # All columns must be present
+    if len(cols_to_check) > 0:
+        return df
+    cols_to_check == cols_to_check[0]
+    # INPUT CHECK END
+    if cn.__test_if_voucher(df=df,
+                            col_i=df.columns.tolist.index(cols_to_check),
+                            colnames=df.columns):
+        warnings.warn(
+            message="It seems that 'voucher' column does not include " +
+            "voucher values. Please check it for errors.",
+            category=Warning
+            )
+    return df
+
+
+def __not_duplicated_columns_found(df, cols_to_check):
     """
     This function checks if specific columns can be found and they are
     duplicated.
     Input: df, columns, duplicated columns
-    Output: True or False
+    Output: columns that fulfill criteria
     """
-    # TODO
+    # Found columns
+    cols_to_check = [x for x in df.columns if x in cols_to_check]
+    # Get unique values and their counts
+    unique, counts = np.unique(cols_to_check, return_counts=True)
+    # Get duplicated values
+    duplicated = unique[counts > 1]
+    # Are columns found and not duplicated? Return True if any found.
+    cols_to_check = list(set(duplicated).difference(cols_to_check))
+    # If there were duplicated columns, give warning
+    if len(duplicated) > 0:
+        warnings.warn(
+            message=f"The following column names are duplicated. "
+            f"Please check them for errors.\n {duplicated.tolist()}",
+            category=Warning
+            )
+    return cols_to_check
