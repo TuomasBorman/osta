@@ -161,19 +161,19 @@ def __clean_sums(df):
     Output: df
     """
     # Check which column is missing if any
-    col_to_check = ["total", "vat_amount", "price_ex_vat"]
+    cols_to_check = ["total", "vat_amount", "price_ex_vat"]
     # Get columns that are included in data
-    col_found = [x for x in col_to_check if x in df.columns]
+    cols_found = [x for x in cols_to_check if x in df.columns]
     # Get columns that are missing from the data
-    col_missing = set(col_to_check).difference(col_found)
+    cols_missing = set(cols_to_check).difference(cols_found)
 
     # If data is not float, try to make it as float
-    if len(col_found) > 0 and not all(df.dtypes[col_found] == "float64"):
+    if len(cols_found) > 0 and not all(df.dtypes[cols_found] == "float64"):
         # Get those column names that need to be modified
-        col_not_float = df.dtypes[col_found][
-            df.dtypes[col_found] != "float64"].index
+        cols_not_float = df.dtypes[cols_found][
+            df.dtypes[cols_found] != "float64"].index
         # Loop throug columns
-        for col in col_not_float:
+        for col in cols_not_float:
             # Replace "," with "." and remove spaces
             df[col] = df[col].str.replace(
                 ",", ".")
@@ -186,23 +186,38 @@ def __clean_sums(df):
                     f"float: {col}",
                     category=Warning
                     )
-    # If there were some columns missing, calculate them
-    if len(col_missing) > 0 and all(df.dtypes[col_found] == "float64"):
-        # If total is missing
-        if "total" in col_missing and all(c in col_found
-                                          for c in ["price_ex_vat",
-                                                    "vat_amount"]):
-            df["test"] = df["price_ex_vat"] + df["vat_amount"]
-        # If price_ex_vat is missing
-        elif "price_ex_vat" in col_missing and all(c in col_found
-                                                   for c in ["total",
-                                                             "vat_amount"]):
-            df["price_ex_vat"] = df["total"] - df["vat_amount"]
-        # If vat_amount is missing
-        elif "vat_amount" in col_missing and all(c in col_found
-                                                 for c in ["total",
-                                                           "price_ex_vat"]):
-            df["vat_amount"] = df["total"] - df["price_ex_vat"]
+    # TODO: move to enrich data: If there were some columns missing,
+    # calculate them
+    # if len(col_missing) > 0 and all(df.dtypes[col_found] == "float64"):
+    #     # If total is missing
+    #     if "total" in col_missing and all(c in col_found
+    #                                       for c in ["price_ex_vat",
+    #                                                 "vat_amount"]):
+    #         df["total"] = df["price_ex_vat"] + df["vat_amount"]
+    #     # If price_ex_vat is missing
+    #     elif "price_ex_vat" in col_missing and all(c in col_found
+    #                                                for c in ["total",
+    #                                                          "vat_amount"]):
+    #         df["price_ex_vat"] = df["total"] - df["vat_amount"]
+    #     # If vat_amount is missing
+    #     elif "vat_amount" in col_missing and all(c in col_found
+    #                                              for c in ["total",
+    #                                                        "price_ex_vat"]):
+    #         df["vat_amount"] = df["total"] - df["price_ex_vat"]
+
+    # Calcute the expected value, and check if it's matching
+    if len(cols_missing) == 0 and all(df.dtypes[cols_found] == "float64"):
+        test = df["price_ex_vat"] + df["vat_amount"]
+        # Get columns that do not match
+        temp = df.loc[df["total"] != test, cols_found]
+        # If any unmatching was found
+        if temp.shape[0] > 0:
+            temp = temp.drop_duplicates()
+            warnings.warn(
+                message=f"The sums of following rows do not match. Please "
+                f"check them for errors: \n{temp}",
+                category=Warning
+                )
     return df
 
 
