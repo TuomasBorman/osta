@@ -323,7 +323,10 @@ def __standardize_org(df, org_data=None, **args):
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=org_data,
                                    cols_to_check=cols_to_check,
-                                   cols_to_match=cols_to_match)
+                                   cols_to_match=cols_to_match,
+                                   **args)
+    # If organization data was not in database, it is not checked.
+    __check_org_data(df, cols_to_check)
     return df
 
 
@@ -353,7 +356,9 @@ def __standardize_account(df, account_data=None, **args):
     df = __standardize_based_on_db(df=df, df_db=account_data,
                                    cols_to_check=cols_to_check,
                                    cols_to_match=cols_to_match,
-                                   not_org=True, dtypes=dtypes)
+                                   **args)
+    # Check that values are matching
+    __check_variable_pair(df, cols_to_check=cols_to_check, dtypes=dtypes)
     return df
 
 
@@ -383,7 +388,9 @@ def __standardize_service(df, service_data=None, **args):
     df = __standardize_based_on_db(df=df, df_db=service_data,
                                    cols_to_check=cols_to_check,
                                    cols_to_match=cols_to_match,
-                                   not_org=True, dtypes=dtypes)
+                                   **args)
+    # Check that values are matching
+    __check_variable_pair(df, cols_to_check=cols_to_check, dtypes=dtypes)
     return df
 
 
@@ -408,18 +415,18 @@ def __standardize_suppl(df, suppl_data=None, **args):
         # Standardize organization data
         df = __standardize_based_on_db(df=df, df_db=suppl_data,
                                        cols_to_check=cols_to_check,
-                                       cols_to_match=cols_to_match)
-    else:
-        # Check that data is not duplicated, BID is correct, and there are not
-        # empty values. Get warning if there are.
-        __check_org_data(df, cols_to_check)
+                                       cols_to_match=cols_to_match,
+                                       *args)
+    # Check that data is not duplicated, BID is correct, and there are not
+    # empty values. Get warning if there are.
+    __check_org_data(df, cols_to_check)
     return df
 
 
 def __standardize_based_on_db(df, df_db,
                               cols_to_check, cols_to_match,
                               match_th=0.7, scorer=fuzz.token_sort_ratio,
-                              not_org=False, **args):
+                              **args):
     """
     Standardize the data based on database.
     Input: df, df_db including database,
@@ -479,14 +486,6 @@ def __standardize_based_on_db(df, df_db,
             f"supplier data).",
             category=Warning
             )
-    # If organization data was not in database, it is not checked.
-    # Check here that it has correct pattern, and it is not duplicated
-    if not_org is False:
-        __check_org_data(df, cols_df)
-    else:
-        __check_variable_pair(df,
-                              cols_to_check=cols_df,
-                              **args)
     return df
 
 
@@ -801,3 +800,13 @@ def __check_vat_number(df, cols_to_check):
             category=Warning
             )
     return df
+
+
+def not_duplicated_columns_found(df, duplicated):
+    """
+    This function checks if specific columns can be found and they are
+    duplicated.
+    Input: df, columns, duplicated columns
+    Output: True or False
+    """
+    # TODO
