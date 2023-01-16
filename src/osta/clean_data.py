@@ -295,17 +295,20 @@ def __standardize_date(df, duplicated, disable_date=False,
         df_date = df_date.iloc[:, 0]
         # Get format of date
         char_len, yearfirst, dayfirst = __get_format_of_dates(df_date)
-        # Standardize dates
-        df_date = __convert_dates_without_sep(df_date,
-                                              char_len=char_len,
-                                              dayfirst=dayfirst,
-                                              yearfirst=yearfirst)
-        warnings.warn(
-            message="Dates did not have separators between days, months, and "
-            "years. The dates are standardize based on a common pattern that "
-            "were found on them.",
-            category=Warning
-            )
+        # If format was found, standardize
+        if yearfirst is not False or dayfirst is not False:
+            # Standardize dates
+            df_date = __convert_dates_without_sep(df_date,
+                                                  char_len=char_len,
+                                                  dayfirst=dayfirst,
+                                                  yearfirst=yearfirst)
+            warnings.warn(
+                message="Dates did not have separators between days, "
+                "months, and years. The dates are standardize based on "
+                "a common pattern that were found on them.",
+                category=Warning
+                )
+            not_success = False
     # If dates are not detected
     if not_success:
         warnings.warn(
@@ -483,7 +486,7 @@ def __convert_dates_without_sep(df, char_len, dayfirst, yearfirst):
     # Get values where the pattern is correct; how many characters
     # days and months have?
     res_i = res_day.loc[index, :].sum(axis=0) == res_day.loc[index, :].shape[0]
-    if sum(ind) == 1:
+    if sum(res_i) == 1:
         res_day = res_day.loc[["len1", "len2"], res_i]
         # Get place of the month and day, based on dayfirst
         if dayfirst:
