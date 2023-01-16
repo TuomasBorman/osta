@@ -294,8 +294,8 @@ def __standardize_date(df, duplicated, disable_date=False,
         # Get only the series
         df_date = df_date.iloc[:, 0]
         # Get format of date
-        char_len, year_first, day_first = __get_format_of_date(df_date)
-
+        char_len, year_first, day_first = __get_format_of_dates(df_date)
+    # If dates are not detected
     if not_success:
         warnings.warn(
             message="The format of dates where not detected, "
@@ -311,9 +311,10 @@ def __standardize_date(df, duplicated, disable_date=False,
     return df
 
 
-def __get_format_of_date(df):
+def __get_format_of_dates(df):
     """
-    This function identifies the format of dates that are without deliminators.
+    This function identifies the format of dates that are without
+    separators between days, months and years.
     Input: df
     Output: maximum number of characters in dates, if year comes first,
     if day comes first
