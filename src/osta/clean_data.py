@@ -230,6 +230,7 @@ def __standardize_date(df, duplicated, disable_date=False,
         return df
     cols_to_check = cols_to_check[0]
     # INPUT CHECK END
+    not_success = True
     # Get date column
     df_date = df.loc[:, cols_to_check]
     # Split dates from separator. Result is multiple columns
@@ -287,19 +288,105 @@ def __standardize_date(df, duplicated, disable_date=False,
         # Standardize dates
         df_date = pd.to_datetime(df.loc[:, cols_to_check],
                                  dayfirst=dayfirst, yearfirst=yearfirst)
-        # Change the formatting
-        df_date = df_date.dt.strftime(date_format)
-        # Assign values back to data frame
-        df.loc[:, cols_to_check] = df_date
-    # If the format cannot be detected, disabel date standardization
-    else:
+        not_success = False
+    # Try to reformat DDMMYYYY format
+    elif cn.__test_if_date(df_date, 0, df_date.columns):
+        # Get only the series
+        df_date = df_date.iloc[:, 0]
+        # Get format of date
+        char_len, year_first, day_first = __get_format_of_date(df_date)
+
+    if not_success:
         warnings.warn(
             message="The format of dates where not detected, "
             "and the 'date' column is unchanged. Please check that dates "
             "have separators between days, months, and years.",
             category=Warning
             )
+    else:
+        # Change the formatting
+        df_date = df_date.dt.strftime(date_format)
+        # Assign values back to data frame
+        df.loc[:, cols_to_check] = df_date
     return df
+
+
+def __get_format_of_date(df):
+    """
+    This function identifies the format of dates that are without deliminators.
+    Input: df
+    Output: maximum number of characters in dates, if year comes first,
+    if day comes first
+    """
+    # Get maximum number of characters
+    char_len = int(max(df.astype(str).str.len()))
+    year_first = None
+    day_first = None
+    if char_len == 8 or char_len == 6:
+        # Expected year range
+        years = list(range(1970, 2050)) if char_len == 8 else list(
+            range(15, 50))
+        # Get only those values that have maximum number of characters
+        ind = df.astype(str).str.len() == char_len
+        date_temp = df[ind]
+        date_temp
+
+        # Find place of year
+        year_len = 4 if char_len == 8 else 2
+        i = 0
+        j = year_len
+        i_year = []
+        j_year = []
+        res_year = []
+        for x in range(0, char_len-1, year_len):
+            i_temp = i + x
+            j_temp = j + x
+            temp = date_temp.astype(str).str[i_temp:j_temp]
+            # Which values are between expected years?
+            res = max(years) >= int(max(temp)) >= min(years)
+            res_year.append(res)
+            i_year.append(i_temp)
+            j_year.append(j_temp)
+        # Get values based on results
+        i_year = [i_year[i] for i, x in enumerate(i_year) if res_year[i]]
+        j_year = [j_year[i] for i, x in enumerate(j_year) if res_year[i]]
+        # Get only the individual values, if there are only one valid result
+        if (len(i_year) == 1 and len(j_year) == 1):
+            i_year = i_year[0]
+            j_year = j_year[0]
+            # Remove year from dates
+            date_temp = date_temp.astype(str).str[:i_year]
+            # Get place of the year
+            year_first = True if i_year == 0 else False
+    # If year was found
+    if year_first is not None:
+        # Expected day and month ranges
+        months = list(range(1, 13))
+        days = list(range(1, 32))
+        # Ger place of the month and day
+        i = 0
+        j = 2
+        res_day = []
+        res_month = []
+        for x in range(0, char_len-year_len-1, 2):
+            i_temp = i + x
+            j_temp = j + x
+            temp = date_temp.astype(str).str[i_temp:j_temp]
+            # Which values are between expected days?
+            res = max(days) >= int(max(temp)) >= min(days)
+            res_day.append(res)
+            # Which values are between expected months?
+            res = max(months) >= int(max(temp)) >= min(months)
+            res_month.append(res)
+        # Get index of where month is located
+        month_i = [i for i, x in enumerate(res_day and res_month) if x]
+        if len(month_i) == 1:
+            month_i = month_i[0]
+            # If month was the latter
+            day_first = True if month_i == len(res_month)-1 else False
+    # Combine result
+    res = [char_len, year_first, day_first]
+    return res
 
 
 def __standardize_org(df, disable_org=False, org_data=None, **args):
