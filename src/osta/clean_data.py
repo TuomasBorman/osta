@@ -294,7 +294,18 @@ def __standardize_date(df, duplicated, disable_date=False,
         # Get only the series
         df_date = df_date.iloc[:, 0]
         # Get format of date
-        char_len, year_first, day_first = __get_format_of_dates(df_date)
+        char_len, yearfirst, dayfirst = __get_format_of_dates(df_date)
+        # Standardize dates
+        df_date = __convert_dates_without_sep(df_date,
+                                              char_len=char_len,
+                                              dayfirst=dayfirst,
+                                              yearfirst=yearfirst)
+        warnings.warn(
+            message="Dates did not have separators between days, months, and "
+            "years. The dates are standardize based on a common pattern that "
+            "were found on them.",
+            category=Warning
+            )
     # If dates are not detected
     if not_success:
         warnings.warn(
@@ -315,14 +326,14 @@ def __get_format_of_dates(df):
     """
     This function identifies the format of dates that are without
     separators between days, months and years.
-    Input: df
+    Input: series
     Output: maximum number of characters in dates, if year comes first,
     if day comes first
     """
     # Get maximum number of characters
     char_len = int(max(df.astype(str).str.len()))
-    year_first = None
-    day_first = None
+    yearfirst = None
+    dayfirst = None
     if char_len == 8 or char_len == 6:
         # Expected year range
         years = list(range(1970, 2050)) if char_len == 8 else list(
@@ -330,27 +341,28 @@ def __get_format_of_dates(df):
         # Get only those values that have maximum number of characters
         ind = df.astype(str).str.len() == char_len
         date_temp = df[ind]
-        date_temp
 
         # Find place of year
         year_len = 4 if char_len == 8 else 2
         i = 0
         j = year_len
-        i_year = []
-        j_year = []
-        res_year = []
+        res_year = pd.DataFrame()
         for x in range(0, char_len-1, year_len):
             i_temp = i + x
             j_temp = j + x
             temp = date_temp.astype(str).str[i_temp:j_temp]
             # Which values are between expected years?
             res = max(years) >= int(max(temp)) >= min(years)
-            res_year.append(res)
-            i_year.append(i_temp)
-            j_year.append(j_temp)
+            # Add to DF
+            res = pd.DataFrame([i_temp, j_temp, res], index=["i", "j", "res"])
+            res_year = pd.concat([res_year, res], axis=1)
+        # Adjust column names
+        res_year.columns = range(res_year.shape[1])
         # Get values based on results
-        i_year = [i_year[i] for i, x in enumerate(i_year) if res_year[i]]
-        j_year = [j_year[i] for i, x in enumerate(j_year) if res_year[i]]
+        i_year = [res_year.loc["i", x] for i, x in enumerate(res_year.columns)
+                  if res_year.loc["res", x]]
+        j_year = [res_year.loc["j", x] for i, x in enumerate(res_year.columns)
+                  if res_year.loc["res", x]]
         # Get only the individual values, if there are only one valid result
         if (len(i_year) == 1 and len(j_year) == 1):
             i_year = i_year[0]
@@ -358,35 +370,141 @@ def __get_format_of_dates(df):
             # Remove year from dates
             date_temp = date_temp.astype(str).str[:i_year]
             # Get place of the year
-            year_first = True if i_year == 0 else False
+            yearfirst = True if i_year == 0 else False
     # If year was found
-    if year_first is not None:
+    if yearfirst is not None:
         # Expected day and month ranges
         months = list(range(1, 13))
         days = list(range(1, 32))
         # Ger place of the month and day
         i = 0
         j = 2
-        res_day = []
-        res_month = []
+        res_day = pd.DataFrame()
         for x in range(0, char_len-year_len-1, 2):
             i_temp = i + x
             j_temp = j + x
             temp = date_temp.astype(str).str[i_temp:j_temp]
             # Which values are between expected days?
-            res = max(days) >= int(max(temp)) >= min(days)
-            res_day.append(res)
+            res_d = max(days) >= int(max(temp)) >= min(days)
             # Which values are between expected months?
-            res = max(months) >= int(max(temp)) >= min(months)
-            res_month.append(res)
+            res_m = max(months) >= int(max(temp)) >= min(months)
+            # Add to DF
+            res = pd.DataFrame([res_d, res_m], index=["day", "month"])
+            res_day = pd.concat([res_day, res], axis=1)
+        # Adjust column names
+        res_day.columns = range(res_day.shape[1])
         # Get index of where month is located
-        month_i = [i for i, x in enumerate(res_day and res_month) if x]
+        month_i = [i for i, x in enumerate(res_day.columns)
+                   if res_day.loc["day", x] and res_day.loc["month", x]]
         if len(month_i) == 1:
             month_i = month_i[0]
             # If month was the latter
-            day_first = True if month_i == len(res_month)-1 else False
+            dayfirst = True if month_i == res_day.shape[1]-1 else False
     # Combine result
-    res = [char_len, year_first, day_first]
+    res = [char_len, yearfirst, dayfirst]
+    return res
+
+
+def __convert_dates_without_sep(df, char_len, dayfirst, yearfirst):
+    """
+    This function standardizes the dates that are without
+    separators between days, months and years.
+    Input: series
+    Output: series with standardize dates
+    """
+    # Create result DF and add columns
+    res = pd.DataFrame(df)
+    res.columns = ["original"]
+    res = res.assign(mod=res["original"])
+    res = res.assign(day=None)
+    res = res.assign(month=None)
+    res = res.assign(year=None)
+
+    # Modify first values that have maximum amount of characters
+    year_len = 4 if char_len == 8 else 2
+    # Get the year based on yearfirst, and remove year from dates
+    if yearfirst:
+        year = res["mod"].astype(str).str[:year_len]
+        res["mod"] = res["mod"].astype(str).str[year_len:]
+    else:
+        year = res["mod"].astype(str).str[-year_len:]
+        res["mod"] = res["mod"].astype(str).str[:-year_len]
+    # Add year to results
+    res["year"] = year
+
+    # Add days and months for sure cases (2 or 1 characters for both days
+    # and months)
+    for i in [1, 2]:
+        dm_len = char_len-year_len if i == 2 else char_len-year_len-2
+        ind = res["mod"].astype(str).str.len() == dm_len
+        # Based on dayfirst, get values; remove them from mod column
+        if dayfirst:
+            day = res.loc[ind, "mod"].astype(str).str[:i]
+            month = res.loc[ind, "mod"].astype(str).str[i:]
+        else:
+            month = res.loc[ind, "mod"].astype(str).str[:i]
+            day = res.loc[ind, "mod"].astype(str).str[i:]
+        # Add to data
+        res.loc[ind, "day"] = day
+        res.loc[ind, "month"] = month
+        # Remove from mod column
+        res.loc[ind, "mod"] = ""
+
+    # For values that have 3 character, we have to do differently, because
+    # we cannot be sure what values are months and what day.
+    # Determine this by looking a common pattern
+    # Expected day and month ranges
+    months = list(range(1, 13))
+    days = list(range(1, 32))
+    # Get indices where day+month has 3 characters
+    ind = res["mod"].astype(str).str.len() == 3
+
+    # Get tests ranges; in which range 1st and 2nd set of values should be?
+    temp_test1 = days if dayfirst else months
+    temp_test2 = months if dayfirst else days
+    res_day = pd.DataFrame()
+    # Loop over number of characters that values can have
+    for i in [1, 2]:
+        # Get values
+        temp1 = res["mod"].astype(str).str[:i]
+        temp2 = res["mod"].astype(str).str[i:]
+        # Test values
+        temp1 = max(temp_test1) >= int(max(temp1)) >= min(temp_test1)
+        temp2 = max(temp_test2) >= int(max(temp2)) >= min(temp_test2)
+        # Add to DF
+        len1 = i
+        len2 = max(res["mod"].astype(str).str.len())-i
+        temp = pd.DataFrame([len1, len2, temp1, temp2])
+        res_day = pd.concat([res_day, temp], axis=1)
+    # Adjuts index and column names
+    index = ["day", "month"] if dayfirst else ["month", "day"]
+    res_day.index = ["len1", "len2"] + index
+    res_day.columns = range(res_day.shape[1])
+    # Get values where the pattern is correct; how many characters
+    # days and months have?
+    res_i = res_day.loc[index, :].sum(axis=0) == res_day.loc[index, :].shape[0]
+    if sum(ind) == 1:
+        res_day = res_day.loc[["len1", "len2"], res_i]
+        # Get place of the month and day, based on dayfirst
+        if dayfirst:
+            day = res.loc[ind, "mod"].astype(str).str[
+                :res_day.loc["len1"].values[0]]
+            month = res.loc[ind, "mod"].astype(str).str[
+                res_day.loc["len1"].values[0]:]
+        else:
+            month = res.loc[ind, "mod"].astype(str).str[
+                :res_day.loc["len1"].values[0]]
+            day = res.loc[ind, "mod"].astype(str).str[
+                res_day.loc["len1"].values[0]:]
+        # Add to data
+        res.loc[ind, "day"] = day
+        res.loc[ind, "month"] = month
+        # Remove from mod column
+        res.loc[ind, "mod"] = ""
+
+    # Combine result to date and convert it to pandas datetime
+    res = res["day"] + "/" + res["month"] + "/" + res["year"]
+    res = pd.to_datetime(res, dayfirst=True, yearfirst=False)
     return res
 
 
