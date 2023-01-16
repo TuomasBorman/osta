@@ -304,7 +304,7 @@ def __standardize_date(df, duplicated, disable_date=False,
                                                   yearfirst=yearfirst)
             warnings.warn(
                 message="Dates did not have separators between days, "
-                "months, and years. The dates are standardize based on "
+                "months, and years. The dates are standardized based on "
                 "a common pattern that were found on them.",
                 category=Warning
                 )
