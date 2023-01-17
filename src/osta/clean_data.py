@@ -203,6 +203,13 @@ def __clean_sums(df, disable_sums=False, **args):
                 f"check them for errors: \n{temp}",
                 category=Warning
                 )
+    # If datatype is not correct
+    if not all(df.dtypes[cols_to_check] == "float64"):
+        warnings.warn(
+            message=f"The following columns are not float type. Please "
+            f"check them for errors: \n{cols_to_check}",
+            category=Warning
+            )
     return df
 
 

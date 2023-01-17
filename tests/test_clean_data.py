@@ -631,7 +631,73 @@ def test_clean_data_vat_number():
 
 
 def test_clean_data_sums():
-    
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            "total": [3, 3, 4]
+            }
+    with pytest.warns(Warning):
+        df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            "total": [3, 3, 4]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            "total": [3, 3, 4]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df, disable_sums=True)
+    # Expected names
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            "total": [3, 3, 4]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            "total": [3, 4, 3]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            "total": [3, 4, 3]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"vat_amount": ["2.0", "1.0", "1.5"],
+            "price_ex_vat": [1, 3.0, 1.5],
+            }
+    df = pd.DataFrame(data)
+    with pytest.raises(Exception):
+        df = clean_data(pd.DataFrame())
+
+
 def __create_dummy_data():
     data = {"org_name": ["test", "testi", "test"],
             "org_number": [1, 2, 3],
