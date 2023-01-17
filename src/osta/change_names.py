@@ -35,6 +35,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             pattern_th: A numeric value [0,1] specifying the threshold of
             enough good match. Value over threshold have enough strong
             pattern and it is interpreted to be a match.
+            (By default: pattern_th=0.9)
 
             scorer: A scorer function passed into fuzzywuzzy.process.extractOne
             function. (By default: scorer=fuzz.token_sort_ratio)
