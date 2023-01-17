@@ -237,6 +237,7 @@ def __standardize_date(df, disable_date=False, date_format="%d-%m-%Y",
             "'yearfirst' must be True or False or None."
             )
     # INPUT CHECK END
+    convert_date = False
     # Get date column
     df_date = df.loc[:, col_to_check]
     # Split dates from separator. Result is multiple columns
@@ -247,6 +248,7 @@ def __standardize_date(df, disable_date=False, date_format="%d-%m-%Y",
         # Get format of dates if None
         if not isinstance(dayfirst, bool):
             dayfirst, yearfirst = __get_format_of_dates_w_sep(df)
+        convert_date = True
     # Try to reformat DDMMYYYY format
     elif utils.__test_if_date(df_date, 0, df_date.columns):
         # Get only the series
@@ -264,8 +266,9 @@ def __standardize_date(df, disable_date=False, date_format="%d-%m-%Y",
                 char_len=char_len,
                 dayfirst=dayfirst,
                 yearfirst=yearfirst)
-    # Try to convert dates
-    try:
+            convert_date = True
+    # Convert dates
+    if convert_date:
         # Standardize dates
         df.loc[:, col_to_check] = pd.to_datetime(
             df.loc[:, cols_to_check],
@@ -273,7 +276,7 @@ def __standardize_date(df, disable_date=False, date_format="%d-%m-%Y",
         # Change the formatting
         df.loc[:, col_to_check] = df.loc[:, col_to_check].dt.strftime(
             date_format)
-    except Exception:
+    else:
         warnings.warn(
             message="The format of dates where not detected, "
             "and the 'date' column is unchanged. Please check that dates "
