@@ -78,7 +78,7 @@ def clean_data(df, **args):
     return df
 
 
-def __standardize_country(df, duplicated, disable_country=False,
+def __standardize_country(df, disable_country=False,
                           country_format="code_2char", **args):
     """
     This function check standardize the used country format.
@@ -147,13 +147,13 @@ def __clean_sums(df, disable_sums=False, **args):
             "'disable_sums' must be True or False."
             )
     # Check if column(s) is found as non-duplicated
-    cols_to_check = ["total", "vat_amount", "price_ex_vat"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    cols_df = ["total", "vat_amount", "price_ex_vat"]
+    cols_to_check = __not_duplicated_columns_found(df, cols_df)
     if disable_sums or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
     # Get columns that are missing from the data
-    cols_missing = set(cols_to_check).difference(cols_to_check)
+    cols_missing = [x for x in cols_df if x not in cols_to_check]
 
     # If data is not float, try to make it as float
     if len(cols_to_check) > 0 and not all(df.dtypes[
@@ -210,8 +210,7 @@ def __clean_sums(df, disable_sums=False, **args):
     return df
 
 
-def __standardize_date(df, duplicated, disable_date=False,
-                       date_format="%d-%m-%Y",
+def __standardize_date(df, disable_date=False, date_format="%d-%m-%Y",
                        dayfirst=None, yearfirst=None, **args):
     """
     This function identifies the format of dates and standardize them.
@@ -301,8 +300,8 @@ def __get_format_of_dates_w_sep(df):
     month = list(range(1, 13))
     day = list(range(1, 32))
     # Get those values that distinguish days and years
-    year = list(set(year).difference(day))
-    day = list(set(day).difference(month))
+    year = [x for x in year if x not in day]
+    day = [x for x in day if x not in month]
     # Check if these values can be found from the data
     data = {
         "any_in_day": list(any(df[c].isin(day))
@@ -622,7 +621,7 @@ def __standardize_service(df, disable_service=False,
             "'disable_service' must be True or False."
             )
     # Check if column(s) is found as non-duplicated
-    cols_to_check = ["account_number", "account_name"]
+    cols_to_check = ["service_cat", "service_cat_name"]
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
     if disable_service or len(cols_to_check) == 0:
         return df
@@ -716,6 +715,8 @@ def __standardize_based_on_db(df, df_db,
     if len(cols_to_check) > 0 and len(cols_to_match) > 0:
         # Subset the data
         df_org = df.loc[:, cols_to_check]
+        # Drop duplicates from the database
+        df_db = df_db.drop_duplicates(subset=cols_to_match)
         # Drop duplicates so we can focus on unique rows
         org_uniq = df_org.drop_duplicates()
         # Get matching values from database; replace incorrect values in
@@ -751,7 +752,7 @@ def __standardize_based_on_db(df, df_db,
 
 def __check_org_data(df, cols_to_check):
     """
-    Check if organization data is not duplicated, or has empty values, or
+    Check if organization data is not duplicated or has empty values, or
     incorrect business IDs.
     Input: df, columns that contain organization information
     Output: which rows are incorrect? None if check were not made
@@ -807,7 +808,7 @@ def __check_org_data(df, cols_to_check):
             # Get only incorrect values
             df = df.loc[res, :]
             warnings.warn(
-                message=f"Following organization data contains duplicated, "
+                message=f"Following organization data contains duplicated "
                 f"or empty values or business IDs are incorrect. "
                 f"Please check them for errors: \n{df}",
                 category=Warning
@@ -847,7 +848,6 @@ def __get_matches_from_db(df, df_db,
     Output: df with correct values
     """
     # Create a copy that will be modified
-    df.reset_index(drop=True, inplace=True)
     df_mod = df.copy()
     # Initialize DF for warning messages
     missmatch_df = pd.DataFrame()
@@ -877,45 +877,18 @@ def __get_matches_from_db(df, df_db,
         for j, x in enumerate(cols_to_check):
             # If 1st, 2nd... or nth variable was found from database
             if any(temp[x]):
-                row_db = df_db.loc[temp[x], cols_to_match].values.tolist()[0]
+                row_db = df_db.loc[temp[x].tolist(), cols_to_match]
+                # row_db = row_db.values.tolist()[0]
                 found = True
                 # If there were other variables,
                 # check if they match with data base
                 # values acquired by jth variable
                 if temp.shape[1] > 1:
-                    # Take other columns that j
-                    temp = temp.loc[:, [x for x in cols_to_check
-                                        if x not in cols_to_check[j]]]
-                    temp = temp.loc[:, temp.sum(axis=0) > 0]
-                    # If other variables had also matches
-                    if temp.shape[1] > 0:
-                        # Loop over variables
-                        for k, c in enumerate(temp.columns):
-                            # Get variable from database
-                            temp_db = df_db.loc[
-                                temp[c], [x for x in cols_to_match if x not
-                                          in cols_to_match[j]]
-                                ].values.tolist()[0]
-                            # Get variable that was in values that will be
-                            # added to the final data if everything's OK
-                            value = [row_db[num] for num, x in
-                                     enumerate(cols_to_match) if x not in
-                                     cols_to_match[j]]
-                        # Check if they equal
-                        if value != temp_db:
-                            # Get values
-                            row = row.values.tolist()
-                            row.extend(row_db)
-                            # Store data for warning message
-                            name1 = [x for x in cols_to_check if x not in
-                                     cols_to_check[j]]
-                            name2 = ["Found " + x for x in cols_to_check if x
-                                     not in cols_to_check[j]]
-                            name1.append(name2)
-                            temp = pd.DataFrame(row, index=name1)
-                            missmatch_df = pd.concat([missmatch_df, temp],
-                                                     axis=1, ignore_index=True)
-                            missmatch = True
+                    missmatch_df = __check_if_missmatch_db(
+                       temp=temp, row_db=row_db, j=j, df_db=df_db,
+                       cols_to_check=cols_to_check,
+                       cols_to_match=cols_to_match,
+                       missmatch_df=missmatch_df)
             # If match was found, break for loop; do not check other variables
             if found:
                 break
@@ -923,7 +896,7 @@ def __get_matches_from_db(df, df_db,
         if found is False and "name" in cols_to_match:
             # Get name from df and database
             name_df = row[df.columns == cols_to_check[
-                cols_to_match.index("name")]]
+                cols_to_match.index("name")]].values[0]
             name_db = df_db.loc[:, "name"]
             # Try partial match, get the most similar name
             name_part = process.extractOne(name_df, name_db, scorer=scorer)
@@ -978,6 +951,49 @@ def __get_matches_from_db(df, df_db,
             category=Warning
             )
     return df_mod
+
+
+def __check_if_missmatch_db(temp, row_db, j, df_db,
+                            cols_to_check, cols_to_match, missmatch_df):
+    """
+    This function checks if there are missmatch between row values of df
+    and database.
+    Input: df with indices that specify the row being checked currently,
+    database row, j is the index of variable being checked,
+    whole database, cols being checked, cols being matched, DF containing
+    missmatches.
+    Output: DF containing missmatches
+    """
+    # Take other columns than j
+    temp = temp.loc[:, [x for x in cols_to_check
+                        if x not in cols_to_check[j]]]
+    temp = temp.loc[:, temp.sum(axis=0) > 0]
+    # If other variables had also matches
+    if temp.shape[1] > 0:
+        # Loop over variables
+        for k, c in enumerate(temp.columns):
+            # Get variable from database
+            temp_db = df_db.loc[
+                temp[c].values, [
+                    x for x in cols_to_match
+                    if x not in cols_to_match[j]]
+                ].values.tolist()[0]
+            # Get variable that was in values that will be
+            # added to the final data if everything's OK
+            value = [row_db.values.tolist()[0][num] for num, x in
+                     enumerate(cols_to_match) if x not in
+                     cols_to_match[j]]
+            # Check if they equal
+            if value != temp_db:
+                # Get values
+                names1 = temp.columns.tolist()
+                # Store data for warning message
+                names2 = list("Found " + x for x in names1)
+                names = [x for z in zip(names1, names2) for x in z]
+                values = pd.DataFrame([value, temp_db], index=names)
+                missmatch_df = pd.concat([missmatch_df, values],
+                                         axis=1, ignore_index=True)
+    return missmatch_df
 
 
 def __check_variable_pair(df, cols_to_check, dtypes, **args):
@@ -1089,7 +1105,7 @@ def __check_voucher(df, disable_voucher=False, **args):
     cols_to_check = ["voucher"]
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
     # All columns must be present
-    if disable_voucher or len(cols_to_check) > 0:
+    if disable_voucher or len(cols_to_check) == 0:
         return df
     col_to_check = cols_to_check[0]
     # INPUT CHECK END
@@ -1156,13 +1172,13 @@ def __not_duplicated_columns_found(df, cols_to_check):
     Output: columns that fulfill criteria
     """
     # Found columns
-    cols_to_check = [x for x in df.columns if x in cols_to_check]
+    cols_to_check = [x for x in cols_to_check if x in df.columns]
     # Get unique values and their counts
     unique, counts = np.unique(cols_to_check, return_counts=True)
     # Get duplicated values
     duplicated = unique[counts > 1]
     # Are columns found and not duplicated? Return True if any found.
-    cols_to_check = list(set(cols_to_check).difference(duplicated))
+    cols_to_check = [x for x in cols_to_check if x not in duplicated]
     # If there were duplicated columns, give warning
     if len(duplicated) > 0:
         warnings.warn(

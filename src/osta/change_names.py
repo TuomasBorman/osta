@@ -694,7 +694,7 @@ def __test_if_voucher_help(df, col_i, colnames, variables, voucher_th):
     # Initialize results
     res = False
     # Check which variables are shared between variables and colnames
-    var_shared = list(set(colnames) & set(variables))
+    var_shared = [x for x in colnames if x in variables]
     # If variables were found from the colnames
     if len(var_shared) > 0:
         # Get only specified columns
