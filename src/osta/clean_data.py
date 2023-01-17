@@ -269,12 +269,12 @@ def __standardize_date(df, duplicated, disable_date=False,
     # Try to convert dates
     try:
         # Standardize dates
-        df_date = pd.to_datetime(df.loc[:, cols_to_check],
-                                 dayfirst=dayfirst, yearfirst=yearfirst)
+        df.loc[:, cols_to_check] = pd.to_datetime(
+            df.loc[:, cols_to_check],
+            dayfirst=dayfirst, yearfirst=yearfirst)
         # Change the formatting
-        df_date = df_date.dt.strftime(date_format)
-        # Assign values back to data frame
-        df.loc[:, cols_to_check] = df_date
+        df.loc[:, cols_to_check] = df.loc[:, cols_to_check].dt.strftime(
+            date_format)
     except Exception:
         warnings.warn(
             message="The format of dates where not detected, "
