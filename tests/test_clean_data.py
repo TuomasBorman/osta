@@ -431,7 +431,91 @@ def test_clean_data_account():
     # Expect that are equal
     assert_frame_equal(df, df_expect)
 
+    # Duplicated names --> because no match, not change
+    data = {"account_number": [102460, 1184667, 370111],
+            "account_name": ["Ennakkomaksut", "Muut hyödykkeet", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df.columns = ["account_number", "account_name", "account_name"]
+    df = clean_data(df)
+    # Expected names
+    data = {"account_number": [102460, 1184667, 370111],
+            "account_name": ["Ennakkomaksut", "Muut hyödykkeet", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
 
+
+def test_clean_data_voucher():
+    data = {"voucher": [104420, 1187, 370111],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    # Expect a warning
+    with pytest.warns(Warning):
+        df = clean_data(df)
+    # Expected names
+    data = {"voucher": [104420, 1187, 370111],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"voucher": [100, 110, 110],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"voucher": [100, 110, 110],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+
+def test_clean_data_country():
+    data = {"country": ["FI", "FI", "Denmark"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"country": ["FI", "FI", "DK"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"country": ["FI", "Sweden", "Denmark"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    # Expect a warning
+    with pytest.warns(Warning):
+        df = clean_data(df, country_format="name")
+    # Expected names
+    data = {"country": ["Suomi", "Ruotsi", "Tanska"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+    
+def test_clean_data_date():
+    
+
+def test_clean_data_vat_number:
+    
+def test_clean_data_sums():
+    
 def __create_dummy_data():
     data = {"org_name": ["test", "testi", "test"],
             "org_number": [1, 2, 3],

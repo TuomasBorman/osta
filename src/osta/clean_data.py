@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import osta.__utils as utils
-import osta.change_names as cn
 import pandas as pd
 import warnings
 from fuzzywuzzy import fuzz
@@ -249,7 +248,7 @@ def __standardize_date(df, disable_date=False, date_format="%d-%m-%Y",
         if not isinstance(dayfirst, bool):
             dayfirst, yearfirst = __get_format_of_dates_w_sep(df)
     # Try to reformat DDMMYYYY format
-    elif cn.__test_if_date(df_date, 0, df_date.columns):
+    elif utils.__test_if_date(df_date, 0, df_date.columns):
         # Get only the series
         df_date = df_date.iloc[:, 0]
         # Get format of date
@@ -663,7 +662,7 @@ def __standardize_suppl(df, disable_suppl=False, suppl_data=None, **args):
             "'disable_suppl' must be True or False."
             )
     # Check if column(s) is found as non-duplicated
-    cols_to_check = ["suppl_id", "suppl_number", "suppl_name"]
+    cols_to_check = ["suppl_id", "suppl_number", "suppl_name", "country"]
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
     if disable_suppl or len(cols_to_check) == 0:
         return df
@@ -1112,9 +1111,9 @@ def __check_voucher(df, disable_voucher=False, **args):
         return df
     col_to_check = cols_to_check[0]
     # INPUT CHECK END
-    if cn.__test_if_voucher(df=df,
-                            col_i=df.columns.tolist.index(col_to_check),
-                            colnames=df.columns):
+    if utils.__test_if_voucher(df=df,
+                               col_i=df.columns.tolist.index(col_to_check),
+                               colnames=df.columns):
         warnings.warn(
             message="It seems that 'voucher' column does not include " +
             "voucher values. Please check it for errors.",
