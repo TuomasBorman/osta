@@ -754,61 +754,63 @@ def __check_org_data(df, cols_to_check):
     Check if organization data is not duplicated, or has empty values, or
     incorrect business IDs.
     Input: df, columns that contain organization information
-    Output: which rows are incorrect?
+    Output: which rows are incorrect? None if check were not made
     """
     # Which column are found from df
     cols_to_check = [x for x in cols_to_check if x in df.columns]
-    # Subset the data
-    df = df.loc[:, cols_to_check]
-    # Drop duplicates
-    df = df.drop_duplicates()
-    # Are there None values
-    res = df.isna().sum(axis=1) > 0
-    # BIDs found?
-    if any(i in cols_to_check for i in ["org_id", "suppl_id"]):
-        # Get bid column
-        col = [x for x in ["org_id", "suppl_id"] if x in cols_to_check][0]
-        # Get BIDs
-        col = df[col]
-        # Check that bids are valid; True if not valid
-        valid = ~utils.__are_valid_bids(col).values
-        # Are bids duplicated?
-        duplicated = [val in col[col.duplicated()].values
-                      for val in col.values]
-        # Update result
-        res = res | valid | duplicated
-    # Name found?
-    if any(i in cols_to_check for i in ["org_name", "suppl_name"]):
-        # Get column
-        col = [x for x in ["org_name", "suppl_name"] if x in cols_to_check][0]
-        # Get names
-        col = df[col]
-        # Are names duplicated?
-        duplicated = [val in col[col.duplicated()].values
-                      for val in col.values]
-        # Update result
-        res = res | duplicated
-    # Number found?
-    if any(i in cols_to_check for i in ["org_number", "suppl_number"]):
-        # Get column
-        col = [x for x in [
-            "org_number", "suppl_number"] if x in cols_to_check][0]
-        # Get numbers
-        col = df[col]
-        # Are numbers duplicated?
-        duplicated = [val in col[col.duplicated()].values
-                      for val in col.values]
-        # Update result
-        res = res | duplicated
-    if any(res):
-        # Get only incorrect values
-        df = df.loc[res, :]
-        warnings.warn(
-            message=f"Following organization data contains duplicated, "
-            f"or empty values or business IDs are incorrect. "
-            f"Please check them for errors: \n{df}",
-            category=Warning
-            )
+    # If any columns were found
+    res = None
+    if len(cols_to_check) > 0:
+        # Subset the data
+        df = df.loc[:, cols_to_check]
+        # Drop duplicates:
+        # now there should be only unique number, name, ID combinations
+        df = df.drop_duplicates()
+        # Are there None values
+        res = df.isna().sum(axis=1) > 0
+        # BIDs found?
+        if any(i in cols_to_check for i in ["org_id", "suppl_id"]):
+            # Get bid column
+            col = [x for x in ["org_id", "suppl_id"] if x in cols_to_check][0]
+            # Get BIDs
+            col = df[col]
+            # Check that bids are valid; True if not valid
+            valid = utils.__are_valid_bids(col).values
+            # Are bids duplicated?
+            duplicated = col.isin(col[col.duplicated()])
+            # Update result
+            res = res | valid | duplicated
+        # Name found?
+        if any(i in cols_to_check for i in ["org_name", "suppl_name"]):
+            # Get column
+            col = [x for x in ["org_name", "suppl_name"]
+                   if x in cols_to_check][0]
+            # Get names
+            col = df[col]
+            # Are names duplicated?
+            duplicated = col.isin(col[col.duplicated()])
+            # Update result
+            res = res | duplicated
+        # Number found?
+        if any(i in cols_to_check for i in ["org_number", "suppl_number"]):
+            # Get column
+            col = [x for x in [
+                "org_number", "suppl_number"] if x in cols_to_check][0]
+            # Get numbers
+            col = df[col]
+            # Are numbers duplicated?
+            duplicated = col.isin(col[col.duplicated()])
+            # Update result
+            res = res | duplicated
+        if any(res):
+            # Get only incorrect values
+            df = df.loc[res, :]
+            warnings.warn(
+                message=f"Following organization data contains duplicated, "
+                f"or empty values or business IDs are incorrect. "
+                f"Please check them for errors: \n{df}",
+                category=Warning
+                )
     return res
 
 
