@@ -212,7 +212,7 @@ def __clean_sums(df, disable_sums=False, **args):
 
 def __standardize_date(df, duplicated, disable_date=False,
                        date_format="%d-%m-%Y",
-                       dayfirst=True, yearfirst=False, **args):
+                       dayfirst=None, yearfirst=None, **args):
     """
     This function identifies the format of dates and standardize them.
     Input: df
@@ -256,10 +256,10 @@ def __standardize_date(df, duplicated, disable_date=False,
         # Get format of date
         char_len = int(max(df.astype(str).str.len()))
         # Get format of dates if None
-        if yearfirst is None or dayfirst is None:
+        if dayfirst is None or yearfirst is None:
             yearfirst, dayfirst = __get_format_of_dates_wo_sep(df_date)
         # If format was found, standardize
-        if yearfirst is not None or dayfirst is not None:
+        if dayfirst is not None or yearfirst is not None:
             # Add separators to dates
             df.loc[:, cols_to_check] = __convert_dates_without_sep(
                 df_date,
@@ -382,8 +382,8 @@ def __get_format_of_dates_wo_sep(df):
                   if res_year.loc["res", x]]
         # Get only the individual values, if there are only one valid result
         if (len(i_year) == 1 and len(j_year) == 1):
-            i_year = i_year[0]
-            j_year = j_year[0]
+            i_year = int(i_year[0])
+            j_year = int(j_year[0])
             # Remove year from dates
             date_temp = date_temp.astype(str).str[:i_year]
             # Get place of the year
@@ -414,7 +414,7 @@ def __get_format_of_dates_wo_sep(df):
         month_i = [i for i, x in enumerate(res_day.columns)
                    if res_day.loc["day", x] and res_day.loc["month", x]]
         if len(month_i) == 1:
-            month_i = month_i[0]
+            month_i = int(month_i[0])
             # If month was the latter
             dayfirst = True if month_i == res_day.shape[1]-1 else False
     # Combine result
