@@ -228,27 +228,27 @@ def __standardize_date(df, duplicated, disable_date=False,
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
     if disable_date or len(cols_to_check) == 0:
         return df
-    cols_to_check = cols_to_check[0]
+    col_to_check = cols_to_check[0]
     # dayfirst and yearfirst must be None or boolean value
-    if not isinstance(dayfirst, bool) or dayfirst is None:
+    if not (isinstance(dayfirst, bool) or dayfirst is None):
         raise Exception(
             "'dayfirst' must be True or False or None."
             )
-    if not isinstance(yearfirst, bool) or yearfirst is None:
+    if not (isinstance(yearfirst, bool) or yearfirst is None):
         raise Exception(
             "'yearfirst' must be True or False or None."
             )
     # INPUT CHECK END
     # Get date column
-    df_date = df.loc[:, cols_to_check]
+    df_date = df.loc[:, col_to_check]
     # Split dates from separator. Result is multiple columns
     # with year, month and day separated
     df_date = df_date.astype(str).str.split(r"[-/.]", expand=True)
     # If the split was succesful
     if df_date.shape[1] > 1:
         # Get format of dates if None
-        if yearfirst is None or dayfirst is None:
-            df_date = __get_format_of_dates_w_sep(df)
+        if not isinstance(dayfirst, bool):
+            dayfirst, yearfirst = __get_format_of_dates_w_sep(df)
     # Try to reformat DDMMYYYY format
     elif cn.__test_if_date(df_date, 0, df_date.columns):
         # Get only the series
@@ -257,11 +257,11 @@ def __standardize_date(df, duplicated, disable_date=False,
         char_len = int(max(df.astype(str).str.len()))
         # Get format of dates if None
         if dayfirst is None or yearfirst is None:
-            yearfirst, dayfirst = __get_format_of_dates_wo_sep(df_date)
+            dayfirst, yearfirst = __get_format_of_dates_wo_sep(df_date)
         # If format was found, standardize
-        if dayfirst is not None or yearfirst is not None:
+        if dayfirst is not None and yearfirst is not None:
             # Add separators to dates
-            df.loc[:, cols_to_check] = __convert_dates_without_sep(
+            df.loc[:, col_to_check] = __convert_dates_without_sep(
                 df_date,
                 char_len=char_len,
                 dayfirst=dayfirst,
@@ -269,11 +269,11 @@ def __standardize_date(df, duplicated, disable_date=False,
     # Try to convert dates
     try:
         # Standardize dates
-        df.loc[:, cols_to_check] = pd.to_datetime(
+        df.loc[:, col_to_check] = pd.to_datetime(
             df.loc[:, cols_to_check],
             dayfirst=dayfirst, yearfirst=yearfirst)
         # Change the formatting
-        df.loc[:, cols_to_check] = df.loc[:, cols_to_check].dt.strftime(
+        df.loc[:, col_to_check] = df.loc[:, col_to_check].dt.strftime(
             date_format)
     except Exception:
         warnings.warn(
@@ -382,12 +382,12 @@ def __get_format_of_dates_wo_sep(df):
                   if res_year.loc["res", x]]
         # Get only the individual values, if there are only one valid result
         if (len(i_year) == 1 and len(j_year) == 1):
-            i_year = int(i_year[0])
-            j_year = int(j_year[0])
+            i_year_ind = int(i_year[0])
+            j_year_ind = int(j_year[0])
             # Remove year from dates
-            date_temp = date_temp.astype(str).str[:i_year]
+            date_temp = date_temp.astype(str).str[i_year_ind:j_year_ind]
             # Get place of the year
-            yearfirst = True if i_year == 0 else False
+            yearfirst = True if i_year_ind == 0 else False
     # If year was found
     if yearfirst is not None:
         # Expected day and month ranges
@@ -414,12 +414,12 @@ def __get_format_of_dates_wo_sep(df):
         month_i = [i for i, x in enumerate(res_day.columns)
                    if res_day.loc["day", x] and res_day.loc["month", x]]
         if len(month_i) == 1:
-            month_i = int(month_i[0])
+            month_ind = int(month_i[0])
             # If month was the latter
-            dayfirst = True if month_i == res_day.shape[1]-1 else False
+            dayfirst = True if month_ind == res_day.shape[1]-1 else False
     # Combine result
-    res = [yearfirst, dayfirst]
-    return res
+    result = [dayfirst, yearfirst]
+    return result
 
 
 def __convert_dates_without_sep(df, char_len, dayfirst, yearfirst):
@@ -676,7 +676,7 @@ def __standardize_suppl(df, disable_suppl=False, suppl_data=None, **args):
         df = __standardize_based_on_db(df=df, df_db=suppl_data,
                                        cols_to_check=cols_to_check,
                                        cols_to_match=cols_to_match,
-                                       *args)
+                                       **args)
     # Check that data is not duplicated, BID is correct, and there are not
     # empty values. Get warning if there are.
     __check_org_data(df, cols_to_check)
@@ -771,9 +771,10 @@ def __check_org_data(df, cols_to_check):
         # BIDs found?
         if any(i in cols_to_check for i in ["org_id", "suppl_id"]):
             # Get bid column
-            col = [x for x in ["org_id", "suppl_id"] if x in cols_to_check][0]
+            col_to_check = [x for x in ["org_id", "suppl_id"]
+                            if x in cols_to_check][0]
             # Get BIDs
-            col = df[col]
+            col = df[col_to_check]
             # Check that bids are valid; True if not valid
             valid = utils.__are_valid_bids(col).values
             # Are bids duplicated?
@@ -783,10 +784,10 @@ def __check_org_data(df, cols_to_check):
         # Name found?
         if any(i in cols_to_check for i in ["org_name", "suppl_name"]):
             # Get column
-            col = [x for x in ["org_name", "suppl_name"]
-                   if x in cols_to_check][0]
+            col_to_check = [x for x in ["org_name", "suppl_name"]
+                            if x in cols_to_check][0]
             # Get names
-            col = df[col]
+            col = df[col_to_check]
             # Are names duplicated?
             duplicated = col.isin(col[col.duplicated()])
             # Update result
@@ -794,10 +795,10 @@ def __check_org_data(df, cols_to_check):
         # Number found?
         if any(i in cols_to_check for i in ["org_number", "suppl_number"]):
             # Get column
-            col = [x for x in [
-                "org_number", "suppl_number"] if x in cols_to_check][0]
+            col_to_check = [x for x in ["org_number", "suppl_number"]
+                            if x in cols_to_check][0]
             # Get numbers
-            col = df[col]
+            col = df[col_to_check]
             # Are numbers duplicated?
             duplicated = col.isin(col[col.duplicated()])
             # Update result
@@ -1090,10 +1091,10 @@ def __check_voucher(df, disable_voucher=False, **args):
     # All columns must be present
     if disable_voucher or len(cols_to_check) > 0:
         return df
-    cols_to_check == cols_to_check[0]
+    col_to_check = cols_to_check[0]
     # INPUT CHECK END
     if cn.__test_if_voucher(df=df,
-                            col_i=df.columns.tolist.index(cols_to_check),
+                            col_i=df.columns.tolist.index(col_to_check),
                             colnames=df.columns):
         warnings.warn(
             message="It seems that 'voucher' column does not include " +
@@ -1130,10 +1131,10 @@ def __subset_data_based_on_year(df, df_db, db_year=None,
         cols_to_check = ["date"]
         cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
         if len(cols_to_check) == 1:
-            cols_to_check = cols_to_check[0]
+            col_to_check = cols_to_check[0]
             # INPUT CHECK END
             # Get date column
-            date = df.loc[:, cols_to_check]
+            date = df.loc[:, col_to_check]
             # Extract year if possible
             if "date" in df.columns:
                 try:
@@ -1161,7 +1162,7 @@ def __not_duplicated_columns_found(df, cols_to_check):
     # Get duplicated values
     duplicated = unique[counts > 1]
     # Are columns found and not duplicated? Return True if any found.
-    cols_to_check = list(set(duplicated).difference(cols_to_check))
+    cols_to_check = list(set(cols_to_check).difference(duplicated))
     # If there were duplicated columns, give warning
     if len(duplicated) > 0:
         warnings.warn(
