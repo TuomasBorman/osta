@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from osta.clean_data import clean_data
 import pandas as pd
-from pandas.testing import assert_frame_equal
+# from pandas.testing import assert_frame_equal
 import pytest
-import copy
+# import copy
 
 
 def test_check_names_wrong_arguments():

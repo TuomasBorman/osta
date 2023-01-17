@@ -248,7 +248,7 @@ def __standardize_date(df, duplicated, disable_date=False,
     if df_date.shape[1] > 1:
         # Get format of dates if None
         if yearfirst is None or dayfirst is None:
-            df_date = __get_format_of_dates_w_sep(df, dayfirst, yearfirst)
+            df_date = __get_format_of_dates_w_sep(df)
     # Try to reformat DDMMYYYY format
     elif cn.__test_if_date(df_date, 0, df_date.columns):
         # Get only the series
@@ -285,7 +285,7 @@ def __standardize_date(df, duplicated, disable_date=False,
     return df
 
 
-def __get_format_of_dates_w_sep(df, dayfirst, yearfirst):
+def __get_format_of_dates_w_sep(df):
     """
     This function identifies the format of dates that are with
     separators between days, months and years.
