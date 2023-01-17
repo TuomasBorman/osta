@@ -229,8 +229,16 @@ def __standardize_date(df, duplicated, disable_date=False,
     if disable_date or len(cols_to_check) == 0:
         return df
     cols_to_check = cols_to_check[0]
+    # dayfirst and yearfirst must be None or boolean value
+    if not isinstance(dayfirst, bool) or dayfirst is None:
+        raise Exception(
+            "'dayfirst' must be True or False or None."
+            )
+    if not isinstance(yearfirst, bool) or yearfirst is None:
+        raise Exception(
+            "'yearfirst' must be True or False or None."
+            )
     # INPUT CHECK END
-    not_success = True
     # Get date column
     df_date = df.loc[:, cols_to_check]
     # Split dates from separator. Result is multiple columns
@@ -238,100 +246,106 @@ def __standardize_date(df, duplicated, disable_date=False,
     df_date = df_date.astype(str).str.split(r"[-/.]", expand=True)
     # If the split was succesful
     if df_date.shape[1] > 1:
-        # Remove columns that did have problems / did not split
-        df_date = df_date.dropna().copy()
-        # Convert columns to numeric if possible
-        for c in df_date.columns:
-            if all(df_date.loc[:, c].astype(str).str.isnumeric()):
-                df_date[c] = pd.to_numeric(df_date[c])
-        # Get years, months, and days
-        year = list(range(1970, 2050))
-        month = list(range(1, 13))
-        day = list(range(1, 32))
-        # Get those values that distinguish days and years
-        year = list(set(year).difference(day))
-        day = list(set(day).difference(month))
-        # Check if these values can be found from the data
-        data = {
-            "any_in_day": list(any(df_date[c].isin(day))
-                               for c in df_date.columns),
-            "any_in_year": list(any(df_date[c].isin(year))
-                                for c in df_date.columns)
-            }
-        df_res = pd.DataFrame(data)
-        # Initialize result list, loop over columns that have years,
-        # months and days
-        result = []
-        for i, c in enumerate(df_date.columns):
-            # Get the result of specific column
-            temp = df_res.iloc[i, :]
-            # Check if it is year
-            if temp["any_in_year"]:
-                result.append("year")
-            # Check if it is day
-            elif temp["any_in_day"]:
-                result.append("day")
-            else:
-                result.append("month")
-        # If result does not include all year, month and day, use
-        # default settings
-        if all(i in result for i in ["year", "month", "day"]):
-            # If year is first
-            yearfirst = True if result.index("year") == 0 else False
-            # If day comes before month
-            if (yearfirst and
-                result.index("day") == 1) or (not yearfirst and
-                                              result.index("day") == 0):
-                dayfirst = True
-            else:
-                dayfirst = False
-        # Standardize dates
-        df_date = pd.to_datetime(df.loc[:, cols_to_check],
-                                 dayfirst=dayfirst, yearfirst=yearfirst)
-        not_success = False
+        # Get format of dates if None
+        if yearfirst is None or dayfirst is None:
+            df_date = __get_format_of_dates_w_sep(df, dayfirst, yearfirst)
     # Try to reformat DDMMYYYY format
     elif cn.__test_if_date(df_date, 0, df_date.columns):
         # Get only the series
         df_date = df_date.iloc[:, 0]
         # Get format of date
-        char_len, yearfirst, dayfirst = __get_format_of_dates(df_date)
+        char_len = int(max(df.astype(str).str.len()))
+        # Get format of dates if None
+        if yearfirst is None or dayfirst is None:
+            yearfirst, dayfirst = __get_format_of_dates_wo_sep(df_date)
         # If format was found, standardize
-        if yearfirst is not False or dayfirst is not False:
-            # Standardize dates
-            df_date = __convert_dates_without_sep(df_date,
-                                                  char_len=char_len,
-                                                  dayfirst=dayfirst,
-                                                  yearfirst=yearfirst)
-            warnings.warn(
-                message="Dates did not have separators between days, "
-                "months, and years. The dates are standardized based on "
-                "a common pattern that were found on them.",
-                category=Warning
-                )
-            not_success = False
-    # If dates are not detected
-    if not_success:
+        if yearfirst is not None or dayfirst is not None:
+            # Add separators to dates
+            df.loc[:, cols_to_check] = __convert_dates_without_sep(
+                df_date,
+                char_len=char_len,
+                dayfirst=dayfirst,
+                yearfirst=yearfirst)
+    # Try to convert dates
+    try:
+        # Standardize dates
+        df_date = pd.to_datetime(df.loc[:, cols_to_check],
+                                 dayfirst=dayfirst, yearfirst=yearfirst)
+        # Change the formatting
+        df_date = df_date.dt.strftime(date_format)
+        # Assign values back to data frame
+        df.loc[:, cols_to_check] = df_date
+    except Exception:
         warnings.warn(
             message="The format of dates where not detected, "
             "and the 'date' column is unchanged. Please check that dates "
             "have separators between days, months, and years.",
             category=Warning
             )
-    else:
-        # Change the formatting
-        df_date = df_date.dt.strftime(date_format)
-        # Assign values back to data frame
-        df.loc[:, cols_to_check] = df_date
     return df
 
 
-def __get_format_of_dates(df):
+def __get_format_of_dates_w_sep(df, dayfirst, yearfirst):
+    """
+    This function identifies the format of dates that are with
+    separators between days, months and years.
+    Input: df with days months and years in own columns
+    Output: If year comes first, if day comes first
+    """
+    # Convert columns to numeric if possible
+    for c in df.columns:
+        if all(df.loc[:, c].astype(str).str.isnumeric()):
+            df[c] = pd.to_numeric(df[c])
+    # Get years, months, and days
+    year = list(range(1970, 2050))
+    month = list(range(1, 13))
+    day = list(range(1, 32))
+    # Get those values that distinguish days and years
+    year = list(set(year).difference(day))
+    day = list(set(day).difference(month))
+    # Check if these values can be found from the data
+    data = {
+        "any_in_day": list(any(df[c].isin(day))
+                           for c in df.columns),
+        "any_in_year": list(any(df[c].isin(year))
+                            for c in df.columns)
+        }
+    df_res = pd.DataFrame(data)
+    # Initialize result list, loop over columns that have years,
+    # months and days
+    result = []
+    for i, c in enumerate(df.columns):
+        # Get the result of specific column
+        temp = df_res.iloc[i, :]
+        # Check if it is year
+        if temp["any_in_year"]:
+            result.append("year")
+        # Check if it is day
+        elif temp["any_in_day"]:
+            result.append("day")
+        else:
+            result.append("month")
+    # If result does not include all year, month and day, use
+    # default settings
+    if all(i in result for i in ["year", "month", "day"]):
+        # If year is first
+        yearfirst = True if result.index("year") == 0 else False
+        # If day comes before month
+        if (yearfirst and
+            result.index("day") == 1) or (not yearfirst and
+                                          result.index("day") == 0):
+            dayfirst = True
+        else:
+            dayfirst = False
+    return [dayfirst, yearfirst]
+
+
+def __get_format_of_dates_wo_sep(df):
     """
     This function identifies the format of dates that are without
     separators between days, months and years.
     Input: series
-    Output: maximum number of characters in dates, if year comes first,
-    if day comes first
+    Output: If year comes first, if day comes first
     """
     # Get maximum number of characters
     char_len = int(max(df.astype(str).str.len()))
@@ -404,7 +418,7 @@ def __get_format_of_dates(df):
             # If month was the latter
             dayfirst = True if month_i == res_day.shape[1]-1 else False
     # Combine result
-    res = [char_len, yearfirst, dayfirst]
+    res = [yearfirst, dayfirst]
     return res
 
 
@@ -413,7 +427,7 @@ def __convert_dates_without_sep(df, char_len, dayfirst, yearfirst):
     This function standardizes the dates that are without
     separators between days, months and years.
     Input: series
-    Output: series with standardize dates
+    Output: list of values with separators
     """
     # Create result DF and add columns
     res = pd.DataFrame(df)
@@ -505,9 +519,8 @@ def __convert_dates_without_sep(df, char_len, dayfirst, yearfirst):
         # Remove from mod column
         res.loc[ind, "mod"] = ""
 
-    # Combine result to date and convert it to pandas datetime
+    # Combine result to date with separators
     res = res["day"] + "/" + res["month"] + "/" + res["year"]
-    res = pd.to_datetime(res, dayfirst=True, yearfirst=False)
     return res
 
 
@@ -672,22 +685,22 @@ def __standardize_suppl(df, disable_suppl=False, suppl_data=None, **args):
 
 def __standardize_based_on_db(df, df_db,
                               cols_to_check, cols_to_match,
-                              match_th=0.7, scorer=fuzz.token_sort_ratio,
+                              pattern_th=0.7, scorer=fuzz.token_sort_ratio,
                               **args):
     """
     Standardize the data based on database.
     Input: df, df_db including database,
-    match_th to be used to match partial matching names
+    pattern_th to be used to match partial matching names
     Output: Standardized data
     """
     # INPUT CHECK
-    # match_th must be numeric value 0-1
-    if not utils.__is_percentage(match_th):
+    # pattern_th must be numeric value 0-1
+    if not utils.__is_percentage(pattern_th):
         raise Exception(
-            "'match_th' must be a number between 0-1."
+            "'pattern_th' must be a number between 0-1."
             )
     # Value [0,1] to a number between 0-100, because fuzzywuzzy requires that
-    match_th = match_th*100
+    pattern_th = pattern_th*100
     # INPUT CHECK END
     # Which column are found from df and df_db
     cols_df = [x for x in cols_to_check if x in df.columns]
@@ -711,7 +724,7 @@ def __standardize_based_on_db(df, df_db,
                                              df_db=df_db,
                                              cols_to_check=cols_to_check,
                                              cols_to_match=cols_to_match,
-                                             match_th=match_th,
+                                             pattern_th=pattern_th,
                                              scorer=scorer)
         # Replace values in original DataFrame columns
         df_org = __replace_old_values_with_new(df=df_org,
@@ -823,7 +836,7 @@ def __replace_old_values_with_new(df,
 
 def __get_matches_from_db(df, df_db,
                           cols_to_check, cols_to_match,
-                          match_th, scorer):
+                          pattern_th, scorer):
     """
     Is there some data missing or incorrect? Based on df_db, this function
     replaces values of df.
@@ -912,7 +925,7 @@ def __get_matches_from_db(df, df_db,
             # Try partial match, get the most similar name
             name_part = process.extractOne(name_df, name_db, scorer=scorer)
             # If the matching score is over threshold
-            if name_part[1] >= match_th:
+            if name_part[1] >= pattern_th:
                 # Get only the name
                 name_part = name_part[0]
                 # Find row based on name with partial match
