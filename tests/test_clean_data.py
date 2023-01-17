@@ -418,7 +418,18 @@ def test_clean_data_account():
             "account_name": ["ennakkomaksut", "muut hyödykkeet", "test3"],
             "test": ["0135202-4", "0135202-4", "test"]
             }
-    
+    df = pd.DataFrame(data)
+    file = pkg_resources.resource_filename("osta", "resources/" +
+                                           "account_info.csv")
+    df = clean_data(df, account_data_data=pd.read_csv(file, index_col=0))
+    # Expected names
+    data = {"account_number": [102460, 1184667, 370111],
+            "account_name": ["Ennakkomaksut", "Muut hyödykkeet", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
 
 
 def __create_dummy_data():
