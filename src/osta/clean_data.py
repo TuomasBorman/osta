@@ -59,9 +59,6 @@ def clean_data(df, **args):
 
     # Test if voucher is correct
     __check_voucher(df, **args)
-    # Check VAT numbers
-    __check_vat_number(df, cols_to_check=["suppl_id", "vat_number", "country"],
-                       **args)
     # Check dates
     df = __standardize_date(df, **args)
     # Check org information:
@@ -542,7 +539,7 @@ def __standardize_org(df, disable_org=False, org_data=None, **args):
             "'disable_org' must be True or False."
             )
     # Check if column(s) is found as non-duplicated
-    cols_to_check = ["org_id", "org_number", "org_name"]
+    cols_to_check = ["org_id", "org_vat_number", "org_number", "org_name"]
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
     if disable_org or len(cols_to_check) == 0:
         return df
@@ -551,7 +548,7 @@ def __standardize_org(df, disable_org=False, org_data=None, **args):
         path = "~/Python/osta/src/osta/resources/municipality_codes.csv"
         org_data = pd.read_csv(path, index_col=0)
     # Column of db that are matched with columns that are being checked
-    cols_to_match = ["bid", "number", "name"]
+    cols_to_match = ["bid", "vat_number", "number", "name"]
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=org_data,
                                    cols_to_check=cols_to_check,
@@ -680,6 +677,9 @@ def __standardize_suppl(df, disable_suppl=False, suppl_data=None, **args):
                                        **args)
     # Check that data is not duplicated, BID is correct, and there are not
     # empty values. Get warning if there are.
+    # Check VAT numbers
+    __check_vat_number(df, cols_to_check=["suppl_id", "vat_number", "country"],
+                       **args)
     __check_org_data(df, cols_to_check)
     return df
 
@@ -1026,7 +1026,7 @@ def __check_variable_pair(df, cols_to_check, dtypes, **args):
     return df
 
 
-def __check_vat_number(df, cols_to_check, disable_vat_number=False, **args):
+def __check_vat_number(df, cols_to_check, **args):
     """
     This function checks that VAT numbers has correct patterns
     and match with business IDs.
@@ -1034,14 +1034,10 @@ def __check_vat_number(df, cols_to_check, disable_vat_number=False, **args):
     Output: df
     """
     # INPUT CHECK
-    if not isinstance(disable_vat_number, bool):
-        raise Exception(
-            "'disable_vat_number' must be True or False."
-            )
     # Check if column(s) is found as non-duplicated
     cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
     # All columns must be present
-    if disable_vat_number or len(cols_to_check) != 3:
+    if len(cols_to_check) != 3:
         return df
     # INPUT CHECK END
     # Get vat number and bid column names

@@ -259,7 +259,7 @@ def test_clean_data_suppl():
 
     data = {"suppl_number": [4844, 48344, 4234344],
             "suppl_name": ["test", "test", "test3"],
-            "suppl_id": ["0135202-4", "0135202-4", "test"]
+            "vat_number": ["FI01352024", "FI01352024", "test"]
             }
     df = pd.DataFrame(data)
     # Expect a warning
@@ -270,7 +270,7 @@ def test_clean_data_suppl():
     # Expected names
     data = {"suppl_number": [484, 484, 4234344],
             "suppl_name": ["Merikarvia", "Merikarvia", "test3"],
-            "suppl_id": ["0135202-4", "0135202-4", "test"]
+            "vat_number": ["FI01352024", "FI01352024", "test"]
             }
     df_expect = pd.DataFrame(data)
     # Expect that are equal
@@ -508,12 +508,128 @@ def test_clean_data_country():
     df_expect = pd.DataFrame(data)
     # Expect that are equal
     assert_frame_equal(df, df_expect)
-    
-def test_clean_data_date():
-    
 
-def test_clean_data_vat_number:
-    
+    data = {"country": ["FI", "Sweden", "Denmark"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df, disable_country=True)
+    # Expected names
+    data = {"country": ["FI", "Sweden", "Denmark"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+
+def test_clean_data_date():
+    data = {"date": ["10.h.2013", "12.12-12", "12.12.12"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"date": ["10.h.2013", "12.12-12", "12.12.12"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    # Expect a warning
+    with pytest.warns(Warning):
+        df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"date": ["10/2.2013", "12.12-12", "1.02.12"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"date": ["10.2.2013", "12.12.2012", "1.02.2012"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"date": ["01122013", "3122012", "200212"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    with pytest.warns(Warning):
+        df_expect = pd.DataFrame(data, dateformat="%Y-%d-%m")
+    # Expected names
+    data = {"date": ["2013/12/01", "2012/12/31", "2012/02/12"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"date": ["01122013", "3122012", "200212"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df_expect = pd.DataFrame(data, disable_dates=True)
+    # Expected names
+    data = {"date": ["01122013", "3122012", "200212"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+
+def test_clean_data_vat_number():
+    data = {"vat_number": ["FI01352024", "FI01352024", "test"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    with pytest.warns(Warning):
+        df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"vat_number": ["FI01352024", "FI01352024", "test"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"vat_number": ["FI01352024", "FI01352024", "test"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df, disable_suppl=True)
+    # Expected names
+    data = {"vat_number": ["FI01352024", "FI01352024", "test"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"vat_number": ["FI01352024", "FI01352024", "FI02252024"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"vat_number": ["FI01352024", "FI01352024", "FI02252024"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+
 def test_clean_data_sums():
     
 def __create_dummy_data():
