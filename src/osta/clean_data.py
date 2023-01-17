@@ -877,7 +877,7 @@ def __get_matches_from_db(df, df_db,
         for j, x in enumerate(cols_to_check):
             # If 1st, 2nd... or nth variable was found from database
             if any(temp[x]):
-                row_db = df_db.loc[temp[x].tolist(), cols_to_match]
+                row_db = df_db.loc[temp[x], cols_to_match].values.tolist()[0]
                 # row_db = row_db.values.tolist()[0]
                 found = True
                 # If there were other variables,
