@@ -157,8 +157,8 @@ def test_check_names_wrong_arguments():
 
 
 def test_clean_data_org():
-    data = {"org_number": [484, 484, 424],
-            "org_name": ["test1", "test2", "test3"],
+    data = {"org_number": [48344, 484, 424],
+            "org_name": ["Merikarvian kunta", "test2", "test3"],
             "org_id": ["FI", "FI", "test"]
             }
     df = pd.DataFrame(data)
@@ -366,6 +366,59 @@ def test_clean_data_service():
     df_expect = pd.DataFrame(data)
     # Expect that are equal
     assert_frame_equal(df, df_expect)
+
+
+def test_clean_data_account():
+    data = {"account_number": [1020, 1187, 370111],
+            "account_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"account_number": [1020, 1187, 370111],
+            "account_name": ["Ennakkomaksut", "Muut hyödykkeet", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"account_number": [102460, 1184667, 370111],
+            "account_name": ["Ennakkomaksut", "Muut hyödykkeet", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"account_number": [1020, 1187, 370111],
+            "account_name": ["Ennakkomaksut", "Muut hyödykkeet", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"account_number": [102460, 1184667, 370111],
+            "account_name": ["Ennakkomaksut", "Muut hyödykkeet", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df, disable_account=True)
+    # Expected names
+    data = {"account_number": [102460, 1184667, 370111],
+            "account_name": ["Ennakkomaksut", "Muut hyödykkeet", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"account_number": [102460, 1184667, 370111],
+            "account_name": ["ennakkomaksut", "muut hyödykkeet", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    
 
 
 def __create_dummy_data():

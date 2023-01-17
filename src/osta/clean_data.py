@@ -597,7 +597,7 @@ def __standardize_account(df, disable_account=False,
     df = __standardize_based_on_db(df=df, df_db=account_data,
                                    cols_to_check=cols_to_check,
                                    cols_to_match=cols_to_match,
-                                   **args)
+                                   disable_partial=True, **args)
     # Check that values are matching
     __check_variable_pair(df, cols_to_check=cols_to_check, dtypes=dtypes)
     return df
@@ -640,7 +640,7 @@ def __standardize_service(df, disable_service=False,
     df = __standardize_based_on_db(df=df, df_db=service_data,
                                    cols_to_check=cols_to_check,
                                    cols_to_match=cols_to_match,
-                                   **args)
+                                   disable_partial=True, **args)
     # Check that values are matching
     __check_variable_pair(df, cols_to_check=cols_to_check, dtypes=dtypes)
     return df
@@ -685,6 +685,7 @@ def __standardize_suppl(df, disable_suppl=False, suppl_data=None, **args):
 def __standardize_based_on_db(df, df_db,
                               cols_to_check, cols_to_match,
                               pattern_th=0.7, scorer=fuzz.token_sort_ratio,
+                              disable_partial=False,
                               **args):
     """
     Standardize the data based on database.
@@ -726,6 +727,7 @@ def __standardize_based_on_db(df, df_db,
                                              cols_to_check=cols_to_check,
                                              cols_to_match=cols_to_match,
                                              pattern_th=pattern_th,
+                                             disable_partial=disable_partial,
                                              scorer=scorer)
         # Replace values in original DataFrame columns
         df_org = __replace_old_values_with_new(df=df_org,
@@ -840,7 +842,8 @@ def __replace_old_values_with_new(df,
 
 def __get_matches_from_db(df, df_db,
                           cols_to_check, cols_to_match,
-                          pattern_th, scorer):
+                          pattern_th, scorer,
+                          disable_partial):
     """
     Is there some data missing or incorrect? Based on df_db, this function
     replaces values of df.
@@ -877,7 +880,7 @@ def __get_matches_from_db(df, df_db,
         for j, x in enumerate(cols_to_check):
             # If 1st, 2nd... or nth variable was found from database
             if any(temp[x]):
-                row_db = df_db.loc[temp[x], cols_to_match].values.tolist()[0]
+                row_db = df_db.loc[temp[x].tolist(), cols_to_match]
                 # row_db = row_db.values.tolist()[0]
                 found = True
                 # If there were other variables,
@@ -901,7 +904,7 @@ def __get_matches_from_db(df, df_db,
             # Try partial match, get the most similar name
             name_part = process.extractOne(name_df, name_db, scorer=scorer)
             # If the matching score is over threshold
-            if name_part[1] >= pattern_th:
+            if disable_partial is False and name_part[1] >= pattern_th:
                 # Get only the name
                 name_part = name_part[0]
                 # Find row based on name with partial match
