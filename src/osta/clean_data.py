@@ -226,7 +226,8 @@ def __standardize_country(df, disable_country=False,
         return df
     # INPUT CHECK END
     # Load data base
-    path = "~/Python/osta/src/osta/resources/land_codes.csv"
+    path = pkg_resources.resource_filename(
+        "osta", "resources/" + "land_codes.csv")
     country_codes = pd.read_csv(path, index_col=0)
     # country_format must be one of the database columns
     if not (isinstance(country_format, str) and
@@ -741,7 +742,8 @@ def __standardize_org(df, disable_org=False, org_data=None, **args):
         return df
     # INPUT CHECK END
     if org_data is None:
-        path = "~/Python/osta/src/osta/resources/municipality_codes.csv"
+        path = pkg_resources.resource_filename(
+            "osta", "resources/" + "municipality_codes.csv")
         org_data = pd.read_csv(path, index_col=0)
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=org_data,
@@ -789,7 +791,8 @@ def __standardize_account(df, disable_account=False, account_data=None,
         return df
     # INPUT CHECK END
     if account_data is None:
-        path = "~/Python/osta/src/osta/resources/account_info.csv"
+        path = pkg_resources.resource_filename(
+            "osta", "resources/" + "account_info.csv")
         account_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years
         account_data = __subset_data_based_on_year(df, df_db=account_data,
@@ -840,7 +843,8 @@ def __standardize_service(df, disable_service=False,
         return df
     # INPUT CHECK END
     if service_data is None:
-        path = "~/Python/osta/src/osta/resources/service_codes.csv"
+        path = path = pkg_resources.resource_filename(
+            "osta", "resources/" + "service_codes.csv")
         service_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years
         service_data = __subset_data_based_on_year(df, df_db=service_data,

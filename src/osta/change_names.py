@@ -222,13 +222,11 @@ def __get_fields_df(fields, **args):
     if fields is None:
         # Load data from /resources of package osta
         path = pkg_resources.resource_filename(
-            "osta",
-            "resources/" + "mandatory_fields.csv")
+            "osta", "resources/" + "mandatory_fields.csv")
         mandatory_fields = pd.read_csv(path
                                        ).set_index("key")["value"].to_dict()
         path = pkg_resources.resource_filename(
-            "osta",
-            "resources/" + "optional_fields.csv")
+            "osta", "resources/" + "optional_fields.csv")
         optional_fields = pd.read_csv(path
                                       ).set_index("key")["value"].to_dict()
         # Combine fields into one dictionary
