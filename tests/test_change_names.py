@@ -82,7 +82,7 @@ def test_change_names_all_wrong():
     assert_frame_equal(df, df_ref)
 
 
-def test_change_names_somw_wrong():
+def test_change_names_some_wrong():
     df = __create_dummy_data()
     # Original names
     df.columns = ["Kunnan nimi", "org_number", "Test3"]
