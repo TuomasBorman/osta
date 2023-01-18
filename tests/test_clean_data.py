@@ -619,7 +619,7 @@ def test_clean_data_date():
 def test_clean_data_vat_number():
     data = {"vat_number": ["FI01352024", "FI01352024", "test"],
             "suppl_name": ["test", "test", "test3"],
-            "test": ["0135202-4", "0135202-4", "test"]
+            "country": ["FI", "DK", "FI"]
             }
     with pytest.warns(Warning):
         df = pd.DataFrame(data)
