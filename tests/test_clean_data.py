@@ -224,6 +224,59 @@ def test_clean_data_org():
     assert_frame_equal(df, df_expect)
 
 
+    def test_clean_data_suppl():
+        data = {"suppl_number": [4844, 4833544, 4234344],
+                "suppl_name": ["test", "test", "test3"],
+                "suppl_id": ["0135202-4", "0135202-4", "test"]
+                }
+        df = pd.DataFrame(data)
+        # Expect a warning
+        with pytest.warns(Warning):
+            df = clean_data(df, disable_org=True)
+        # Expected names
+        data = {"suppl_number": [4844, 4833544, 4234344],
+                "suppl_name": ["test", "test", "test3"],
+                "suppl_id": ["0135202-4", "0135202-4", "test"]
+                }
+        df_expect = pd.DataFrame(data)
+        # Expect that are equal
+        assert_frame_equal(df, df_expect)
+
+        data = {"suppl_number": [4844, 48344, 4844444],
+                "suppl_name": ["test", "test1", "test3"],
+                "suppl_id": ["01242425", "test243", "test"]
+                }
+        df = pd.DataFrame(data)
+        df = clean_data(df, disable_org=True)
+        # Expected names
+        data = {"suppl_number": [4844, 48344, 4844444],
+                "suppl_name": ["test", "test1", "test3"],
+                "suppl_id": ["01242425", "test243", "test"]
+                }
+        df_expect = pd.DataFrame(data)
+        # Expect that are equal
+        assert_frame_equal(df, df_expect)
+
+        data = {"suppl_number": [4844, 48344, 4234344],
+                "suppl_name": ["test", "test", "test3"],
+                "vat_number": ["FI01352024", "FI01352024", "test"]
+                }
+        df = pd.DataFrame(data)
+        # Expect a warning
+        with pytest.warns(Warning):
+            file = pkg_resources.resource_filename("osta", "resources/" +
+                                                   "municipality_codes.csv")
+            df = clean_data(df, suppl_data=pd.read_csv(file, index_col=0))
+        # Expected names
+        data = {"suppl_number": [484, 484, 4234344],
+                "suppl_name": ["Merikarvia", "Merikarvia", "test3"],
+                "vat_number": ["FI01352024", "FI01352024", "test"]
+                }
+        df_expect = pd.DataFrame(data)
+        # Expect that are equal
+        assert_frame_equal(df, df_expect)
+
+
 def __create_dummy_data():
     data = {"org_name": ["test", "testi", "test"],
             "org_number": [1, 2, 3],

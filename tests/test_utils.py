@@ -40,18 +40,17 @@ def test_utils_date():
 
 
 def test_utils_bid():
-    ser = pd.Series(["0135202-4", "0135202-4", "0135442-4"])
-    assert utils.__are_valid_bids(ser) is True
+    ser = pd.Series(["0135202-4", "0135202-4", "0204819-8"])
+    assert all(utils.__are_valid_bids(ser)) is True
     ser = pd.Series(["0135dd2-4", "0135ff2-4", "0135442-4"])
-    assert utils.__are_valid_bids(ser) is False
-    assert utils.__are_valid_bids(False) is False
+    assert all(utils.__are_valid_bids(ser)) is False
 
 
 def test_utils_vat_number():
     ser = pd.Series(["FI01352024", "FI01352024", "FI01354424"])
-    assert utils.__are_valid_bids(ser) is True
+    assert all(utils.__are_valid_vat_numbers(ser)) is True
     ser = pd.Series(["0135332-4", "0135332-4", "0135442-4"])
-    assert utils.__are_valid_bids(ser) is False
+    assert all(utils.__are_valid_vat_numbers(ser)) is False
 
 
 def test_utils_voucher():

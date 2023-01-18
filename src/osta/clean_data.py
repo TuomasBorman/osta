@@ -127,9 +127,9 @@ def clean_data(df, **args):
 
         Supplier data (name, number, BID, VAT number) is not matched with
         database by default and replacements are not done. However, user
-        can use own database. The function checks that BID and VAT numbers
-        are in correct format and that they duplicated meaning that each
-        value specifies only one supplier.
+        can use own database. Like in case of organization data, the function
+        checks that BID and VAT numbers are in correct format and that they
+        duplicated meaning that each value specifies only one supplier.
 
         Account and service information. Account and service information is
         matched with database, and uncorrect values are replaced unless they
