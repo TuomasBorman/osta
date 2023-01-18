@@ -621,13 +621,13 @@ def test_clean_data_vat_number():
             "suppl_name": ["test", "test", "test3"],
             "country": ["FI", "DK", "FI"]
             }
+    df = pd.DataFrame(data)
     with pytest.warns(Warning):
-        df = pd.DataFrame(data)
-    df = clean_data(df)
+        df = clean_data(df)
     # Expected names
     data = {"vat_number": ["FI01352024", "FI01352024", "test"],
             "suppl_name": ["test", "test", "test3"],
-            "test": ["0135202-4", "0135202-4", "test"]
+            "country": ["FI", "DK", "FI"]
             }
     df_expect = pd.DataFrame(data)
     # Expect that are equal
@@ -648,89 +648,109 @@ def test_clean_data_vat_number():
     # Expect that are equal
     assert_frame_equal(df, df_expect)
 
-#     data = {"vat_number": ["FI01352024", "FI01352024", "FI02252024"],
-#             "suppl_name": ["test", "test", "test3"],
-#             "test": ["0135202-4", "0135202-4", "test"]
-#             }
-#     df = pd.DataFrame(data)
-#     df = clean_data(df)
-#     # Expected names
-#     data = {"vat_number": ["FI01352024", "FI01352024", "FI02252024"],
-#             "suppl_name": ["test", "test", "test3"],
-#             "test": ["0135202-4", "0135202-4", "test"]
-#             }
-#     df_expect = pd.DataFrame(data)
-#     # Expect that are equal
-#     assert_frame_equal(df, df_expect)
+    data = {"vat_number": ["FI01352024", "FI01352024", "FI02252024"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"vat_number": ["FI01352024", "FI01352024", "FI02252024"],
+            "suppl_name": ["test", "test", "test3"],
+            "test": ["0135202-4", "0135202-4", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
 
 
-# def test_clean_data_sums():
-#     data = {"vat_amount": [2.0, 1.0, 1.5],
-#             "price_ex_vat": [1, 3.0, 1.5],
-#             "total": [3, 3, 4]
-#             }
-#     with pytest.warns(Warning):
-#         df = pd.DataFrame(data)
-#     df = clean_data(df)
-#     # Expected names
-#     data = {"vat_amount": [2.0, 1.0, 1.5],
-#             "price_ex_vat": [1, 3.0, 1.5],
-#             "total": [3, 3, 4]
-#             }
-#     df_expect = pd.DataFrame(data)
-#     # Expect that are equal
-#     assert_frame_equal(df, df_expect)
+def test_clean_data_sums():
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            "total": [3, 3, 4]
+            }
+    df = pd.DataFrame(data)
+    # Expect warning
+    with pytest.warns(Warning):
+        df = clean_data(df)
+    # Expected names
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            "total": [3.0, 3.0, 4.0]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
 
-#     data = {"vat_amount": [2.0, 1.0, 1.5],
-#             "price_ex_vat": [1, 3.0, 1.5],
-#             "total": [3, 3, 4]
-#             }
-#     df = pd.DataFrame(data)
-#     df = clean_data(df, disable_sums=True)
-#     # Expected names
-#     data = {"vat_amount": [2.0, 1.0, 1.5],
-#             "price_ex_vat": [1, 3.0, 1.5],
-#             "total": [3, 3, 4]
-#             }
-#     df_expect = pd.DataFrame(data)
-#     # Expect that are equal
-#     assert_frame_equal(df, df_expect)
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            "total": [3, 3, 4]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df, disable_sums=True)
+    # Expected names
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            "total": [3, 3, 4]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
 
-#     data = {"vat_amount": [2.0, 1.0, 1.5],
-#             "price_ex_vat": [1, 3.0, 1.5],
-#             "total": [3, 4, 3]
-#             }
-#     df = pd.DataFrame(data)
-#     df = clean_data(df)
-#     # Expected names
-#     data = {"vat_amount": [2.0, 1.0, 1.5],
-#             "price_ex_vat": [1, 3.0, 1.5],
-#             "total": [3, 4, 3]
-#             }
-#     df_expect = pd.DataFrame(data)
-#     # Expect that are equal
-#     assert_frame_equal(df, df_expect)
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            "total": [3.0, 4.0, 3.0]
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            "total": [3.0, 4.0, 3.0]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
 
-#     data = {"vat_amount": [2.0, 1.0, 1.5],
-#             "price_ex_vat": [1, 3.0, 1.5],
-#             }
-#     df = pd.DataFrame(data)
-#     df = clean_data(df)
-#     # Expected names
-#     data = {"vat_amount": [2.0, 1.0, 1.5],
-#             "price_ex_vat": [1, 3.0, 1.5],
-#             }
-#     df_expect = pd.DataFrame(data)
-#     # Expect that are equal
-#     assert_frame_equal(df, df_expect)
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
 
-#     data = {"vat_amount": ["2.0", "1.0", "1.5"],
-#             "price_ex_vat": [1, 3.0, 1.5],
-#             }
-#     df = pd.DataFrame(data)
-#     with pytest.raises(Exception):
-#         df = clean_data(pd.DataFrame())
+    data = {"vat_amount": ["2.0", "1.0", "1.5"],
+            "price_ex_vat": [1, 3.0, 1.5],
+            }
+    df = pd.DataFrame(data)
+    df = clean_data(df)
+    # Expected names
+    data = {"vat_amount": [2.0, 1.0, 1.5],
+            "price_ex_vat": [1, 3.0, 1.5],
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
 
+    data = {"vat_amount": ["2df.0", "1gg.0", "1.5"],
+            "price_ex_vat": [1, 3.0, 1.5],
+            }
+    df = pd.DataFrame(data)
+    with pytest.warns(Warning):
+        df = clean_data(df)
+    # Expected names
+    data = {"vat_amount": ["2df.0", "1gg.0", "1.5"],
+            "price_ex_vat": [1, 3.0, 1.5],
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
 
 def __create_dummy_data():
     data = {"org_name": ["test", "testi", "test"],

@@ -147,10 +147,9 @@ def clean_data(df, **args):
         Dates are converted into format that user can specify.
 
         Price excluding and including VAT and VAT amount (abbreviated as sums
-        in the function) are checked by calculating if values of tem match
+        in the function) are checked by calculating if values of them match
         between each other. If all three columns are not available, the
-        the function only checks that values are in float type. Values are not
-        modified.
+        the function only converts values in float type if possible.
 
     Examples:
         ```
@@ -191,6 +190,8 @@ def clean_data(df, **args):
 
     # Test if voucher is correct
     __check_voucher(df, **args)
+    # Check sums
+    df = __clean_sums(df, **args)
     # Check dates
     df = __standardize_date(df, **args)
     # Check org information:
@@ -294,8 +295,7 @@ def __clean_sums(df, disable_sums=False, **args):
         # Loop throug columns
         for col in cols_not_float:
             # Replace "," with "." and remove spaces
-            df[col] = df[col].str.replace(
-                ",", ".")
+            df[col] = df[col].astype(str).str.replace(",", ".")
             # Try to convert values as float
             try:
                 df[col] = df[col].astype(float)
@@ -668,7 +668,6 @@ def __convert_dates_without_sep(df, char_len, dayfirst, yearfirst):
         temp_test1 = days if dayfirst else months
         temp_test2 = months if dayfirst else days
         res_day = pd.DataFrame()
-        print(res)
         # Loop over number of characters that values can have
         for i in [1, 2]:
             # Get values
