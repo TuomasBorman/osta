@@ -752,6 +752,7 @@ def test_clean_data_sums():
     # Expect that are equal
     assert_frame_equal(df, df_expect)
 
+
 def __create_dummy_data():
     data = {"org_name": ["test", "testi", "test"],
             "org_number": [1, 2, 3],
