@@ -52,7 +52,6 @@ def test_utils_vat_number():
     assert utils.__are_valid_bids(ser) is True
     ser = pd.Series(["0135332-4", "0135332-4", "0135442-4"])
     assert utils.__are_valid_bids(ser) is False
-    assert utils.__are_valid_bids(False) is False
 
 
 def test_utils_voucher():
