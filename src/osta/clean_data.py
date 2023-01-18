@@ -73,34 +73,93 @@ def clean_data(df, **args):
             respectively. If None, packages default database is used.
             (By default: service_data=None)
 
+            db_year: Integer value or None specifying the year (2021, 2021,
+            or 2023) that will be used to match account and service data.
+            If None, the most current information is used and duplicates from
+            previous years are removed. (By default: db_year=None)
+
             disable_*: A boolean value specifying whether * data
             is checked. * can be one of the following options: 'org',
             'suppl', 'date', 'sums', 'country', 'voucher', 'account' or
             'service'. (By default: disable_*=False)
 
         ```
-        
-        ```
 
     Details:
-        This function cleans data.
-        to ensure that
-       the correct datatype is tested and standardized.
+        This function standardize the data and checks that it is in correct
+        format. If the data is not in expected format containing erroneous
+        data that cannot be standardized, the function gives a warning.
+
+        The function expects that columns are in specific format.
+        Not all the columns must be included in the data. Below is a
+        list of columns and what type of data they should have.
+            -org_name: Organization name
+            -org_number: Organization number
+            -org_id: Organization business ID
+            -account_name: The name of account to where invoice is allocated.
+            -account_number: The number of account to where incoice is
+            allocated.
+            -service_cat_name: The name of service category to where invoice
+            is allocated.
+            -service_cat: The number of service category to where invoice is
+            allocated.
+            -suppl_name: Supplier name
+            -supplier number: Supplier number
+            -suppl_id: Supplier business ID
+            -vat_number: VAT number of supplier
+            -country: Country of supplier.
+            -voucher: Running identification of invoice
+            -date: Date of invoice.
+            -price_ex_vat: Price excluding VAT.
+            -vat_amount: Amount of VAT.
+            -total: Price indluding VAT.
+
+        Organization data (name, number, BID) is matched with database.
+        Uncorrect values are replaced with correct values unless the
+        specified organization matches with multiple organizations in the
+        database. The user can also use own database.
+
+        Supplier data (name, number, BID, VAT number) is not matched with
+        database by default and replacements are not done. However, user
+        can use own database. The function checks that BID and VAT numbers
+        are in correct format and that they duplicated meaning that each
+        value specifies only one supplier.
+
+        Account and service information. Account and service information is
+        matched with database, and uncorrect values are replaced unless they
+        match with multiple accounts / service categories. The user can also
+        use own database.
+
+        Country is identified with database containing all common land codes.
+        (Finnish and English names, 2 and 3-character codes, along with
+        numeric and ISO code). User can define the format of output from
+        formats included in the database.
+
+        Date is automatically identified unless user do not define the format.
+        Dates are converted into format that user can specify.
+
+        Price excluding and including VAT and VAT amount (abbreviated as sums
+        in the function) are checked by calculating if values of tem match
+        between each other. If all three columns are not available, the
+        the function only checks that values are in float type. Values are not
+        modified.
+
     Examples:
         ```
         # Create a dummy data
-        data = {"name1": ["FI", "FI", "FI"],
-                "päivämäärä": ["02012023", "2-1-2023", "1.1.2023"],
-                "name3": [1, 2, 2],
-                "org_name": ["Turku", "Turku", "Turku"],
-                "supplier": ["Myyjä", "Supplier Oy", "Myyjän tuote Oy"],
-                "summa": [100.21, 10.30, 50.50],
+        data = {"org_name": ["Turku", "Turku", "Turku"],
+                "org_number": [None, None, None],
+                "date": ["02.01.2023", "2-1-2023", "1.1.2023"],
+                "suppl_name": ["Myyjä", "Supplier Oy", "Myyjän tuote Oy"],
+                "country": ["FI", "FI", "FI"],
+                "total": [100.21, 10.30, 50.50],
                 }
         df = pd.DataFrame(data)
+        df = clean_data(df, country_format="name_fin")
         ```
 
     Output:
-        pandas.DataFrame with cleaned data.
+        pandas.DataFrame with standardized data.
 
     """
     # INPUT CHECK

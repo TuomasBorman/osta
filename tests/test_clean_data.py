@@ -300,7 +300,7 @@ def test_clean_data_service():
             }
     df = pd.DataFrame(data)
     # Expect a warning
-    df = clean_data(df)
+    df = clean_data(df, db_year=2022)
     # Expected names
     data = {"service_cat": [2701, 3041, 6901],
             "service_cat_name": ["Elintarvikevalvonta ja -neuvonta",
@@ -389,7 +389,7 @@ def test_clean_data_account():
             "test": ["0135202-4", "0135202-4", "test"]
             }
     df = pd.DataFrame(data)
-    df = clean_data(df)
+    df = clean_data(df, db_year=2021)
     # Expected names
     data = {"account_number": [1020, 1187, 370111],
             "account_name": ["Ennakkomaksut", "Muut hyödykkeet", "test3"],
