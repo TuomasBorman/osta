@@ -29,9 +29,12 @@ def test_utils_percentage():
 def test_utils_date():
     ser = pd.Series(["01202022", "1.2.2022", "02/2/2022"])
     assert utils.__test_if_date(ser) is True
-    assert utils.__test_if_date(True) is False
-    assert utils.__test_if_date(1) is False
-    assert utils.__test_if_date(None) is False
+    ser = pd.Series([True, False])
+    assert utils.__test_if_date(ser) is False
+    ser = pd.Series([1, 2, 3])
+    assert utils.__test_if_date(ser) is False
+    ser = pd.Series([None, None])
+    assert utils.__test_if_date(ser) is False
     ser = pd.Series(["0122", "1.2.2", "02/22"])
     assert utils.__test_if_date(ser) is False
 
@@ -53,9 +56,29 @@ def test_utils_vat_number():
 
 
 def test_utils_voucher():
-    ser = pd.Series(["FI01352024", "FI01352024", "FI01354424"])
-    assert utils.__test_if_voucher(ser) is False
-    ser = pd.Series(["A1", "A2", "A3"])
-    assert utils.__test_if_voucher(ser) is True
-    ser = pd.Series([1001, 1002, 1002])
-    assert utils.__test_if_voucher(ser) is True
+    df = pd.DataFrame(["FI01352024", "FI01352024", "FI01354424"])
+    assert utils.__test_if_voucher(df, 0, df.columns.tolist()) is False
+    df = pd.DataFrame(["A1", "A2", "A3"])
+    assert utils.__test_if_voucher(df, 0, df.columns.tolist()) is False
+    df = pd.DataFrame([1001, 1002, 1002])
+    assert utils.__test_if_voucher(df, 0, df.columns.tolist()) is False
+    df = __create_dummy_data()
+    assert utils.__test_if_voucher(df, 7, df.columns.tolist()) is True
+
+
+def __create_dummy_data():
+    data = {"org_name": ["test", "testi", "test"],
+            "org_number": [1, 2, 3],
+            "org_id": ["test", "testi", "test"],
+            "date": ["02.04.2023", "02.10.2023", "23.06.2022"],
+            "suppl_name": ["test", "testi", "test"],
+            "total": [1.10, 2.04, 3.74],
+            "test3": [True, False, False],
+            "voucher": [1, 2, 3],
+            "account_number": [123, 123, 434],
+            "service_cat": [123, 123, 123],
+            "vat_number": ["test", "testi", "test"],
+            "country": ["test", "testi", "test"],
+            }
+    df = pd.DataFrame(data)
+    return df

@@ -158,19 +158,18 @@ def __are_valid_vat_numbers(values):
     return res
 
 
-def __test_if_date(df, col_i, colnames):
+def __test_if_date(df):
     """
     This function checks if the column defines dates
-    Input: DataFrame, index of the column, found final column names
+    Input: Series
     Output: Boolean value
     """
     # Initialize result
     res = False
-    df = df.iloc[:, col_i]
     df = df.dropna()
-    if df.dtype == "datetime64":
+    if len(df) > 0 and df.dtype == "datetime64":
         res = True
-    elif df.dtype in ["object"]:
+    elif len(df) > 0 and df.dtype in ["object"]:
         patt_to_search = [
             "\\d\\d\\d\\d\\d\\d\\d\\d",
             "\\d\\d\\d\\d\\d\\d\\d",

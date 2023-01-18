@@ -303,7 +303,7 @@ def __guess_name(df, col_i, colnames, fields, pattern_th=0.9, match_th=0.8,
         col = __org_or_suppl_BID(df=df, col_i=col_i, colnames=colnames,
                                  match_th=match_th)
     # Test if date
-    elif utils.__test_if_date(df=df, col_i=col_i, colnames=colnames):
+    elif utils.__test_if_date(df=df.iloc[:, col_i]):
         col = "date"
     # Test if column includes country codes
     elif __test_if_in_db(df=df, col_i=col_i, colnames=colnames,
