@@ -1281,7 +1281,7 @@ def __check_voucher(df, disable_voucher=False, **args):
     # INPUT CHECK END
     if utils.__test_if_voucher(df=df,
                                col_i=df.columns.tolist.index(col_to_check),
-                               colnames=, df.columns.tolist()):
+                               colnames=df.columns.tolist()):
         warnings.warn(
             message="It seems that 'voucher' column does not include " +
             "voucher values. Please check it for errors.",
