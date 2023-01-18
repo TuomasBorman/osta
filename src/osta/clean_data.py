@@ -187,7 +187,7 @@ def clean_data(df, **args):
             category=Warning
             )
     # Remove spaces from beginning and end of the value
-    df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+    df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
 
     # Test if voucher is correct
     __check_voucher(df, **args)
@@ -243,8 +243,9 @@ def __standardize_country(df, disable_country=False,
     not_found = pd.DataFrame()
     for i, x in df_country.iterrows():
         # Get the country from data base; case insensitive search
-        ind = country_codes.applymap(lambda x: str(x).lower()
-                                     ).isin(str([x[0]]).lower).sum(axis=1) > 0
+        ind = country_codes.applymap(
+            lambda col: str(col).lower()).isin(
+                x.astype(str).str.lower().values.tolist()).sum(axis=1) > 0
         if any(ind):
             temp = country_codes.loc[ind, :]
             # Assing result to original DF
@@ -379,40 +380,49 @@ def __standardize_date(df, disable_date=False, date_format="%d-%m-%Y",
     df_date = df.loc[:, col_to_check]
     # Split dates from separator. Result is multiple columns
     # with year, month and day separated
-    df_date = df_date.astype(str).str.split(r"[-/.]", expand=True)
+    df_date_mod = df_date.astype(str).str.split(r"[-/.]", expand=True)
     # If the split was succesful
-    if df_date.shape[1] > 1:
+    if df_date_mod.shape[1] > 1:
         # Get format of dates if None
-        if not isinstance(dayfirst, bool):
-            dayfirst, yearfirst = __get_format_of_dates_w_sep(df)
+        if not (isinstance(dayfirst, bool) or isinstance(yearfirst, bool)):
+            df_date_mod, dayfirst, yearfirst = __get_format_of_dates_w_sep(
+                df_date_mod)
         convert_date = True
     # Try to reformat DDMMYYYY format
-    elif utils.__test_if_date(df_date):
+    elif utils.__test_if_date(df_date_mod.iloc[:, 0]):
         # Get only the series
-        df_date = df_date.iloc[:, 0]
+        df_date_mod = df_date_mod.iloc[:, 0]
         # Get format of date
-        char_len = int(max(df.astype(str).str.len()))
+        char_len = int(max(df_date_mod.astype(str).str.len()))
         # Get format of dates if None
         if dayfirst is None or yearfirst is None:
-            dayfirst, yearfirst = __get_format_of_dates_wo_sep(df_date)
+            dayfirst, yearfirst = __get_format_of_dates_wo_sep(df_date_mod)
         # If format was found, standardize
         if dayfirst is not None and yearfirst is not None:
             # Add separators to dates
-            df.loc[:, col_to_check] = __convert_dates_without_sep(
-                df_date,
+            df_date_mod = __convert_dates_without_sep(
+                df_date_mod,
                 char_len=char_len,
                 dayfirst=dayfirst,
                 yearfirst=yearfirst)
             convert_date = True
     # Convert dates
-    if convert_date:
+    if convert_date and dayfirst is not None and yearfirst is not None:
         # Standardize dates
-        df.loc[:, col_to_check] = pd.to_datetime(
-            df.loc[:, cols_to_check],
-            dayfirst=dayfirst, yearfirst=yearfirst)
+        df[col_to_check] = pd.to_datetime(df_date_mod, dayfirst=dayfirst,
+                                          yearfirst=yearfirst,
+                                          errors="coerce")
         # Change the formatting
-        df.loc[:, col_to_check] = df.loc[:, col_to_check].dt.strftime(
-            date_format)
+        df[col_to_check] = df[col_to_check].dt.strftime(date_format)
+        # Check if there were Nones
+        df_date = df_date[df.loc[:, col_to_check].isna()].values.tolist()
+        if len(df_date) > 0:
+            warnings.warn(
+                message=f"The format of following dates where not detected, "
+                f"and they are converted to NaN. "
+                f"Please check them for errors: {df_date}",
+                category=Warning
+                )
     else:
         warnings.warn(
             message="The format of dates where not detected, "
@@ -426,55 +436,92 @@ def __standardize_date(df, disable_date=False, date_format="%d-%m-%Y",
 def __get_format_of_dates_w_sep(df):
     """
     This function identifies the format of dates that are with
-    separators between days, months and years.
+    separators between days, months and years. Furthermore, date is modified so
+    that year has 4 characters and separators between days, months and years
+    are uniformed.
     Input: df with days months and years in own columns
-    Output: If year comes first, if day comes first
+    Output: Modified df, if year comes first, if day comes first
     """
-    dayfirst = False
-    # Convert columns to numeric if possible
-    for c in df.columns:
-        if all(df.loc[:, c].astype(str).str.isnumeric()):
-            df[c] = pd.to_numeric(df[c])
-    # Get years, months, and days
-    year = list(range(1970, 2050))
+    # Disable day convert by default
+    dayfirst = None
+    yearfirst = None
+    df_date = None
+    # Check if columns can be converted into int. If not, do not
+    if not all([all(df[x].astype(str).str.isdigit()) for x in df.columns]):
+        return [df_date, dayfirst, yearfirst]
+    # Get the number of characters in each column If there are some column with
+    # 4 characters, year is in longer format
+    year_len = 4 if any(
+        np.vectorize(len)(df.values.astype(str)).max(axis=0) == 4) else 2
+    # Get values which should match
+    if year_len == 4:
+        year = list(range(1970, 2050))
+    else:
+        year = list(range(15, 50))
     month = list(range(1, 13))
     day = list(range(1, 32))
-    # Get those values that distinguish days and years
-    year = [x for x in year if x not in day]
-    day = [x for x in day if x not in month]
-    # Check if these values can be found from the data
-    data = {
-        "any_in_day": list(any(df[c].isin(day))
-                           for c in df.columns),
-        "any_in_year": list(any(df[c].isin(year))
-                            for c in df.columns)
-        }
-    df_res = pd.DataFrame(data)
-    # Initialize result list, loop over columns that have years,
-    # months and days
-    result = []
-    for i, c in enumerate(df.columns):
-        # Get the result of specific column
-        temp = df_res.iloc[i, :]
-        # Check if it is year
-        if temp["any_in_year"]:
-            result.append("year")
-        # Check if it is day
-        elif temp["any_in_day"]:
-            result.append("day")
+
+    # Loop over columns. Are the values matching with days, months or years?
+    res = pd.DataFrame()
+    for i, x in enumerate(df.columns):
+        # Get value
+        temp_val = df.iloc[:, i].astype(int)
+        # Get matches
+        is_day = (max(day) >= temp_val.max() and temp_val.min() >= min(day))
+        is_month = (max(month) >= temp_val.max()
+                    and temp_val.min() >= min(month))
+        is_year = (max(year) >= temp_val.max() and temp_val.min() >= min(year))
+        # Add to DF
+        temp = pd.DataFrame([is_day, is_month, is_year])
+        temp.index = ["is_day", "is_month", "is_year"]
+        res = pd.concat([res, temp], axis=1)
+    # Results to columns, rows are original dates separated from separator
+    res = res.transpose()
+
+    # If year has only 2characters, take first days. Otherwise, take years
+    if year_len == 2:
+        day_res = (res["is_day"].values &
+                   ~res["is_month"].values & ~res["is_year"].values)
+        year_res = ~res["is_month"].values & res["is_year"].values
+    else:
+        year_res = (~res["is_day"].values &
+                    ~res["is_month"].values & res["is_year"].values)
+        day_res = (res["is_day"].values & ~res["is_month"].values)
+
+    # Get indices of matches; if this date columns has days or years?
+    day_res = day_res.nonzero()[0]
+    year_res = year_res.nonzero()[0]
+    # If only one match per day/year was found, get the final date format
+    if len(day_res) == 1 and len(year_res) == 1:
+        yearfirst = True if year_res == 0 else False
+        if yearfirst:
+            # Get format
+            dayfirst = True if day_res == 1 else False
+            # Get values
+            dd = (df.iloc[:, 1] if dayfirst else df.iloc[:, 2])
+            dd = dd.str.zfill(2)
+            mm = (df.iloc[:, 2] if dayfirst else df.iloc[:, 1])
+            mm = mm.str.zfill(2)
+            yyyy = (df.iloc[:, 0] if year_len == 4 else
+                    "20" + df.iloc[:, 0].str.zfill(2))
+            # Create a date in YYYY/XX/XX format
+            df_date = ((yyyy + "/" + dd + "/" + mm) if
+                       dayfirst else (yyyy + "/" + mm + "/" + dd))
         else:
-            result.append("month")
-    # If result does not include all year, month and day, use
-    # default settings
-    if all(i in result for i in ["year", "month", "day"]):
-        # If year is first
-        yearfirst = True if result.index("year") == 0 else False
-        # If day comes before month
-        if (yearfirst and
-            result.index("day") == 1) or (not yearfirst and
-                                          result.index("day") == 0):
-            dayfirst = True
-    return [dayfirst, yearfirst]
+            # Get format
+            dayfirst = True if day_res == 0 else False
+            # Get values
+            dd = (df.iloc[:, 0] if dayfirst else df.iloc[:, 1])
+            dd = dd.str.zfill(2)
+            mm = (df.iloc[:, 1] if dayfirst else df.iloc[:, 0])
+            mm = mm.str.zfill(2)
+            yyyy = (df.iloc[:, 2] if year_len == 4 else
+                    "20" + df.iloc[:, 2].str.zfill(2))
+            # Create a date in YYYY/XX/XX format
+            df_date = ((dd + "/" + mm + "/" + yyyy) if
+                       dayfirst else (mm + "/" + dd + "/" + yyyy))
+    df_date = pd.Series(df_date)
+    return [df_date, dayfirst, yearfirst]
 
 
 def __get_format_of_dates_wo_sep(df):
@@ -522,7 +569,10 @@ def __get_format_of_dates_wo_sep(df):
             i_year_ind = int(i_year[0])
             j_year_ind = int(j_year[0])
             # Remove year from dates
-            date_temp = date_temp.astype(str).str[i_year_ind:j_year_ind]
+            if i_year_ind == 0:
+                date_temp = date_temp.astype(str).str[j_year_ind:]
+            else:
+                date_temp = date_temp.astype(str).str[:i_year_ind]
             # Get place of the year
             yearfirst = True if i_year_ind == 0 else False
     # If year was found
@@ -608,53 +658,56 @@ def __convert_dates_without_sep(df, char_len, dayfirst, yearfirst):
     # we cannot be sure what values are months and what day.
     # Determine this by looking a common pattern
     # Expected day and month ranges
-    months = list(range(1, 13))
-    days = list(range(1, 32))
-    # Get indices where day+month has 3 characters
-    ind = res["mod"].astype(str).str.len() == 3
+    if any(res["mod"] != ""):
+        months = list(range(1, 13))
+        days = list(range(1, 32))
+        # Get indices where day+month has 3 characters
+        ind = res["mod"].astype(str).str.len() == 3
 
-    # Get tests ranges; in which range 1st and 2nd set of values should be?
-    temp_test1 = days if dayfirst else months
-    temp_test2 = months if dayfirst else days
-    res_day = pd.DataFrame()
-    # Loop over number of characters that values can have
-    for i in [1, 2]:
-        # Get values
-        temp1 = res["mod"].astype(str).str[:i]
-        temp2 = res["mod"].astype(str).str[i:]
-        # Test values
-        temp1 = max(temp_test1) >= int(max(temp1)) >= min(temp_test1)
-        temp2 = max(temp_test2) >= int(max(temp2)) >= min(temp_test2)
-        # Add to DF
-        len1 = i
-        len2 = max(res["mod"].astype(str).str.len())-i
-        temp = pd.DataFrame([len1, len2, temp1, temp2])
-        res_day = pd.concat([res_day, temp], axis=1)
-    # Adjuts index and column names
-    index = ["day", "month"] if dayfirst else ["month", "day"]
-    res_day.index = ["len1", "len2"] + index
-    res_day.columns = range(res_day.shape[1])
-    # Get values where the pattern is correct; how many characters
-    # days and months have?
-    res_i = res_day.loc[index, :].sum(axis=0) == res_day.loc[index, :].shape[0]
-    if sum(res_i) == 1:
-        res_day = res_day.loc[["len1", "len2"], res_i]
-        # Get place of the month and day, based on dayfirst
-        if dayfirst:
-            day = res.loc[ind, "mod"].astype(str).str[
-                :res_day.loc["len1"].values[0]]
-            month = res.loc[ind, "mod"].astype(str).str[
-                res_day.loc["len1"].values[0]:]
-        else:
-            month = res.loc[ind, "mod"].astype(str).str[
-                :res_day.loc["len1"].values[0]]
-            day = res.loc[ind, "mod"].astype(str).str[
-                res_day.loc["len1"].values[0]:]
-        # Add to data
-        res.loc[ind, "day"] = day
-        res.loc[ind, "month"] = month
-        # Remove from mod column
-        res.loc[ind, "mod"] = ""
+        # Get tests ranges; in which range 1st and 2nd set of values should be?
+        temp_test1 = days if dayfirst else months
+        temp_test2 = months if dayfirst else days
+        res_day = pd.DataFrame()
+        print(res)
+        # Loop over number of characters that values can have
+        for i in [1, 2]:
+            # Get values
+            temp1 = res["mod"].astype(str).str[:i]
+            temp2 = res["mod"].astype(str).str[i:]
+            # Test values
+            temp1 = max(temp_test1) >= int(max(temp1)) >= min(temp_test1)
+            temp2 = max(temp_test2) >= int(max(temp2)) >= min(temp_test2)
+            # Add to DF
+            len1 = i
+            len2 = max(res["mod"].astype(str).str.len())-i
+            temp = pd.DataFrame([len1, len2, temp1, temp2])
+            res_day = pd.concat([res_day, temp], axis=1)
+        # Adjust index and column names
+        index = ["day", "month"] if dayfirst else ["month", "day"]
+        res_day.index = ["len1", "len2"] + index
+        res_day.columns = range(res_day.shape[1])
+        # Get values where the pattern is correct; how many characters
+        # days and months have?
+        res_i = res_day.loc[index, :].sum(axis=0) == res_day.loc[
+            index, :].shape[0]
+        if sum(res_i) == 1:
+            res_day = res_day.loc[["len1", "len2"], res_i]
+            # Get place of the month and day, based on dayfirst
+            if dayfirst:
+                day = res.loc[ind, "mod"].astype(str).str[
+                    :res_day.loc["len1"].values[0]]
+                month = res.loc[ind, "mod"].astype(str).str[
+                    res_day.loc["len1"].values[0]:]
+            else:
+                month = res.loc[ind, "mod"].astype(str).str[
+                    :res_day.loc["len1"].values[0]]
+                day = res.loc[ind, "mod"].astype(str).str[
+                    res_day.loc["len1"].values[0]:]
+            # Add to data
+            res.loc[ind, "day"] = day
+            res.loc[ind, "month"] = month
+            # Remove from mod column
+            res.loc[ind, "mod"] = ""
 
     # Combine result to date with separators
     res = res["day"] + "/" + res["month"] + "/" + res["year"]
@@ -869,8 +922,6 @@ def __standardize_based_on_db(df, df_db,
     pattern_th = pattern_th*100
     # INPUT CHECK END
     # Which column are found from df and df_db
-    print(cols_to_check)
-    print(cols_to_match)
     cols_df = [x for x in cols_to_check if x in df.columns]
     cols_df_db = [x for x in cols_to_match if x in df_db.columns]
     # Drop those columns that do not have match in other df
@@ -1055,7 +1106,7 @@ def __get_matches_from_db(df, df_db,
                 # check if they match with data base
                 # values acquired by jth variable
                 if temp.shape[1] > 1:
-                    missmatch_df = __check_if_missmatch_db(
+                    missmatch_df, missmatch = __check_if_missmatch_db(
                        temp=temp, row_db=row_db, j=j, df_db=df_db,
                        cols_to_check=cols_to_check,
                        cols_to_match=cols_to_match,
@@ -1088,11 +1139,11 @@ def __get_matches_from_db(df, df_db,
                 part_match_df = pd.concat([part_match_df, temp], axis=1)
                 found = True
         # If match was found add row to final data
-        if found and not missmatch:
-            print(row_db)
+        if found and missmatch is False:
             # There might be multiple matches, get first one.
-            row_db = row_db.iloc[0, :] if row_db.shape[0] > 1 else row_db
-            df_mod.iloc[i, :] = row_db
+            row_db = row_db.iloc[[0], :] if row_db.shape[0] > 1 else row_db
+            # Assign the row only
+            df_mod.iloc[i, :] = row_db.iloc[0, :]
         else:
             # Store data for warning message: data was not found
             row = pd.DataFrame(row)
@@ -1136,8 +1187,11 @@ def __check_if_missmatch_db(temp, row_db, j, df_db,
     database row, j is the index of variable being checked,
     whole database, cols being checked, cols being matched, DF containing
     missmatches.
-    Output: DF containing missmatches
+    Output: DF containing missmatches, and boolean value indicating if
+    missmatch was found.
     """
+    # Initialize result
+    missmatch = False
     # Take other columns than j
     temp = temp.loc[:, [x for x in cols_to_check
                         if x not in cols_to_check[j]]]
@@ -1167,7 +1221,9 @@ def __check_if_missmatch_db(temp, row_db, j, df_db,
                 values = pd.DataFrame([value, temp_db], index=names)
                 missmatch_df = pd.concat([missmatch_df, values],
                                          axis=1, ignore_index=True)
-    return missmatch_df
+                # Missmatch was found
+                missmatch = True
+    return [missmatch_df, missmatch]
 
 
 def __check_variable_pair(df, cols_to_check, dtypes, **args):
@@ -1279,9 +1335,13 @@ def __check_voucher(df, disable_voucher=False, **args):
         return df
     col_to_check = cols_to_check[0]
     # INPUT CHECK END
-    if utils.__test_if_voucher(df=df,
-                               col_i=df.columns.tolist.index(col_to_check),
-                               colnames=df.columns.tolist()):
+    # CHeck with other columns
+    res = utils.__test_if_voucher(
+        df=df,
+        col_i=df.columns.tolist().index(col_to_check),
+        colnames=df.columns.tolist())
+    # Voucher should match with other data or it should increase
+    if not (res or df[col_to_check].is_monotonic_increasing):
         warnings.warn(
             message="It seems that 'voucher' column does not include " +
             "voucher values. Please check it for errors.",
@@ -1343,8 +1403,10 @@ def __not_duplicated_columns_found(df, cols_to_check):
     """
     # Found columns
     cols_to_check = [x for x in cols_to_check if x in df.columns]
+    # Get columns from df
+    cols_df = [x for x in df.columns if x in cols_to_check]
     # Get unique values and their counts
-    unique, counts = np.unique(cols_to_check, return_counts=True)
+    unique, counts = np.unique(cols_df, return_counts=True)
     # Get duplicated values
     duplicated = unique[counts > 1]
     # Are columns found and not duplicated? Return True if any found.
