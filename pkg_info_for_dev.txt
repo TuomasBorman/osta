@@ -1,0 +1,56 @@
+Package information for developer.
+
+1) Directory structure
+
+The source code can be found from src/pkg. Tests are in tests
+directory. Additional resource files are in src/pkg/resources
+directory. data directory contains scripts that are used to
+update resources.
+
+docs/pkg direcotory contains documentation of package.
+
+dist directory contains software files that can be distributed.
+
+
+2) Testing and configuration
+
+The tests are ran with tox environment. tox.ini contains
+information for the environment.
+
+pyproject.toml file contains information on configuration and
+testing of the package.
+
+The build is tested with setuptools. setup.cfg and setup.py files
+specify setuptools options.
+
+Unit tests are ran with pytest.
+
+mypy is utilized to analyze the code. 
+
+flake8 is utilized to analyze the style of the code.
+
+requirements.txt and requirements_dev.txt contain which
+packages are required by package and testing, respectively.
+
+
+3) Useful terminal commands
+
+build:
+python3 setup.py sdist bdist_wheel
+
+upload to testpypi:
+twine upload --repository testpypi dist/*
+
+upload to pypi:
+twine upload dist/*
+
+test:
+tox
+pytest
+mypy src
+
+documentation:
+pdoc --html --output-dir ./docs --force  .
+
+install:
+pip install -e .

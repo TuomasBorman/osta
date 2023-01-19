@@ -1,5 +1,9 @@
-__pycache__/
-src/osta/__pycache__/
-TOOO.txt
-.pytest_cache/
-.coverage
+*~
+**/__pycache__/
+**/.pytest_cache/
+**/.coverage
+**/osta.egg-info/
+TODO.txt
+build/
+**/draft*
+

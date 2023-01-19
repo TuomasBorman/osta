@@ -1,0 +1,1838 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>osta.clean_data API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>osta.clean_data</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+import osta.__utils as utils
+import pandas as pd
+import warnings
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
+import pkg_resources
+import numpy as np
+
+
+def clean_data(df, **args):
+    &#34;&#34;&#34;
+    Standardize data
+
+    This function standardize the data that is in pandas.DataFrame. The
+    function expects that columns are named in specific way. If the data
+    does not meet requirements, the function gives a warning.
+
+    Arguments:
+        ```
+        df: pandas.DataFrame containing invoice data.
+
+        **args: Additional arguments passes into other functions:
+            date_format: The format of date that will be in output data.
+            (By default: date_format=&#34;%d-%m-%Y&#34;)
+
+            dayfirst: Boolean value or None to specify the format of date
+            in input data. &#39;If day comes before month in the date.&#39;
+            If None, function determines the format automatically.
+            (By default: dayfirst=None)
+
+            yearfirst: Boolean value or None to specify the format of date
+            in input data. &#39;If year comes first in the date.&#39;
+            If None, function determines the format automatically.
+            (By default: yearfirst=None)
+
+            country_format: A string speciying the format of country in the
+            output data. Must be one of the following options: &#39;name_fin&#39;,
+            &#39;name_en&#39;, &#34;code_2char&#34;, &#39;code_3char&#39;, &#39;code_num&#39;, or &#39;code_iso&#39;.
+            (By default: country_format=&#39;code_2char&#39;)
+
+            pattern_th: A numeric value [0,1] specifying the threshold of
+            enough good match between names, e.g., &#39;org_name&#39;, and database.
+            Value over threshold have enough strong pattern and it is
+            interpreted to be a match. (By default: pattern_th=0.7)
+
+            scorer: A scorer function passed into fuzzywuzzy.process.extractOne
+            function that evaluates the match between names and database.
+            (By default: scorer=fuzz.token_sort_ratio)
+
+            org_data: pd.DataFrame or None. Database for organization data.
+            Data must include on of the following columns: &#39;name&#39;, &#39;number&#39;, or
+            &#39;bid&#39; specifying the name, number and business ID of organizations,
+            respectively. If None, packages default database is used.
+            (By default: org_data=None)
+
+            suppl_data: pd.DataFrame or None. Database for supplier data.
+            Data must include on of the following columns: &#39;name&#39;, &#39;number&#39;, or
+            &#39;bid&#39; specifying the name, number and business ID of suppliers,
+            respectively. If None, no database is used.
+            (By default: org_data=None)
+
+            account_data: pd.DataFrame or None. Database for account data.
+            Data must include on of the following columns: &#39;name&#39;, or
+            &#39;number&#39; specifying the name and number accounts,
+            respectively. If None, packages default database is used.
+            (By default: account_data=None)
+
+            subset_account_data: None or string to specify which database is
+            used for account data. Available options are &#39;balance_sheet&#39; and
+            &#39;income_statement&#39;. If None, both databases are used and the result
+            value will be the first occurence.
+            (By default: subset_account_data=None)
+
+            service_data: pd.DataFrame or None. Database for service data.
+            Data must include on of the following columns: &#39;name&#39;, or
+            &#39;number&#39; specifying the name and number service categories,
+            respectively. If None, packages default database is used.
+            (By default: service_data=None)
+
+            db_year: Integer value or None specifying the year (2021, 2021,
+            or 2023) that will be used to match account and service data.
+            If None, the most current information is used and duplicates from
+            previous years are removed. (By default: db_year=None)
+
+            disable_*: A boolean value specifying whether * data
+            is checked. * can be one of the following options: &#39;org&#39;,
+            &#39;suppl&#39;, &#39;date&#39;, &#39;sums&#39;, &#39;country&#39;, &#39;voucher&#39;, &#39;account&#39; or
+            &#39;service&#39;. (By default: disable_*=False)
+
+        ```
+
+    Details:
+        This function standardize the data and checks that it is in correct
+        format. If the data is not in expected format containing erroneous
+        data that cannot be standardized, the function gives a warning.
+
+        The function expects that columns are in specific format.
+        Not all the columns must be included in the data. Below is a
+        list of columns and what type of data they should have.
+            -org_name: Organization name
+            -org_number: Organization number
+            -org_id: Organization business ID
+            -account_name: The name of account to where invoice is allocated.
+            -account_number: The number of account to where incoice is
+            allocated.
+            -service_cat_name: The name of service category to where invoice
+            is allocated.
+            -service_cat: The number of service category to where invoice is
+            allocated.
+            -suppl_name: Supplier name
+            -supplier number: Supplier number
+            -suppl_id: Supplier business ID
+            -vat_number: VAT number of supplier
+            -country: Country of supplier.
+            -voucher: Running identification of invoice
+            -date: Date of invoice.
+            -price_ex_vat: Price excluding VAT.
+            -vat_amount: Amount of VAT.
+            -total: Price indluding VAT.
+
+        Organization data (name, number, BID) is matched with database.
+        Uncorrect values are replaced with correct values unless the
+        specified organization matches with multiple organizations in the
+        database. The user can also use own database.
+
+        Supplier data (name, number, BID, VAT number) is not matched with
+        database by default and replacements are not done. However, user
+        can use own database. Like in case of organization data, the function
+        checks that BID and VAT numbers are in correct format and that they
+        duplicated meaning that each value specifies only one supplier.
+
+        Account and service information. Account and service information is
+        matched with database, and uncorrect values are replaced unless they
+        match with multiple accounts / service categories. For account data,
+        user can specify if balance sheet or income statement database is used.
+        Otherwise, both are used and first occurence will be the result value.
+        The user can also use own database.
+
+        Country is identified with database containing all common land codes.
+        (Finnish and English names, 2 and 3-character codes, along with
+        numeric and ISO code). User can define the format of output from
+        formats included in the database.
+
+        Date is automatically identified unless user do not define the format.
+        Dates are converted into format that user can specify.
+
+        Price excluding and including VAT and VAT amount (abbreviated as sums
+        in the function) are checked by calculating if values of them match
+        between each other. If all three columns are not available, the
+        the function only converts values in float type if possible.
+
+    Examples:
+        ```
+        # Create a dummy data
+        data = {&#34;org_name&#34;: [&#34;Turun kaupunki&#34;, &#34;Turku&#34;, &#34;Turku&#34;],
+                &#34;org_number&#34;: [None, None, None],
+                &#34;date&#34;: [&#34;02.01.2023&#34;, &#34;2-1-2023&#34;, &#34;1.1.2023&#34;],
+                &#34;suppl_name&#34;: [&#34;Myyjä&#34;, &#34;Supplier Oy&#34;, &#34;Myyjän tuote Oy&#34;],
+                &#34;country&#34;: [&#34;FI&#34;, &#34;FI&#34;, &#34;FI&#34;],
+                &#34;total&#34;: [100.21, 10.30, 50.50],
+                }
+        df = pd.DataFrame(data)
+        df = clean_data(df, country_format=&#34;name_fin&#34;)
+        ```
+
+    Output:
+        pandas.DataFrame with standardized data.
+
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    # df must be pandas DataFrame
+    if not utils.__is_non_empty_df(df):
+        raise Exception(
+            &#34;&#39;df&#39; must be non-empty pandas.DataFrame.&#34;
+            )
+    # INPUT CHECK END
+    # Check if there are empty rows or columns, and remove them
+    if any(df.isna().all(axis=0)) or any(df.isna().all(axis=1)):
+        df = df.dropna(axis=0, how=&#34;all&#34;)
+        df = df.dropna(axis=1, how=&#34;all&#34;)
+        warnings.warn(
+            message=&#34;&#39;df&#39; contained empty rows or/and columns \n&#34; +
+            &#34;that are now removed.\n&#34;,
+            category=Warning
+            )
+    # Remove spaces from beginning and end of the value
+    df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+
+    # Test if voucher is correct
+    __check_voucher(df, **args)
+    # Check sums
+    df = __clean_sums(df, **args)
+    # Check dates
+    df = __standardize_date(df, **args)
+    # Check org information:
+    df = __standardize_org(df, **args)
+    # Check supplier info
+    df = __standardize_suppl(df, **args)
+    # Check account info
+    df = __standardize_account(df, **args)
+    # Check service data
+    df = __standardize_service(df, **args)
+    # Check country data
+    df = __standardize_country(df, **args)
+    return df
+
+
+def __standardize_country(df, disable_country=False,
+                          country_format=&#34;code_2char&#34;, **args):
+    &#34;&#34;&#34;
+    This function check standardize the used country format.
+    Input: df
+    Output: df
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not isinstance(disable_country, bool):
+        raise Exception(
+            &#34;&#39;disable_country&#39; must be True or False.&#34;
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_to_check = [&#34;country&#34;]
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    if disable_country or len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
+    # Load data base
+    path = pkg_resources.resource_filename(
+        &#34;osta&#34;, &#34;resources/&#34; + &#34;land_codes.csv&#34;)
+    country_codes = pd.read_csv(path, index_col=0)
+    # country_format must be one of the database columns
+    if not (isinstance(country_format, str) and
+            country_format in country_codes.columns):
+        raise Exception(
+            f&#34;&#39;country_format&#39; must be one of the following options\n.&#34;
+            f&#34;{country_codes.columns.tolist()}&#34;
+            )
+    # INPUT CHECK END
+    # Get country data from df
+    df_country = df[cols_to_check]
+    # Get unique countries
+    df_country = df_country.drop_duplicates()
+    # Loop over values and add info on them
+    not_found = pd.DataFrame()
+    for i, x in df_country.iterrows():
+        # Get the country from data base; case insensitive search
+        ind = country_codes.applymap(
+            lambda col: str(col).lower()).isin(
+                x.astype(str).str.lower().values.tolist()).sum(axis=1) &gt; 0
+        if any(ind):
+            temp = country_codes.loc[ind, :]
+            # Assing result to original DF
+            df.loc[df[cols_to_check[0]] == x[0], cols_to_check[0]] = temp[
+                country_format].values[0]
+        else:
+            not_found = pd.concat([not_found, x], axis=1)
+    # If some countries were not detected
+    if not_found.shape[1] &gt; 0:
+        warnings.warn(
+            message=f&#34;The following countries were not detected. Please check &#34;
+            f&#34;them for errors: \n{not_found}&#34;,
+            category=Warning
+            )
+    return df
+
+
+def __clean_sums(df, disable_sums=False, **args):
+    &#34;&#34;&#34;
+    This function checks that sums (total, vat, netsum) are in float format,
+    and tries to convert them if they are not. Futhermore, if one field is
+    missing, it is calculated based on others.
+    Input: df
+    Output: df
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not isinstance(disable_sums, bool):
+        raise Exception(
+            &#34;&#39;disable_sums&#39; must be True or False.&#34;
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_df = [&#34;total&#34;, &#34;vat_amount&#34;, &#34;price_ex_vat&#34;]
+    cols_to_check = __not_duplicated_columns_found(df, cols_df)
+    if disable_sums or len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
+    # Get columns that are missing from the data
+    cols_missing = [x for x in cols_df if x not in cols_to_check]
+
+    # If data is not float, try to make it as float
+    if len(cols_to_check) &gt; 0 and not all(df.dtypes[
+            cols_to_check] == &#34;float64&#34;):
+        # Get those column names that need to be modified
+        cols_not_float = df.dtypes[cols_to_check][
+            df.dtypes[cols_to_check] != &#34;float64&#34;].index
+        # Loop throug columns
+        for col in cols_not_float:
+            # Replace &#34;,&#34; with &#34;.&#34; and remove spaces
+            df[col] = df[col].astype(str).str.replace(&#34;,&#34;, &#34;.&#34;)
+            # Try to convert values as float
+            try:
+                df[col] = df[col].astype(float)
+            except ValueError:
+                warnings.warn(
+                    message=f&#34;The following column cannot be converted into &#34;
+                    f&#34;float: {col}&#34;,
+                    category=Warning
+                    )
+    # TODO: move to enrich data: If there were some columns missing,
+    # calculate them
+    # if len(col_missing) &gt; 0 and all(df.dtypes[col_found] == &#34;float64&#34;):
+    #     # If total is missing
+    #     if &#34;total&#34; in col_missing and all(c in col_found
+    #                                       for c in [&#34;price_ex_vat&#34;,
+    #                                                 &#34;vat_amount&#34;]):
+    #         df[&#34;total&#34;] = df[&#34;price_ex_vat&#34;] + df[&#34;vat_amount&#34;]
+    #     # If price_ex_vat is missing
+    #     elif &#34;price_ex_vat&#34; in col_missing and all(c in col_found
+    #                                                for c in [&#34;total&#34;,
+    #                                                          &#34;vat_amount&#34;]):
+    #         df[&#34;price_ex_vat&#34;] = df[&#34;total&#34;] - df[&#34;vat_amount&#34;]
+    #     # If vat_amount is missing
+    #     elif &#34;vat_amount&#34; in col_missing and all(c in col_found
+    #                                              for c in [&#34;total&#34;,
+    #                                                        &#34;price_ex_vat&#34;]):
+    #         df[&#34;vat_amount&#34;] = df[&#34;total&#34;] - df[&#34;price_ex_vat&#34;]
+
+    # Calcute the expected value, and check if it&#39;s matching
+    if len(cols_missing) == 0 and all(df.dtypes[cols_to_check] == &#34;float64&#34;):
+        test = df[&#34;price_ex_vat&#34;] + df[&#34;vat_amount&#34;]
+        # Get columns that do not match
+        temp = df.loc[df[&#34;total&#34;] != test, cols_to_check]
+        # If any unmatching was found
+        if temp.shape[0] &gt; 0:
+            temp = temp.drop_duplicates()
+            warnings.warn(
+                message=f&#34;The sums of following rows do not match. Please &#34;
+                f&#34;check them for errors: \n{temp}&#34;,
+                category=Warning
+                )
+    # If datatype is not correct
+    if not all(df.dtypes[cols_to_check] == &#34;float64&#34;):
+        warnings.warn(
+            message=f&#34;The following columns are not float type. Please &#34;
+            f&#34;check them for errors: \n{cols_to_check}&#34;,
+            category=Warning
+            )
+    return df
+
+
+def __standardize_date(df, disable_date=False, date_format=&#34;%d-%m-%Y&#34;,
+                       dayfirst=None, yearfirst=None, **args):
+    &#34;&#34;&#34;
+    This function identifies the format of dates and standardize them.
+    Input: df
+    Output: df
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not isinstance(disable_date, bool):
+        raise Exception(
+            &#34;&#39;disable_date&#39; must be True or False.&#34;
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_to_check = [&#34;date&#34;]
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    if disable_date or len(cols_to_check) == 0:
+        return df
+    col_to_check = cols_to_check[0]
+    # dayfirst and yearfirst must be None or boolean value
+    if not (isinstance(dayfirst, bool) or dayfirst is None):
+        raise Exception(
+            &#34;&#39;dayfirst&#39; must be True or False or None.&#34;
+            )
+    if not (isinstance(yearfirst, bool) or yearfirst is None):
+        raise Exception(
+            &#34;&#39;yearfirst&#39; must be True or False or None.&#34;
+            )
+    # INPUT CHECK END
+    convert_date = False
+    # Get date column
+    df_date = df.loc[:, col_to_check]
+    # Split dates from separator. Result is multiple columns
+    # with year, month and day separated
+    df_date_mod = df_date.astype(str).str.split(r&#34;[-/.]&#34;, expand=True)
+    # If the split was succesful
+    if df_date_mod.shape[1] &gt; 1:
+        # Get format of dates if None
+        if not (isinstance(dayfirst, bool) or isinstance(yearfirst, bool)):
+            df_date_mod, dayfirst, yearfirst = __get_format_of_dates_w_sep(
+                df_date_mod)
+        convert_date = True
+    # Try to reformat DDMMYYYY format
+    elif utils.__test_if_date(df_date_mod.iloc[:, 0]):
+        # Get only the series
+        df_date_mod = df_date_mod.iloc[:, 0]
+        # Get format of date
+        char_len = int(max(df_date_mod.astype(str).str.len()))
+        # Get format of dates if None
+        if dayfirst is None or yearfirst is None:
+            dayfirst, yearfirst = __get_format_of_dates_wo_sep(df_date_mod)
+        # If format was found, standardize
+        if dayfirst is not None and yearfirst is not None:
+            # Add separators to dates
+            df_date_mod = __convert_dates_without_sep(
+                df_date_mod,
+                char_len=char_len,
+                dayfirst=dayfirst,
+                yearfirst=yearfirst)
+            convert_date = True
+    # Convert dates
+    if convert_date and dayfirst is not None and yearfirst is not None:
+        # Standardize dates
+        df[col_to_check] = pd.to_datetime(df_date_mod, dayfirst=dayfirst,
+                                          yearfirst=yearfirst,
+                                          errors=&#34;coerce&#34;)
+        # Change the formatting
+        df[col_to_check] = df[col_to_check].dt.strftime(date_format)
+        # Check if there were Nones
+        df_date = df_date[df.loc[:, col_to_check].isna()].values.tolist()
+        if len(df_date) &gt; 0:
+            warnings.warn(
+                message=f&#34;The format of following dates where not detected, &#34;
+                f&#34;and they are converted to NaN. &#34;
+                f&#34;Please check them for errors: {df_date}&#34;,
+                category=Warning
+                )
+    else:
+        warnings.warn(
+            message=&#34;The format of dates where not detected, &#34;
+            &#34;and the &#39;date&#39; column is unchanged. Please check that dates &#34;
+            &#34;have separators between days, months, and years.&#34;,
+            category=Warning
+            )
+    return df
+
+
+def __get_format_of_dates_w_sep(df):
+    &#34;&#34;&#34;
+    This function identifies the format of dates that are with
+    separators between days, months and years. Furthermore, date is modified so
+    that year has 4 characters and separators between days, months and years
+    are uniformed.
+    Input: df with days months and years in own columns
+    Output: Modified df, if year comes first, if day comes first
+    &#34;&#34;&#34;
+    # Disable day convert by default
+    dayfirst = None
+    yearfirst = None
+    df_date = None
+    # Check if columns can be converted into int. If not, do not
+    if not all([all(df[x].astype(str).str.isdigit()) for x in df.columns]):
+        return [df_date, dayfirst, yearfirst]
+    # Get the number of characters in each column If there are some column with
+    # 4 characters, year is in longer format
+    year_len = 4 if any(
+        np.vectorize(len)(df.values.astype(str)).max(axis=0) == 4) else 2
+    # Get values which should match
+    if year_len == 4:
+        year = list(range(1970, 2050))
+    else:
+        year = list(range(15, 50))
+    month = list(range(1, 13))
+    day = list(range(1, 32))
+
+    # Loop over columns. Are the values matching with days, months or years?
+    res = pd.DataFrame()
+    for i, x in enumerate(df.columns):
+        # Get value
+        temp_val = df.iloc[:, i].astype(int)
+        # Get matches
+        is_day = (max(day) &gt;= temp_val.max() and temp_val.min() &gt;= min(day))
+        is_month = (max(month) &gt;= temp_val.max()
+                    and temp_val.min() &gt;= min(month))
+        is_year = (max(year) &gt;= temp_val.max() and temp_val.min() &gt;= min(year))
+        # Add to DF
+        temp = pd.DataFrame([is_day, is_month, is_year])
+        temp.index = [&#34;is_day&#34;, &#34;is_month&#34;, &#34;is_year&#34;]
+        res = pd.concat([res, temp], axis=1)
+    # Results to columns, rows are original dates separated from separator
+    res = res.transpose()
+
+    # If year has only 2characters, take first days. Otherwise, take years
+    if year_len == 2:
+        day_res = (res[&#34;is_day&#34;].values &amp;
+                   ~res[&#34;is_month&#34;].values &amp; ~res[&#34;is_year&#34;].values)
+        year_res = ~res[&#34;is_month&#34;].values &amp; res[&#34;is_year&#34;].values
+    else:
+        year_res = (~res[&#34;is_day&#34;].values &amp;
+                    ~res[&#34;is_month&#34;].values &amp; res[&#34;is_year&#34;].values)
+        day_res = (res[&#34;is_day&#34;].values &amp; ~res[&#34;is_month&#34;].values)
+
+    # Get indices of matches; if this date columns has days or years?
+    day_res = day_res.nonzero()[0]
+    year_res = year_res.nonzero()[0]
+    # If only one match per day/year was found, get the final date format
+    if len(day_res) == 1 and len(year_res) == 1:
+        yearfirst = True if year_res == 0 else False
+        if yearfirst:
+            # Get format
+            dayfirst = True if day_res == 1 else False
+            # Get values
+            dd = (df.iloc[:, 1] if dayfirst else df.iloc[:, 2])
+            dd = dd.str.zfill(2)
+            mm = (df.iloc[:, 2] if dayfirst else df.iloc[:, 1])
+            mm = mm.str.zfill(2)
+            yyyy = (df.iloc[:, 0] if year_len == 4 else
+                    &#34;20&#34; + df.iloc[:, 0].str.zfill(2))
+            # Create a date in YYYY/XX/XX format
+            df_date = ((yyyy + &#34;/&#34; + dd + &#34;/&#34; + mm) if
+                       dayfirst else (yyyy + &#34;/&#34; + mm + &#34;/&#34; + dd))
+        else:
+            # Get format
+            dayfirst = True if day_res == 0 else False
+            # Get values
+            dd = (df.iloc[:, 0] if dayfirst else df.iloc[:, 1])
+            dd = dd.str.zfill(2)
+            mm = (df.iloc[:, 1] if dayfirst else df.iloc[:, 0])
+            mm = mm.str.zfill(2)
+            yyyy = (df.iloc[:, 2] if year_len == 4 else
+                    &#34;20&#34; + df.iloc[:, 2].str.zfill(2))
+            # Create a date in YYYY/XX/XX format
+            df_date = ((dd + &#34;/&#34; + mm + &#34;/&#34; + yyyy) if
+                       dayfirst else (mm + &#34;/&#34; + dd + &#34;/&#34; + yyyy))
+    df_date = pd.Series(df_date)
+    return [df_date, dayfirst, yearfirst]
+
+
+def __get_format_of_dates_wo_sep(df):
+    &#34;&#34;&#34;
+    This function identifies the format of dates that are without
+    separators between days, months and years.
+    Input: series
+    Output: If year comes first, if day comes first
+    &#34;&#34;&#34;
+    # Get maximum number of characters
+    char_len = int(max(df.astype(str).str.len()))
+    yearfirst = None
+    dayfirst = None
+    if char_len == 8 or char_len == 6:
+        # Expected year range
+        years = list(range(1970, 2050)) if char_len == 8 else list(
+            range(15, 50))
+        # Get only those values that have maximum number of characters
+        ind = df.astype(str).str.len() == char_len
+        date_temp = df[ind]
+
+        # Find place of year
+        year_len = 4 if char_len == 8 else 2
+        i = 0
+        j = year_len
+        res_year = pd.DataFrame()
+        for x in range(0, char_len-1, year_len):
+            i_temp = i + x
+            j_temp = j + x
+            temp = date_temp.astype(str).str[i_temp:j_temp]
+            # Which values are between expected years?
+            res = max(years) &gt;= int(max(temp)) &gt;= min(years)
+            # Add to DF
+            res = pd.DataFrame([i_temp, j_temp, res], index=[&#34;i&#34;, &#34;j&#34;, &#34;res&#34;])
+            res_year = pd.concat([res_year, res], axis=1)
+        # Adjust column names
+        res_year.columns = range(res_year.shape[1])
+        # Get values based on results
+        i_year = [res_year.loc[&#34;i&#34;, x] for i, x in enumerate(res_year.columns)
+                  if res_year.loc[&#34;res&#34;, x]]
+        j_year = [res_year.loc[&#34;j&#34;, x] for i, x in enumerate(res_year.columns)
+                  if res_year.loc[&#34;res&#34;, x]]
+        # Get only the individual values, if there are only one valid result
+        if (len(i_year) == 1 and len(j_year) == 1):
+            i_year_ind = int(i_year[0])
+            j_year_ind = int(j_year[0])
+            # Remove year from dates
+            if i_year_ind == 0:
+                date_temp = date_temp.astype(str).str[j_year_ind:]
+            else:
+                date_temp = date_temp.astype(str).str[:i_year_ind]
+            # Get place of the year
+            yearfirst = True if i_year_ind == 0 else False
+    # If year was found
+    if yearfirst is not None:
+        # Expected day and month ranges
+        months = list(range(1, 13))
+        days = list(range(1, 32))
+        # Ger place of the month and day
+        i = 0
+        j = 2
+        res_day = pd.DataFrame()
+        for x in range(0, char_len-year_len-1, 2):
+            i_temp = i + x
+            j_temp = j + x
+            temp = date_temp.astype(str).str[i_temp:j_temp]
+            # Which values are between expected days?
+            res_d = max(days) &gt;= int(max(temp)) &gt;= min(days)
+            # Which values are between expected months?
+            res_m = max(months) &gt;= int(max(temp)) &gt;= min(months)
+            # Add to DF
+            res = pd.DataFrame([res_d, res_m], index=[&#34;day&#34;, &#34;month&#34;])
+            res_day = pd.concat([res_day, res], axis=1)
+        # Adjust column names
+        res_day.columns = range(res_day.shape[1])
+        # Get index of where month is located
+        month_i = [i for i, x in enumerate(res_day.columns)
+                   if res_day.loc[&#34;day&#34;, x] and res_day.loc[&#34;month&#34;, x]]
+        if len(month_i) == 1:
+            month_ind = int(month_i[0])
+            # If month was the latter
+            dayfirst = True if month_ind == res_day.shape[1]-1 else False
+    # Combine result
+    result = [dayfirst, yearfirst]
+    return result
+
+
+def __convert_dates_without_sep(df, char_len, dayfirst, yearfirst):
+    &#34;&#34;&#34;
+    This function standardizes the dates that are without
+    separators between days, months and years.
+    Input: series
+    Output: list of values with separators
+    &#34;&#34;&#34;
+    # Create result DF and add columns
+    res = pd.DataFrame(df)
+    res.columns = [&#34;original&#34;]
+    res = res.assign(mod=res[&#34;original&#34;])
+    res = res.assign(day=None)
+    res = res.assign(month=None)
+    res = res.assign(year=None)
+
+    # Modify first values that have maximum amount of characters
+    year_len = 4 if char_len == 8 else 2
+    # Get the year based on yearfirst, and remove year from dates
+    if yearfirst:
+        year = res[&#34;mod&#34;].astype(str).str[:year_len]
+        res[&#34;mod&#34;] = res[&#34;mod&#34;].astype(str).str[year_len:]
+    else:
+        year = res[&#34;mod&#34;].astype(str).str[-year_len:]
+        res[&#34;mod&#34;] = res[&#34;mod&#34;].astype(str).str[:-year_len]
+    # Add year to results
+    res[&#34;year&#34;] = year
+
+    # Add days and months for sure cases (2 or 1 characters for both days
+    # and months)
+    for i in [1, 2]:
+        dm_len = char_len-year_len if i == 2 else char_len-year_len-2
+        ind = res[&#34;mod&#34;].astype(str).str.len() == dm_len
+        # Based on dayfirst, get values; remove them from mod column
+        if dayfirst:
+            day = res.loc[ind, &#34;mod&#34;].astype(str).str[:i]
+            month = res.loc[ind, &#34;mod&#34;].astype(str).str[i:]
+        else:
+            month = res.loc[ind, &#34;mod&#34;].astype(str).str[:i]
+            day = res.loc[ind, &#34;mod&#34;].astype(str).str[i:]
+        # Add to data
+        res.loc[ind, &#34;day&#34;] = day
+        res.loc[ind, &#34;month&#34;] = month
+        # Remove from mod column
+        res.loc[ind, &#34;mod&#34;] = &#34;&#34;
+
+    # For values that have 3 character, we have to do differently, because
+    # we cannot be sure what values are months and what day.
+    # Determine this by looking a common pattern
+    # Expected day and month ranges
+    if any(res[&#34;mod&#34;] != &#34;&#34;):
+        months = list(range(1, 13))
+        days = list(range(1, 32))
+        # Get indices where day+month has 3 characters
+        ind = res[&#34;mod&#34;].astype(str).str.len() == 3
+
+        # Get tests ranges; in which range 1st and 2nd set of values should be?
+        temp_test1 = days if dayfirst else months
+        temp_test2 = months if dayfirst else days
+        res_day = pd.DataFrame()
+        # Loop over number of characters that values can have
+        for i in [1, 2]:
+            # Get values
+            temp1 = res[&#34;mod&#34;].astype(str).str[:i]
+            temp2 = res[&#34;mod&#34;].astype(str).str[i:]
+            # Test values
+            temp1 = max(temp_test1) &gt;= int(max(temp1)) &gt;= min(temp_test1)
+            temp2 = max(temp_test2) &gt;= int(max(temp2)) &gt;= min(temp_test2)
+            # Add to DF
+            len1 = i
+            len2 = max(res[&#34;mod&#34;].astype(str).str.len())-i
+            temp = pd.DataFrame([len1, len2, temp1, temp2])
+            res_day = pd.concat([res_day, temp], axis=1)
+        # Adjust index and column names
+        index = [&#34;day&#34;, &#34;month&#34;] if dayfirst else [&#34;month&#34;, &#34;day&#34;]
+        res_day.index = [&#34;len1&#34;, &#34;len2&#34;] + index
+        res_day.columns = range(res_day.shape[1])
+        # Get values where the pattern is correct; how many characters
+        # days and months have?
+        res_i = res_day.loc[index, :].sum(axis=0) == res_day.loc[
+            index, :].shape[0]
+        if sum(res_i) == 1:
+            res_day = res_day.loc[[&#34;len1&#34;, &#34;len2&#34;], res_i]
+            # Get place of the month and day, based on dayfirst
+            if dayfirst:
+                day = res.loc[ind, &#34;mod&#34;].astype(str).str[
+                    :res_day.loc[&#34;len1&#34;].values[0]]
+                month = res.loc[ind, &#34;mod&#34;].astype(str).str[
+                    res_day.loc[&#34;len1&#34;].values[0]:]
+            else:
+                month = res.loc[ind, &#34;mod&#34;].astype(str).str[
+                    :res_day.loc[&#34;len1&#34;].values[0]]
+                day = res.loc[ind, &#34;mod&#34;].astype(str).str[
+                    res_day.loc[&#34;len1&#34;].values[0]:]
+            # Add to data
+            res.loc[ind, &#34;day&#34;] = day
+            res.loc[ind, &#34;month&#34;] = month
+            # Remove from mod column
+            res.loc[ind, &#34;mod&#34;] = &#34;&#34;
+
+    # Combine result to date with separators
+    res = res[&#34;day&#34;] + &#34;/&#34; + res[&#34;month&#34;] + &#34;/&#34; + res[&#34;year&#34;]
+    return res
+
+
+def __standardize_org(df, disable_org=False, org_data=None, **args):
+    &#34;&#34;&#34;
+    This function prepares organization data to be checked, and calls
+    function that checks it.
+    Input: df
+    Output: df with standardized organization data
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (utils.__is_non_empty_df(org_data) or org_data is None):
+        raise Exception(
+            &#34;&#39;org_data&#39; must be non-empty pandas.DataFrame or None.&#34;
+            )
+    if not isinstance(disable_org, bool):
+        raise Exception(
+            &#34;&#39;disable_org&#39; must be True or False.&#34;
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_df = [&#34;org_id&#34;, &#34;org_vat_number&#34;, &#34;org_number&#34;, &#34;org_name&#34;]
+    cols_to_check = __not_duplicated_columns_found(df, cols_df)
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = [&#34;bid&#34;, &#34;vat_number&#34;, &#34;number&#34;, &#34;name&#34;]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
+    if disable_org or len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
+    if org_data is None:
+        path = pkg_resources.resource_filename(
+            &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
+        org_data = pd.read_csv(path, index_col=0)
+    # Standardize organization data
+    df = __standardize_based_on_db(df=df, df_db=org_data,
+                                   cols_to_check=cols_to_check,
+                                   cols_to_match=cols_to_match,
+                                   **args)
+    # If organization data was not in database, it is not checked.
+    __check_org_data(df, cols_to_check)
+    return df
+
+
+def __standardize_account(df, disable_account=False, account_data=None,
+                          subset_account_data=None, **args):
+    &#34;&#34;&#34;
+    This function prepares account data to be checked, and calls
+    function that checks it.
+    Input: df
+    Output: df with standardized organization data
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (utils.__is_non_empty_df(account_data) or account_data is None):
+        raise Exception(
+            &#34;&#39;account_data&#39; must be non-empty pandas.DataFrame or None.&#34;
+            )
+    if not isinstance(disable_account, bool):
+        raise Exception(
+            &#34;&#39;disable_account&#39; must be True or False.&#34;
+            )
+    if not (subset_account_data is None or
+            subset_account_data == &#34;balance_sheet&#34; or
+            subset_account_data == &#34;income_statement&#34;):
+        raise Exception(
+            &#34;&#39;subset_account_data&#39; must be &#39;balance_sheet&#39;, &#34;
+            &#34;&#39;income_statement&#39; or None.&#34;
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_df = [&#34;account_number&#34;, &#34;account_name&#34;]
+    cols_to_check = __not_duplicated_columns_found(df, cols_df)
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = [&#34;number&#34;, &#34;name&#34;]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
+    if disable_account or len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
+    if account_data is None:
+        path = pkg_resources.resource_filename(
+            &#34;osta&#34;, &#34;resources/&#34; + &#34;account_info.csv&#34;)
+        account_data = pd.read_csv(path, index_col=0)
+        # Subset by taking only specific years
+        account_data = __subset_data_based_on_year(df, df_db=account_data,
+                                                   **args)
+        # If user specified balance sheet or income statement,
+        # get only specified accounts
+        if subset_account_data is not None:
+            account_data = account_data.loc[
+                :, account_data[&#34;cat_1&#34;] == subset_account_data]
+    # Data types to check
+    dtypes = [&#34;int64&#34;, &#34;object&#34;]
+    # Standardize organization data
+    df = __standardize_based_on_db(df=df, df_db=account_data,
+                                   cols_to_check=cols_to_check,
+                                   cols_to_match=cols_to_match,
+                                   disable_partial=True, **args)
+    # Check that values are matching
+    __check_variable_pair(df, cols_to_check=cols_to_check, dtypes=dtypes)
+    return df
+
+
+def __standardize_service(df, disable_service=False,
+                          service_data=None, **args):
+    &#34;&#34;&#34;
+    This function prepares service data to be checked, and calls
+    function that checks it.
+    Input: df
+    Output: df with standardized organization data
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (utils.__is_non_empty_df(service_data) or service_data is None):
+        raise Exception(
+            &#34;&#39;service_data&#39; must be non-empty pandas.DataFrame or None.&#34;
+            )
+    if not isinstance(disable_service, bool):
+        raise Exception(
+            &#34;&#39;disable_service&#39; must be True or False.&#34;
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_df = [&#34;service_cat&#34;, &#34;service_cat_name&#34;]
+    cols_to_check = __not_duplicated_columns_found(df, cols_df)
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = [&#34;number&#34;, &#34;name&#34;]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
+    if disable_service or len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
+    if service_data is None:
+        path = path = pkg_resources.resource_filename(
+            &#34;osta&#34;, &#34;resources/&#34; + &#34;service_codes.csv&#34;)
+        service_data = pd.read_csv(path, index_col=0)
+        # Subset by taking only specific years
+        service_data = __subset_data_based_on_year(df, df_db=service_data,
+                                                   **args)
+    # Data types to check
+    dtypes = [&#34;int64&#34;, &#34;object&#34;]
+    # Standardize organization data
+    df = __standardize_based_on_db(df=df, df_db=service_data,
+                                   cols_to_check=cols_to_check,
+                                   cols_to_match=cols_to_match,
+                                   disable_partial=True, **args)
+    # Check that values are matching
+    __check_variable_pair(df, cols_to_check=cols_to_check, dtypes=dtypes)
+    return df
+
+
+def __standardize_suppl(df, disable_suppl=False, suppl_data=None, **args):
+    &#34;&#34;&#34;
+    This function prepares supplier data to be checked, and calls
+    function that checks it.
+    Input: df
+    Output: df with standardized supplier data
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (utils.__is_non_empty_df(suppl_data) or suppl_data is None):
+        raise Exception(
+            &#34;&#39;suppl_data&#39; must be non-empty pandas.DataFrame or None.&#34;
+            )
+    if not isinstance(disable_suppl, bool):
+        raise Exception(
+            &#34;&#39;disable_suppl&#39; must be True or False.&#34;
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_df = [&#34;suppl_id&#34;, &#34;vat_number&#34;, &#34;suppl_number&#34;, &#34;suppl_name&#34;,
+               &#34;country&#34;]
+    cols_to_check = __not_duplicated_columns_found(df, cols_df)
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = [&#34;bid&#34;, &#34;vat_number&#34;, &#34;number&#34;, &#34;name&#34;, &#34;country&#34;]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
+    if disable_suppl or len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
+    if suppl_data is not None:
+        # Standardize organization data
+        df = __standardize_based_on_db(df=df, df_db=suppl_data,
+                                       cols_to_check=cols_to_check,
+                                       cols_to_match=cols_to_match,
+                                       **args)
+    # Check that data is not duplicated, BID is correct, and there are not
+    # empty values. Get warning if there are.
+    # Check VAT numbers
+    __check_vat_number(df, cols_to_check=[&#34;suppl_id&#34;, &#34;vat_number&#34;, &#34;country&#34;],
+                       **args)
+    __check_org_data(df, cols_to_check)
+    return df
+
+
+def __standardize_based_on_db(df, df_db,
+                              cols_to_check, cols_to_match,
+                              pattern_th=0.7, scorer=fuzz.token_sort_ratio,
+                              disable_partial=False,
+                              **args):
+    &#34;&#34;&#34;
+    Standardize the data based on database.
+    Input: df, df_db including database,
+    pattern_th to be used to match partial matching names
+    Output: Standardized data
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    # pattern_th must be numeric value 0-1
+    if not utils.__is_percentage(pattern_th):
+        raise Exception(
+            &#34;&#39;pattern_th&#39; must be a number between 0-1.&#34;
+            )
+    # Value [0,1] to a number between 0-100, because fuzzywuzzy requires that
+    pattern_th = pattern_th*100
+    # INPUT CHECK END
+    # Which column are found from df and df_db
+    cols_df = [x for x in cols_to_check if x in df.columns]
+    cols_df_db = [x for x in cols_to_match if x in df_db.columns]
+    # Drop those columns that do not have match in other df
+    if len(cols_df) &gt; len(cols_df_db):
+        cols_to_check = [cols_df[cols_to_match.index(x)] for x in cols_df_db]
+        cols_to_match = cols_df_db
+    else:
+        cols_to_match = [cols_df_db[cols_to_check.index(x)] for x in cols_df]
+        cols_to_check = cols_df
+    # If matching columns between df and data base were found
+    if len(cols_to_check) &gt; 0 and len(cols_to_match) &gt; 0:
+        # Subset the data
+        df_org = df.loc[:, cols_to_check]
+        # Drop duplicates from the database
+        df_db = df_db.drop_duplicates(subset=cols_to_match)
+        # Drop duplicates so we can focus on unique rows
+        org_uniq = df_org.drop_duplicates()
+        # Get matching values from database; replace incorrect values in
+        # table including only unique values
+        org_uniq_mod = __get_matches_from_db(df=org_uniq,
+                                             df_db=df_db,
+                                             cols_to_check=cols_to_check,
+                                             cols_to_match=cols_to_match,
+                                             pattern_th=pattern_th,
+                                             disable_partial=disable_partial,
+                                             scorer=scorer)
+        # Replace values in original DataFrame columns
+        df_org = __replace_old_values_with_new(df=df_org,
+                                               old_values=org_uniq,
+                                               new_values=org_uniq_mod,
+                                               cols_to_check=cols_to_check,
+                                               cols_to_match=cols_to_match)
+        # Assign data back to original data, if some values were changed
+        if any((df.loc[:, cols_to_check].fillna(&#34;&#34;) !=
+                df_org.fillna(&#34;&#34;)).sum(axis=1) &gt; 0):
+            df.loc[:, cols_to_check] = df_org
+    # If no matching columns were found from the data base
+    elif len(cols_to_match) == 0:
+        temp = cols_to_check[0].split(&#34;_&#34;)[0]
+        warnings.warn(
+            message=f&#34;&#39;{temp}&#39; should include at least one of the &#34;
+            &#34;following columns: &#39;name&#39; (name), &#39;number&#39; &#34;
+            &#34;(number), and &#39;bid&#39; (business ID for organization and &#34;
+            f&#34;supplier data).&#34;,
+            category=Warning
+            )
+    return df
+
+
+def __check_org_data(df, cols_to_check):
+    &#34;&#34;&#34;
+    Check if organization data is not duplicated or has empty values, or
+    incorrect business IDs.
+    Input: df, columns that contain organization information
+    Output: which rows are incorrect? None if check were not made
+    &#34;&#34;&#34;
+    # Which column are found from df
+    cols_to_check = [x for x in cols_to_check if x in df.columns]
+    # If any columns were found
+    res = None
+    if len(cols_to_check) &gt; 0:
+        # Subset the data
+        df = df.loc[:, cols_to_check]
+        # Drop duplicates:
+        # now there should be only unique number, name, ID combinations
+        df = df.drop_duplicates()
+        # Are there None values
+        res = df.isna().sum(axis=1) &gt; 0
+        # BIDs found?
+        if any(i in cols_to_check for i in [&#34;org_id&#34;, &#34;suppl_id&#34;]):
+            # Get bid column
+            col_to_check = [x for x in [&#34;org_id&#34;, &#34;suppl_id&#34;]
+                            if x in cols_to_check][0]
+            # Get BIDs
+            col = df[col_to_check]
+            # Check that bids are valid; True if not valid
+            valid = utils.__are_valid_bids(col).values
+            # Are bids duplicated?
+            duplicated = col.isin(col[col.duplicated()])
+            # Update result
+            res = res | valid | duplicated
+        # Name found?
+        if any(i in cols_to_check for i in [&#34;org_name&#34;, &#34;suppl_name&#34;]):
+            # Get column
+            col_to_check = [x for x in [&#34;org_name&#34;, &#34;suppl_name&#34;]
+                            if x in cols_to_check][0]
+            # Get names
+            col = df[col_to_check]
+            # Are names duplicated?
+            duplicated = col.isin(col[col.duplicated()])
+            # Update result
+            res = res | duplicated
+        # Number found?
+        if any(i in cols_to_check for i in [&#34;org_number&#34;, &#34;suppl_number&#34;]):
+            # Get column
+            col_to_check = [x for x in [&#34;org_number&#34;, &#34;suppl_number&#34;]
+                            if x in cols_to_check][0]
+            # Get numbers
+            col = df[col_to_check]
+            # Are numbers duplicated?
+            duplicated = col.isin(col[col.duplicated()])
+            # Update result
+            res = res | duplicated
+        if any(res):
+            # Get only incorrect values
+            df = df.loc[res, :]
+            warnings.warn(
+                message=f&#34;Following organization data contains duplicated &#34;
+                f&#34;or empty values or business IDs are incorrect. &#34;
+                f&#34;Please check them for errors: \n{df}&#34;,
+                category=Warning
+                )
+    return res
+
+
+def __replace_old_values_with_new(df,
+                                  old_values, new_values,
+                                  cols_to_check, cols_to_match):
+    &#34;&#34;&#34;
+    Replace values of df with new_values based on corresponding old_values
+    Input: df, current values of it, and new values that replace old values
+    Output: df with new values
+    &#34;&#34;&#34;
+    # Which values were modified?
+    # Get indices of those rows that are changed
+    ind_mod = (old_values.fillna(&#34;&#34;) != new_values.fillna(&#34;&#34;)).sum(axis=1) &gt; 0
+    ind_mod = [i for i, x in enumerate(ind_mod) if x]
+    # Loop over those rows and replace the values of original data columns
+    for i in ind_mod:
+        # Get old and new rows
+        old_row = old_values.iloc[i, :].values.tolist()
+        new_row = new_values.iloc[i, :].values.tolist()
+        # Replace values with new ones
+        df.loc[(df == old_row).sum(axis=1) == df.shape[1], :] = new_row
+    return df
+
+
+def __get_matches_from_db(df, df_db,
+                          cols_to_check, cols_to_match,
+                          pattern_th, scorer,
+                          disable_partial):
+    &#34;&#34;&#34;
+    Is there some data missing or incorrect? Based on df_db, this function
+    replaces values of df.
+    Input: df, and data base
+    Output: df with correct values
+    &#34;&#34;&#34;
+    # Create a copy that will be modified
+    df_mod = df.copy()
+    # Initialize DF for warning messages
+    missmatch_df = pd.DataFrame()
+    not_detected_df = pd.DataFrame()
+    part_match_df = pd.DataFrame()
+
+    # Loop over rows
+    for i, row in df.iterrows():
+        # Intialize a DF for variables&#39; position in data base
+        temp = pd.DataFrame()
+        # Loop over variables
+        for j, x in enumerate(cols_to_check):
+            # Get name, number and id if they are found from the df,
+            # otherwise get False
+            var_df = row[df.columns == cols_to_check[j]]
+            var_df = var_df.astype(str).str.lower().values
+            # Can name, number and BID be found from the df_db?
+            # Get True/False list
+            var_db = df_db.loc[:, cols_to_match[j]].astype(
+                str).str.lower().values
+            var_db = var_db == var_df
+            # Add to DF
+            temp[x] = var_db
+        # Loop over variables
+        found = False
+        missmatch = False
+        for j, x in enumerate(cols_to_check):
+            # If 1st, 2nd... or nth variable was found from database
+            if any(temp[x]):
+                row_db = df_db.loc[temp[x].tolist(), cols_to_match]
+                # row_db = row_db.values.tolist()[0]
+                found = True
+                # If there were other variables,
+                # check if they match with data base
+                # values acquired by jth variable
+                if temp.shape[1] &gt; 1:
+                    missmatch_df, missmatch = __check_if_missmatch_db(
+                       temp=temp, row_db=row_db, j=j, df_db=df_db,
+                       cols_to_check=cols_to_check,
+                       cols_to_match=cols_to_match,
+                       missmatch_df=missmatch_df)
+            # If match was found, break for loop; do not check other variables
+            if found:
+                break
+        # If false, try partial match if values include names
+        if found is False and &#34;name&#34; in cols_to_match:
+            # Get name from df and database
+            name_df = row[df.columns == cols_to_check[
+                cols_to_match.index(&#34;name&#34;)]].values[0]
+            name_db = df_db.loc[:, &#34;name&#34;]
+            # Try partial match, get the most similar name
+            name_part = process.extractOne(name_df, name_db, scorer=scorer)
+            # If the matching score is over threshold
+            if disable_partial is False and name_part[1] &gt;= pattern_th:
+                # Get only the name
+                name_part = name_part[0]
+                # Find row based on name with partial match
+                row_db = (df_db.loc[df_db.loc[:, &#34;name&#34;] == name_part,
+                                    cols_to_match])
+                # Add row to final data
+                df_mod.iloc[i, :] = row_db.values.tolist()[0]
+                # Store info for warning message
+                temp = pd.DataFrame([name_df, name_part],
+                                    index=[cols_to_check[
+                                        cols_to_match.index(&#34;name&#34;)],
+                                        &#34;found match&#34;])
+                part_match_df = pd.concat([part_match_df, temp], axis=1)
+                found = True
+        # If match was found add row to final data
+        if found and missmatch is False:
+            # There might be multiple matches, get first one.
+            row_db = row_db.iloc[[0], :] if row_db.shape[0] &gt; 1 else row_db
+            # Assign the row only
+            df_mod.iloc[i, :] = row_db.iloc[0, :]
+        else:
+            # Store data for warning message: data was not found
+            row = pd.DataFrame(row)
+            not_detected_df = pd.concat([not_detected_df, row], axis=1)
+    # If some data had missmatch
+    if missmatch_df.shape[0] &gt; 0:
+        missmatch_df = missmatch_df.drop_duplicates()
+        warnings.warn(
+            message=f&#34;The following data &#34;
+            f&#34;did not match. Please check it for errors: &#34;
+            f&#34;\n{missmatch_df.transpose()}&#34;,
+            category=Warning
+            )
+    # If some data was not detected
+    if not_detected_df.shape[0] &gt; 0:
+        not_detected_df = not_detected_df.drop_duplicates()
+        warnings.warn(
+            message=f&#34;The following data &#34;
+            f&#34;was not detected. Please check it for errors: &#34;
+            f&#34;\n{not_detected_df.transpose()}&#34;,
+            category=Warning
+            )
+    # If partial match of name was used
+    if part_match_df.shape[0] &gt; 0:
+        part_match_df = part_match_df.drop_duplicates()
+        warnings.warn(
+            message=f&#34;The following organization names were detected &#34;
+            f&#34;based on partial matching:&#34;
+            f&#34;\n{part_match_df.transpose().drop_duplicates()}&#34;,
+            category=Warning
+            )
+    return df_mod
+
+
+def __check_if_missmatch_db(temp, row_db, j, df_db,
+                            cols_to_check, cols_to_match, missmatch_df):
+    &#34;&#34;&#34;
+    This function checks if there are missmatch between row values of df
+    and database.
+    Input: df with indices that specify the row being checked currently,
+    database row, j is the index of variable being checked,
+    whole database, cols being checked, cols being matched, DF containing
+    missmatches.
+    Output: DF containing missmatches, and boolean value indicating if
+    missmatch was found.
+    &#34;&#34;&#34;
+    # Initialize result
+    missmatch = False
+    # Take other columns than j
+    temp = temp.loc[:, [x for x in cols_to_check
+                        if x not in cols_to_check[j]]]
+    temp = temp.loc[:, temp.sum(axis=0) &gt; 0]
+    # If other variables had also matches
+    if temp.shape[1] &gt; 0:
+        # Loop over variables
+        for k, c in enumerate(temp.columns):
+            # Get variable from database
+            temp_db = df_db.loc[
+                temp[c].values, [
+                    x for x in cols_to_match
+                    if x not in cols_to_match[j]]
+                ].values.tolist()[0]
+            # Get variable that was in values that will be
+            # added to the final data if everything&#39;s OK
+            value = [row_db.values.tolist()[0][num] for num, x in
+                     enumerate(cols_to_match) if x not in
+                     cols_to_match[j]]
+            # Check if they equal
+            if value != temp_db:
+                # Get values
+                names1 = temp.columns.tolist()
+                # Store data for warning message
+                names2 = list(&#34;Found &#34; + x for x in names1)
+                names = [x for z in zip(names1, names2) for x in z]
+                values = pd.DataFrame([value, temp_db], index=names)
+                missmatch_df = pd.concat([missmatch_df, values],
+                                         axis=1, ignore_index=True)
+                # Missmatch was found
+                missmatch = True
+    return [missmatch_df, missmatch]
+
+
+def __check_variable_pair(df, cols_to_check, dtypes, **args):
+    &#34;&#34;&#34;
+    This function checks variable pair that their data type is correct.
+    Input: df, columns being checked, and expected data types
+    Output: df
+    &#34;&#34;&#34;
+    # Subset so that only available columns are checked
+    ind = [i for i, x in enumerate(cols_to_check) if x in df.columns]
+    cols_to_check = list(cols_to_check[i] for i in ind)
+    dtypes = list(dtypes[i] for i in ind)
+    # Check if data types match
+    ind = [i for i in ind if df[cols_to_check[i]].dtype != dtypes[i]]
+    # If not, give warning
+    if len(ind) &gt; 0:
+        # Subset to include only missmatches
+        cols_to_check = list(cols_to_check[i] for i in ind)
+        dtypes = list(dtypes[i] for i in ind)
+        warnings.warn(
+            message=f&#34;The following data has incorrect data types.&#34;
+            f&#34;Data types of {cols_to_check} should be {dtypes}, respectively.&#34;,
+            category=Warning
+            )
+    return df
+
+
+def __check_vat_number(df, cols_to_check, **args):
+    &#34;&#34;&#34;
+    This function checks that VAT numbers has correct patterns
+    and match with business IDs.
+    Input: df
+    Output: df
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    # Check if column(s) is found as non-duplicated
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    # All columns must be present
+    if len(cols_to_check) != 3:
+        return df
+    # INPUT CHECK END
+    # Get vat number and bid column names
+    # (do it this way, if orgaization gets also vat_number)
+    vat_number_col = [x for x in cols_to_check if x in [&#34;vat_number&#34;]][0]
+    bid_col = [x for x in cols_to_check if x in [&#34;suppl_id&#34;, &#34;org_id&#34;]][0]
+    country_col = [x for x in cols_to_check if x in [&#34;country&#34;]][0]
+
+    # Drop NA
+    df = df.loc[:, cols_to_check]
+    df = df.dropna(subset=vat_number_col)
+
+    # Test iv valid VAT number
+    res = -utils.__are_valid_vat_numbers(df[vat_number_col])
+
+    # If BIDs are available
+    if bid_col and country_col:
+        # Get bids
+        bids = df[bid_col]
+        # Remove &#34;-&#34;
+        bids = bids.astype(str).str.replace(&#34;-&#34;, &#34;&#34;)
+
+        # Get country codes from data base
+        path = pkg_resources.resource_filename(
+            &#34;osta&#34;,
+            &#34;resources/&#34; + &#34;land_codes.csv&#34;)
+        codes = pd.read_csv(path, index_col=0)
+
+        # Get unique countries
+        uniq_countries = df[country_col].drop_duplicates()
+        for country in uniq_countries:
+            # Get the country from data base and get 2 character code
+            temp = codes.loc[(codes == country).sum(axis=1) == 1, &#34;code_2char&#34;]
+            temp = temp.values
+            temp = temp[0] if len(temp) == 1 else &#34;&#34;
+            # Add to data
+            df.loc[df[country_col] == temp, &#34;2_char_code&#34;] = temp
+        # Add country code to bid
+        bids = df[&#34;2_char_code&#34;] + bids
+        # Check that it is same as VAT number
+        not_vat = df[vat_number_col] != bids
+        res = res | not_vat
+    # If there were some VAT numbers that were incorrect, give a warning
+    if any(res):
+        df = df.loc[res, :]
+        warnings.warn(
+            message=f&#34;The following VAT numbers were incorrect. They did not &#34;
+            f&#34;match the correct pattern or match BIDs. &#34;
+            f&#34;Please check them for errors: {df}&#34;,
+            category=Warning
+            )
+    return df
+
+
+def __check_voucher(df, disable_voucher=False, **args):
+    &#34;&#34;&#34;
+    This function checks if voucher column includes vouchers.
+    Input: df
+    Output: df
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not isinstance(disable_voucher, bool):
+        raise Exception(
+            &#34;&#39;disable_voucher&#39; must be True or False.&#34;
+            )
+    cols_to_check = [&#34;voucher&#34;]
+    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    # All columns must be present
+    if disable_voucher or len(cols_to_check) == 0:
+        return df
+    col_to_check = cols_to_check[0]
+    # INPUT CHECK END
+    # CHeck with other columns
+    res = utils.__test_if_voucher(
+        df=df,
+        col_i=df.columns.tolist().index(col_to_check),
+        colnames=df.columns.tolist())
+    # Voucher should match with other data or it should increase
+    if not (res or df[col_to_check].is_monotonic_increasing):
+        warnings.warn(
+            message=&#34;It seems that &#39;voucher&#39; column does not include &#34; +
+            &#34;voucher values. Please check it for errors.&#34;,
+            category=Warning
+            )
+    return df
+
+
+def __subset_data_based_on_year(df, df_db, db_year=None,
+                                date_format=&#34;%d-%m-%Y&#34;, **args):
+    &#34;&#34;&#34;
+    This function subsets database by taking only specific years that user
+    has specified or that can be found from the data.
+    Input: df, data base, year_option, date_format
+    Output: Subsetted data base
+    &#34;&#34;&#34;
+    if db_year is not None:
+        db_year = [db_year] if isinstance(db_year, int) else db_year
+        db_year = [x for x in db_year if any(x == df_db[&#34;year&#34;])]
+        if len(db_year) &gt; 0:
+            # Subset data
+            ind = (df_db[&#34;year&#34;] &lt;= max(db_year)).values &amp; (
+                df_db[&#34;year&#34;] &gt;= min(db_year)).values
+            df_db = df_db.loc[ind, :]
+        else:
+            years = df_db[&#34;year&#34;].drop_duplicates().values.tolist()
+            raise Exception(
+                f&#34;&#39;db_year&#39; must be one of the following options: &#34;
+                f&#34;{years}&#34;,
+                )
+    else:
+        # Check if column(s) is found as non-duplicated
+        cols_to_check = [&#34;date&#34;]
+        cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+        if len(cols_to_check) == 1:
+            col_to_check = cols_to_check[0]
+            # INPUT CHECK END
+            # Get date column
+            date = df.loc[:, col_to_check]
+            # Extract year if possible
+            if &#34;date&#34; in df.columns:
+                try:
+                    year = pd.to_datetime(date, format=date_format)
+                    year = date.dt.year.drop_duplicates().sort_values()
+                    df_db = df_db.loc[df_db[&#34;year&#34;] == year, :]
+                except Exception:
+                    pass
+    # Get only unique values
+    df_db = df_db.drop_duplicates(subset=[&#34;number&#34;, &#34;name&#34;])
+    return df_db
+
+
+def __not_duplicated_columns_found(df, cols_to_check):
+    &#34;&#34;&#34;
+    This function checks if specific columns can be found and they are
+    duplicated.
+    Input: df, columns, duplicated columns
+    Output: columns that fulfill criteria
+    &#34;&#34;&#34;
+    # Found columns
+    cols_to_check = [x for x in cols_to_check if x in df.columns]
+    # Get columns from df
+    cols_df = [x for x in df.columns if x in cols_to_check]
+    # Get unique values and their counts
+    unique, counts = np.unique(cols_df, return_counts=True)
+    # Get duplicated values
+    duplicated = unique[counts &gt; 1]
+    # Are columns found and not duplicated? Return True if any found.
+    cols_to_check = [x for x in cols_to_check if x not in duplicated]
+    # If there were duplicated columns, give warning
+    if len(duplicated) &gt; 0:
+        warnings.warn(
+            message=f&#34;The following column names are duplicated. &#34;
+            f&#34;Please check them for errors.\n {duplicated.tolist()}&#34;,
+            category=Warning
+            )
+    return cols_to_check</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="osta.clean_data.clean_data"><code class="name flex">
+<span>def <span class="ident">clean_data</span></span>(<span>df, **args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Standardize data</p>
+<p>This function standardize the data that is in pandas.DataFrame. The
+function expects that columns are named in specific way. If the data
+does not meet requirements, the function gives a warning.</p>
+<h2 id="arguments">Arguments</h2>
+<pre><code>df: pandas.DataFrame containing invoice data.
+
+**args: Additional arguments passes into other functions:
+    date_format: The format of date that will be in output data.
+    (By default: date_format=&quot;%d-%m-%Y&quot;)
+
+    dayfirst: Boolean value or None to specify the format of date
+    in input data. 'If day comes before month in the date.'
+    If None, function determines the format automatically.
+    (By default: dayfirst=None)
+
+    yearfirst: Boolean value or None to specify the format of date
+    in input data. 'If year comes first in the date.'
+    If None, function determines the format automatically.
+    (By default: yearfirst=None)
+
+    country_format: A string speciying the format of country in the
+    output data. Must be one of the following options: 'name_fin',
+    'name_en', &quot;code_2char&quot;, 'code_3char', 'code_num', or 'code_iso'.
+    (By default: country_format='code_2char')
+
+    pattern_th: A numeric value [0,1] specifying the threshold of
+    enough good match between names, e.g., 'org_name', and database.
+    Value over threshold have enough strong pattern and it is
+    interpreted to be a match. (By default: pattern_th=0.7)
+
+    scorer: A scorer function passed into fuzzywuzzy.process.extractOne
+    function that evaluates the match between names and database.
+    (By default: scorer=fuzz.token_sort_ratio)
+
+    org_data: pd.DataFrame or None. Database for organization data.
+    Data must include on of the following columns: 'name', 'number', or
+    'bid' specifying the name, number and business ID of organizations,
+    respectively. If None, packages default database is used.
+    (By default: org_data=None)
+
+    suppl_data: pd.DataFrame or None. Database for supplier data.
+    Data must include on of the following columns: 'name', 'number', or
+    'bid' specifying the name, number and business ID of suppliers,
+    respectively. If None, no database is used.
+    (By default: org_data=None)
+
+    account_data: pd.DataFrame or None. Database for account data.
+    Data must include on of the following columns: 'name', or
+    'number' specifying the name and number accounts,
+    respectively. If None, packages default database is used.
+    (By default: account_data=None)
+
+    subset_account_data: None or string to specify which database is
+    used for account data. Available options are 'balance_sheet' and
+    'income_statement'. If None, both databases are used and the result
+    value will be the first occurence.
+    (By default: subset_account_data=None)
+
+    service_data: pd.DataFrame or None. Database for service data.
+    Data must include on of the following columns: 'name', or
+    'number' specifying the name and number service categories,
+    respectively. If None, packages default database is used.
+    (By default: service_data=None)
+
+    db_year: Integer value or None specifying the year (2021, 2021,
+    or 2023) that will be used to match account and service data.
+    If None, the most current information is used and duplicates from
+    previous years are removed. (By default: db_year=None)
+
+    disable_*: A boolean value specifying whether * data
+    is checked. * can be one of the following options: 'org',
+    'suppl', 'date', 'sums', 'country', 'voucher', 'account' or
+    'service'. (By default: disable_*=False)
+
+</code></pre>
+<h2 id="details">Details</h2>
+<p>This function standardize the data and checks that it is in correct
+format. If the data is not in expected format containing erroneous
+data that cannot be standardized, the function gives a warning.</p>
+<p>The function expects that columns are in specific format.
+Not all the columns must be included in the data. Below is a
+list of columns and what type of data they should have.
+-org_name: Organization name
+-org_number: Organization number
+-org_id: Organization business ID
+-account_name: The name of account to where invoice is allocated.
+-account_number: The number of account to where incoice is
+allocated.
+-service_cat_name: The name of service category to where invoice
+is allocated.
+-service_cat: The number of service category to where invoice is
+allocated.
+-suppl_name: Supplier name
+-supplier number: Supplier number
+-suppl_id: Supplier business ID
+-vat_number: VAT number of supplier
+-country: Country of supplier.
+-voucher: Running identification of invoice
+-date: Date of invoice.
+-price_ex_vat: Price excluding VAT.
+-vat_amount: Amount of VAT.
+-total: Price indluding VAT.</p>
+<p>Organization data (name, number, BID) is matched with database.
+Uncorrect values are replaced with correct values unless the
+specified organization matches with multiple organizations in the
+database. The user can also use own database.</p>
+<p>Supplier data (name, number, BID, VAT number) is not matched with
+database by default and replacements are not done. However, user
+can use own database. Like in case of organization data, the function
+checks that BID and VAT numbers are in correct format and that they
+duplicated meaning that each value specifies only one supplier.</p>
+<p>Account and service information. Account and service information is
+matched with database, and uncorrect values are replaced unless they
+match with multiple accounts / service categories. For account data,
+user can specify if balance sheet or income statement database is used.
+Otherwise, both are used and first occurence will be the result value.
+The user can also use own database.</p>
+<p>Country is identified with database containing all common land codes.
+(Finnish and English names, 2 and 3-character codes, along with
+numeric and ISO code). User can define the format of output from
+formats included in the database.</p>
+<p>Date is automatically identified unless user do not define the format.
+Dates are converted into format that user can specify.</p>
+<p>Price excluding and including VAT and VAT amount (abbreviated as sums
+in the function) are checked by calculating if values of them match
+between each other. If all three columns are not available, the
+the function only converts values in float type if possible.</p>
+<h2 id="examples">Examples</h2>
+<pre><code># Create a dummy data
+data = {&quot;org_name&quot;: [&quot;Turun kaupunki&quot;, &quot;Turku&quot;, &quot;Turku&quot;],
+        &quot;org_number&quot;: [None, None, None],
+        &quot;date&quot;: [&quot;02.01.2023&quot;, &quot;2-1-2023&quot;, &quot;1.1.2023&quot;],
+        &quot;suppl_name&quot;: [&quot;Myyjä&quot;, &quot;Supplier Oy&quot;, &quot;Myyjän tuote Oy&quot;],
+        &quot;country&quot;: [&quot;FI&quot;, &quot;FI&quot;, &quot;FI&quot;],
+        &quot;total&quot;: [100.21, 10.30, 50.50],
+        }
+df = pd.DataFrame(data)
+df = clean_data(df, country_format=&quot;name_fin&quot;)
+</code></pre>
+<h2 id="output">Output</h2>
+<p>pandas.DataFrame with standardized data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clean_data(df, **args):
+    &#34;&#34;&#34;
+    Standardize data
+
+    This function standardize the data that is in pandas.DataFrame. The
+    function expects that columns are named in specific way. If the data
+    does not meet requirements, the function gives a warning.
+
+    Arguments:
+        ```
+        df: pandas.DataFrame containing invoice data.
+
+        **args: Additional arguments passes into other functions:
+            date_format: The format of date that will be in output data.
+            (By default: date_format=&#34;%d-%m-%Y&#34;)
+
+            dayfirst: Boolean value or None to specify the format of date
+            in input data. &#39;If day comes before month in the date.&#39;
+            If None, function determines the format automatically.
+            (By default: dayfirst=None)
+
+            yearfirst: Boolean value or None to specify the format of date
+            in input data. &#39;If year comes first in the date.&#39;
+            If None, function determines the format automatically.
+            (By default: yearfirst=None)
+
+            country_format: A string speciying the format of country in the
+            output data. Must be one of the following options: &#39;name_fin&#39;,
+            &#39;name_en&#39;, &#34;code_2char&#34;, &#39;code_3char&#39;, &#39;code_num&#39;, or &#39;code_iso&#39;.
+            (By default: country_format=&#39;code_2char&#39;)
+
+            pattern_th: A numeric value [0,1] specifying the threshold of
+            enough good match between names, e.g., &#39;org_name&#39;, and database.
+            Value over threshold have enough strong pattern and it is
+            interpreted to be a match. (By default: pattern_th=0.7)
+
+            scorer: A scorer function passed into fuzzywuzzy.process.extractOne
+            function that evaluates the match between names and database.
+            (By default: scorer=fuzz.token_sort_ratio)
+
+            org_data: pd.DataFrame or None. Database for organization data.
+            Data must include on of the following columns: &#39;name&#39;, &#39;number&#39;, or
+            &#39;bid&#39; specifying the name, number and business ID of organizations,
+            respectively. If None, packages default database is used.
+            (By default: org_data=None)
+
+            suppl_data: pd.DataFrame or None. Database for supplier data.
+            Data must include on of the following columns: &#39;name&#39;, &#39;number&#39;, or
+            &#39;bid&#39; specifying the name, number and business ID of suppliers,
+            respectively. If None, no database is used.
+            (By default: org_data=None)
+
+            account_data: pd.DataFrame or None. Database for account data.
+            Data must include on of the following columns: &#39;name&#39;, or
+            &#39;number&#39; specifying the name and number accounts,
+            respectively. If None, packages default database is used.
+            (By default: account_data=None)
+
+            subset_account_data: None or string to specify which database is
+            used for account data. Available options are &#39;balance_sheet&#39; and
+            &#39;income_statement&#39;. If None, both databases are used and the result
+            value will be the first occurence.
+            (By default: subset_account_data=None)
+
+            service_data: pd.DataFrame or None. Database for service data.
+            Data must include on of the following columns: &#39;name&#39;, or
+            &#39;number&#39; specifying the name and number service categories,
+            respectively. If None, packages default database is used.
+            (By default: service_data=None)
+
+            db_year: Integer value or None specifying the year (2021, 2021,
+            or 2023) that will be used to match account and service data.
+            If None, the most current information is used and duplicates from
+            previous years are removed. (By default: db_year=None)
+
+            disable_*: A boolean value specifying whether * data
+            is checked. * can be one of the following options: &#39;org&#39;,
+            &#39;suppl&#39;, &#39;date&#39;, &#39;sums&#39;, &#39;country&#39;, &#39;voucher&#39;, &#39;account&#39; or
+            &#39;service&#39;. (By default: disable_*=False)
+
+        ```
+
+    Details:
+        This function standardize the data and checks that it is in correct
+        format. If the data is not in expected format containing erroneous
+        data that cannot be standardized, the function gives a warning.
+
+        The function expects that columns are in specific format.
+        Not all the columns must be included in the data. Below is a
+        list of columns and what type of data they should have.
+            -org_name: Organization name
+            -org_number: Organization number
+            -org_id: Organization business ID
+            -account_name: The name of account to where invoice is allocated.
+            -account_number: The number of account to where incoice is
+            allocated.
+            -service_cat_name: The name of service category to where invoice
+            is allocated.
+            -service_cat: The number of service category to where invoice is
+            allocated.
+            -suppl_name: Supplier name
+            -supplier number: Supplier number
+            -suppl_id: Supplier business ID
+            -vat_number: VAT number of supplier
+            -country: Country of supplier.
+            -voucher: Running identification of invoice
+            -date: Date of invoice.
+            -price_ex_vat: Price excluding VAT.
+            -vat_amount: Amount of VAT.
+            -total: Price indluding VAT.
+
+        Organization data (name, number, BID) is matched with database.
+        Uncorrect values are replaced with correct values unless the
+        specified organization matches with multiple organizations in the
+        database. The user can also use own database.
+
+        Supplier data (name, number, BID, VAT number) is not matched with
+        database by default and replacements are not done. However, user
+        can use own database. Like in case of organization data, the function
+        checks that BID and VAT numbers are in correct format and that they
+        duplicated meaning that each value specifies only one supplier.
+
+        Account and service information. Account and service information is
+        matched with database, and uncorrect values are replaced unless they
+        match with multiple accounts / service categories. For account data,
+        user can specify if balance sheet or income statement database is used.
+        Otherwise, both are used and first occurence will be the result value.
+        The user can also use own database.
+
+        Country is identified with database containing all common land codes.
+        (Finnish and English names, 2 and 3-character codes, along with
+        numeric and ISO code). User can define the format of output from
+        formats included in the database.
+
+        Date is automatically identified unless user do not define the format.
+        Dates are converted into format that user can specify.
+
+        Price excluding and including VAT and VAT amount (abbreviated as sums
+        in the function) are checked by calculating if values of them match
+        between each other. If all three columns are not available, the
+        the function only converts values in float type if possible.
+
+    Examples:
+        ```
+        # Create a dummy data
+        data = {&#34;org_name&#34;: [&#34;Turun kaupunki&#34;, &#34;Turku&#34;, &#34;Turku&#34;],
+                &#34;org_number&#34;: [None, None, None],
+                &#34;date&#34;: [&#34;02.01.2023&#34;, &#34;2-1-2023&#34;, &#34;1.1.2023&#34;],
+                &#34;suppl_name&#34;: [&#34;Myyjä&#34;, &#34;Supplier Oy&#34;, &#34;Myyjän tuote Oy&#34;],
+                &#34;country&#34;: [&#34;FI&#34;, &#34;FI&#34;, &#34;FI&#34;],
+                &#34;total&#34;: [100.21, 10.30, 50.50],
+                }
+        df = pd.DataFrame(data)
+        df = clean_data(df, country_format=&#34;name_fin&#34;)
+        ```
+
+    Output:
+        pandas.DataFrame with standardized data.
+
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    # df must be pandas DataFrame
+    if not utils.__is_non_empty_df(df):
+        raise Exception(
+            &#34;&#39;df&#39; must be non-empty pandas.DataFrame.&#34;
+            )
+    # INPUT CHECK END
+    # Check if there are empty rows or columns, and remove them
+    if any(df.isna().all(axis=0)) or any(df.isna().all(axis=1)):
+        df = df.dropna(axis=0, how=&#34;all&#34;)
+        df = df.dropna(axis=1, how=&#34;all&#34;)
+        warnings.warn(
+            message=&#34;&#39;df&#39; contained empty rows or/and columns \n&#34; +
+            &#34;that are now removed.\n&#34;,
+            category=Warning
+            )
+    # Remove spaces from beginning and end of the value
+    df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+
+    # Test if voucher is correct
+    __check_voucher(df, **args)
+    # Check sums
+    df = __clean_sums(df, **args)
+    # Check dates
+    df = __standardize_date(df, **args)
+    # Check org information:
+    df = __standardize_org(df, **args)
+    # Check supplier info
+    df = __standardize_suppl(df, **args)
+    # Check account info
+    df = __standardize_account(df, **args)
+    # Check service data
+    df = __standardize_service(df, **args)
+    # Check country data
+    df = __standardize_country(df, **args)
+    return df</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="osta" href="index.html">osta</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="osta.clean_data.clean_data" href="#osta.clean_data.clean_data">clean_data</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

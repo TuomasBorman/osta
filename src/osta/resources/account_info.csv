@@ -1,0 +1,833 @@
+,number,name,cat1,cat2,cat3,cat4,cat5,cat6,info,year
+0,1005,Tietokoneohjelmistot,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,Aineettomat oikeudet,,,2023
+1,1006,Muut aineettomat oikeudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,Aineettomat oikeudet,,,2023
+2,1010,Muut pitkävaikutteiset menot,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,,,"Kunta, ky, LL, Kons",2023
+3,1012,Konserniliikearvo,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,,,,2023
+4,1020,Ennakkomaksut,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,,,"Kunta, ky, LL, Kons",2023
+5,1100,Maa- ja vesialueet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Maa- ja vesialueet (sis. arvonkorotukset),Maa- ja vesialueet (ilman arvonkorotuksia),,2023
+6,1102,Kiinteistöjen liittymismaksut,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Maa- ja vesialueet (sis. arvonkorotukset),Maa- ja vesialueet (ilman arvonkorotuksia),,2023
+7,1104,Kiinteistöjen vuokraoikeudet ja niihin liittyvät liittymismaksut,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Maa- ja vesialueet (sis. arvonkorotukset),Maa- ja vesialueet (ilman arvonkorotuksia),,2023
+8,1105,Maa- ja vesialueiden arvonkorotukset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Maa- ja vesialueet (sis. arvonkorotukset),,,2023
+9,1115,Asuinrakennukset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Rakennukset,,,2023
+10,1116,Muut rakennukset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Rakennukset,,,2023
+11,1130,Kiinteät rakenteet ja laitteet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,,,"Kunta, ky, LL, Kons",2023
+12,1160,Kuljetusvälineet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Koneet ja kalusto,,,2023
+13,1165,Tietokonelaitteet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Koneet ja kalusto,,,2023
+14,1166,Viestintälaitteet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Koneet ja kalusto,,,2023
+15,1170,Muut koneet ja kalusto,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Koneet ja kalusto,,,2023
+16,1180,Luonnonvarat,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Muut aineelliset hyödykkeet,,,2023
+17,1184,Arvo- ja taide-esineet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Muut aineelliset hyödykkeet,,,2023
+18,1187,Muut hyödykkeet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Muut aineelliset hyödykkeet,,,2023
+19,1190,Ennakkomaksut,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Ennakkomaksut ja keskeneräiset hankinnat,,,2023
+20,1195,Keskeneräiset hankinnat,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Ennakkomaksut ja keskeneräiset hankinnat,,,2023
+21,1200,Osakkuusyhteisöosakkeet ja -osuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkuusyhteisöosuudet,,,2023
+22,1201,Yhteisyhteisöosakkeet ja -osuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkuusyhteisöosuudet,,,2023
+23,1202,Muut osakkeet ja osuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkuusyhteisöosuudet,,,2023
+24,1204,Osakkeet ja osuudet tytäryhteisöissä,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2023
+25,1205,Asunto-osakkeet tytäryhteisöissä,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2023
+26,1206,Kuntayhtymäosuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2023
+27,1209,Liikelaitosten peruspääomaosuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2023
+28,1210,Muiden taseyksiköiden peruspääomaosuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2023
+29,1212,Muut osakkeet ja osuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2023
+30,1213,Muut asunto-osakkeet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2023
+31,1214,Osakkeiden ja osuuksien arvonkorotukset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2023
+32,1222,Joukkovelkakirjalainasaamiset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,,,"Kunta, ky, LL, Kons",2023
+33,1237,Pääomalainasaamiset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Muut lainasaamiset,,,2023
+34,1239,Muut lainasaamiset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Muut lainasaamiset,,,2023
+35,1247,Muut saamiset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Muut saamiset,,,2023
+36,1248,Liittymismaksut palautettavat,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Muut saamiset,,,2023
+37,1410,Välitetyt valtion lainat,tase,TASE VASTAAVAA,TOIMEKSIANTOJEN VARAT,Valtion toimeksiannot,,,,2023
+38,1420,Muut valtion toimeksiannot,tase,TASE VASTAAVAA,TOIMEKSIANTOJEN VARAT,Valtion toimeksiannot,,,,2023
+39,1440,Lahjoitusrahastojen varat,tase,TASE VASTAAVAA,TOIMEKSIANTOJEN VARAT,,,,"Kunta, ky, LL, Kons",2023
+40,1460,Muut toimeksiantojen varat,tase,TASE VASTAAVAA,TOIMEKSIANTOJEN VARAT,,,,"Kunta, ky, LL, Kons",2023
+41,1500,Aineet ja tarvikkeet,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2023
+42,1530,Keskeneräiset tuotteet,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2023
+43,1550,Valmiit tuotteet,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2023
+44,1570,Muu vaihto-omaisuus,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2023
+45,1590,Ennakkomaksut,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2023
+46,1600,Myyntisaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,"Kunta, ky, LL, Kons",2023
+47,1630,Lainasaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,"Kunta, ky, LL, Kons",2023
+48,1640,Saamiset kunnalta ja kuntayhtymältä,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,LL,2023
+49,1650,Laskennalliset verosaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,Kons,2023
+50,1688,Muut saamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,"Kunta, ky, LL, Kons",2023
+51,1711,Siirtyvät korot,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,Siirtosaamiset,,2023
+52,1712,Muut siirtosaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,Siirtosaamiset,,2023
+53,1720,Myyntisaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,,"Kunta, ky, LL, Kons",2023
+54,1750,Lainasaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,,"Kunta, ky, LL, Kons",2023
+55,1760,Saamiset kunnalta ja kuntayhtymältä,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,,LL,2023
+56,1770,Laskennalliset verosaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,,Kons,2023
+57,1800,Muut saamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,Muut saamiset,,2023
+58,1810,Alv-saamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,Muut saamiset,,2023
+59,1816,Siirtyvät korot,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,Siirtosaamiset,,2023
+60,1829,Muut siirtosaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,Siirtosaamiset,,2023
+61,1830,Osakkeet ja osuudet,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,,,"Kunta, ky, LL, Kons",2023
+62,1850,Sijoitukset valtion velkasitoumuksiin,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Sijoitukset rahamarkkinainstrumentteihin,,,2023
+63,1855,Sijoitukset kuntatodistuksiin,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Sijoitukset rahamarkkinainstrumentteihin,,,2023
+64,1860,Sijoitukset muihin rahamarkkinainstrumentteihin,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Sijoitukset rahamarkkinainstrumentteihin,,,2023
+65,1870,Joukkovelkakirjalainasaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,,,"Kunta, ky, LL, Kons",2023
+66,1891,Rahasto-osuudet (yhteensä),tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Muut arvopaperit,,,2023
+67,1892,Muut arvopaperit,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Muut arvopaperit,,,2023
+68,1900,Rahat ja pankkisaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,,,,"Kunta, ky, LL, Kons",2023
+69,2000,Peruspääoma,tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2023
+70,2005,Säätiöiden ja yhdistysten peruspääomat,tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,Kons,2023
+71,2010,Arvonkorotusrahasto,tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2023
+72,2015,Muut omat rahastot,tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2023
+73,2040,Edellisten tilikausien ylijäämä (alijäämä),tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2023
+74,2050,Tilikauden ylijäämä (alijäämä),tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2023
+75,2060,Vähemmistöosuudet,tase,TASE VASTATTAVAA,VÄHEMMISTÖOSUUDET,,,,,2023
+76,2100,Poistoero,tase,TASE VASTATTAVAA,POISTOERO JA VAPAAEHTOISET VARAUKSET,,,,"Kunta, ky, LL",2023
+77,2110,Vapaaehtoiset varaukset,tase,TASE VASTATTAVAA,POISTOERO JA VAPAAEHTOISET VARAUKSET,,,,"Kunta, ky, LL",2023
+78,2120,Eläkevaraukset,tase,TASE VASTATTAVAA,PAKOLLISET VARAUKSET,,,,"Kunta, ky, LL, Kons",2023
+79,2130,Muut pakolliset varaukset,tase,TASE VASTATTAVAA,PAKOLLISET VARAUKSET,,,,"Kunta, ky, LL, Kons",2023
+80,2300,Välitettävät valtion lainat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,Valtion toimeksiannot,,,,2023
+81,2310,Välitetyt valtion lainat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,Valtion toimeksiannot,,,,2023
+82,2320,Muut valtion toimeksiantojen pääomat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,Valtion toimeksiannot,,,,2023
+83,2325,Lahjoitusrahastojen pääomat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,,,,"Kunta, ky, LL, Kons",2023
+84,2330,Muut toimeksiantojen pääomat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,,,,"Kunta, ky, LL, Kons",2023
+85,2399,Konsernireservi,tase,TASE VASTATTAVAA,KONSERNIRESERVI,,,,,2023
+86,2400,Joukkovelkakirjalainat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,"Kunta, ky, LL, Kons",2023
+87,2410,Lainat rahoitus- ja vakuutuslaitoksilta,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,"Kunta, ky, LL, Kons",2023
+88,2415,Lainat kunnalta/kuntayhtymältä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,LL,2023
+89,2420,Lainat julkisyhteisöiltä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,"Kunta, ky, LL, Kons",2023
+90,2430,Lainat muilta luotonantajilta,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,"Kunta, ky, LL, Kons",2023
+91,2449,Saadut ennakot,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,"Kunta, ky, LL, Kons",2023
+92,2457,Ostovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,"Kunta, ky, LL, Kons",2023
+93,2458,Korottomat velat kunnalta/kuntayhtymältä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,LL,2023
+94,2460,Johdannaissopimusten perusteella vastaanotetut käteisvakuudet,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,,2023
+95,2469,Liittymismaksut ja muut velat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,,2023
+96,2470,Siirtovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,"Kunta, ky, LL, Kons",2023
+97,2480,Laskennalliset verovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,Kons,2023
+98,2500,Joukkovelkakirjalainat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2023
+99,2501,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, joukkovelkakirjalainat",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2023
+100,2510,Lainat rahoitus- ja vakuutuslaitoksilta,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2023
+101,2511,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, lainat rahoitus- ja vakuutuslaitoksilta",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2023
+102,2515,Lainat kunnalta/kuntayhtymältä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,LL,2023
+103,2516,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, lainat kunnalta/kuntayhtymältä",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,LL,2023
+104,2520,Lainat julkisyhteisöiltä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2023
+105,2521,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, lainat julkisyhteisöiltä, tili",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2023
+106,2530,Lainat muilta luotonantajilta,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2023
+107,2531,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, lainat muilta luotonantajilta, tili",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2023
+108,2540,Saadut ennakot,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),,"Kunta, ky, LL, Kons",2023
+109,2545,Ostovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),,"Kunta, ky, LL, Kons",2023
+110,2550,Korottomat velat kunnalta/kuntayhtymältä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),,LL,2023
+111,2561,Johdannaissopimusten perusteella vastaanotetut käteisvakuudet,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,2023
+112,2563,Alv-velka,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,2023
+113,2568,Liittymismaksuvelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,2023
+114,2569,Muut velat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,2023
+115,2579,Siirtyvät korot,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Siirtovelat,,2023
+116,2580,Lomapalkkajaksotus,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Siirtovelat,,2023
+117,2589,Muut siirtovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Siirtovelat,,2023
+118,2590,Laskennalliset verovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),,Kons,2023
+119,3005,Myyntituotot,tuloslaskelma,TOIMINTATUOTOT,Myyntituotot/Liikevaihto,,,,,2023
+120,3070,Liiketoiminnan muut tuotot,tuloslaskelma,TOIMINTATUOTOT,Myyntituotot/Liikevaihto,,,,LL,2023
+121,3295,Maksutuotot,tuloslaskelma,TOIMINTATUOTOT,Maksutuotot,,,,,2023
+122,3300,Tuet ja avustukset (muilta),tuloslaskelma,TOIMINTATUOTOT,Tuet ja avustukset,,,,"Kunta, ky, LL",2023
+123,3390,Palkkatuki,tuloslaskelma,TOIMINTATUOTOT,Tuet ja avustukset,,,,,2023
+124,3440,Maa- ja vesialueiden vuokrat,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2023
+125,3499,"Vuokratuotot, muut",tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2023
+126,3510,Pysyvien vastaavien hyödykkeiden luovutusvoitot,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2023
+127,3521,Vakuutusyhtiöiden vahinkovakuutuskorvaukset,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2023
+128,3530,Muut tuotot,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2023
+129,3533,Liiketoiminnan muut tuotot,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,LL,2023
+130,3536,Sakot ja uhkasakot,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2023
+131,3560,Tuet ja avustukset kunnalta/kuntayhtymältä,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,LL,2023
+132,3610,Valmiiden ja keskeneräisten tuotteiden varastojen lisäys tai vähennys,tuloslaskelma,TOIMINTATUOTOT,Valmistevarastojen muutos,,,,"Kunta, ky, LL",2023
+133,3710,Valmistus omaan käyttöön,tuloslaskelma,TOIMINTATUOTOT,VALMISTUS OMAAN KÄYTTÖÖN,,,,"Kunta, ky",2023
+134,4000,Maksetut palkat ja palkkiot,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2023
+135,4060,Jaksotetut palkat ja palkkiot,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2023
+136,4065,Aktivoidut palkat ja palkkiot,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2023
+137,4090,Henkilöstökorvaukset,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2023
+138,4110,Eläkevakuutusmaksut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2023
+139,4120,Maksetut eläkkeet,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2023
+140,4130,Jaksotetut eläkekulut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2023
+141,4135,Aktivoidut eläkemenot,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2023
+142,4190,Jaksotetut  sosiaalivakuutusmaksut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2023
+143,4200,Aktivoidut sosiaalivakuutusmaksut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2023
+144,4210,Muut henkilösivukulut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2023
+145,4300,Asiakaspalvelujen ostot,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+146,4315,Palveluseteli,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+147,4340,Asiantuntijapalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+148,4341,Toimistopalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+149,4342,ICT-palvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+150,4344,Rahoitus- ja pankkipalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+151,4346,Työvoiman vuokraus,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+152,4350,"Painatukset, ilmoitukset ja markkinointi",tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+153,4360,Posti- ja kuriiripalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+154,4370,Vakuutukset,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+155,4380,Puhtaanapito- ja pesulapalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+156,4390,Rakennusten ja alueiden rakentamis- ja kunnossapitopalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+157,4400,"Koneiden, kaluston ja laitteiden rakentamis- ja kunnossapitopalvelut",tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+158,4410,Majoitus- ja ravitsemispalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+159,4420,Matkustus- ja kuljetuspalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+160,4430,Sosiaali- ja terveyspalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+161,4440,Koulutus- ja kulttuuripalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+162,4445,Koulutuskorvaukset työnantajille,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+163,4450,Osuus verotuskustannuksiin,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+164,4460,Muut yhteistoimintaosuudet,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+165,4470,Muut palvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+166,4480,Aktivoidut palvelujen ostot,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2023
+167,4500,Toimisto- ja koulutarvikkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+168,4510,Kirjallisuus,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+169,4520,Elintarvikkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+170,4530,Vaatteisto,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+171,4533,Lääkkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+172,4534,Hoitotarvikkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+173,4550,Puhdistusaineet ja -tarvikkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+174,4560,Poltto- ja voiteluaineet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+175,4568,Lämmitys,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+176,4569,Sähkö ja kaasu,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+177,4570,Vesi,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+178,4580,Kalusto,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+179,4590,Rakennusmateriaali,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+180,4600,Muu materiaali,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+181,4640,"Pysyviin vastaaviin aktivoidut aineet, tarvikkeet ja tavarat",tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2023
+182,4670,Varastojen lisäys/vähennys,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,"Kunta, ky, LL",2023
+183,4712,Kotihoidon tuki,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2023
+184,4713,Kotihoidon tuen kuntalisä,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2023
+185,4714,Yksityisen hoidon tuki,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2023
+186,4715,Yksityisen hoidon tuen kuntalisä,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2023
+187,4716,Osittainen ja joustava hoitoraha,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2023
+188,4721,Täydentävä toimeentulotuki,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2023
+189,4722,Ehkäisevä toimeentulotuki,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2023
+190,4723,Täydentävän ja ehkäisevän toimeentulotuen takaisinperintä,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2023
+191,4739,Muut avustukset kotitalouksille,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2023
+192,4742,Avustukset yhteisöille,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2023
+193,4810,Maa- ja vesialueiden vuokrat,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+194,4820,Rakennusten ja huoneistojen vuokrat,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+195,4830,Koneiden ja laitteiden vuokrat,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+196,4890,Muut vuokrat,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+197,4899,Aktivoidut vuokrakulut,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+198,4901,Jätevero,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+199,4910,Muut välilliset ja välittömät verot,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+200,4920,Pysyvien vastaavien hyödykkeiden luovutustappiot,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+201,4921,Luottotappiot toimintatuotoista (myyntisaamiset),tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+202,4930,Takaustappiot,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+203,4931,Takauskorvausten takaisinperinnät,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+204,4940,Muut toimintakulut,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+205,4990,Aktivoidut muut kulut,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2023
+206,4996,Osuus osakkuusyhteisöjen voitosta,tuloslaskelma,TOIMINTAKULUT,Osuus osakkuusyhteisöjen voitosta (tappiosta),,,,,2023
+207,4997,Osuus osakkuusyhteisöjen tappiosta,tuloslaskelma,TOIMINTAKULUT,Osuus osakkuusyhteisöjen voitosta (tappiosta),,,,,2023
+208,5000,Kunnan tulovero,tuloslaskelma,TOIMINTAKULUT,Verotulot,,,,,2023
+209,5100,Kiinteistövero,tuloslaskelma,TOIMINTAKULUT,Verotulot,,,,,2023
+210,5200,Osuus yhteisöveron tuotosta,tuloslaskelma,TOIMINTAKULUT,Verotulot,,,,,2023
+211,5400,Muut verotulot,tuloslaskelma,TOIMINTAKULUT,Verotulot,,,,,2023
+212,5501,Kunnan peruspalvelujen valtionosuus (ilman tasauksia),tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2023
+213,5502,Verotuloihin perustuva valtionosuuksien tasaus,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2023
+214,5510,Harkinnanvarainen valtionosuuden korotus,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2023
+215,5701,Opetus- ja kulttuuritoimen muut valtionosuudet,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2023
+216,5850,Muut valtionosuudet,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2023
+217,5890,Verotulojen menetysten korvaus,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2023
+218,6040,Korkotuotot antolainoista,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+219,6050,Muut korkotuotot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+220,6055,Korkojohdannaisiin liittyvät korkotuotot ja -kulut (tuottoja suojaava),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+221,6100,Osinkotuotot ja osuuspääomien korot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+222,6115,Korvaus peruspääomasta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,"Kunta, ky",2023
+223,6116,Korvaus jäännöspääomasta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,"Kunta, ky",2023
+224,6120,Verotilitysten korot ja korotukset,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+225,6130,Viivästyskorot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+226,6140,Peruspääoman korot kuntayhtymiltä,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,Kunta,2023
+227,6150,Kurssivoitot rahoituslainoista,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+228,6160,Arvopapereiden luovutusvoitot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+229,6169,Korkojohdannaisiin liittyvät tuotot (ei-suojaava),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+230,6170,Muut rahoitustuotot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+231,6176,Takausprovisiot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+232,6180,Rahoitusarvopaperien arvonalentumisten oikaisut (Arvonalentumisten palautumiset),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+233,6250,Kunnalle/ky:lle maksetut korkokulut,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,LL,2023
+234,6255,Korkokulut lainoista ulkopuolisilta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+235,6270,Korkojohdannaisiin liittyvät korkokulut ja -tuotot (kuluja suojaava),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+236,6301,Peruspääoman korko,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,ky,2023
+237,6304,Korvaus peruspääomasta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,LL,2023
+238,6306,Korvaus jäännöspääomasta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,LL,2023
+239,6330,Kurssitappiot rahoituslainoista,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+240,6335,Arvopapereiden luovutustappiot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+241,6360,Arvonalentumiset vaihtuvien vastaavien rahoitusarvopapereista,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+242,6370,Arvonalentumiset pysyvien vastaavien sijoituksista (pl. toimialasijoittamisen osakkeet ja -osuudet),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+243,6379,Korkojohdannaisiin liittyvät kulut (ei-suojaava),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+244,6380,Muut rahoituskulut,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2023
+245,7170,Suunnitelman mukaiset poistot,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2023
+246,7180,Kertaluonteiset poistot,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2023
+247,7190,"Pysyvien vastaavien hyödykkeiden luovutusvoitot ja -tappiot 
+(epäolennaiset, ellei muissa tuotoissa/kuluissa)",tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2023
+248,7220,Positiivinen eliminointiero,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2023
+249,7221,Negatiivinen eliminointiero,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2023
+250,7222,Konserniliikearvon poisto,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2023
+251,7223,Konsernireservin vähennys,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2023
+252,7230,Pysyvien vastaavien hyödykkeiden arvonalentumiset,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2023
+253,7240,Muut arvonalentumiset,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2023
+254,8000,Pysyvien vastaavien hyödykkeiden luovutusvoitot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2023
+255,8010,Omistusosuuksien luovutukset,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2023
+256,8020,Vahingonkorvaukset ja sopimussakot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2023
+257,8050,Muut satunnaiset tuotot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2023
+258,8100,Pysyvien vastaavien hyödykkeiden luovutustappiot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2023
+259,8110,Omistusosuuksien luovutukset,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2023
+260,8120,Vahingonkorvaukset ja sopimussakot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2023
+261,8130,Annetut akordit ja konserniavustukset,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2023
+262,8150,Muut satunnaiset kulut,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2023
+263,8200,Tilinpäätössiirrot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,Kons,2023
+264,8500,Poistoeron lisäys (-),tuloslaskelma,TOIMINTAKULUT,Poistoeron muutos / Poistoeron lisäys (-) tai vähennys (+),,,,,2023
+265,8550,Poistoeron vähennys (+),tuloslaskelma,TOIMINTAKULUT,Poistoeron muutos / Poistoeron lisäys (-) tai vähennys (+),,,,,2023
+266,8600,Varausten lisäys (-),tuloslaskelma,TOIMINTAKULUT,Varausten muutos / Varausten lisäys (-) tai vähennys (+),,,,,2023
+267,8650,Varausten vähennys (+),tuloslaskelma,TOIMINTAKULUT,Varausten muutos / Varausten lisäys (-) tai vähennys (+),,,,,2023
+268,8700,Rahastojen lisäys (-),tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,,2023
+269,8750,Rahastojen vähennys (+),tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,,2023
+270,8760,Tuloverot,tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,LL,2023
+271,8765,Tilikauden verot,tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,Kons,2023
+272,8766,Laskennalliset verot,tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,Kons,2023
+273,8780,Vähemmistöosuudet,tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,Kons,2023
+274,8800,Tilikauden ylijäämä (alijäämä),tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,"Kunta, ky, LL, Kons",2023
+275,1005,Tietokoneohjelmistot,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,Aineettomat oikeudet,,,2022
+276,1006,Muut aineettomat oikeudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,Aineettomat oikeudet,,,2022
+277,1010,Muut pitkävaikutteiset menot,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,,,"Kunta, ky, LL, Kons",2022
+278,1012,Konserniliikearvo,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,,,,2022
+279,1020,Ennakkomaksut,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,,,"Kunta, ky, LL, Kons",2022
+280,1100,Maa- ja vesialueet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Maa- ja vesialueet (sis. arvonkorotukset),Maa- ja vesialueet (ilman arvonkorotuksia),,2022
+281,1102,Kiinteistöjen liittymismaksut,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Maa- ja vesialueet (sis. arvonkorotukset),Maa- ja vesialueet (ilman arvonkorotuksia),,2022
+282,1104,Kiinteistöjen vuokraoikeudet ja niihin liittyvät liittymismaksut,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Maa- ja vesialueet (sis. arvonkorotukset),Maa- ja vesialueet (ilman arvonkorotuksia),,2022
+283,1105,Maa- ja vesialueiden arvonkorotukset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Maa- ja vesialueet (sis. arvonkorotukset),,,2022
+284,1115,Asuinrakennukset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Rakennukset,,,2022
+285,1116,Muut rakennukset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Rakennukset,,,2022
+286,1130,Kiinteät rakenteet ja laitteet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,,,"Kunta, ky, LL, Kons",2022
+287,1160,Kuljetusvälineet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Koneet ja kalusto,,,2022
+288,1165,Tietokonelaitteet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Koneet ja kalusto,,,2022
+289,1166,Viestintälaitteet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Koneet ja kalusto,,,2022
+290,1170,Muut koneet ja kalusto,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Koneet ja kalusto,,,2022
+291,1180,Luonnonvarat,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Muut aineelliset hyödykkeet,,,2022
+292,1184,Arvo- ja taide-esineet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Muut aineelliset hyödykkeet,,,2022
+293,1187,Muut hyödykkeet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Muut aineelliset hyödykkeet,,,2022
+294,1190,Ennakkomaksut,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Ennakkomaksut ja keskeneräiset hankinnat,,,2022
+295,1195,Keskeneräiset hankinnat,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Ennakkomaksut ja keskeneräiset hankinnat,,,2022
+296,1200,Osakkuusyhteisöosakkeet ja -osuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkuusyhteisöosuudet,,,2022
+297,1201,Yhteisyhteisöosakkeet ja -osuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkuusyhteisöosuudet,,,2022
+298,1202,Muut osakkeet ja osuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkuusyhteisöosuudet,,,2022
+299,1204,Osakkeet ja osuudet tytäryhteisöissä,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2022
+300,1205,Asunto-osakkeet tytäryhteisöissä,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2022
+301,1206,Kuntayhtymäosuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2022
+302,1209,Liikelaitosten peruspääomaosuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2022
+303,1210,Muiden taseyksiköiden peruspääomaosuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2022
+304,1212,Muut osakkeet ja osuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2022
+305,1213,Muut asunto-osakkeet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2022
+306,1214,Osakkeiden ja osuuksien arvonkorotukset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2022
+307,1222,Joukkovelkakirjalainasaamiset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,,,"Kunta, ky, LL, Kons",2022
+308,1237,Pääomalainasaamiset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Muut lainasaamiset,,,2022
+309,1239,Muut lainasaamiset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Muut lainasaamiset,,,2022
+310,1247,Muut saamiset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Muut saamiset,,,2022
+311,1248,Liittymismaksut palautettavat,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Muut saamiset,,,2022
+312,1410,Välitetyt valtion lainat,tase,TASE VASTAAVAA,TOIMEKSIANTOJEN VARAT,Valtion toimeksiannot,,,,2022
+313,1420,Muut valtion toimeksiannot,tase,TASE VASTAAVAA,TOIMEKSIANTOJEN VARAT,Valtion toimeksiannot,,,,2022
+314,1440,Lahjoitusrahastojen varat,tase,TASE VASTAAVAA,TOIMEKSIANTOJEN VARAT,,,,"Kunta, ky, LL, Kons",2022
+315,1460,Muut toimeksiantojen varat,tase,TASE VASTAAVAA,TOIMEKSIANTOJEN VARAT,,,,"Kunta, ky, LL, Kons",2022
+316,1500,Aineet ja tarvikkeet,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2022
+317,1530,Keskeneräiset tuotteet,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2022
+318,1550,Valmiit tuotteet,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2022
+319,1570,Muu vaihto-omaisuus,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2022
+320,1590,Ennakkomaksut,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2022
+321,1600,Myyntisaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,"Kunta, ky, LL, Kons",2022
+322,1630,Lainasaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,"Kunta, ky, LL, Kons",2022
+323,1640,Saamiset kunnalta ja kuntayhtymältä,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,LL,2022
+324,1650,Laskennalliset verosaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,Kons,2022
+325,1688,Muut saamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,"Kunta, ky, LL, Kons",2022
+326,1711,Siirtyvät korot,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,Siirtosaamiset,,2022
+327,1712,Muut siirtosaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,Siirtosaamiset,,2022
+328,1720,Myyntisaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,,"Kunta, ky, LL, Kons",2022
+329,1750,Lainasaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,,"Kunta, ky, LL, Kons",2022
+330,1760,Saamiset kunnalta ja kuntayhtymältä,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,,LL,2022
+331,1770,Laskennalliset verosaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,,Kons,2022
+332,1800,Muut saamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,Muut saamiset,,2022
+333,1810,Alv-saamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,Muut saamiset,,2022
+334,1816,Siirtyvät korot,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,Siirtosaamiset,,2022
+335,1829,Muut siirtosaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,Siirtosaamiset,,2022
+336,1830,Osakkeet ja osuudet,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,,,"Kunta, ky, LL, Kons",2022
+337,1850,Sijoitukset valtion velkasitoumuksiin,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Sijoitukset rahamarkkinainstrumentteihin,,,2022
+338,1855,Sijoitukset kuntatodistuksiin,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Sijoitukset rahamarkkinainstrumentteihin,,,2022
+339,1860,Sijoitukset muihin rahamarkkinainstrumentteihin,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Sijoitukset rahamarkkinainstrumentteihin,,,2022
+340,1870,Joukkovelkakirjalainasaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,,,"Kunta, ky, LL, Kons",2022
+341,1891,Rahasto-osuudet (yhteensä),tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Muut arvopaperit,,,2022
+342,1892,Muut arvopaperit,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Muut arvopaperit,,,2022
+343,1900,Rahat ja pankkisaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,,,,"Kunta, ky, LL, Kons",2022
+344,2000,Peruspääoma,tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2022
+345,2005,Säätiöiden ja yhdistysten peruspääomat,tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,Kons,2022
+346,2010,Arvonkorotusrahasto,tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2022
+347,2015,Muut omat rahastot,tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2022
+348,2040,Edellisten tilikausien ylijäämä (alijäämä),tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2022
+349,2050,Tilikauden ylijäämä (alijäämä),tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2022
+350,2060,Vähemmistöosuudet,tase,TASE VASTATTAVAA,VÄHEMMISTÖOSUUDET,,,,,2022
+351,2100,Poistoero,tase,TASE VASTATTAVAA,POISTOERO JA VAPAAEHTOISET VARAUKSET,,,,"Kunta, ky, LL",2022
+352,2110,Vapaaehtoiset varaukset,tase,TASE VASTATTAVAA,POISTOERO JA VAPAAEHTOISET VARAUKSET,,,,"Kunta, ky, LL",2022
+353,2120,Eläkevaraukset,tase,TASE VASTATTAVAA,PAKOLLISET VARAUKSET,,,,"Kunta, ky, LL, Kons",2022
+354,2130,Muut pakolliset varaukset,tase,TASE VASTATTAVAA,PAKOLLISET VARAUKSET,,,,"Kunta, ky, LL, Kons",2022
+355,2300,Välitettävät valtion lainat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,Valtion toimeksiannot,,,,2022
+356,2310,Välitetyt valtion lainat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,Valtion toimeksiannot,,,,2022
+357,2320,Muut valtion toimeksiantojen pääomat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,Valtion toimeksiannot,,,,2022
+358,2325,Lahjoitusrahastojen pääomat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,,,,"Kunta, ky, LL, Kons",2022
+359,2330,Muut toimeksiantojen pääomat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,,,,"Kunta, ky, LL, Kons",2022
+360,2399,Konsernireservi,tase,TASE VASTATTAVAA,KONSERNIRESERVI,,,,,2022
+361,2400,Joukkovelkakirjalainat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,"Kunta, ky, LL, Kons",2022
+362,2410,Lainat rahoitus- ja vakuutuslaitoksilta,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,"Kunta, ky, LL, Kons",2022
+363,2415,Lainat kunnalta/kuntayhtymältä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,LL,2022
+364,2420,Lainat julkisyhteisöiltä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,"Kunta, ky, LL, Kons",2022
+365,2430,Lainat muilta luotonantajilta,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,"Kunta, ky, LL, Kons",2022
+366,2449,Saadut ennakot,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,"Kunta, ky, LL, Kons",2022
+367,2457,Ostovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,"Kunta, ky, LL, Kons",2022
+368,2458,Korottomat velat kunnalta/kuntayhtymältä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,LL,2022
+369,2460,Johdannaissopimusten perusteella vastaanotetut käteisvakuudet,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,,2022
+370,2469,Liittymismaksut ja muut velat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,,2022
+371,2470,Siirtovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,"Kunta, ky, LL, Kons",2022
+372,2480,Laskennalliset verovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,Kons,2022
+373,2500,Joukkovelkakirjalainat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2022
+374,2501,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, joukkovelkakirjalainat",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2022
+375,2510,Lainat rahoitus- ja vakuutuslaitoksilta,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2022
+376,2511,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, lainat rahoitus- ja vakuutuslaitoksilta",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2022
+377,2515,Lainat kunnalta/kuntayhtymältä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,LL,2022
+378,2516,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, lainat kunnalta/kuntayhtymältä",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,LL,2022
+379,2520,Lainat julkisyhteisöiltä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2022
+380,2521,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, lainat julkisyhteisöiltä, tili",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2022
+381,2530,Lainat muilta luotonantajilta,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2022
+382,2531,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, lainat muilta luotonantajilta, tili",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2022
+383,2540,Saadut ennakot,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),,"Kunta, ky, LL, Kons",2022
+384,2545,Ostovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),,"Kunta, ky, LL, Kons",2022
+385,2550,Korottomat velat kunnalta/kuntayhtymältä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),,LL,2022
+386,2561,Johdannaissopimusten perusteella vastaanotetut käteisvakuudet,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,2022
+387,2563,Alv-velka,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,2022
+388,2568,Liittymismaksuvelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,2022
+389,2569,Muut velat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,2022
+390,2579,Siirtyvät korot,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Siirtovelat,,2022
+391,2580,Lomapalkkajaksotus,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Siirtovelat,,2022
+392,2589,Muut siirtovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Siirtovelat,,2022
+393,2590,Laskennalliset verovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),,Kons,2022
+394,3005,Myyntituotot,tuloslaskelma,TOIMINTATUOTOT,Myyntituotot/Liikevaihto,,,,,2022
+395,3070,Liiketoiminnan muut tuotot,tuloslaskelma,TOIMINTATUOTOT,Myyntituotot/Liikevaihto,,,,LL,2022
+396,3295,Maksutuotot,tuloslaskelma,TOIMINTATUOTOT,Maksutuotot,,,,,2022
+397,3300,Tuet ja avustukset (muilta),tuloslaskelma,TOIMINTATUOTOT,Tuet ja avustukset,,,,"Kunta, ky, LL",2022
+398,3390,Palkkatuki,tuloslaskelma,TOIMINTATUOTOT,Tuet ja avustukset,,,,,2022
+399,3440,Maa- ja vesialueiden vuokrat,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2022
+400,3499,"Vuokratuotot, muut",tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2022
+401,3510,Pysyvien vastaavien hyödykkeiden luovutusvoitot,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2022
+402,3521,Vakuutusyhtiöiden vahinkovakuutuskorvaukset,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2022
+403,3530,Muut tuotot,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2022
+404,3533,Liiketoiminnan muut tuotot,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,LL,2022
+405,3536,Sakot ja uhkasakot,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2022
+406,3560,Tuet ja avustukset kunnalta/kuntayhtymältä,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,LL,2022
+407,3610,Valmiiden ja keskeneräisten tuotteiden varastojen lisäys tai vähennys,tuloslaskelma,TOIMINTATUOTOT,Valmistevarastojen muutos,,,,"Kunta, ky, LL",2022
+408,3710,Valmistus omaan käyttöön,tuloslaskelma,TOIMINTATUOTOT,VALMISTUS OMAAN KÄYTTÖÖN,,,,"Kunta, ky",2022
+409,4000,Maksetut palkat ja palkkiot,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2022
+410,4060,Jaksotetut palkat ja palkkiot,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2022
+411,4065,Aktivoidut palkat ja palkkiot,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2022
+412,4090,Henkilöstökorvaukset,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2022
+413,4110,Eläkevakuutusmaksut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2022
+414,4120,Maksetut eläkkeet,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2022
+415,4130,Jaksotetut eläkekulut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2022
+416,4135,Aktivoidut eläkemenot,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2022
+417,4190,Jaksotetut  sosiaalivakuutusmaksut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2022
+418,4200,Aktivoidut sosiaalivakuutusmaksut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2022
+419,4210,Muut henkilösivukulut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2022
+420,4300,Asiakaspalvelujen ostot,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+421,4315,Palveluseteli,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+422,4340,Asiantuntijapalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+423,4341,Toimistopalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+424,4342,ICT-palvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+425,4344,Rahoitus- ja pankkipalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+426,4346,Työvoiman vuokraus,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+427,4350,"Painatukset, ilmoitukset ja markkinointi",tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+428,4360,Posti- ja kuriiripalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+429,4370,Vakuutukset,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+430,4380,Puhtaanapito- ja pesulapalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+431,4390,Rakennusten ja alueiden rakentamis- ja kunnossapitopalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+432,4400,"Koneiden, kaluston ja laitteiden rakentamis- ja kunnossapitopalvelut",tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+433,4410,Majoitus- ja ravitsemispalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+434,4420,Matkustus- ja kuljetuspalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+435,4430,Sosiaali- ja terveyspalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+436,4440,Koulutus- ja kulttuuripalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+437,4445,Koulutuskorvaukset työnantajille,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+438,4450,Osuus verotuskustannuksiin,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+439,4460,Muut yhteistoimintaosuudet,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+440,4470,Muut palvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+441,4480,Aktivoidut palvelujen ostot,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2022
+442,4500,Toimisto- ja koulutarvikkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+443,4510,Kirjallisuus,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+444,4520,Elintarvikkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+445,4530,Vaatteisto,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+446,4533,Lääkkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+447,4534,Hoitotarvikkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+448,4550,Puhdistusaineet ja -tarvikkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+449,4560,Poltto- ja voiteluaineet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+450,4568,Lämmitys,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+451,4569,Sähkö ja kaasu,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+452,4570,Vesi,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+453,4580,Kalusto,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+454,4590,Rakennusmateriaali,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+455,4600,Muu materiaali,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+456,4640,"Pysyviin vastaaviin aktivoidut aineet, tarvikkeet ja tavarat",tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2022
+457,4670,Varastojen lisäys/vähennys,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,"Kunta, ky, LL",2022
+458,4710,"Omaishoidon tuki, hoitopalkkiot",tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2022
+459,4712,Kotihoidon tuki,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2022
+460,4713,Kotihoidon tuen kuntalisä,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2022
+461,4714,Yksityisen hoidon tuki,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2022
+462,4715,Yksityisen hoidon tuen kuntalisä,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2022
+463,4716,Osittainen ja joustava hoitoraha,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2022
+464,4721,Täydentävä toimeentulotuki,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2022
+465,4722,Ehkäisevä toimeentulotuki,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2022
+466,4723,Täydentävän ja ehkäisevän toimeentulotuen takaisinperintä,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2022
+467,4739,Muut avustukset kotitalouksille,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2022
+468,4742,Avustukset yhteisöille,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2022
+469,4810,Maa- ja vesialueiden vuokrat,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+470,4820,Rakennusten ja huoneistojen vuokrat,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+471,4830,Koneiden ja laitteiden vuokrat,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+472,4890,Muut vuokrat,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+473,4899,Aktivoidut vuokrakulut,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+474,4901,Jätevero,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+475,4910,Muut välilliset ja välittömät verot,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+476,4920,Pysyvien vastaavien hyödykkeiden luovutustappiot,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+477,4921,Luottotappiot toimintatuotoista (myyntisaamiset),tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+478,4930,Takaustappiot,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+479,4931,Takauskorvausten takaisinperinnät,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+480,4940,Muut toimintakulut,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+481,4990,Aktivoidut muut kulut,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2022
+482,4996,Osuus osakkuusyhteisöjen voitosta,tuloslaskelma,TOIMINTAKULUT,Osuus osakkuusyhteisöjen voitosta (tappiosta),,,,,2022
+483,4997,Osuus osakkuusyhteisöjen tappiosta,tuloslaskelma,TOIMINTAKULUT,Osuus osakkuusyhteisöjen voitosta (tappiosta),,,,,2022
+484,5000,Kunnan tulovero,tuloslaskelma,TOIMINTAKULUT,Verotulot,,,,,2022
+485,5100,Kiinteistövero,tuloslaskelma,TOIMINTAKULUT,Verotulot,,,,,2022
+486,5200,Osuus yhteisöveron tuotosta,tuloslaskelma,TOIMINTAKULUT,Verotulot,,,,,2022
+487,5400,Muut verotulot,tuloslaskelma,TOIMINTAKULUT,Verotulot,,,,,2022
+488,5501,Kunnan peruspalvelujen valtionosuus (ilman tasauksia),tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2022
+489,5502,Verotuloihin perustuva valtionosuuksien tasaus,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2022
+490,5510,Harkinnanvarainen valtionosuuden korotus,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2022
+491,5701,Opetus- ja kulttuuritoimen muut valtionosuudet,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2022
+492,5850,Muut valtionosuudet,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2022
+493,5890,Verotulojen menetysten korvaus,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2022
+494,6040,Korkotuotot antolainoista,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+495,6050,Muut korkotuotot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+496,6055,Korkojohdannaisiin liittyvät korkotuotot ja -kulut (tuottoja suojaava),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+497,6100,Osinkotuotot ja osuuspääomien korot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+498,6115,Korvaus peruspääomasta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,"Kunta, ky",2022
+499,6116,Korvaus jäännöspääomasta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,"Kunta, ky",2022
+500,6120,Verotilitysten korot ja korotukset,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+501,6130,Viivästyskorot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+502,6140,Peruspääoman korot kuntayhtymiltä,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,Kunta,2022
+503,6150,Kurssivoitot rahoituslainoista,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+504,6160,Arvopapereiden luovutusvoitot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+505,6169,Korkojohdannaisiin liittyvät tuotot (ei-suojaava),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+506,6170,Muut rahoitustuotot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+507,6176,Takausprovisiot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+508,6180,Rahoitusarvopaperien arvonalentumisten oikaisut (Arvonalentumisten palautumiset),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+509,6250,Kunnalle/ky:lle maksetut korkokulut,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,LL,2022
+510,6255,Korkokulut lainoista ulkopuolisilta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+511,6270,Korkojohdannaisiin liittyvät korkokulut ja -tuotot (kuluja suojaava),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+512,6301,Peruspääoman korko,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,ky,2022
+513,6304,Korvaus peruspääomasta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,LL,2022
+514,6306,Korvaus jäännöspääomasta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,LL,2022
+515,6330,Kurssitappiot rahoituslainoista,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+516,6335,Arvopapereiden luovutustappiot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+517,6360,Arvonalentumiset vaihtuvien vastaavien rahoitusarvopapereista,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+518,6370,Arvonalentumiset pysyvien vastaavien sijoituksista (pl. toimialasijoittamisen osakkeet ja -osuudet),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+519,6379,Korkojohdannaisiin liittyvät kulut (ei-suojaava),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+520,6380,Muut rahoituskulut,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2022
+521,7170,Suunnitelman mukaiset poistot,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2022
+522,7180,Kertaluonteiset poistot,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2022
+523,7190,"Pysyvien vastaavien hyödykkeiden luovutusvoitot ja -tappiot 
+(epäolennaiset, ellei muissa tuotoissa/kuluissa)",tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2022
+524,7220,Positiivinen eliminointiero,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2022
+525,7221,Negatiivinen eliminointiero,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2022
+526,7222,Konserniliikearvon poisto,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2022
+527,7223,Konsernireservin vähennys,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2022
+528,7230,Pysyvien vastaavien hyödykkeiden arvonalentumiset,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2022
+529,7240,Muut arvonalentumiset,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2022
+530,8000,Pysyvien vastaavien hyödykkeiden luovutusvoitot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2022
+531,8010,Omistusosuuksien luovutukset,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2022
+532,8020,Vahingonkorvaukset ja sopimussakot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2022
+533,8050,Muut satunnaiset tuotot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2022
+534,8100,Pysyvien vastaavien hyödykkeiden luovutustappiot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2022
+535,8110,Omistusosuuksien luovutukset,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2022
+536,8120,Vahingonkorvaukset ja sopimussakot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2022
+537,8130,Annetut akordit ja konserniavustukset,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2022
+538,8150,Muut satunnaiset kulut,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2022
+539,8200,Tilinpäätössiirrot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,Kons,2022
+540,8500,Poistoeron lisäys (-),tuloslaskelma,TOIMINTAKULUT,Poistoeron muutos / Poistoeron lisäys (-) tai vähennys (+),,,,,2022
+541,8550,Poistoeron vähennys (+),tuloslaskelma,TOIMINTAKULUT,Poistoeron muutos / Poistoeron lisäys (-) tai vähennys (+),,,,,2022
+542,8600,Varausten lisäys (-),tuloslaskelma,TOIMINTAKULUT,Varausten muutos / Varausten lisäys (-) tai vähennys (+),,,,,2022
+543,8650,Varausten vähennys (+),tuloslaskelma,TOIMINTAKULUT,Varausten muutos / Varausten lisäys (-) tai vähennys (+),,,,,2022
+544,8700,Rahastojen lisäys (-),tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,,2022
+545,8750,Rahastojen vähennys (+),tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,,2022
+546,8760,Tuloverot,tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,LL,2022
+547,8765,Tilikauden verot,tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,Kons,2022
+548,8766,Laskennalliset verot,tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,Kons,2022
+549,8780,Vähemmistöosuudet,tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,Kons,2022
+550,8800,Tilikauden ylijäämä (alijäämä),tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,"Kunta, ky, LL, Kons",2022
+551,1005,Tietokoneohjelmistot,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,Aineettomat oikeudet,,,2021
+552,1006,Muut aineettomat oikeudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,Aineettomat oikeudet,,,2021
+553,1010,Muut pitkävaikutteiset menot,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,,,"Kunta, ky, LL, Kons",2021
+554,1012,Konserniliikearvo,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,,,,2021
+555,1020,Ennakkomaksut,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineettomat hyödykkeet,,,"Kunta, ky, LL, Kons",2021
+556,1100,Maa- ja vesialueet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Maa- ja vesialueet (sis. arvonkorotukset),Maa- ja vesialueet (ilman arvonkorotuksia),,2021
+557,1102,Kiinteistöjen liittymismaksut,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Maa- ja vesialueet (sis. arvonkorotukset),Maa- ja vesialueet (ilman arvonkorotuksia),,2021
+558,1104,Kiinteistöjen vuokraoikeudet ja niihin liittyvät liittymismaksut,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Maa- ja vesialueet (sis. arvonkorotukset),Maa- ja vesialueet (ilman arvonkorotuksia),,2021
+559,1105,Maa- ja vesialueiden arvonkorotukset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Maa- ja vesialueet (sis. arvonkorotukset),,,2021
+560,1115,Asuinrakennukset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Rakennukset,,,2021
+561,1116,Muut rakennukset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Rakennukset,,,2021
+562,1130,Kiinteät rakenteet ja laitteet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,,,"Kunta, ky, LL, Kons",2021
+563,1160,Kuljetusvälineet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Koneet ja kalusto,,,2021
+564,1165,Tietokonelaitteet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Koneet ja kalusto,,,2021
+565,1166,Viestintälaitteet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Koneet ja kalusto,,,2021
+566,1170,Muut koneet ja kalusto,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Koneet ja kalusto,,,2021
+567,1180,Luonnonvarat,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Muut aineelliset hyödykkeet,,,2021
+568,1184,Arvo- ja taide-esineet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Muut aineelliset hyödykkeet,,,2021
+569,1187,Muut hyödykkeet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Muut aineelliset hyödykkeet,,,2021
+570,1190,Ennakkomaksut,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Ennakkomaksut ja keskeneräiset hankinnat,,,2021
+571,1195,Keskeneräiset hankinnat,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Aineelliset hyödykkeet,Ennakkomaksut ja keskeneräiset hankinnat,,,2021
+572,1200,Osakkuusyhteisöosakkeet ja -osuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkuusyhteisöosuudet,,,2021
+573,1201,Yhteisyhteisöosakkeet ja -osuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkuusyhteisöosuudet,,,2021
+574,1202,Muut osakkeet ja osuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkuusyhteisöosuudet,,,2021
+575,1204,Osakkeet ja osuudet tytäryhteisöissä,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2021
+576,1205,Asunto-osakkeet tytäryhteisöissä,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2021
+577,1206,Kuntayhtymäosuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2021
+578,1209,Liikelaitosten peruspääomaosuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2021
+579,1210,Muiden taseyksiköiden peruspääomaosuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2021
+580,1212,Muut osakkeet ja osuudet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2021
+581,1213,Muut asunto-osakkeet,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2021
+582,1214,Osakkeiden ja osuuksien arvonkorotukset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Osakkeet ja osuudet,,,2021
+583,1222,Joukkovelkakirjalainasaamiset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,,,"Kunta, ky, LL, Kons",2021
+584,1237,Pääomalainasaamiset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Muut lainasaamiset,,,2021
+585,1239,Muut lainasaamiset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Muut lainasaamiset,,,2021
+586,1247,Muut saamiset,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Muut saamiset,,,2021
+587,1248,Liittymismaksut palautettavat,tase,TASE VASTAAVAA,PYSYVÄT VASTAAVAT,Sijoitukset,Muut saamiset,,,2021
+588,1410,Välitetyt valtion lainat,tase,TASE VASTAAVAA,TOIMEKSIANTOJEN VARAT,Valtion toimeksiannot,,,,2021
+589,1420,Muut valtion toimeksiannot,tase,TASE VASTAAVAA,TOIMEKSIANTOJEN VARAT,Valtion toimeksiannot,,,,2021
+590,1440,Lahjoitusrahastojen varat,tase,TASE VASTAAVAA,TOIMEKSIANTOJEN VARAT,,,,"Kunta, ky, LL, Kons",2021
+591,1460,Muut toimeksiantojen varat,tase,TASE VASTAAVAA,TOIMEKSIANTOJEN VARAT,,,,"Kunta, ky, LL, Kons",2021
+592,1500,Aineet ja tarvikkeet,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2021
+593,1530,Keskeneräiset tuotteet,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2021
+594,1550,Valmiit tuotteet,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2021
+595,1570,Muu vaihto-omaisuus,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2021
+596,1590,Ennakkomaksut,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Vaihto-omaisuus,,,"Kunta, ky, LL, Kons",2021
+597,1600,Myyntisaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,"Kunta, ky, LL, Kons",2021
+598,1630,Lainasaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,"Kunta, ky, LL, Kons",2021
+599,1640,Saamiset kunnalta ja kuntayhtymältä,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,LL,2021
+600,1650,Laskennalliset verosaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,Kons,2021
+601,1688,Muut saamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,,"Kunta, ky, LL, Kons",2021
+602,1711,Siirtyvät korot,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,Siirtosaamiset,,2021
+603,1712,Muut siirtosaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Pitkäaikaiset saamiset,Siirtosaamiset,,2021
+604,1720,Myyntisaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,,"Kunta, ky, LL, Kons",2021
+605,1750,Lainasaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,,"Kunta, ky, LL, Kons",2021
+606,1760,Saamiset kunnalta ja kuntayhtymältä,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,,LL,2021
+607,1770,Laskennalliset verosaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,,Kons,2021
+608,1800,Muut saamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,Muut saamiset,,2021
+609,1810,Alv-saamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,Muut saamiset,,2021
+610,1816,Siirtyvät korot,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,Siirtosaamiset,,2021
+611,1829,Muut siirtosaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Saamiset,Lyhytaikaiset saamiset,Siirtosaamiset,,2021
+612,1830,Osakkeet ja osuudet,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,,,"Kunta, ky, LL, Kons",2021
+613,1850,Sijoitukset valtion velkasitoumuksiin,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Sijoitukset rahamarkkinainstrumentteihin,,,2021
+614,1855,Sijoitukset kuntatodistuksiin,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Sijoitukset rahamarkkinainstrumentteihin,,,2021
+615,1860,Sijoitukset muihin rahamarkkinainstrumentteihin,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Sijoitukset rahamarkkinainstrumentteihin,,,2021
+616,1870,Joukkovelkakirjalainasaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,,,"Kunta, ky, LL, Kons",2021
+617,1891,Rahasto-osuudet (yhteensä),tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Muut arvopaperit,,,2021
+618,1892,Muut arvopaperit,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,Rahoitusarvopaperit,Muut arvopaperit,,,2021
+619,1900,Rahat ja pankkisaamiset,tase,TASE VASTAAVAA,VAIHTUVAT VASTAAVAT,,,,"Kunta, ky, LL, Kons",2021
+620,2000,Peruspääoma,tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2021
+621,2005,Säätiöiden ja yhdistysten peruspääomat,tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,Kons,2021
+622,2010,Arvonkorotusrahasto,tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2021
+623,2015,Muut omat rahastot,tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2021
+624,2040,Edellisten tilikausien ylijäämä (alijäämä),tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2021
+625,2050,Tilikauden ylijäämä (alijäämä),tase,TASE VASTATTAVAA,OMA PÄÄOMA,,,,"Kunta, ky, LL, Kons",2021
+626,2060,Vähemmistöosuudet,tase,TASE VASTATTAVAA,VÄHEMMISTÖOSUUDET,,,,,2021
+627,2100,Poistoero,tase,TASE VASTATTAVAA,POISTOERO JA VAPAAEHTOISET VARAUKSET,,,,"Kunta, ky, LL",2021
+628,2110,Vapaaehtoiset varaukset,tase,TASE VASTATTAVAA,POISTOERO JA VAPAAEHTOISET VARAUKSET,,,,"Kunta, ky, LL",2021
+629,2120,Eläkevaraukset,tase,TASE VASTATTAVAA,PAKOLLISET VARAUKSET,,,,"Kunta, ky, LL, Kons",2021
+630,2130,Muut pakolliset varaukset,tase,TASE VASTATTAVAA,PAKOLLISET VARAUKSET,,,,"Kunta, ky, LL, Kons",2021
+631,2300,Välitettävät valtion lainat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,Valtion toimeksiannot,,,,2021
+632,2310,Välitetyt valtion lainat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,Valtion toimeksiannot,,,,2021
+633,2320,Muut valtion toimeksiantojen pääomat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,Valtion toimeksiannot,,,,2021
+634,2325,Lahjoitusrahastojen pääomat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,,,,"Kunta, ky, LL, Kons",2021
+635,2330,Muut toimeksiantojen pääomat,tase,TASE VASTATTAVAA,TOIMEKSIANTOJEN PÄÄOMAT,,,,"Kunta, ky, LL, Kons",2021
+636,2399,Konsernireservi,tase,TASE VASTATTAVAA,KONSERNIRESERVI,,,,,2021
+637,2400,Joukkovelkakirjalainat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,"Kunta, ky, LL, Kons",2021
+638,2410,Lainat rahoitus- ja vakuutuslaitoksilta,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,"Kunta, ky, LL, Kons",2021
+639,2415,Lainat kunnalta/kuntayhtymältä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,LL,2021
+640,2420,Lainat julkisyhteisöiltä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,"Kunta, ky, LL, Kons",2021
+641,2430,Lainat muilta luotonantajilta,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (korollinen vieras pääoma),,,"Kunta, ky, LL, Kons",2021
+642,2449,Saadut ennakot,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,"Kunta, ky, LL, Kons",2021
+643,2457,Ostovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,"Kunta, ky, LL, Kons",2021
+644,2458,Korottomat velat kunnalta/kuntayhtymältä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,LL,2021
+645,2460,Johdannaissopimusten perusteella vastaanotetut käteisvakuudet,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,,2021
+646,2469,Liittymismaksut ja muut velat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,,2021
+647,2470,Siirtovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,"Kunta, ky, LL, Kons",2021
+648,2480,Laskennalliset verovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Pitkäaikainen (koroton vieras pääoma),,,Kons,2021
+649,2500,Joukkovelkakirjalainat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2021
+650,2501,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, joukkovelkakirjalainat",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2021
+651,2510,Lainat rahoitus- ja vakuutuslaitoksilta,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2021
+652,2511,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, lainat rahoitus- ja vakuutuslaitoksilta",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2021
+653,2515,Lainat kunnalta/kuntayhtymältä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,LL,2021
+654,2516,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, lainat kunnalta/kuntayhtymältä",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,LL,2021
+655,2520,Lainat julkisyhteisöiltä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2021
+656,2521,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, lainat julkisyhteisöiltä, tili",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2021
+657,2530,Lainat muilta luotonantajilta,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2021
+658,2531,"Pitkäaikaisten lainojen seuraavan vuoden lyhennykset, lainat muilta luotonantajilta, tili",tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (korollinen vieras pääoma),,"Kunta, ky, LL, Kons",2021
+659,2540,Saadut ennakot,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),,"Kunta, ky, LL, Kons",2021
+660,2545,Ostovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),,"Kunta, ky, LL, Kons",2021
+661,2550,Korottomat velat kunnalta/kuntayhtymältä,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),,LL,2021
+662,2561,Johdannaissopimusten perusteella vastaanotetut käteisvakuudet,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,2021
+663,2563,Alv-velka,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,2021
+664,2568,Liittymismaksuvelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,2021
+665,2569,Muut velat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Muut velat/Liittymismaksut ja muut velat,,2021
+666,2579,Siirtyvät korot,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Siirtovelat,,2021
+667,2580,Lomapalkkajaksotus,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Siirtovelat,,2021
+668,2589,Muut siirtovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),Siirtovelat,,2021
+669,2590,Laskennalliset verovelat,tase,TASE VASTATTAVAA,VIERAS PÄÄOMA,Lyhytaikainen,Lyhytaikainen (koroton vieras pääoma),,Kons,2021
+670,3005,Myyntituotot,tuloslaskelma,TOIMINTATUOTOT,Myyntituotot/Liikevaihto,,,,,2021
+671,3070,Liiketoiminnan muut tuotot,tuloslaskelma,TOIMINTATUOTOT,Myyntituotot/Liikevaihto,,,,LL,2021
+672,3295,Maksutuotot,tuloslaskelma,TOIMINTATUOTOT,Maksutuotot,,,,,2021
+673,3300,Tuet ja avustukset (muilta),tuloslaskelma,TOIMINTATUOTOT,Tuet ja avustukset,,,,"Kunta, ky, LL",2021
+674,3350,Tuet ja avustukset muilta kunnilta,tuloslaskelma,TOIMINTATUOTOT,Tuet ja avustukset,,,,,2021
+675,3390,Palkkatuki,tuloslaskelma,TOIMINTATUOTOT,Tuet ja avustukset,,,,,2021
+676,3440,Maa- ja vesialueiden vuokrat,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2021
+677,3499,"Vuokratuotot, muut",tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2021
+678,3510,Pysyvien vastaavien hyödykkeiden luovutusvoitot,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2021
+679,3521,Vakuutusyhtiöiden vahinkovakuutuskorvaukset,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2021
+680,3530,Muut tuotot,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2021
+681,3533,Liiketoiminnan muut tuotot,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,LL,2021
+682,3536,Sakot ja uhkasakot,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,,2021
+683,3560,Tuet ja avustukset kunnalta/kuntayhtymältä,tuloslaskelma,TOIMINTATUOTOT,Muut toimintatuotot,,,,LL,2021
+684,3610,Valmiiden ja keskeneräisten tuotteiden varastojen lisäys tai vähennys,tuloslaskelma,TOIMINTATUOTOT,Valmistevarastojen muutos,,,,LL,2021
+685,3710,Valmistus omaan käyttöön,tuloslaskelma,TOIMINTATUOTOT,VALMISTUS OMAAN KÄYTTÖÖN,,,,"Kunta, ky",2021
+686,4000,Maksetut palkat ja palkkiot,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2021
+687,4060,Jaksotetut palkat ja palkkiot,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2021
+688,4065,Aktivoidut palkat ja palkkiot,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2021
+689,4090,Henkilöstökorvaukset,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2021
+690,4110,Eläkevakuutusmaksut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2021
+691,4120,Maksetut eläkkeet,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2021
+692,4130,Jaksotetut eläkekulut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2021
+693,4135,Aktivoidut eläkemenot,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2021
+694,4190,Jaksotetut  sosiaalivakuutusmaksut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2021
+695,4200,Aktivoidut sosiaalivakuutusmaksut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2021
+696,4210,Muut henkilösivukulut,tuloslaskelma,TOIMINTAKULUT,Henkilöstökulut,,,,,2021
+697,4300,Asiakaspalvelujen ostot,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+698,4315,Palveluseteli,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+699,4340,Asiantuntijapalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+700,4341,Toimistopalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+701,4342,ICT-palvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+702,4344,Rahoitus- ja pankkipalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+703,4346,Työvoiman vuokraus,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+704,4350,"Painatukset, ilmoitukset ja markkinointi",tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+705,4360,Posti- ja kuriiripalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+706,4370,Vakuutukset,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+707,4380,Puhtaanapito- ja pesulapalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+708,4390,Rakennusten ja alueiden rakentamis- ja kunnossapitopalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+709,4400,"Koneiden, kaluston ja laitteiden rakentamis- ja kunnossapitopalvelut",tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+710,4410,Majoitus- ja ravitsemispalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+711,4420,Matkustus- ja kuljetuspalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+712,4430,Sosiaali- ja terveyspalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+713,4440,Koulutus- ja kulttuuripalvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+714,4445,Koulutuskorvaukset työnantajille,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+715,4450,Osuus verotuskustannuksiin,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+716,4460,Muut yhteistoimintaosuudet,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+717,4470,Muut palvelut,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+718,4480,Aktivoidut palvelujen ostot,tuloslaskelma,TOIMINTAKULUT,Palvelujen ostot,,,,,2021
+719,4500,Toimisto- ja koulutarvikkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+720,4510,Kirjallisuus,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+721,4520,Elintarvikkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+722,4530,Vaatteisto,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+723,4533,Lääkkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+724,4534,Hoitotarvikkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+725,4550,Puhdistusaineet ja -tarvikkeet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+726,4560,Poltto- ja voiteluaineet,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+727,4568,Lämmitys,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+728,4569,Sähkö ja kaasu,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+729,4570,Vesi,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+730,4580,Kalusto,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+731,4590,Rakennusmateriaali,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+732,4600,Muu materiaali,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+733,4640,"Pysyviin vastaaviin aktivoidut aineet, tarvikkeet ja tavarat",tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,,2021
+734,4670,Varastojen lisäys/vähennys,tuloslaskelma,TOIMINTAKULUT,"Aineet, tarvikkeet ja tavarat",,,,LL,2021
+735,4710,"Omaishoidon tuki, hoitopalkkiot",tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2021
+736,4712,Kotihoidon tuki,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2021
+737,4713,Kotihoidon tuen kuntalisä,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2021
+738,4714,Yksityisen hoidon tuki,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2021
+739,4715,Yksityisen hoidon tuen kuntalisä,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2021
+740,4716,Osittainen hoitoraha,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2021
+741,4717,Joustava hoitoraha,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2021
+742,4721,Täydentävä toimeentulotuki,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2021
+743,4722,Ehkäisevä toimeentulotuki,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2021
+744,4723,Täydentävän ja ehkäisevän toimeentulotuen takaisinperintä,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2021
+745,4739,Muut avustukset kotitalouksille,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2021
+746,4742,Avustukset yhteisöille,tuloslaskelma,TOIMINTAKULUT,Avustukset,,,,,2021
+747,4810,Maa- ja vesialueiden vuokrat,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+748,4820,Rakennusten ja huoneistojen vuokrat,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+749,4830,Koneiden ja laitteiden vuokrat,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+750,4890,Muut vuokrat,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+751,4899,Aktivoidut vuokrakulut,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+752,4901,Jätevero,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+753,4910,Muut välilliset ja välittömät verot,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+754,4920,Pysyvien vastaavien hyödykkeiden luovutustappiot,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+755,4921,Luottotappiot toimintatuotoista (myyntisaamiset),tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+756,4930,Takaustappiot,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+757,4931,Takauskorvausten takaisinperinnät,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+758,4940,Muut toimintakulut,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+759,4990,Aktivoidut muut kulut,tuloslaskelma,TOIMINTAKULUT,Muut toimintakulut,,,,,2021
+760,4996,Osuus osakkuusyhteisöjen voitosta,tuloslaskelma,TOIMINTAKULUT,Osuus osakkuusyhteisöjen voitosta (tappiosta),,,,,2021
+761,4997,Osuus osakkuusyhteisöjen tappiosta,tuloslaskelma,TOIMINTAKULUT,Osuus osakkuusyhteisöjen voitosta (tappiosta),,,,,2021
+762,5000,Kunnan tulovero,tuloslaskelma,TOIMINTAKULUT,Verotulot,,,,,2021
+763,5100,Kiinteistövero,tuloslaskelma,TOIMINTAKULUT,Verotulot,,,,,2021
+764,5200,Osuus yhteisöveron tuotosta,tuloslaskelma,TOIMINTAKULUT,Verotulot,,,,,2021
+765,5400,Muut verotulot,tuloslaskelma,TOIMINTAKULUT,Verotulot,,,,,2021
+766,5501,Kunnan peruspalvelujen valtionosuus (ilman tasauksia),tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2021
+767,5502,Verotuloihin perustuva valtionosuuksien tasaus,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2021
+768,5503,Järjestelmämuutoksen tasaus,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2021
+769,5701,Opetus- ja kulttuuritoimen muut valtionosuudet,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2021
+770,5801,Harkinnanvarainen valtionosuuden korotus,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2021
+771,5850,Muut valtionosuudet,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2021
+772,5890,Verotulomenetysten kompensaatio,tuloslaskelma,TOIMINTAKULUT,Valtionosuudet,,,,,2021
+773,6040,Korkotuotot antolainoista,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+774,6050,Muut korkotuotot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+775,6055,Korkojohdannaisiin liittyvät korkotuotot ja -kulut (tuottoja suojaava),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+776,6100,Osinkotuotot ja osuuspääomien korot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+777,6115,Korvaus peruspääomasta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,"Kunta, ky",2021
+778,6116,Korvaus jäännöspääomasta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,"Kunta, ky",2021
+779,6120,Verotilitysten korot ja korotukset,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+780,6130,Viivästyskorot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+781,6140,Peruspääoman korot kuntayhtymiltä,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,Kunta,2021
+782,6150,Kurssivoitot rahoituslainoista,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+783,6160,Arvopapereiden luovutusvoitot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+784,6169,Korkojohdannaisiin liittyvät tuotot (ei-suojaava),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+785,6170,Muut rahoitustuotot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+786,6176,Takausprovisiot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+787,6180,Rahoitusarvopaperien arvonalentumisten oikaisut (Arvonalentumisten palautumiset),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+788,6250,Kunnalle/ky:lle maksetut korkokulut,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,LL,2021
+789,6255,Korkokulut lainoista ulkopuolisilta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+790,6270,Korkojohdannaisiin liittyvät korkokulut ja -tuotot (kuluja suojaava),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+791,6301,Peruspääoman korko,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,ky,2021
+792,6304,Korvaus peruspääomasta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,LL,2021
+793,6306,Korvaus jäännöspääomasta,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,LL,2021
+794,6330,Kurssitappiot rahoituslainoista,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+795,6335,Arvopapereiden luovutustappiot,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+796,6360,Arvonalentumiset vaihtuvien vastaavien rahoitusarvopapereista,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+797,6370,Arvonalentumiset pysyvien vastaavien sijoituksista (pl. toimialasijoittamisen osakkeet ja -osuudet),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+798,6379,Korkojohdannaisiin liittyvät kulut (ei-suojaava),tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+799,6380,Muut rahoituskulut,tuloslaskelma,TOIMINTAKULUT,Rahoitustuotot ja -kulut,,,,,2021
+800,7170,Suunnitelman mukaiset poistot,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2021
+801,7180,Kertaluonteiset poistot,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2021
+802,7190,"Pysyvien vastaavien hyödykkeiden luovutusvoitot ja -tappiot (epäolennaiset, ellei muissa tuotoissa/kuluissa)",tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2021
+803,7220,Positiivinen eliminointiero,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2021
+804,7221,Negatiivinen eliminointiero,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2021
+805,7222,Konserniliikearvon poisto,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2021
+806,7223,Konsernireservin vähennys,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2021
+807,7230,Pysyvien vastaavien hyödykkeiden arvonalentumiset,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2021
+808,7240,Muut arvonalentumiset,tuloslaskelma,TOIMINTAKULUT,Poistot ja arvonalentumiset,,,,,2021
+809,8000,Pysyvien vastaavien hyödykkeiden luovutusvoitot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2021
+810,8010,Omistusosuuksien luovutukset,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2021
+811,8020,Vahingonkorvaukset ja sopimussakot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2021
+812,8050,Muut satunnaiset tuotot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2021
+813,8100,Pysyvien vastaavien hyödykkeiden luovutustappiot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2021
+814,8110,Omistusosuuksien luovutukset,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2021
+815,8120,Vahingonkorvaukset ja sopimussakot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2021
+816,8130,Annetut akordit ja konserniavustukset,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2021
+817,8150,Muut satunnaiset kulut,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,,2021
+818,8200,Tilinpäätössiirrot,tuloslaskelma,TOIMINTAKULUT,Satunnaiset tuotot ja kulut/Satunnaiset erät,,,,Kons,2021
+819,8500,Poistoeron lisäys (-),tuloslaskelma,TOIMINTAKULUT,Poistoeron muutos / Poistoeron lisäys (-) tai vähennys (+),,,,,2021
+820,8550,Poistoeron vähennys (+),tuloslaskelma,TOIMINTAKULUT,Poistoeron muutos / Poistoeron lisäys (-) tai vähennys (+),,,,,2021
+821,8600,Varausten lisäys (-),tuloslaskelma,TOIMINTAKULUT,Varausten muutos / Varausten lisäys (-) tai vähennys (+),,,,,2021
+822,8650,Varausten vähennys (+),tuloslaskelma,TOIMINTAKULUT,Varausten muutos / Varausten lisäys (-) tai vähennys (+),,,,,2021
+823,8700,Rahastojen lisäys (-),tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,,2021
+824,8750,Rahastojen vähennys (+),tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,,2021
+825,8760,Tuloverot,tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,LL,2021
+826,8765,Tilikauden verot,tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,Kons,2021
+827,8766,Laskennalliset verot,tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,Kons,2021
+828,8780,Vähemmistöosuudet,tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,Kons,2021
+829,8800,Tilikauden ylijäämä (alijäämä),tuloslaskelma,TOIMINTAKULUT,Rahastojen muutos / Rahastojen lisäys (-) tai vähennys (+),,,,"Kunta, ky, LL, Kons",2021
