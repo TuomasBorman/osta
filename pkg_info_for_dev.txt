@@ -45,9 +45,9 @@ upload to pypi:
 twine upload dist/*
 
 test:
+tox
 pytest
 mypy src
-tox
 
 documentation:
 pdoc --html --output-dir ./docs --force  .
