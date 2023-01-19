@@ -1,13 +1,22 @@
+# This file contains infromation on configuration and testing
+# of the package.
+
+# The package is build with setuptools
 [build-system]
 requires = ["setuptools>=42.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
+# The package is tested with pytest. Unit tests are 
+# in tests directory. pytest also runs coverage test.
 [tool.pytest.ini_options]
 addopts = "--cov=osta"
 testpaths = [
     "tests",
 ]
 
+# The code is also analyzed with mypy that tests that is static
+# type checker. It analyzes possible erroneous behavior in code
+# without running checks. 
 [tool.mypy]
 python_version = 3.9
 mypy_path = "src"
