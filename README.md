@@ -1,4 +1,4 @@
-# osta (OSTolaskujen Analysointi)
+# osta (OSTolaskujen Analysointi) <img src="docs/logo/osta_logo.png" align="right" width="120" />
 
 A Python package for analysing invoices of Finnish public organizations.
 
