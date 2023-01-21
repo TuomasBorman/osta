@@ -51,6 +51,8 @@ mypy src
 
 documentation:
 pdoc --html --output-dir ./docs --force  .
+mv docs/osta/* docs
+rmdir docs/osta
 
 install:
 pip install -e .
