@@ -36,17 +36,19 @@ def enrich_data(df, **args):
     # INPUT CHECK END
 
     # Add organization data
-    df = __add_org_data(df)
+    df = __add_org_data(df, **args)
     # Add supplier data
-    df = __add_suppl_data(df)
+    df = __add_suppl_data(df, **args)
     # Add account data
     df = __add_account_data(df, **args)
     # Add service data
     df = __add_service_data(df, **args)
+    # Add missing total, vat_amount or price_ex_vat
+    df = __add_sums(df, **args)
     return df
 
 
-def __add_org_data(df, disable_org=False, org_data=None):
+def __add_org_data(df, disable_org=False, org_data=None, **args):
     """
     This function adds organization data to dataset.
     Input: df (and dataset to be added)
@@ -178,7 +180,7 @@ def __add_service_data(df, disable_service=False, service_data=None, **args):
     return df
 
 
-def __add_suppl_data(df, disable_suppl=False, suppl_data=None):
+def __add_suppl_data(df, disable_suppl=False, suppl_data=None, **args):
     """
     This function adds supplier data to dataset.
     Input: df and dataset to be added
@@ -216,7 +218,7 @@ def __add_suppl_data(df, disable_suppl=False, suppl_data=None):
 def __add_data_from_db(df, df_db, cols_to_check, cols_to_match, prefix):
     """
     This function is a general function for adding data from a file
-    to dataset..
+    to dataset.
     Input: df and dataset to be added
     Output: enriched df
     """
@@ -276,5 +278,38 @@ def __add_data_from_db(df, df_db, cols_to_check, cols_to_match, prefix):
     return df
 
 
-def __add_sums(df):
-    
+def __add_sums(df, disable_sums=False):
+    """
+    This function adds sums (total, vat_amount or price_ex_vat) if
+    some is missing.
+    Input: df
+    Output: enriched df
+    """
+    # INPUT CHECK
+    if not isinstance(disable_sums, bool):
+        raise Exception(
+            "'disable_sums' must be True or False."
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_df = ["total", "vat_amount", "price_ex_vat"]
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
+    if disable_sums or len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
+    # Get columns that are missing from the data
+    col_missing = [x for x in cols_df if x not in cols_to_check]
+
+    # If there were only one column missing, calculate them
+    if len(col_missing) == 1 and all(
+            x in ["float64", "int64"] for x in df.loc[
+                :, cols_to_check].dtypes):
+        # If total is missing
+        if "total" in col_missing:
+            df["total"] = df["price_ex_vat"] + df["vat_amount"]
+        # If price_ex_vat is missing
+        elif "price_ex_vat" in col_missing:
+            df["price_ex_vat"] = df["total"] - df["vat_amount"]
+        # If vat_amount is missing
+        elif "vat_amount" in col_missing:
+            df["vat_amount"] = df["total"] - df["price_ex_vat"]
+    return df

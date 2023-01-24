@@ -308,25 +308,6 @@ def __clean_sums(df, disable_sums=False, **args):
                     f"float: {col}",
                     category=Warning
                     )
-    # TODO: move to enrich data: If there were some columns missing,
-    # calculate them
-    # if len(col_missing) > 0 and all(df.dtypes[col_found] == "float64"):
-    #     # If total is missing
-    #     if "total" in col_missing and all(c in col_found
-    #                                       for c in ["price_ex_vat",
-    #                                                 "vat_amount"]):
-    #         df["total"] = df["price_ex_vat"] + df["vat_amount"]
-    #     # If price_ex_vat is missing
-    #     elif "price_ex_vat" in col_missing and all(c in col_found
-    #                                                for c in ["total",
-    #                                                          "vat_amount"]):
-    #         df["price_ex_vat"] = df["total"] - df["vat_amount"]
-    #     # If vat_amount is missing
-    #     elif "vat_amount" in col_missing and all(c in col_found
-    #                                              for c in ["total",
-    #                                                        "price_ex_vat"]):
-    #         df["vat_amount"] = df["total"] - df["price_ex_vat"]
-
     # Calcute the expected value, and check if it's matching
     if len(cols_missing) == 0 and all(df.dtypes[cols_to_check] == "float64"):
         test = df["price_ex_vat"] + df["vat_amount"]
