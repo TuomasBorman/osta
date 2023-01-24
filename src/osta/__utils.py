@@ -3,6 +3,7 @@
 import pandas as pd
 import re
 import numpy as np
+import warnings
 
 
 def __is_non_empty_df(df):
@@ -278,3 +279,30 @@ def __test_if_voucher_help(df, col_i, colnames, variables, voucher_th):
         if temp_col.shape[0] > temp.shape[0]*voucher_th:
             res = True
     return res
+
+
+def __not_duplicated_columns_found(df, cols_to_check):
+    """
+    This function checks if specific columns can be found and they are
+    duplicated.
+    Input: df, columns, duplicated columns
+    Output: columns that fulfill criteria
+    """
+    # Found columns
+    cols_to_check = [x for x in cols_to_check if x in df.columns]
+    # Get columns from df
+    cols_df = [x for x in df.columns if x in cols_to_check]
+    # Get unique values and their counts
+    unique, counts = np.unique(cols_df, return_counts=True)
+    # Get duplicated values
+    duplicated = unique[counts > 1]
+    # Are columns found and not duplicated? Return True if any found.
+    cols_to_check = [x for x in cols_to_check if x not in duplicated]
+    # If there were duplicated columns, give warning
+    if len(duplicated) > 0:
+        warnings.warn(
+            message=f"The following column names are duplicated. "
+            f"Please check them for errors.\n {duplicated.tolist()}",
+            category=Warning
+            )
+    return cols_to_check

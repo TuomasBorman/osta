@@ -95,6 +95,8 @@ def clean_data(df, **args):
         This function standardize the data and checks that it is in correct
         format. If the data is not in expected format containing erroneous
         data that cannot be standardized, the function gives a warning.
+        Moreover, empty rows and columns along with spaces before or after
+        values are removed.
 
         The function expects that columns are in specific format.
         Not all the columns must be included in the data. Below is a
@@ -221,7 +223,7 @@ def __standardize_country(df, disable_country=False,
             )
     # Check if column(s) is found as non-duplicated
     cols_to_check = ["country"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_to_check)
     if disable_country or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
@@ -280,7 +282,7 @@ def __clean_sums(df, disable_sums=False, **args):
             )
     # Check if column(s) is found as non-duplicated
     cols_df = ["total", "vat_amount", "price_ex_vat"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_df)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
     if disable_sums or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
@@ -362,7 +364,7 @@ def __standardize_date(df, disable_date=False, date_format="%d-%m-%Y",
             )
     # Check if column(s) is found as non-duplicated
     cols_to_check = ["date"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_to_check)
     if disable_date or len(cols_to_check) == 0:
         return df
     col_to_check = cols_to_check[0]
@@ -732,7 +734,7 @@ def __standardize_org(df, disable_org=False, org_data=None, **args):
             )
     # Check if column(s) is found as non-duplicated
     cols_df = ["org_id", "org_vat_number", "org_number", "org_name"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_df)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
     # Column of db that are matched with columns that are being checked
     # Subset to match with cols_to_check
     cols_to_match = ["bid", "vat_number", "number", "name"]
@@ -744,7 +746,7 @@ def __standardize_org(df, disable_org=False, org_data=None, **args):
     if org_data is None:
         path = pkg_resources.resource_filename(
             "osta", "resources/" + "municipality_codes.csv")
-        org_data = pd.read_csv(path, index_col=0)
+        org_data = pd.read_csv(path, index_col=0, dtype=str)
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=org_data,
                                    cols_to_check=cols_to_check,
@@ -781,7 +783,7 @@ def __standardize_account(df, disable_account=False, account_data=None,
             )
     # Check if column(s) is found as non-duplicated
     cols_df = ["account_number", "account_name"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_df)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
     # Column of db that are matched with columns that are being checked
     # Subset to match with cols_to_check
     cols_to_match = ["number", "name"]
@@ -833,7 +835,7 @@ def __standardize_service(df, disable_service=False,
             )
     # Check if column(s) is found as non-duplicated
     cols_df = ["service_cat", "service_cat_name"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_df)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
     # Column of db that are matched with columns that are being checked
     # Subset to match with cols_to_check
     cols_to_match = ["number", "name"]
@@ -880,7 +882,7 @@ def __standardize_suppl(df, disable_suppl=False, suppl_data=None, **args):
     # Check if column(s) is found as non-duplicated
     cols_df = ["suppl_id", "vat_number", "suppl_number", "suppl_name",
                "country"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_df)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
     # Column of db that are matched with columns that are being checked
     # Subset to match with cols_to_check
     cols_to_match = ["bid", "vat_number", "number", "name", "country"]
@@ -1263,7 +1265,7 @@ def __check_vat_number(df, cols_to_check, **args):
     """
     # INPUT CHECK
     # Check if column(s) is found as non-duplicated
-    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_to_check)
     # All columns must be present
     if len(cols_to_check) != 3:
         return df
@@ -1332,7 +1334,7 @@ def __check_voucher(df, disable_voucher=False, **args):
             "'disable_voucher' must be True or False."
             )
     cols_to_check = ["voucher"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_to_check)
     # All columns must be present
     if disable_voucher or len(cols_to_check) == 0:
         return df
@@ -1378,7 +1380,7 @@ def __subset_data_based_on_year(df, df_db, db_year=None,
     else:
         # Check if column(s) is found as non-duplicated
         cols_to_check = ["date"]
-        cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+        cols_to_check = utils.__not_duplicated_columns_found(df, cols_to_check)
         if len(cols_to_check) == 1:
             col_to_check = cols_to_check[0]
             # INPUT CHECK END
@@ -1395,30 +1397,3 @@ def __subset_data_based_on_year(df, df_db, db_year=None,
     # Get only unique values
     df_db = df_db.drop_duplicates(subset=["number", "name"])
     return df_db
-
-
-def __not_duplicated_columns_found(df, cols_to_check):
-    """
-    This function checks if specific columns can be found and they are
-    duplicated.
-    Input: df, columns, duplicated columns
-    Output: columns that fulfill criteria
-    """
-    # Found columns
-    cols_to_check = [x for x in cols_to_check if x in df.columns]
-    # Get columns from df
-    cols_df = [x for x in df.columns if x in cols_to_check]
-    # Get unique values and their counts
-    unique, counts = np.unique(cols_df, return_counts=True)
-    # Get duplicated values
-    duplicated = unique[counts > 1]
-    # Are columns found and not duplicated? Return True if any found.
-    cols_to_check = [x for x in cols_to_check if x not in duplicated]
-    # If there were duplicated columns, give warning
-    if len(duplicated) > 0:
-        warnings.warn(
-            message=f"The following column names are duplicated. "
-            f"Please check them for errors.\n {duplicated.tolist()}",
-            category=Warning
-            )
-    return cols_to_check

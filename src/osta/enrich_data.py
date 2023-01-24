@@ -33,3 +33,7 @@ def enrich_data(df, **args):
         raise Exception(
             "'df' must be non-empty pandas.DataFrame."
             )
+    # INPUT CHECK END
+
+    # Add organization data
+    df = __add_org_data(df)

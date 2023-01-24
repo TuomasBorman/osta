@@ -1,40 +1,40 @@
 ,number,name,bid,vat_number,city_or_mun,language,mun_center,province,subregion,population,area_total_km2,area_land_km2,population_density_km-2
-0,20,Akaa,2050864-5,FI20508645,kaupunki,suomi,Toijalan keskustaajama,Pirkanmaa,Etelä-Pirkanmaan seutukunta,16440,31438.0,29326.0,561.0
-1,5,Alajärvi,0177619-3,FI01776193,kaupunki,suomi,Alajärven keskustaajama,Etelä-Pohjanmaa,Järviseudun seutukunta,9270,1056.75,1008.77,92.0
-2,9,Alavieska,0184674-5,FI01846745,kunta,suomi,Alavieskan kirkonkylä,Pohjois-Pohjanmaa,Ylivieskan seutukunta,2484,25302.0,25150.0,99.0
-3,10,Alavus,0177736-4,FI01777364,kaupunki,suomi,Alavuden keskustaajama,Etelä-Pohjanmaa,Kuusiokuntien seutukunta,11210,1151.5,1087.24,103.0
-4,16,Asikkala,0145208-4,FI01452084,kunta,suomi,Vääksy,Päijät-Häme,Lahden seutukunta,8043,75555.0,56334.0,143.0
-5,18,Askola,9000162-0,FI90001620,kunta,suomi,Askolan kirkonkylä,Uusimaa,Porvoon seutukunta,4819,21803.0,21244.0,227.0
-6,19,Aura,0132103-3,FI01321033,kunta,suomi,Auran asemanseutu,Varsinais-Suomi,Loimaan seutukunta,3975,9558.0,9501.0,418.0
-7,35,Brändö,0204999-1,FI02049991,kunta,ruotsi,Åva,Ahvenanmaa,Ålands skärgård,444,10844.0,10818.0,41.0
-8,43,Eckerö,0144682-1,FI01446821,kunta,ruotsi,Överby,Ahvenanmaa,Ålands landsbygd,935,10918.0,10772.0,87.0
-9,46,Enonkoski,0163687-9,FI01636879,kunta,suomi,Enonkosken kirkonkylä,Etelä-Savo,Savonlinnan seutukunta,1355,41921.0,30555.0,44.0
-10,47,Enontekiö,0190662-1,FI01906621,kunta,"suomi, pohjoissaame",Hetta,Lappi,Tunturi-Lapin seutukunta,1808,8391.31,7953.44,2.0
-11,49,Espoo,0101263-6,FI01012636,kaupunki,"suomi, ruotsi",Espoon keskus,Uusimaa,Helsingin seutukunta,300748,33025.0,31234.0,9629.0
-12,50,Eura,0132239-4,FI01322394,kunta,suomi,Euran keskustaajama,Satakunta,Rauman seutukunta,11379,63020.0,57887.0,197.0
-13,51,Eurajoki,0132322-3,FI01323223,kunta,suomi,Eurajoen kirkonkylä,Satakunta,Rauman seutukunta,9250,52091.0,51500.0,18.0
-14,52,Evijärvi,0177804-1,FI01778041,kunta,suomi,Evijärven kirkonkylä,Etelä-Pohjanmaa,Järviseudun seutukunta,2376,39071.0,35415.0,67.0
-15,60,Finström,0205003-6,FI02050036,kunta,ruotsi,Godby,Ahvenanmaa,Ålands landsbygd,2597,13286.0,12332.0,211.0
-16,61,Forssa,0145626-1,FI01456261,kaupunki,suomi,Forssan keskustaajama,Kanta-Häme,Forssan seutukunta,16484,25336.0,24883.0,662.0
-17,62,Föglö,0282394-0,FI02823940,kunta,ruotsi,Degerby,Ahvenanmaa,Ålands skärgård,499,13499.0,13477.0,37.0
-18,65,Geta,0205012-4,FI02050124,kunta,ruotsi,Vestergeta,Ahvenanmaa,Ålands landsbygd,498,8747.0,8455.0,59.0
-19,69,Haapajärvi,0209756-3,FI02097563,kaupunki,suomi,Haapajärven keskustaajama,Pohjois-Pohjanmaa,Nivala–Haapajärven seutukunta,6784,78931.0,76642.0,89.0
-20,71,Haapavesi,0184872-4,FI01848724,kaupunki,suomi,Haapaveden keskustaajama,Pohjois-Pohjanmaa,Haapaveden-Siikalatvan seutukunta,6608,1086.53,1050.59,63.0
-21,72,Hailuoto,0184918-8,FI01849188,kunta,suomi,Hailuodon kirkonkylä,Pohjois-Pohjanmaa,Oulun seutukunta,955,20735.0,20566.0,46.0
-22,74,Halsua,0177826-0,FI01778260,kunta,suomi,Halsuan kirkonkylä,Keski-Pohjanmaa,Kaustisen seutukunta,1075,42834.0,41301.0,26.0
-23,75,Hamina,0242496-6,FI02424966,kaupunki,suomi,Haminan keskustaajama,Kymenlaakso,Kotka–Haminan seutukunta,19626,63371.0,60994.0,322.0
-24,76,Hammarland,0205014-0,FI02050140,kunta,ruotsi,Kattby,Ahvenanmaa,Ålands landsbygd,1636,14029.0,13855.0,118.0
-25,77,Hankasalmi,0174035-0,FI01740350,kunta,suomi,Hankasalmen kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,4650,68774.0,57169.0,81.0
-26,78,Hanko,0103166-9,FI01031669,kaupunki,"suomi, ruotsi",Hangon keskustaajama,Uusimaa,Raaseporin seutukunta,7934,11899.0,11746.0,675.0
-27,79,Harjavalta,0132585-1,FI01325851,kaupunki,suomi,Harjavallan keskustaajama,Satakunta,Porin seutukunta,6762,12774.0,12348.0,548.0
-28,81,Hartola,0163734-5,FI01637345,kunta,suomi,Hartolan kirkonkylä,Päijät-Häme,Lahden seutukunta,2604,67548.0,54281.0,48.0
-29,82,Hattula,0145801-3,FI01458013,kunta,suomi,Parola,Kanta-Häme,Hämeenlinnan seutukunta,9402,42739.0,35779.0,263.0
-30,86,Hausjärvi,0145997-2,FI01459972,kunta,suomi,Oitti,Kanta-Häme,Riihimäen seutukunta,8110,39877.0,38942.0,208.0
+0,020,Akaa,2050864-5,FI20508645,kaupunki,suomi,Toijalan keskustaajama,Pirkanmaa,Etelä-Pirkanmaan seutukunta,16440,31438.0,29326.0,561.0
+1,005,Alajärvi,0177619-3,FI01776193,kaupunki,suomi,Alajärven keskustaajama,Etelä-Pohjanmaa,Järviseudun seutukunta,9270,1056.75,1008.77,92.0
+2,009,Alavieska,0184674-5,FI01846745,kunta,suomi,Alavieskan kirkonkylä,Pohjois-Pohjanmaa,Ylivieskan seutukunta,2484,25302.0,25150.0,99.0
+3,010,Alavus,0177736-4,FI01777364,kaupunki,suomi,Alavuden keskustaajama,Etelä-Pohjanmaa,Kuusiokuntien seutukunta,11210,1151.5,1087.24,103.0
+4,016,Asikkala,0145208-4,FI01452084,kunta,suomi,Vääksy,Päijät-Häme,Lahden seutukunta,8043,75555.0,56334.0,143.0
+5,018,Askola,9000162-0,FI90001620,kunta,suomi,Askolan kirkonkylä,Uusimaa,Porvoon seutukunta,4819,21803.0,21244.0,227.0
+6,019,Aura,0132103-3,FI01321033,kunta,suomi,Auran asemanseutu,Varsinais-Suomi,Loimaan seutukunta,3975,9558.0,9501.0,418.0
+7,035,Brändö,0204999-1,FI02049991,kunta,ruotsi,Åva,Ahvenanmaa,Ålands skärgård,444,10844.0,10818.0,41.0
+8,043,Eckerö,0144682-1,FI01446821,kunta,ruotsi,Överby,Ahvenanmaa,Ålands landsbygd,935,10918.0,10772.0,87.0
+9,046,Enonkoski,0163687-9,FI01636879,kunta,suomi,Enonkosken kirkonkylä,Etelä-Savo,Savonlinnan seutukunta,1355,41921.0,30555.0,44.0
+10,047,Enontekiö,0190662-1,FI01906621,kunta,"suomi, pohjoissaame",Hetta,Lappi,Tunturi-Lapin seutukunta,1808,8391.31,7953.44,2.0
+11,049,Espoo,0101263-6,FI01012636,kaupunki,"suomi, ruotsi",Espoon keskus,Uusimaa,Helsingin seutukunta,300748,33025.0,31234.0,9629.0
+12,050,Eura,0132239-4,FI01322394,kunta,suomi,Euran keskustaajama,Satakunta,Rauman seutukunta,11379,63020.0,57887.0,197.0
+13,051,Eurajoki,0132322-3,FI01323223,kunta,suomi,Eurajoen kirkonkylä,Satakunta,Rauman seutukunta,9250,52091.0,51500.0,18.0
+14,052,Evijärvi,0177804-1,FI01778041,kunta,suomi,Evijärven kirkonkylä,Etelä-Pohjanmaa,Järviseudun seutukunta,2376,39071.0,35415.0,67.0
+15,060,Finström,0205003-6,FI02050036,kunta,ruotsi,Godby,Ahvenanmaa,Ålands landsbygd,2597,13286.0,12332.0,211.0
+16,061,Forssa,0145626-1,FI01456261,kaupunki,suomi,Forssan keskustaajama,Kanta-Häme,Forssan seutukunta,16484,25336.0,24883.0,662.0
+17,062,Föglö,0282394-0,FI02823940,kunta,ruotsi,Degerby,Ahvenanmaa,Ålands skärgård,499,13499.0,13477.0,37.0
+18,065,Geta,0205012-4,FI02050124,kunta,ruotsi,Vestergeta,Ahvenanmaa,Ålands landsbygd,498,8747.0,8455.0,59.0
+19,069,Haapajärvi,0209756-3,FI02097563,kaupunki,suomi,Haapajärven keskustaajama,Pohjois-Pohjanmaa,Nivala–Haapajärven seutukunta,6784,78931.0,76642.0,89.0
+20,071,Haapavesi,0184872-4,FI01848724,kaupunki,suomi,Haapaveden keskustaajama,Pohjois-Pohjanmaa,Haapaveden-Siikalatvan seutukunta,6608,1086.53,1050.59,63.0
+21,072,Hailuoto,0184918-8,FI01849188,kunta,suomi,Hailuodon kirkonkylä,Pohjois-Pohjanmaa,Oulun seutukunta,955,20735.0,20566.0,46.0
+22,074,Halsua,0177826-0,FI01778260,kunta,suomi,Halsuan kirkonkylä,Keski-Pohjanmaa,Kaustisen seutukunta,1075,42834.0,41301.0,26.0
+23,075,Hamina,0242496-6,FI02424966,kaupunki,suomi,Haminan keskustaajama,Kymenlaakso,Kotka–Haminan seutukunta,19626,63371.0,60994.0,322.0
+24,076,Hammarland,0205014-0,FI02050140,kunta,ruotsi,Kattby,Ahvenanmaa,Ålands landsbygd,1636,14029.0,13855.0,118.0
+25,077,Hankasalmi,0174035-0,FI01740350,kunta,suomi,Hankasalmen kirkonkylä,Keski-Suomi,Jyväskylän seutukunta,4650,68774.0,57169.0,81.0
+26,078,Hanko,0103166-9,FI01031669,kaupunki,"suomi, ruotsi",Hangon keskustaajama,Uusimaa,Raaseporin seutukunta,7934,11899.0,11746.0,675.0
+27,079,Harjavalta,0132585-1,FI01325851,kaupunki,suomi,Harjavallan keskustaajama,Satakunta,Porin seutukunta,6762,12774.0,12348.0,548.0
+28,081,Hartola,0163734-5,FI01637345,kunta,suomi,Hartolan kirkonkylä,Päijät-Häme,Lahden seutukunta,2604,67548.0,54281.0,48.0
+29,082,Hattula,0145801-3,FI01458013,kunta,suomi,Parola,Kanta-Häme,Hämeenlinnan seutukunta,9402,42739.0,35779.0,263.0
+30,086,Hausjärvi,0145997-2,FI01459972,kunta,suomi,Oitti,Kanta-Häme,Riihimäen seutukunta,8110,39877.0,38942.0,208.0
 31,111,Heinola,0178718-3,FI01787183,kaupunki,suomi,Heinolan keskustaajama,Päijät-Häme,Lahden seutukunta,18245,83928.0,67600.0,27.0
-32,90,Heinävesi,0164308-3,FI01643083,kunta,suomi,Heinäveden kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,3123,1319.57,1029.95,3.0
-33,91,Helsinki,0164308-3,FI01643083,kaupunki,"suomi, ruotsi",Helsingin keskustaajama,Uusimaa,Helsingin seutukunta,660821,21508.0,21419.0,3085.2
-34,97,Hirvensalmi,0164384-1,FI01643841,kunta,suomi,Hirvensalmen kirkonkylä,Etelä-Savo,Mikkelin seutukunta,2109,74659.0,46509.0,45.0
-35,98,Hollola,0146248-5,FI01462485,kunta,suomi,Salpakangas,Päijät-Häme,Lahden seutukunta,23104,72746.0,65123.0,355.0
+32,090,Heinävesi,0164308-3,FI01643083,kunta,suomi,Heinäveden kirkonkylä,Pohjois-Karjala,Joensuun seutukunta,3123,1319.57,1029.95,3.0
+33,091,Helsinki,0164308-3,FI01643083,kaupunki,"suomi, ruotsi",Helsingin keskustaajama,Uusimaa,Helsingin seutukunta,660821,21508.0,21419.0,3085.2
+34,097,Hirvensalmi,0164384-1,FI01643841,kunta,suomi,Hirvensalmen kirkonkylä,Etelä-Savo,Mikkelin seutukunta,2109,74659.0,46509.0,45.0
+35,098,Hollola,0146248-5,FI01462485,kunta,suomi,Salpakangas,Päijät-Häme,Lahden seutukunta,23104,72746.0,65123.0,355.0
 36,102,Huittinen,0203762-4,FI02037624,kaupunki,suomi,Lauttakylä,Satakunta,Porin seutukunta,9811,53955.0,53261.0,184.0
 37,103,Humppila,0146456-0,FI01464560,kunta,suomi,Humppilan asemanseutu,Kanta-Häme,Forssan seutukunta,2176,14861.0,14796.0,147.0
 38,105,Hyrynsalmi,0185075-2,FI01850752,kunta,suomi,Hyrynsalmen kirkonkylä,Kainuu,Kehys-Kainuun seutukunta,2106,1521.37,1421.25,15.0
@@ -288,7 +288,7 @@
 286,785,Vaala,0190027-0,FI01900270,kunta,suomi,Vaalan kirkonkylä,Pohjois-Pohjanmaa,Oulunkaaren seutukunta,2679,1763.57,1302.38,21.0
 287,905,Vaasa,0190027-0,FI01900270,kaupunki,"suomi, ruotsi",Vaasan keskustaajama,Pohjanmaa,Vaasan seutukunta,67067,36954.0,36473.0,1839.0
 288,908,Valkeakoski,0157568-2,FI01575682,kaupunki,suomi,Valkeakosken keskustaajama,Pirkanmaa,Etelä-Pirkanmaan seutukunta,20717,37203.0,27205.0,762.0
-289,92,Vantaa,0124610-9,FI01246109,kaupunki,"suomi, ruotsi",Tikkurila,Uusimaa,Helsingin seutukunta,241061,24035.0,23838.0,1011.2
+289,092,Vantaa,0124610-9,FI01246109,kaupunki,"suomi, ruotsi",Tikkurila,Uusimaa,Helsingin seutukunta,241061,24035.0,23838.0,1011.2
 290,915,Varkaus,0173416-1,FI01734161,kaupunki,suomi,Varkauden keskustaajama,Pohjois-Savo,Varkauden seutukunta,19917,52448.0,38562.0,516.0
 291,918,Vehmaa,0144561-8,FI01445618,kunta,suomi,Vinkkilä,Varsinais-Suomi,Vakka-Suomen seutukunta,2254,19206.0,18888.0,119.0
 292,921,Vesanto,0173787-2,FI01737872,kunta,suomi,Vesannon kirkonkylä,Pohjois-Savo,Sisä-Savon seutukunta,1928,56981.0,42263.0,46.0

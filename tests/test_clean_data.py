@@ -166,7 +166,7 @@ def test_clean_data_org():
     with pytest.warns(Warning):
         df = clean_data(df)
     # Expected names
-    data = {"org_number": [484, 484, 424],
+    data = {"org_number": ["484", "484", 424],
             "org_name": ["Merikarvia", "Merikarvia", "test3"],
             "org_id": ["0135202-4", "0135202-4", "test"]
             }
@@ -174,14 +174,31 @@ def test_clean_data_org():
     # Expect that are equal
     assert_frame_equal(df, df_expect)
 
-    data = {"org_number": [484, 484, 424],
+    data = {"org_number": [48344, 444484, 424],
+            "org_name": ["Akaa", "Alajärvi", "test3"],
+            "org_id": ["FI", "FI", "test"]
+            }
+    df = pd.DataFrame(data)
+    # Expect a warning
+    with pytest.warns(Warning):
+        df = clean_data(df)
+    # Expected names
+    data = {"org_number": ["020", "005", 424],
+            "org_name": ["Akaa", "Alajärvi", "test3"],
+            "org_id": ["2050864-5", "0177619-3", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"org_number": ["484", "484", "424"],
             "org_name": ["test1", "test2", "test3"],
             "org_id": ["FI", "FI", "test"]
             }
     df = pd.DataFrame(data)
     df = clean_data(df, disable_org=True)
     # Expected names
-    data = {"org_number": [484, 484, 424],
+    data = {"org_number": ["484", "484", "424"],
             "org_name": ["test1", "test2", "test3"],
             "org_id": ["FI", "FI", "test"]
             }
@@ -205,8 +222,8 @@ def test_clean_data_org():
     assert_frame_equal(df, df_expect)
 
     data = {"org_number": [4844, 48344, 4234344],
-            "org_name": ["test", "test", "test3"],
-            "org_id": ["0135202-4", "0135202-4", "test"]
+            "org_name": ["test", "Akaa", "test3"],
+            "org_id": ["0135202-4", "013test4", "test"]
             }
     df = pd.DataFrame(data)
     # Expect a warning
@@ -215,9 +232,9 @@ def test_clean_data_org():
                                                "municipality_codes.csv")
         df = clean_data(df, org_data=pd.read_csv(file, index_col=0))
     # Expected names
-    data = {"org_number": [484, 484, 4234344],
-            "org_name": ["Merikarvia", "Merikarvia", "test3"],
-            "org_id": ["0135202-4", "0135202-4", "test"]
+    data = {"org_number": [484, 20, 4234344],
+            "org_name": ["Merikarvia", "Akaa", "test3"],
+            "org_id": ["0135202-4", "2050864-5", "test"]
             }
     df_expect = pd.DataFrame(data)
     # Expect that are equal
@@ -258,8 +275,8 @@ def test_clean_data_suppl():
     assert_frame_equal(df, df_expect)
 
     data = {"suppl_number": [4844, 48344, 4234344],
-            "suppl_name": ["test", "test", "test3"],
-            "vat_number": ["FI01352024", "FI01352024", "test"]
+            "suppl_name": ["test", "Merikarvia", "test3"],
+            "vat_number": ["FI01352024", "Ftest2024", "test"]
             }
     df = pd.DataFrame(data)
     # Expect a warning
