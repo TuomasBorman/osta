@@ -735,11 +735,6 @@ def __standardize_org(df, disable_org=False, org_data=None, **args):
     # Check if column(s) is found as non-duplicated
     cols_df = ["org_id", "org_vat_number", "org_number", "org_name"]
     cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
-    # Column of db that are matched with columns that are being checked
-    # Subset to match with cols_to_check
-    cols_to_match = ["bid", "vat_number", "number", "name"]
-    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
-                     if x in cols_to_check]
     if disable_org or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
@@ -747,6 +742,11 @@ def __standardize_org(df, disable_org=False, org_data=None, **args):
         path = pkg_resources.resource_filename(
             "osta", "resources/" + "municipality_codes.csv")
         org_data = pd.read_csv(path, index_col=0, dtype=str)
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = ["bid", "vat_number", "number", "name"]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=org_data,
                                    cols_to_check=cols_to_check,
@@ -784,11 +784,6 @@ def __standardize_account(df, disable_account=False, account_data=None,
     # Check if column(s) is found as non-duplicated
     cols_df = ["account_number", "account_name"]
     cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
-    # Column of db that are matched with columns that are being checked
-    # Subset to match with cols_to_check
-    cols_to_match = ["number", "name"]
-    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
-                     if x in cols_to_check]
     if disable_account or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
@@ -804,6 +799,11 @@ def __standardize_account(df, disable_account=False, account_data=None,
         if subset_account_data is not None:
             account_data = account_data.loc[
                 :, account_data["cat_1"] == subset_account_data]
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = ["number", "name"]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
     # Data types to check
     dtypes = ["int64", "object"]
     # Standardize organization data
@@ -836,11 +836,6 @@ def __standardize_service(df, disable_service=False,
     # Check if column(s) is found as non-duplicated
     cols_df = ["service_cat", "service_cat_name"]
     cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
-    # Column of db that are matched with columns that are being checked
-    # Subset to match with cols_to_check
-    cols_to_match = ["number", "name"]
-    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
-                     if x in cols_to_check]
     if disable_service or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
@@ -851,6 +846,11 @@ def __standardize_service(df, disable_service=False,
         # Subset by taking only specific years
         service_data = __subset_data_based_on_year(df, df_db=service_data,
                                                    **args)
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = ["number", "name"]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
     # Data types to check
     dtypes = ["int64", "object"]
     # Standardize organization data
@@ -883,15 +883,15 @@ def __standardize_suppl(df, disable_suppl=False, suppl_data=None, **args):
     cols_df = ["suppl_id", "vat_number", "suppl_number", "suppl_name",
                "country"]
     cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
-    # Column of db that are matched with columns that are being checked
-    # Subset to match with cols_to_check
-    cols_to_match = ["bid", "vat_number", "number", "name", "country"]
-    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
-                     if x in cols_to_check]
     if disable_suppl or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
     if suppl_data is not None:
+        # Column of db that are matched with columns that are being checked
+        # Subset to match with cols_to_check
+        cols_to_match = ["bid", "vat_number", "number", "name", "country"]
+        cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                         if x in cols_to_check]
         # Standardize organization data
         df = __standardize_based_on_db(df=df, df_db=suppl_data,
                                        cols_to_check=cols_to_check,
