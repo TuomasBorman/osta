@@ -37,6 +37,12 @@ def enrich_data(df, **args):
 
     # Add organization data
     df = __add_org_data(df)
+    # Add supplier data
+    df = __add_suppl_data(df)
+    # Add account data
+    df = __add_account_data(df, **args)
+    # Add service data
+    df = __add_service_data(df, **args)
     return df
 
 
@@ -107,9 +113,9 @@ def __add_account_data(df, disable_account=False, account_data=None,
         # path = pkg_resources.resource_filename(
         #     "osta", "resources/" + "account_info.csv")
         path = "~/Python/osta/src/osta/resources/" + "account_info.csv"
-        service_data = pd.read_csv(path, index_col=0)
+        account_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years
-        service_data = __subset_data_based_on_year(df, df_db=account_data,
+        account_data = __subset_data_based_on_year(df, df_db=account_data,
                                                    **args)
         # If user specified balance sheet or income statement,
         # get only specified accounts
@@ -122,10 +128,10 @@ def __add_account_data(df, disable_account=False, account_data=None,
     cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
                      if x in cols_to_check]
     # Add data from database
-    df = __add_data_from_db(df=df, df_db=service_data,
+    df = __add_data_from_db(df=df, df_db=account_data,
                             cols_to_check=cols_to_check,
                             cols_to_match=cols_to_match,
-                            prefix="service")
+                            prefix="account")
     return df
 
 
@@ -208,6 +214,12 @@ def __add_suppl_data(df, disable_suppl=False, suppl_data=None):
 
 
 def __add_data_from_db(df, df_db, cols_to_check, cols_to_match, prefix):
+    """
+    This function is a general function for adding data from a file
+    to dataset..
+    Input: df and dataset to be added
+    Output: enriched df
+    """
     # Which column are found from df and df_db SIIRRÄ UTILSIIN
     cols_df = [x for x in cols_to_check if x in df.columns]
     cols_df_db = [x for x in cols_to_match if x in df_db.columns]
@@ -235,6 +247,9 @@ def __add_data_from_db(df, df_db, cols_to_check, cols_to_match, prefix):
     col_to_match = cols_to_match[0]
     # If there are columns to add
     if len(cols_to_add) > 0:
+        # Remove duplicates if database contains multiple values
+        # for certain information.
+        df_db = df_db.drop_duplicates(subset=col_to_match)
         # Create temporary columns which are used to merge data
         temp_x = df.loc[:, col_to_check]
         temp_y = df_db.loc[:, col_to_match]
@@ -259,3 +274,7 @@ def __add_data_from_db(df, df_db, cols_to_check, cols_to_match, prefix):
         # Remove temproary columns
         df = df.drop(["temporary_X", "temporary_Y"], axis=1)
     return df
+
+
+def __add_sums(df):
+    
