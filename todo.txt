@@ -3,4 +3,7 @@ TODO:
 enrich_data
 - enrich data with org + suppl + account + service data --> same function
 - add_org =True
-- add sum, vat_amount etc if missing 
+- add sum, vat_amount etc if missing --
+
+clean_data
+- ensure that the number is in "020" format
