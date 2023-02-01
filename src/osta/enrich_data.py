@@ -4,6 +4,8 @@ import osta.__utils as utils
 import pandas as pd
 import warnings
 import pkg_resources
+import requests
+import sys
 
 
 def enrich_data(df, **args):
@@ -312,4 +314,130 @@ def __add_sums(df, disable_sums=False):
         # If vat_amount is missing
         elif "vat_amount" in col_missing:
             df["vat_amount"] = df["total"] - df["price_ex_vat"]
+    return df
+
+
+def fetch_company_data(ser):
+    """
+    This function fetch company data from PRH.
+    Input: Series
+    Output: df with company data
+    """
+    # INPUT CHECK
+    if not (isinstance(ser, pd.Series) and len(ser) > 0):
+        raise Exception(
+            "'ser' must be non-empty pandas.Series."
+            )
+    # INPUT CHECK END
+    # For progress bar
+    progress_bar_width = 50
+    # Initialize resulst DF
+    df = pd.DataFrame()
+    # Loop though BIDs
+    ser = ser.reset_index()
+    for bid_i, bid in enumerate(ser.to_numpy()):
+        # update the progress bar
+        percent = 100*(bid_i/len(ser))
+        sys.stdout.write('\r')
+        sys.stdout.write("Completed: [{:{}}] {:>3}%"
+                         .format('='*int(percent/(100/progress_bar_width)),
+                                 progress_bar_width, int(percent)))
+        sys.stdout.flush()
+        # Get data from database
+        path = "https://avoindata.prh.fi/bis/v1/" + str(bid)
+        r = requests.get(path)
+        # Convert to dictionaries
+        text = r.json()
+        # Get results only
+        df_temp = pd.json_normalize(text["results"])
+        print(df_temp)
+        # If results were found, continue
+        if not df_temp.empty:
+            # Change names
+            df_temp = df_temp.rename(columns={
+                "businessId": "bid",
+                "name": "name",
+                "registrationDate": "registration_date",
+                "companyForm": "company_form",
+                "liquidations": "liquidations",
+                "companyForms": "company_forms",
+                "businessLines": "business_lines",
+                "registedOffices": "registed_offices",
+                "businessIdChanges": "old_bid",
+                })
+            # Get certai data and convert into Series
+            col_info = ["bid", "name", "company_form"]
+            series = df_temp.loc[:, col_info]
+            series = series.squeeze()
+            # Loop over certain information columns
+            info = [
+                    "liquidations",
+                    "company_forms",
+                    "business_lines",
+                    "registed_offices",
+                    "old_bid",
+                    ]
+            for col in info:
+                # Get data
+                temp = df_temp[col]
+                temp = temp.explode().apply(pd.Series)
+                # If information is included
+                if len(temp.dropna(axis=0, how="all")) > 0:
+                    if any(x in col for x in ["company_forms",
+                                              "business_lines",
+                                              "registed_offices"]):
+                        # If certain data, capitalize and add column names
+                        # with language
+                        # Remove those values that are outdated
+                        temp = temp.loc[temp["endDate"].isna(), :]
+                        temp_name = temp["name"].astype(str).str.capitalize()
+                        temp_col = [col + "_" + x for x in temp[
+                            "language"].astype(str).str.lower()]
+                        # Add number if multiple names per language
+                        if (len(temp_name)/3) > 1:
+                            # Add suffix
+                            temp_col2 = []
+                            for x in temp_col:
+                                count = sum([y == x for y in temp_col2])
+                                if count != 0:
+                                    x = x + "_" + str(count+1)
+                                temp_col2.append(x)
+                            temp_col = temp_col2
+                        temp_name.index = temp_col
+                    elif any(x in col for x in ["liquidations"]):
+                        # If certain data, get name and date and add
+                        # column names with language
+                        temp_name = temp["description"]
+                        temp_date = temp.loc[
+                            temp["language"] == "FI", "registrationDate"]
+                        temp_col = [col + "_" + x for x in temp[
+                            "language"].astype(str).str.lower()]
+                        temp_name.index = temp_col
+                        # Add date
+                        temp_date.index = [col + "_date"]
+                        temp_name = pd.concat([temp_name, temp_date])
+                    elif any(x in col for x in ["old_bid"]):
+                        # If certain data, capitalize and add
+                        # column names with numbers
+                        temp_name = temp["oldBusinessId"]
+                        temp_col = [col]
+                        if len(temp_name) > 1:
+                            temp_col.extend([col + "_" + str(x) for x in
+                                             range(2, len(temp_name)+1)])
+                        temp_name.index = temp_col
+                    # Add to final data
+                    series = pd.concat([series, temp_name])
+            # Convert Series to DF and transpose it to correct format
+            res = pd.DataFrame(series).transpose()
+        else:
+            # If BID was not found from the database
+            res = pd.DataFrame([bid], index=["bid"]).transpose()
+        print(res)
+        # Add to DataFrame
+        if df.empty:
+            df = res
+        else:
+            df = pd.merge(df, res, how="outer")
+    # Stop progress bar
+    sys.stdout.write("\n")
     return df
