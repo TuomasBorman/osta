@@ -325,12 +325,34 @@ def __add_sums(df, disable_sums=False):
 
 def fetch_company_data(ser, only_ltd=False, **args):
     """
-    This function fetch company data from PRH. Resources of PRH are limited.
-    Please use the function only when needed,and store the results if
-    possible. Search in smaller batches to prevent problems with resource
-    allocation.
-    Input: Series with BIDs
-    Output: df with company data
+    This function fetches company data from databases.
+
+    Arguments:
+        ```
+        ser: pd.Series including business IDs.
+
+        only_ltd: A Boolean value specifying whether to search results also
+        for other than limited companies. The search for them is slower.
+        (By default: only_ltd=False)
+
+        ```
+
+    Details:
+        This function fetches company data from Finnish Patent and Registration
+        Office (Patentti- ja Rekisterihallitus, PRH) and The Business
+        Information System (Yritystietojärjestelmä, YTJ). Resources of
+        services are limited. Please use the function only when needed, and
+        store the results if possible. Search in smaller batches to prevent
+        problems with resource allocation.
+
+    Examples:
+        ```
+        bids = pd.Series(["1458359-3", "2403929-2"])
+        df = fetch_company_data(bids)
+        ```
+
+    Output:
+        df with company data
     """
     # INPUT CHECK
     if not (isinstance(ser, pd.Series) and len(ser) > 0):
