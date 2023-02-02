@@ -411,7 +411,7 @@ def fetch_company_data(ser, language="en", only_ltd=False, **args):
                 "businessIdChanges": "old_bid",
                 })
             # Get certain data and convert into Series
-            col_info = ["bid", "name", "company_form_short"]
+            col_info = ["bid", "name"]
             series = df_temp.loc[:, col_info]
             series = series.squeeze()
             # Loop over certain information columns
@@ -442,20 +442,31 @@ def fetch_company_data(ser, language="en", only_ltd=False, **args):
                         if any(ind):
                             temp_name = temp.loc[ind, "name"].astype(
                                 str).str.capitalize()
+                        else:
+                            temp_name = temp.loc[:, "name"].astype(
+                                str).str.capitalize()
                         # Ensure that there is only one value
                         temp_name = temp_name.iloc[[0]]
                         temp_name.index = [col]
                     elif any(x in col for x in ["liquidation"]):
-                        # If certain data, get name and date and add
-                        # column names with language
-                        temp_name = temp["description"]
-                        temp_date = temp.loc[
-                            temp["language"] == "FI", "registrationDate"]
-                        temp_col = [col + "_" + x for x in temp[
-                            "language"].astype(str).str.lower()]
-                        temp_name.index = temp_col
-                        # Add date
+                        # If certain data, get name and date with
+                        # specific language
+                        ind = temp["language"].astype(str).str.lower() == lan
+                        if any(ind):
+                            temp_name = temp.loc[ind, "description"].astype(
+                                str).str.capitalize()
+                            temp_date = temp.loc[ind, "registrationDate"]
+                        else:
+                            temp_name = temp.loc[:, "description"].astype(
+                                str).str.capitalize()
+                            temp_date = temp.loc[:, "registrationDate"]
+                        # Ensure that there is only one value
+                        temp_name = temp_name.iloc[[0]]
+                        temp_date = temp_date.iloc[[0]]
+                        # Add names
+                        temp_name.index = [col]
                         temp_date.index = [col + "_date"]
+                        # Combine results
                         temp_name = pd.concat([temp_name, temp_date])
                     elif any(x in col for x in ["old_bid"]):
                         # If certain data, capitalize and add
@@ -485,6 +496,17 @@ def fetch_company_data(ser, language="en", only_ltd=False, **args):
             df = res
         else:
             df = pd.merge(df, res, how="outer")
+    # Combine BID columns into one
+    if "old_bid" in df.columns:
+        regex = re.compile(r"old_bid")
+        ind = [True if regex.search(x) else False for x in df.columns]
+        bid_cols = df.loc[:, ind]
+        bid_col = bid_cols.apply(lambda x: ', '.join(x.dropna(
+            ).astype(str)), axis=1)
+        # Remove additional BID columns, keep only one
+        ind = [False if regex.search(x) else True for x in df.columns]
+        df = df.loc[:, ind]
+        df["old_bid"] = bid_col
     # Stop progress bar
     sys.stdout.write("\n")
     return df
