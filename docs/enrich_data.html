@@ -43,6 +43,7 @@ from selenium.webdriver.firefox.options import Options as firefox_opt
 from selenium.webdriver.chrome.options import Options as chrome_opt
 from selenium.webdriver.ie.options import Options as ie_opt
 from bs4 import BeautifulSoup
+import re
 
 
 def enrich_data(df, **args):
@@ -356,7 +357,7 @@ def __add_sums(df, disable_sums=False):
 
 def fetch_company_data(ser, only_ltd=False, **args):
     &#34;&#34;&#34;
-    This function fetches company data from databases.
+    Fetch company data from databases.
 
     Arguments:
         ```
@@ -652,7 +653,167 @@ def __search_companies_with_web_search(bid, bid_option, url, browser):
         # Give list with Nones, if link to result page is not found
         res = [bid, None] if bid_option else [None, bid]
         res.extend([None for x in range(1, 5)])
-    return res</code></pre>
+    return res
+
+
+def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
+    &#34;&#34;&#34;
+    Fetch municipality data from databases.
+
+    Arguments:
+        ```
+        org_codes: pd.Series including municipality codes.
+
+        years: None or pd.Series including years specifying the year of data
+        that will be fetched. If not None, the lenght must be equal with
+        &#39;org_codes&#39;. If None, the most previous data will be fetched.
+        (By default: years=None)
+
+        language: A string specifying the language of fetched data. Must be
+        &#34;en&#34; (English), &#34;fi&#34; (Finnish), or &#34;sv&#34; (Swedish).
+        ```
+
+    Details:
+        This function fetches municipality key figures from the database of
+        Statistics Finland (Tilastokeskus).
+
+    Examples:
+        ```
+        codes = pd.Series([&#34;005&#34;, &#34;020&#34;])
+        years = pd.Series([&#34;02.05.2021&#34;, &#34;20.10.2020&#34;])
+        df = fetch_org_data(codes, years, language=&#34;fi&#34;)
+        ```
+
+    Output:
+        pd.DataFrame including municipality data.
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (isinstance(org_codes, pd.Series) and len(org_codes) &gt; 0):
+        raise Exception(
+            &#34;&#39;org_codes&#39; must be non-empty pandas.Series.&#34;
+            )
+    if not ((isinstance(years, pd.Series) and len(years) == len(org_codes))
+            or years is None):
+        raise Exception(
+            &#34;&#39;years&#39; must be None or non-empty pandas.Series matching with &#34; +
+            &#34;&#39;org_codes&#39;.&#34;
+            )
+    if not (isinstance(language, str) and language in [&#34;fi&#34;, &#34;en&#34;, &#34;sv&#34;]):
+        raise Exception(
+            &#34;&#39;language&#39; must be &#39;en&#39;, &#39;fi&#39;, or &#39;sv&#39;.&#34;
+            )
+    # INPUT CHECK END
+    # If years were provided
+    if years is not None:
+        try:
+            # Test if year can be detected
+            years = pd.to_datetime(years).dt.year
+            years = years.astype(str)
+        except Exception:
+            warnings.warn(
+                message=&#34;&#39;years&#39; were not detected. The most recent data &#34; +
+                &#34;from database is being fetched.&#34;,
+                category=Warning
+                )
+            years = None
+    # Find the most recent data
+    url = &#34;https://statfin.stat.fi/PXWeb/api/v1/fi/Kuntien_avainluvut&#34;
+    r = requests.get(url)
+    text = r.json()
+    available_years = [x.get(&#34;id&#34;) for x in text]
+    year_max = max(available_years)
+    if years is None:
+        years = [year_max for x in range(0, len(org_codes))]
+    # Check which years are in time series database
+    url = (&#34;https://statfin.stat.fi/PXWeb/api/v1/fi/Kuntien_avainluvut/&#34; +
+           year_max)
+    r = requests.get(url)
+    try:
+        text = r.json()
+        # Find available years based on pattern in id
+        found_year = [x.get(&#34;text&#34;) for x in text if x.get(&#34;id&#34;) ==
+                      &#34;kuntien_avainluvut_&#34; + year_max + &#34;_aikasarja.px&#34;][0]
+        p = re.compile(&#34;\\d\\d\\d\\d-\\d\\d\\d\\d&#34;)
+        found_year = p.search(found_year).group().split(&#34;-&#34;)
+        # Getn only years that are available
+        years_temp = [x if int(x) in
+                      range(int(found_year[0]), int(found_year[1]))
+                      else None for x in years]
+        years_not_found = [x for i, x in enumerate(years_temp)
+                           if x != years[i]]
+        if len(years_not_found):
+            warnings.warn(
+                message=f&#34;The following &#39;years&#39; were not found from the &#34;
+                f&#34;database: {years_not_found}&#34;,
+                category=Warning
+                )
+    except Exception:
+        years_temp = years
+    # Check which municipalties are found from the database / are correct
+    # path = pkg_resources.resource_filename(
+    #     &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
+    path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;municipality_codes.csv&#34;
+    org_data = pd.read_csv(path, index_col=0, dtype=&#34;object&#34;)
+    # Get only correct municipality codes
+    codes_temp = [x if x in org_data[&#34;number&#34;].tolist() else
+                  None for x in org_codes]
+    codes_not_found = [x for i, x in enumerate(codes_temp)
+                       if x != org_codes[i]]
+    if len(codes_not_found):
+        warnings.warn(
+            message=f&#34;The following &#39;codes&#39; were not found from the database: &#34;
+            f&#34;{codes_not_found}&#34;,
+            category=Warning
+            )
+    # Create DF, drop duplicates, and remove incorrect years and codes
+    df = pd.DataFrame({&#34;code&#34;: codes_temp, &#34;year&#34;: years_temp})
+    df = df.drop_duplicates()
+    df = df.dropna()
+    # Get URL and correct parameters of the time series database
+    url = (&#34;https://pxdata.stat.fi:443/PxWeb/api/v1/&#34; + language +
+           &#34;/Kuntien_avainluvut/&#34; + year_max + &#34;/kuntien_avainluvut_&#34; +
+           year_max + &#34;_aikasarja.px&#34;)
+    params = {&#34;query&#34;: [{&#34;code&#34;: &#34;Alue &#34; + year_max,
+                         &#34;selection&#34;: {&#34;filter&#34;: &#34;item&#34;, &#34;values&#34;:
+                                       df[&#34;code&#34;].drop_duplicates().tolist()}},
+                        {&#34;code&#34;: &#34;Vuosi&#34;,
+                         &#34;selection&#34;: {&#34;filter&#34;: &#34;item&#34;, &#34;values&#34;:
+                                       df[&#34;year&#34;
+                                          ].drop_duplicates().tolist()}}],
+              &#34;response&#34;: {&#34;format&#34;: &#34;json-stat2&#34;}
+              }
+    # Find results
+    r = requests.post(url, json=params)
+    if r.status_code:
+        text = r.json()
+        # Find labels, code, years and values
+        label = list(text.get(&#34;dimension&#34;).get(&#34;Tiedot&#34;).get(
+            &#34;category&#34;).get(&#34;label&#34;).values())
+        code = list(text.get(&#34;dimension&#34;).get(&#34;Alue 2021&#34;).get(
+            &#34;category&#34;).get(&#34;label&#34;).keys())
+        years = list(text.get(&#34;dimension&#34;).get(&#34;Vuosi&#34;).get(
+            &#34;category&#34;).get(&#34;label&#34;).values())
+        values = text.get(&#34;value&#34;)
+        # Divide values based on mucipalities
+        values_num = int(len(values)/len(code))
+        df_temp = pd.DataFrame()
+        for i in range(0, len(values), values_num):
+            # Split based on organization
+            temp = pd.Series(values[i:i+values_num])
+            # Split based on year
+            temp = [temp[i::len(years)].tolist() for i in range(len(years))]
+            temp = pd.DataFrame(temp).transpose()
+            df_temp = pd.concat([df_temp, temp], axis=1)
+        # Add label and code
+        df_temp.index = label
+        df_temp.loc[&#34;code&#34;, :] = [x for x in code for i in range(len(years))]
+        year_temp = []
+        for x in [years for i in range(len(code))]:
+            year_temp.extend(x)
+        df_temp.loc[&#34;year&#34;, :] = year_temp
+        df_temp = df_temp.transpose()
+        df = pd.merge(df, df_temp)
+    return df</code></pre>
 </details>
 </section>
 <section>
@@ -726,7 +887,7 @@ def __search_companies_with_web_search(bid, bid_option, url, browser):
 <span>def <span class="ident">fetch_company_data</span></span>(<span>ser, only_ltd=False, **args)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This function fetches company data from databases.</p>
+<div class="desc"><p>Fetch company data from databases.</p>
 <h2 id="arguments">Arguments</h2>
 <pre><code>ser: pd.Series including business IDs.
 
@@ -754,7 +915,7 @@ df = fetch_company_data(bids)
 </summary>
 <pre><code class="python">def fetch_company_data(ser, only_ltd=False, **args):
     &#34;&#34;&#34;
-    This function fetches company data from databases.
+    Fetch company data from databases.
 
     Arguments:
         ```
@@ -913,6 +1074,196 @@ df = fetch_company_data(bids)
     return df</code></pre>
 </details>
 </dd>
+<dt id="osta.enrich_data.fetch_org_data"><code class="name flex">
+<span>def <span class="ident">fetch_org_data</span></span>(<span>org_codes, years=None, language='en')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fetch municipality data from databases.</p>
+<h2 id="arguments">Arguments</h2>
+<pre><code>org_codes: pd.Series including municipality codes.
+
+years: None or pd.Series including years specifying the year of data
+that will be fetched. If not None, the lenght must be equal with
+'org_codes'. If None, the most previous data will be fetched.
+(By default: years=None)
+
+language: A string specifying the language of fetched data. Must be
+&quot;en&quot; (English), &quot;fi&quot; (Finnish), or &quot;sv&quot; (Swedish).
+</code></pre>
+<h2 id="details">Details</h2>
+<p>This function fetches municipality key figures from the database of
+Statistics Finland (Tilastokeskus).</p>
+<h2 id="examples">Examples</h2>
+<pre><code>codes = pd.Series([&quot;005&quot;, &quot;020&quot;])
+years = pd.Series([&quot;02.05.2021&quot;, &quot;20.10.2020&quot;])
+df = fetch_org_data(codes, years, language=&quot;fi&quot;)
+</code></pre>
+<h2 id="output">Output</h2>
+<p>pd.DataFrame including municipality data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
+    &#34;&#34;&#34;
+    Fetch municipality data from databases.
+
+    Arguments:
+        ```
+        org_codes: pd.Series including municipality codes.
+
+        years: None or pd.Series including years specifying the year of data
+        that will be fetched. If not None, the lenght must be equal with
+        &#39;org_codes&#39;. If None, the most previous data will be fetched.
+        (By default: years=None)
+
+        language: A string specifying the language of fetched data. Must be
+        &#34;en&#34; (English), &#34;fi&#34; (Finnish), or &#34;sv&#34; (Swedish).
+        ```
+
+    Details:
+        This function fetches municipality key figures from the database of
+        Statistics Finland (Tilastokeskus).
+
+    Examples:
+        ```
+        codes = pd.Series([&#34;005&#34;, &#34;020&#34;])
+        years = pd.Series([&#34;02.05.2021&#34;, &#34;20.10.2020&#34;])
+        df = fetch_org_data(codes, years, language=&#34;fi&#34;)
+        ```
+
+    Output:
+        pd.DataFrame including municipality data.
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (isinstance(org_codes, pd.Series) and len(org_codes) &gt; 0):
+        raise Exception(
+            &#34;&#39;org_codes&#39; must be non-empty pandas.Series.&#34;
+            )
+    if not ((isinstance(years, pd.Series) and len(years) == len(org_codes))
+            or years is None):
+        raise Exception(
+            &#34;&#39;years&#39; must be None or non-empty pandas.Series matching with &#34; +
+            &#34;&#39;org_codes&#39;.&#34;
+            )
+    if not (isinstance(language, str) and language in [&#34;fi&#34;, &#34;en&#34;, &#34;sv&#34;]):
+        raise Exception(
+            &#34;&#39;language&#39; must be &#39;en&#39;, &#39;fi&#39;, or &#39;sv&#39;.&#34;
+            )
+    # INPUT CHECK END
+    # If years were provided
+    if years is not None:
+        try:
+            # Test if year can be detected
+            years = pd.to_datetime(years).dt.year
+            years = years.astype(str)
+        except Exception:
+            warnings.warn(
+                message=&#34;&#39;years&#39; were not detected. The most recent data &#34; +
+                &#34;from database is being fetched.&#34;,
+                category=Warning
+                )
+            years = None
+    # Find the most recent data
+    url = &#34;https://statfin.stat.fi/PXWeb/api/v1/fi/Kuntien_avainluvut&#34;
+    r = requests.get(url)
+    text = r.json()
+    available_years = [x.get(&#34;id&#34;) for x in text]
+    year_max = max(available_years)
+    if years is None:
+        years = [year_max for x in range(0, len(org_codes))]
+    # Check which years are in time series database
+    url = (&#34;https://statfin.stat.fi/PXWeb/api/v1/fi/Kuntien_avainluvut/&#34; +
+           year_max)
+    r = requests.get(url)
+    try:
+        text = r.json()
+        # Find available years based on pattern in id
+        found_year = [x.get(&#34;text&#34;) for x in text if x.get(&#34;id&#34;) ==
+                      &#34;kuntien_avainluvut_&#34; + year_max + &#34;_aikasarja.px&#34;][0]
+        p = re.compile(&#34;\\d\\d\\d\\d-\\d\\d\\d\\d&#34;)
+        found_year = p.search(found_year).group().split(&#34;-&#34;)
+        # Getn only years that are available
+        years_temp = [x if int(x) in
+                      range(int(found_year[0]), int(found_year[1]))
+                      else None for x in years]
+        years_not_found = [x for i, x in enumerate(years_temp)
+                           if x != years[i]]
+        if len(years_not_found):
+            warnings.warn(
+                message=f&#34;The following &#39;years&#39; were not found from the &#34;
+                f&#34;database: {years_not_found}&#34;,
+                category=Warning
+                )
+    except Exception:
+        years_temp = years
+    # Check which municipalties are found from the database / are correct
+    # path = pkg_resources.resource_filename(
+    #     &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
+    path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;municipality_codes.csv&#34;
+    org_data = pd.read_csv(path, index_col=0, dtype=&#34;object&#34;)
+    # Get only correct municipality codes
+    codes_temp = [x if x in org_data[&#34;number&#34;].tolist() else
+                  None for x in org_codes]
+    codes_not_found = [x for i, x in enumerate(codes_temp)
+                       if x != org_codes[i]]
+    if len(codes_not_found):
+        warnings.warn(
+            message=f&#34;The following &#39;codes&#39; were not found from the database: &#34;
+            f&#34;{codes_not_found}&#34;,
+            category=Warning
+            )
+    # Create DF, drop duplicates, and remove incorrect years and codes
+    df = pd.DataFrame({&#34;code&#34;: codes_temp, &#34;year&#34;: years_temp})
+    df = df.drop_duplicates()
+    df = df.dropna()
+    # Get URL and correct parameters of the time series database
+    url = (&#34;https://pxdata.stat.fi:443/PxWeb/api/v1/&#34; + language +
+           &#34;/Kuntien_avainluvut/&#34; + year_max + &#34;/kuntien_avainluvut_&#34; +
+           year_max + &#34;_aikasarja.px&#34;)
+    params = {&#34;query&#34;: [{&#34;code&#34;: &#34;Alue &#34; + year_max,
+                         &#34;selection&#34;: {&#34;filter&#34;: &#34;item&#34;, &#34;values&#34;:
+                                       df[&#34;code&#34;].drop_duplicates().tolist()}},
+                        {&#34;code&#34;: &#34;Vuosi&#34;,
+                         &#34;selection&#34;: {&#34;filter&#34;: &#34;item&#34;, &#34;values&#34;:
+                                       df[&#34;year&#34;
+                                          ].drop_duplicates().tolist()}}],
+              &#34;response&#34;: {&#34;format&#34;: &#34;json-stat2&#34;}
+              }
+    # Find results
+    r = requests.post(url, json=params)
+    if r.status_code:
+        text = r.json()
+        # Find labels, code, years and values
+        label = list(text.get(&#34;dimension&#34;).get(&#34;Tiedot&#34;).get(
+            &#34;category&#34;).get(&#34;label&#34;).values())
+        code = list(text.get(&#34;dimension&#34;).get(&#34;Alue 2021&#34;).get(
+            &#34;category&#34;).get(&#34;label&#34;).keys())
+        years = list(text.get(&#34;dimension&#34;).get(&#34;Vuosi&#34;).get(
+            &#34;category&#34;).get(&#34;label&#34;).values())
+        values = text.get(&#34;value&#34;)
+        # Divide values based on mucipalities
+        values_num = int(len(values)/len(code))
+        df_temp = pd.DataFrame()
+        for i in range(0, len(values), values_num):
+            # Split based on organization
+            temp = pd.Series(values[i:i+values_num])
+            # Split based on year
+            temp = [temp[i::len(years)].tolist() for i in range(len(years))]
+            temp = pd.DataFrame(temp).transpose()
+            df_temp = pd.concat([df_temp, temp], axis=1)
+        # Add label and code
+        df_temp.index = label
+        df_temp.loc[&#34;code&#34;, :] = [x for x in code for i in range(len(years))]
+        year_temp = []
+        for x in [years for i in range(len(code))]:
+            year_temp.extend(x)
+        df_temp.loc[&#34;year&#34;, :] = year_temp
+        df_temp = df_temp.transpose()
+        df = pd.merge(df, df_temp)
+    return df</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -938,6 +1289,7 @@ df = fetch_company_data(bids)
 <ul class="">
 <li><code><a title="osta.enrich_data.enrich_data" href="#osta.enrich_data.enrich_data">enrich_data</a></code></li>
 <li><code><a title="osta.enrich_data.fetch_company_data" href="#osta.enrich_data.fetch_company_data">fetch_company_data</a></code></li>
+<li><code><a title="osta.enrich_data.fetch_org_data" href="#osta.enrich_data.fetch_org_data">fetch_org_data</a></code></li>
 </ul>
 </li>
 </ul>

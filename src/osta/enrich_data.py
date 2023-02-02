@@ -11,7 +11,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options as firefox_opt
 from selenium.webdriver.chrome.options import Options as chrome_opt
 from selenium.webdriver.ie.options import Options as ie_opt
-from bs4 import BeautifulSoup
 import re
 
 
@@ -324,13 +323,16 @@ def __add_sums(df, disable_sums=False):
     return df
 
 
-def fetch_company_data(ser, only_ltd=False, **args):
+def fetch_company_data(ser, language="en", only_ltd=False, **args):
     """
     Fetch company data from databases.
 
     Arguments:
         ```
         ser: pd.Series including business IDs.
+
+        language: A string specifying the language of fetched data. Must be
+        "en" (English), "fi" (Finnish), or "sv" (Swedish).
 
         only_ltd: A Boolean value specifying whether to search results also
         for other than limited companies. The search for them is slower.
@@ -360,13 +362,20 @@ def fetch_company_data(ser, only_ltd=False, **args):
         raise Exception(
             "'ser' must be non-empty pandas.Series."
             )
+    if not (isinstance(language, str) and language in ["fi", "en", "sv"]):
+        raise Exception(
+            "'language' must be 'en', 'fi', or 'sv'."
+            )
     if not isinstance(only_ltd, bool):
         raise Exception(
             "'only_ltd' must be True or False."
             )
     # INPUT CHECK END
-    # Remove None values
+    # Get language in right format for database
+    lan = "se" if language == "sv" else language
+    # Remove None values and duplicates
     ser = ser.dropna()
+    ser = ser.drop_duplicates()
     # For progress bar, specify the width of it
     progress_bar_width = 50
     # Initialize resulst DF
@@ -426,20 +435,15 @@ def fetch_company_data(ser, only_ltd=False, **args):
                         # with language
                         # Remove those values that are outdated
                         temp = temp.loc[temp["endDate"].isna(), :]
-                        temp_name = temp["name"].astype(str).str.capitalize()
-                        temp_col = [col + "_" + x for x in temp[
-                            "language"].astype(str).str.lower()]
-                        # Add number if multiple names per language
-                        if (len(temp_name)/3) > 1:
-                            # Add suffix
-                            temp_col2 = []
-                            for x in temp_col:
-                                count = sum([y == x for y in temp_col2])
-                                if count != 0:
-                                    x = x + "_" + str(count+1)
-                                temp_col2.append(x)
-                            temp_col = temp_col2
-                        temp_name.index = temp_col
+                        # Get only specific language
+                        ind = temp["language"].astype(str).str.lower() == lan
+                        if any(ind):
+                            temp_name = temp.loc[ind, "name"].astype(
+                                str).str.capitalize()
+                        else:
+                            temp_name = temp.loc[temp.shape[0], "name"].astype(
+                                str).str.capitalize()
+                        temp_name.index = [col]
                     elif any(x in col for x in ["liquidation"]):
                         # If certain data, get name and date and add
                         # column names with language
@@ -469,7 +473,7 @@ def fetch_company_data(ser, only_ltd=False, **args):
             # If BID was not found from the database, try to find
             # with web search
             try:
-                res = __fetch_company_data_from_website(bid)
+                res = __fetch_company_data_from_website(bid, language)
             except Exception:
                 res = pd.DataFrame([bid], index=["bid"]).transpose()
         else:
@@ -485,7 +489,7 @@ def fetch_company_data(ser, only_ltd=False, **args):
     return df
 
 
-def __fetch_company_data_from_website(bid):
+def __fetch_company_data_from_website(bid, language):
     """
     This function fetch company data from PRH's website that includes
     all companies (not just limited company).
@@ -493,7 +497,8 @@ def __fetch_company_data_from_website(bid):
     Output: df with company data
     """
     # Test if BID is business ID or name
-    bid_option = utils.__are_valid_bids(pd.Series([bid])).all()
+    # bid_option = utils.__are_valid_bids(pd.Series([bid])).all()
+    bid_option = True
     # Create a driver
     driver_found = False
     for driver in ["firefox", "chrome", "ie"]:
@@ -520,22 +525,16 @@ def __fetch_company_data_from_website(bid):
     if driver_found:
         # Set implicit wait time
         browser.implicitly_wait(5)
-        # Find Finnish results
-        url = "https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=1"
-        res_fi = __search_companies_with_web_search(bid, bid_option,
-                                                    url, browser)
-        # Find Swedish results
-        url = "https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=2"
-        res_se = __search_companies_with_web_search(bid, bid_option,
-                                                    url, browser)
-        # Find English results
-        url = "https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=3"
-        res_en = __search_companies_with_web_search(bid, bid_option,
-                                                    url, browser)
-        # Combine result
-        res = res_fi
-        res.extend(res_se[2:])
-        res.extend(res_en[2:])
+        # Get urö based on language
+        if language == "fin":
+            url = "https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=1"
+        elif language == "sv":
+            url = "https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=2"
+        else:
+            url = "https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=3"
+        # Get results
+        res = __search_companies_with_web_search(bid, bid_option,
+                                                 url, browser)
     else:
         # If driver was not found
         res = [bid, None] if bid_option else [None, bid]
@@ -544,18 +543,10 @@ def __fetch_company_data_from_website(bid):
     colnames = [
         "bid",
         "name",
-        "company_form_fi",
-        "muni_fi",
-        "business_line_fi",
-        "liquidation_fi",
-        "company_form_se",
-        "muni_se",
-        "business_line_se",
-        "liquidation_se",
-        "company_form_en",
-        "muni_en",
-        "business_line_en",
-        "liquidation_en",
+        "company_form",
+        "muni",
+        "business_line",
+        "liquidation",
         ]
     # Create series
     df = pd.DataFrame(res, index=colnames).transpose()
@@ -589,31 +580,32 @@ def __search_companies_with_web_search(bid, bid_option, url, browser):
     link = link[0].get_attribute("href") if len(link) == 1 else None
     # Go to the result web page
     if link is not None:
-        r = requests.get(link)
-        soup = BeautifulSoup(r.text, 'lxml')
-        # Find Business ID
-        bid = soup.findAll("span", id="_ctl0_cphSisalto_lblytunnus")
+        # BeautifulSoup could be used but it misses the language information
+        browser.get(link)
+        bid = browser.find_elements(
+            "xpath", "//span[@id='_ctl0_cphSisalto_lblytunnus']")
         bid = bid[0].text if len(bid) == 1 else None
         # Find name
-        name = soup.findAll("span", id="_ctl0_cphSisalto_lblToiminimi")
+        name = browser.find_elements(
+            "xpath", "//span[@id='_ctl0_cphSisalto_lblToiminimi']")
         name = name[0].text if len(name) == 1 else None
         # Find company form
-        company_form = soup.findAll(
-            "span", id="_ctl0_cphSisalto_lblYritysmuoto")
+        company_form = browser.find_elements(
+            "xpath", "//span[@id='_ctl0_cphSisalto_lblYritysmuoto']")
         company_form = company_form[0].text if len(company_form) == 1 else None
         # Find home town
-        registed_office = soup.findAll(
-            "span", id="_ctl0_cphSisalto_lblYrityksenKotipaikka")
+        registed_office = browser.find_elements(
+            "xpath", "//span[@id='_ctl0_cphSisalto_lblYrityksenKotipaikka']")
         registed_office = registed_office[
             0].text.capitalize() if len(registed_office) == 1 else None
         # Find business line
-        business_line = soup.findAll(
-            "span", id="_ctl0_cphSisalto_lblYrityksenToimiala")
+        business_line = browser.find_elements(
+            "xpath", "//span[@id='_ctl0_cphSisalto_lblYrityksenToimiala']")
         business_line = business_line[
             0].text if len(business_line) == 1 else None
         # Find liquidation information
-        liquidation = soup.findAll(
-            "span", id="_ctl0_cphSisalto_lblKonkurssitieto")
+        liquidation = browser.find_elements(
+            "xpath", "//span[@id='_ctl0_cphSisalto_lblKonkurssitieto']")
         liquidation = liquidation[0].text if len(liquidation) == 1 else None
         # Combine result
         res = [bid, name, company_form, registed_office,
