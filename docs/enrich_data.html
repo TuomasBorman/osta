@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>osta.enrich_data API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:60%;max-height:20em;margin:auto;margin-bottom:.3em;display:block}</style>
+<link rel="canonical" href="https://github.com/TuomasBorman/osta">
+<link rel="icon" href="./logo/osta_logo.png">
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>osta.enrich_data</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+import osta.__utils as utils
+import pandas as pd
+import warnings
+import pkg_resources
+import requests
+import sys
+import selenium.webdriver as webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.firefox.options import Options as firefox_opt
+from selenium.webdriver.chrome.options import Options as chrome_opt
+from selenium.webdriver.ie.options import Options as ie_opt
+from bs4 import BeautifulSoup
+
+
+def enrich_data(df, **args):
+    &#34;&#34;&#34;
+    Change column names of pandas.DataFrame
+
+    Arguments:
+        ```
+        df: pandas.DataFrame containing invoice data.
+
+        ```
+
+    Details:
+
+    Examples:
+        ```
+
+        ```
+
+    Output:
+
+
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    # df must be pandas DataFrame
+    if not utils.__is_non_empty_df(df):
+        raise Exception(
+            &#34;&#39;df&#39; must be non-empty pandas.DataFrame.&#34;
+            )
+    # INPUT CHECK END
+
+    # Add organization data
+    df = __add_org_data(df, **args)
+    # Add supplier data
+    df = __add_suppl_data(df, **args)
+    # Add account data
+    df = __add_account_data(df, **args)
+    # Add service data
+    df = __add_service_data(df, **args)
+    # Add missing total, vat_amount or price_ex_vat
+    df = __add_sums(df, **args)
+    return df
+
+
+def __add_org_data(df, disable_org=False, org_data=None, **args):
+    &#34;&#34;&#34;
+    This function adds organization data to dataset.
+    Input: df (and dataset to be added)
+    Output: enriched df
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (utils.__is_non_empty_df(org_data) or org_data is None):
+        raise Exception(
+            &#34;&#39;org_data&#39; must be non-empty pandas.DataFrame or None.&#34;
+            )
+    if not isinstance(disable_org, bool):
+        raise Exception(
+            &#34;&#39;disable_org&#39; must be True or False.&#34;
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_df = [&#34;org_id&#34;, &#34;org_vat_number&#34;, &#34;org_number&#34;, &#34;org_name&#34;]
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
+    if disable_org or len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
+    # Load default database
+    if org_data is None:
+        # path = pkg_resources.resource_filename(
+        #     &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
+        path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;municipality_codes.csv&#34;
+        org_data = pd.read_csv(path, index_col=0)
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = [&#34;bid&#34;, &#34;vat_number&#34;, &#34;number&#34;, &#34;name&#34;]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
+    # Add data from database
+    df = __add_data_from_db(df=df, df_db=org_data,
+                            cols_to_check=cols_to_check,
+                            cols_to_match=cols_to_match,
+                            prefix=&#34;org&#34;)
+    return df
+
+
+def __add_account_data(df, disable_account=False, account_data=None,
+                       subset_account_data=None, **args):
+    &#34;&#34;&#34;
+    This function adds account data to dataset.
+    Input: df (and dataset to be added)
+    Output: enriched df
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (utils.__is_non_empty_df(account_data) or account_data is None):
+        raise Exception(
+            &#34;&#39;account_data&#39; must be non-empty pandas.DataFrame or None.&#34;
+            )
+    if not isinstance(disable_account, bool):
+        raise Exception(
+            &#34;&#39;disable_account&#39; must be True or False.&#34;
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_df = [&#34;account_number&#34;, &#34;account_name&#34;]
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
+    if disable_account or len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
+    # Load default database
+    if account_data is None:
+        # path = pkg_resources.resource_filename(
+        #     &#34;osta&#34;, &#34;resources/&#34; + &#34;account_info.csv&#34;)
+        path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;account_info.csv&#34;
+        account_data = pd.read_csv(path, index_col=0)
+        # Subset by taking only specific years
+        account_data = __subset_data_based_on_year(df, df_db=account_data,
+                                                   **args)
+        # If user specified balance sheet or income statement,
+        # get only specified accounts
+        if subset_account_data is not None:
+            account_data = account_data.loc[
+                :, account_data[&#34;cat_1&#34;] == subset_account_data]
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = [&#34;number&#34;, &#34;name&#34;]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
+    # Add data from database
+    df = __add_data_from_db(df=df, df_db=account_data,
+                            cols_to_check=cols_to_check,
+                            cols_to_match=cols_to_match,
+                            prefix=&#34;account&#34;)
+    return df
+
+
+def __add_service_data(df, disable_service=False, service_data=None, **args):
+    &#34;&#34;&#34;
+    This function adds service data to dataset.
+    Input: df (and dataset to be added)
+    Output: enriched df
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (utils.__is_non_empty_df(service_data) or service_data is None):
+        raise Exception(
+            &#34;&#39;org_data&#39; must be non-empty pandas.DataFrame or None.&#34;
+            )
+    if not isinstance(disable_service, bool):
+        raise Exception(
+            &#34;&#39;disable_service&#39; must be True or False.&#34;
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_df = [&#34;service_cat&#34;, &#34;service_cat_name&#34;]
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
+    if disable_service or len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
+    # Load default database
+    if service_data is None:
+        # path = pkg_resources.resource_filename(
+        #     &#34;osta&#34;, &#34;resources/&#34; + &#34;service_codes.csv&#34;)
+        path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;service_codes.csv&#34;
+        service_data = pd.read_csv(path, index_col=0)
+        # Subset by taking only specific years SIIRRÄ UTILSIIN
+        service_data = __subset_data_based_on_year(df, df_db=service_data,
+                                                   **args)
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = [&#34;number&#34;, &#34;name&#34;]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
+    # Add data from database
+    df = __add_data_from_db(df=df, df_db=service_data,
+                            cols_to_check=cols_to_check,
+                            cols_to_match=cols_to_match,
+                            prefix=&#34;service&#34;)
+    return df
+
+
+def __add_suppl_data(df, disable_suppl=False, suppl_data=None, **args):
+    &#34;&#34;&#34;
+    This function adds supplier data to dataset.
+    Input: df and dataset to be added
+    Output: enriched df
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (utils.__is_non_empty_df(suppl_data) or suppl_data is None):
+        raise Exception(
+            &#34;&#39;org_data&#39; must be non-empty pandas.DataFrame or None.&#34;
+            )
+    if not isinstance(disable_suppl, bool):
+        raise Exception(
+            &#34;&#39;disable_suppl&#39; must be True or False.&#34;
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_df = [&#34;suppl_id&#34;, &#34;suppl_vat_number&#34;, &#34;suppl_number&#34;, &#34;suppl_name&#34;]
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
+    if disable_suppl or len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
+    if suppl_data is not None:
+        # Column of db that are matched with columns that are being checked
+        # Subset to match with cols_to_check
+        cols_to_match = [&#34;bid&#34;, &#34;vat_number&#34;, &#34;number&#34;, &#34;name&#34;, &#34;country&#34;]
+        cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                         if x in cols_to_check]
+        # Add data from database
+        df = __add_data_from_db(df=df, df_db=suppl_data,
+                                cols_to_check=cols_to_check,
+                                cols_to_match=cols_to_match,
+                                prefix=&#34;suppl&#34;)
+    return df
+
+
+def __add_data_from_db(df, df_db, cols_to_check, cols_to_match, prefix):
+    &#34;&#34;&#34;
+    This function is a general function for adding data from a file
+    to dataset.
+    Input: df and dataset to be added
+    Output: enriched df
+    &#34;&#34;&#34;
+    # Which column are found from df and df_db SIIRRÄ UTILSIIN
+    cols_df = [x for x in cols_to_check if x in df.columns]
+    cols_df_db = [x for x in cols_to_match if x in df_db.columns]
+    # Drop those columns that do not have match in other df
+    if len(cols_df) &gt; len(cols_df_db):
+        cols_to_check = [cols_df[cols_to_match.index(x)] for x in cols_df_db]
+        cols_to_match = cols_df_db
+    else:
+        cols_to_match = [cols_df_db[cols_to_check.index(x)] for x in cols_df]
+        cols_to_check = cols_df
+    # If identification coluns were not found
+    if len(cols_to_check) == 0 or len(cols_to_match) == 0:
+        warnings.warn(
+            message=f&#34;&#39;{prefix}_data&#39; should include at least one of the &#34;
+            &#34;following columns: &#39;name&#39; (name), &#39;number&#39; &#34;
+            &#34;(number), and &#39;bid&#39; (business ID for organization and &#34;
+            f&#34;supplier data).&#34;,
+            category=Warning
+            )
+        return df
+    # Get columns that will be added to data/that are not yet included
+    cols_to_add = [x for x in df_db.columns if x not in cols_to_match]
+    # Get only the first variable
+    col_to_check = cols_to_check[0]
+    col_to_match = cols_to_match[0]
+    # If there are columns to add
+    if len(cols_to_add) &gt; 0:
+        # Remove duplicates if database contains multiple values
+        # for certain information.
+        df_db = df_db.drop_duplicates(subset=col_to_match)
+        # Create temporary columns which are used to merge data
+        temp_x = df.loc[:, col_to_check]
+        temp_y = df_db.loc[:, col_to_match]
+        # Subset database and add prefix tp column names
+        df_db = df_db.loc[:, cols_to_add]
+        df_db.columns = prefix + &#34;_&#34; + df_db.columns
+        # If variables can be converted into numeric, do so.
+        # Otherwise convert to object if datatypes are not equal
+        if (all(temp_x.dropna().astype(str).str.isnumeric()) and all(
+                temp_y.dropna().astype(str).str.isnumeric())):
+            temp_x = pd.to_numeric(temp_x)
+            temp_y = pd.to_numeric(temp_y)
+        elif temp_x.dtype != temp_y.dtype:
+            temp_x = temp_x.astype(str)
+            temp_y = temp_y.astype(str)
+        # Add temporary columns to data
+        df.loc[:, &#34;temporary_X&#34;] = temp_x
+        df_db.loc[:, &#34;temporary_Y&#34;] = temp_y
+        # Merge data
+        df = pd.merge(df, df_db, how=&#34;left&#34;,
+                      left_on=&#34;temporary_X&#34;, right_on=&#34;temporary_Y&#34;)
+        # Remove temproary columns
+        df = df.drop([&#34;temporary_X&#34;, &#34;temporary_Y&#34;], axis=1)
+    return df
+
+
+def __add_sums(df, disable_sums=False):
+    &#34;&#34;&#34;
+    This function adds sums (total, vat_amount or price_ex_vat) if
+    some is missing.
+    Input: df
+    Output: enriched df
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not isinstance(disable_sums, bool):
+        raise Exception(
+            &#34;&#39;disable_sums&#39; must be True or False.&#34;
+            )
+    # Check if column(s) is found as non-duplicated
+    cols_df = [&#34;total&#34;, &#34;vat_amount&#34;, &#34;price_ex_vat&#34;]
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
+    if disable_sums or len(cols_to_check) == 0:
+        return df
+    # INPUT CHECK END
+    # Get columns that are missing from the data
+    col_missing = [x for x in cols_df if x not in cols_to_check]
+
+    # If there were only one column missing, calculate them
+    if len(col_missing) == 1 and all(
+            x in [&#34;float64&#34;, &#34;int64&#34;] for x in df.loc[
+                :, cols_to_check].dtypes):
+        # If total is missing
+        if &#34;total&#34; in col_missing:
+            df[&#34;total&#34;] = df[&#34;price_ex_vat&#34;] + df[&#34;vat_amount&#34;]
+        # If price_ex_vat is missing
+        elif &#34;price_ex_vat&#34; in col_missing:
+            df[&#34;price_ex_vat&#34;] = df[&#34;total&#34;] - df[&#34;vat_amount&#34;]
+        # If vat_amount is missing
+        elif &#34;vat_amount&#34; in col_missing:
+            df[&#34;vat_amount&#34;] = df[&#34;total&#34;] - df[&#34;price_ex_vat&#34;]
+    return df
+
+
+def fetch_company_data(ser, only_ltd=False, **args):
+    &#34;&#34;&#34;
+    This function fetches company data from databases.
+
+    Arguments:
+        ```
+        ser: pd.Series including business IDs.
+
+        only_ltd: A Boolean value specifying whether to search results also
+        for other than limited companies. The search for them is slower.
+        (By default: only_ltd=False)
+
+        ```
+
+    Details:
+        This function fetches company data from Finnish Patent and Registration
+        Office (Patentti- ja Rekisterihallitus, PRH) and The Business
+        Information System (Yritystietojärjestelmä, YTJ). Resources of
+        services are limited. Please use the function only when needed, and
+        store the results if possible. Search in smaller batches to prevent
+        problems with resource allocation.
+
+    Examples:
+        ```
+        bids = pd.Series([&#34;1458359-3&#34;, &#34;2403929-2&#34;])
+        df = fetch_company_data(bids)
+        ```
+
+    Output:
+        df with company data
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (isinstance(ser, pd.Series) and len(ser) &gt; 0):
+        raise Exception(
+            &#34;&#39;ser&#39; must be non-empty pandas.Series.&#34;
+            )
+    if not isinstance(only_ltd, bool):
+        raise Exception(
+            &#34;&#39;only_ltd&#39; must be True or False.&#34;
+            )
+    # INPUT CHECK END
+    # Remove None values
+    ser = ser.dropna()
+    # For progress bar, specify the width of it
+    progress_bar_width = 50
+    # Initialize resulst DF
+    df = pd.DataFrame()
+    # Loop though BIDs
+    for bid_i, bid in enumerate(ser.to_numpy()):
+        # update the progress bar
+        percent = 100*(bid_i/(len(ser)-1))
+        sys.stdout.write(&#39;\r&#39;)
+        sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
+                         .format(&#39;=&#39;*int(percent/(100/progress_bar_width)),
+                                 progress_bar_width, int(percent)))
+        sys.stdout.flush()
+        # Get data from database
+        path = &#34;https://avoindata.prh.fi/bis/v1/&#34; + str(bid)
+        r = requests.get(path)
+        # Convert to dictionaries
+        text = r.json()
+        # Get results only
+        df_temp = pd.json_normalize(text[&#34;results&#34;])
+        # If results were found, continue
+        if not df_temp.empty:
+            # Change names
+            df_temp = df_temp.rename(columns={
+                &#34;businessId&#34;: &#34;bid&#34;,
+                &#34;name&#34;: &#34;name&#34;,
+                &#34;registrationDate&#34;: &#34;registration_date&#34;,
+                &#34;companyForm&#34;: &#34;company_form_short&#34;,
+                &#34;liquidations&#34;: &#34;liquidation&#34;,
+                &#34;companyForms&#34;: &#34;company_form&#34;,
+                &#34;businessLines&#34;: &#34;business_line&#34;,
+                &#34;registedOffices&#34;: &#34;muni&#34;,
+                &#34;businessIdChanges&#34;: &#34;old_bid&#34;,
+                })
+            # Get certain data and convert into Series
+            col_info = [&#34;bid&#34;, &#34;name&#34;, &#34;company_form_short&#34;]
+            series = df_temp.loc[:, col_info]
+            series = series.squeeze()
+            # Loop over certain information columns
+            info = [
+                    &#34;liquidation&#34;,
+                    &#34;company_form&#34;,
+                    &#34;business_line&#34;,
+                    &#34;muni&#34;,
+                    &#34;old_bid&#34;,
+                    ]
+            for col in info:
+                # Get data
+                temp = df_temp[col]
+                temp = temp.explode().apply(pd.Series)
+                # If information is included
+                if len(temp.dropna(axis=0, how=&#34;all&#34;)) &gt; 0:
+                    if any(x in col for x in [&#34;company_form&#34;,
+                                              &#34;business_line&#34;,
+                                              &#34;muni&#34;]):
+                        # If certain data, capitalize and add column names
+                        # with language
+                        # Remove those values that are outdated
+                        temp = temp.loc[temp[&#34;endDate&#34;].isna(), :]
+                        temp_name = temp[&#34;name&#34;].astype(str).str.capitalize()
+                        temp_col = [col + &#34;_&#34; + x for x in temp[
+                            &#34;language&#34;].astype(str).str.lower()]
+                        # Add number if multiple names per language
+                        if (len(temp_name)/3) &gt; 1:
+                            # Add suffix
+                            temp_col2 = []
+                            for x in temp_col:
+                                count = sum([y == x for y in temp_col2])
+                                if count != 0:
+                                    x = x + &#34;_&#34; + str(count+1)
+                                temp_col2.append(x)
+                            temp_col = temp_col2
+                        temp_name.index = temp_col
+                    elif any(x in col for x in [&#34;liquidation&#34;]):
+                        # If certain data, get name and date and add
+                        # column names with language
+                        temp_name = temp[&#34;description&#34;]
+                        temp_date = temp.loc[
+                            temp[&#34;language&#34;] == &#34;FI&#34;, &#34;registrationDate&#34;]
+                        temp_col = [col + &#34;_&#34; + x for x in temp[
+                            &#34;language&#34;].astype(str).str.lower()]
+                        temp_name.index = temp_col
+                        # Add date
+                        temp_date.index = [col + &#34;_date&#34;]
+                        temp_name = pd.concat([temp_name, temp_date])
+                    elif any(x in col for x in [&#34;old_bid&#34;]):
+                        # If certain data, capitalize and add
+                        # column names with numbers
+                        temp_name = temp[&#34;oldBusinessId&#34;]
+                        temp_col = [col]
+                        if len(temp_name) &gt; 1:
+                            temp_col.extend([col + &#34;_&#34; + str(x) for x in
+                                             range(2, len(temp_name)+1)])
+                        temp_name.index = temp_col
+                    # Add to final data
+                    series = pd.concat([series, temp_name])
+            # Convert Series to DF and transpose it to correct format
+            res = pd.DataFrame(series).transpose()
+        elif not only_ltd:
+            # If BID was not found from the database, try to find
+            # with web search
+            try:
+                res = __fetch_company_data_from_website(bid)
+            except Exception:
+                res = pd.DataFrame([bid], index=[&#34;bid&#34;]).transpose()
+        else:
+            # If user want only ltd info and data was not found
+            res = pd.DataFrame([bid], index=[&#34;bid&#34;]).transpose()
+        # Add to DataFrame
+        if df.empty:
+            df = res
+        else:
+            df = pd.merge(df, res, how=&#34;outer&#34;)
+    # Stop progress bar
+    sys.stdout.write(&#34;\n&#34;)
+    return df
+
+
+def __fetch_company_data_from_website(bid):
+    &#34;&#34;&#34;
+    This function fetch company data from PRH&#39;s website that includes
+    all companies (not just limited company).
+    Input: business ID or business name
+    Output: df with company data
+    &#34;&#34;&#34;
+    # Test if BID is business ID or name
+    bid_option = utils.__are_valid_bids(pd.Series([bid])).all()
+    # Create a driver
+    driver_found = False
+    for driver in [&#34;firefox&#34;, &#34;chrome&#34;, &#34;ie&#34;]:
+        # Try to use if these browsers are available
+        try:
+            if driver == &#34;firefox&#34;:
+                options = firefox_opt()
+                options.add_argument(&#34;--headless&#34;)
+                browser = webdriver.Firefox(options=options)
+            elif driver == &#34;chrome&#34;:
+                options = chrome_opt()
+                options.add_argument(&#34;--headless&#34;)
+                browser = webdriver.Chrome(options=options)
+            elif driver == &#34;ie&#34;:
+                options = ie_opt()
+                options.add_argument(&#34;--headless&#34;)
+                browser = webdriver.Ie(options=options)
+        except Exception:
+            pass
+        else:
+            driver_found = True
+            break
+    # IF driver was found
+    if driver_found:
+        # Set implicit wait time
+        browser.implicitly_wait(5)
+        # Find Finnish results
+        url = &#34;https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=1&#34;
+        res_fi = __search_companies_with_web_search(bid, bid_option,
+                                                    url, browser)
+        # Find Swedish results
+        url = &#34;https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=2&#34;
+        res_se = __search_companies_with_web_search(bid, bid_option,
+                                                    url, browser)
+        # Find English results
+        url = &#34;https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=3&#34;
+        res_en = __search_companies_with_web_search(bid, bid_option,
+                                                    url, browser)
+        # Combine result
+        res = res_fi
+        res.extend(res_se[2:])
+        res.extend(res_en[2:])
+    else:
+        # If driver was not found
+        res = [bid, None] if bid_option else [None, bid]
+        res.extend([None for x in range(1, 13)])
+    # Names of fields
+    colnames = [
+        &#34;bid&#34;,
+        &#34;name&#34;,
+        &#34;company_form_fi&#34;,
+        &#34;muni_fi&#34;,
+        &#34;business_line_fi&#34;,
+        &#34;liquidation_fi&#34;,
+        &#34;company_form_se&#34;,
+        &#34;muni_se&#34;,
+        &#34;business_line_se&#34;,
+        &#34;liquidation_se&#34;,
+        &#34;company_form_en&#34;,
+        &#34;muni_en&#34;,
+        &#34;business_line_en&#34;,
+        &#34;liquidation_en&#34;,
+        ]
+    # Create series
+    df = pd.DataFrame(res, index=colnames).transpose()
+    # Remove Nones
+    df = df.dropna(axis=1)
+    return df
+
+
+def __search_companies_with_web_search(bid, bid_option, url, browser):
+    &#34;&#34;&#34;
+    Help function, this function fetch company data from PRH&#39;s website. Search
+    is similar for different languages
+    Input: business ID, url and driver
+    Output: list including company data
+    &#34;&#34;&#34;
+    # Go to the web page
+    browser.get(url)
+    # Search by BID or name
+    if bid_option:
+        search_box = browser.find_element(
+            &#34;xpath&#34;, &#34;//input[@id=&#39;_ctl0_cphSisalto_ytunnus&#39;]&#34;)
+    else:
+        search_box = browser.find_element(
+            &#34;xpath&#34;, &#34;//input[@id=&#39;_ctl0_cphSisalto_hakusana&#39;]&#34;)
+    search_box.send_keys(bid)
+    # Submit the text to search bar
+    search_box.send_keys(Keys.RETURN)
+    # Find the link for result web page
+    link = browser.find_elements(
+        &#34;xpath&#34;, &#34;//a[@id=&#39;_ctl0_cphSisalto_rptHakuTulos__ctl1_HyperLink1&#39;]&#34;)
+    link = link[0].get_attribute(&#34;href&#34;) if len(link) == 1 else None
+    # Go to the result web page
+    if link is not None:
+        r = requests.get(link)
+        soup = BeautifulSoup(r.text, &#39;lxml&#39;)
+        # Find Business ID
+        bid = soup.findAll(&#34;span&#34;, id=&#34;_ctl0_cphSisalto_lblytunnus&#34;)
+        bid = bid[0].text if len(bid) == 1 else None
+        # Find name
+        name = soup.findAll(&#34;span&#34;, id=&#34;_ctl0_cphSisalto_lblToiminimi&#34;)
+        name = name[0].text if len(name) == 1 else None
+        # Find company form
+        company_form = soup.findAll(
+            &#34;span&#34;, id=&#34;_ctl0_cphSisalto_lblYritysmuoto&#34;)
+        company_form = company_form[0].text if len(company_form) == 1 else None
+        # Find home town
+        registed_office = soup.findAll(
+            &#34;span&#34;, id=&#34;_ctl0_cphSisalto_lblYrityksenKotipaikka&#34;)
+        registed_office = registed_office[
+            0].text.capitalize() if len(registed_office) == 1 else None
+        # Find business line
+        business_line = soup.findAll(
+            &#34;span&#34;, id=&#34;_ctl0_cphSisalto_lblYrityksenToimiala&#34;)
+        business_line = business_line[
+            0].text if len(business_line) == 1 else None
+        # Find liquidation information
+        liquidation = soup.findAll(
+            &#34;span&#34;, id=&#34;_ctl0_cphSisalto_lblKonkurssitieto&#34;)
+        liquidation = liquidation[0].text if len(liquidation) == 1 else None
+        # Combine result
+        res = [bid, name, company_form, registed_office,
+               business_line, liquidation]
+    else:
+        # Give list with Nones, if link to result page is not found
+        res = [bid, None] if bid_option else [None, bid]
+        res.extend([None for x in range(1, 5)])
+    return res</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="osta.enrich_data.enrich_data"><code class="name flex">
+<span>def <span class="ident">enrich_data</span></span>(<span>df, **args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Change column names of pandas.DataFrame</p>
+<h2 id="arguments">Arguments</h2>
+<pre><code>df: pandas.DataFrame containing invoice data.
+
+</code></pre>
+<p>Details:</p>
+<h2 id="examples">Examples</h2>
+<pre><code>
+</code></pre>
+<p>Output:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def enrich_data(df, **args):
+    &#34;&#34;&#34;
+    Change column names of pandas.DataFrame
+
+    Arguments:
+        ```
+        df: pandas.DataFrame containing invoice data.
+
+        ```
+
+    Details:
+
+    Examples:
+        ```
+
+        ```
+
+    Output:
+
+
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    # df must be pandas DataFrame
+    if not utils.__is_non_empty_df(df):
+        raise Exception(
+            &#34;&#39;df&#39; must be non-empty pandas.DataFrame.&#34;
+            )
+    # INPUT CHECK END
+
+    # Add organization data
+    df = __add_org_data(df, **args)
+    # Add supplier data
+    df = __add_suppl_data(df, **args)
+    # Add account data
+    df = __add_account_data(df, **args)
+    # Add service data
+    df = __add_service_data(df, **args)
+    # Add missing total, vat_amount or price_ex_vat
+    df = __add_sums(df, **args)
+    return df</code></pre>
+</details>
+</dd>
+<dt id="osta.enrich_data.fetch_company_data"><code class="name flex">
+<span>def <span class="ident">fetch_company_data</span></span>(<span>ser, only_ltd=False, **args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function fetches company data from databases.</p>
+<h2 id="arguments">Arguments</h2>
+<pre><code>ser: pd.Series including business IDs.
+
+only_ltd: A Boolean value specifying whether to search results also
+for other than limited companies. The search for them is slower.
+(By default: only_ltd=False)
+
+</code></pre>
+<h2 id="details">Details</h2>
+<p>This function fetches company data from Finnish Patent and Registration
+Office (Patentti- ja Rekisterihallitus, PRH) and The Business
+Information System (Yritystietojärjestelmä, YTJ). Resources of
+services are limited. Please use the function only when needed, and
+store the results if possible. Search in smaller batches to prevent
+problems with resource allocation.</p>
+<h2 id="examples">Examples</h2>
+<pre><code>bids = pd.Series([&quot;1458359-3&quot;, &quot;2403929-2&quot;])
+df = fetch_company_data(bids)
+</code></pre>
+<h2 id="output">Output</h2>
+<p>df with company data</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fetch_company_data(ser, only_ltd=False, **args):
+    &#34;&#34;&#34;
+    This function fetches company data from databases.
+
+    Arguments:
+        ```
+        ser: pd.Series including business IDs.
+
+        only_ltd: A Boolean value specifying whether to search results also
+        for other than limited companies. The search for them is slower.
+        (By default: only_ltd=False)
+
+        ```
+
+    Details:
+        This function fetches company data from Finnish Patent and Registration
+        Office (Patentti- ja Rekisterihallitus, PRH) and The Business
+        Information System (Yritystietojärjestelmä, YTJ). Resources of
+        services are limited. Please use the function only when needed, and
+        store the results if possible. Search in smaller batches to prevent
+        problems with resource allocation.
+
+    Examples:
+        ```
+        bids = pd.Series([&#34;1458359-3&#34;, &#34;2403929-2&#34;])
+        df = fetch_company_data(bids)
+        ```
+
+    Output:
+        df with company data
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (isinstance(ser, pd.Series) and len(ser) &gt; 0):
+        raise Exception(
+            &#34;&#39;ser&#39; must be non-empty pandas.Series.&#34;
+            )
+    if not isinstance(only_ltd, bool):
+        raise Exception(
+            &#34;&#39;only_ltd&#39; must be True or False.&#34;
+            )
+    # INPUT CHECK END
+    # Remove None values
+    ser = ser.dropna()
+    # For progress bar, specify the width of it
+    progress_bar_width = 50
+    # Initialize resulst DF
+    df = pd.DataFrame()
+    # Loop though BIDs
+    for bid_i, bid in enumerate(ser.to_numpy()):
+        # update the progress bar
+        percent = 100*(bid_i/(len(ser)-1))
+        sys.stdout.write(&#39;\r&#39;)
+        sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
+                         .format(&#39;=&#39;*int(percent/(100/progress_bar_width)),
+                                 progress_bar_width, int(percent)))
+        sys.stdout.flush()
+        # Get data from database
+        path = &#34;https://avoindata.prh.fi/bis/v1/&#34; + str(bid)
+        r = requests.get(path)
+        # Convert to dictionaries
+        text = r.json()
+        # Get results only
+        df_temp = pd.json_normalize(text[&#34;results&#34;])
+        # If results were found, continue
+        if not df_temp.empty:
+            # Change names
+            df_temp = df_temp.rename(columns={
+                &#34;businessId&#34;: &#34;bid&#34;,
+                &#34;name&#34;: &#34;name&#34;,
+                &#34;registrationDate&#34;: &#34;registration_date&#34;,
+                &#34;companyForm&#34;: &#34;company_form_short&#34;,
+                &#34;liquidations&#34;: &#34;liquidation&#34;,
+                &#34;companyForms&#34;: &#34;company_form&#34;,
+                &#34;businessLines&#34;: &#34;business_line&#34;,
+                &#34;registedOffices&#34;: &#34;muni&#34;,
+                &#34;businessIdChanges&#34;: &#34;old_bid&#34;,
+                })
+            # Get certain data and convert into Series
+            col_info = [&#34;bid&#34;, &#34;name&#34;, &#34;company_form_short&#34;]
+            series = df_temp.loc[:, col_info]
+            series = series.squeeze()
+            # Loop over certain information columns
+            info = [
+                    &#34;liquidation&#34;,
+                    &#34;company_form&#34;,
+                    &#34;business_line&#34;,
+                    &#34;muni&#34;,
+                    &#34;old_bid&#34;,
+                    ]
+            for col in info:
+                # Get data
+                temp = df_temp[col]
+                temp = temp.explode().apply(pd.Series)
+                # If information is included
+                if len(temp.dropna(axis=0, how=&#34;all&#34;)) &gt; 0:
+                    if any(x in col for x in [&#34;company_form&#34;,
+                                              &#34;business_line&#34;,
+                                              &#34;muni&#34;]):
+                        # If certain data, capitalize and add column names
+                        # with language
+                        # Remove those values that are outdated
+                        temp = temp.loc[temp[&#34;endDate&#34;].isna(), :]
+                        temp_name = temp[&#34;name&#34;].astype(str).str.capitalize()
+                        temp_col = [col + &#34;_&#34; + x for x in temp[
+                            &#34;language&#34;].astype(str).str.lower()]
+                        # Add number if multiple names per language
+                        if (len(temp_name)/3) &gt; 1:
+                            # Add suffix
+                            temp_col2 = []
+                            for x in temp_col:
+                                count = sum([y == x for y in temp_col2])
+                                if count != 0:
+                                    x = x + &#34;_&#34; + str(count+1)
+                                temp_col2.append(x)
+                            temp_col = temp_col2
+                        temp_name.index = temp_col
+                    elif any(x in col for x in [&#34;liquidation&#34;]):
+                        # If certain data, get name and date and add
+                        # column names with language
+                        temp_name = temp[&#34;description&#34;]
+                        temp_date = temp.loc[
+                            temp[&#34;language&#34;] == &#34;FI&#34;, &#34;registrationDate&#34;]
+                        temp_col = [col + &#34;_&#34; + x for x in temp[
+                            &#34;language&#34;].astype(str).str.lower()]
+                        temp_name.index = temp_col
+                        # Add date
+                        temp_date.index = [col + &#34;_date&#34;]
+                        temp_name = pd.concat([temp_name, temp_date])
+                    elif any(x in col for x in [&#34;old_bid&#34;]):
+                        # If certain data, capitalize and add
+                        # column names with numbers
+                        temp_name = temp[&#34;oldBusinessId&#34;]
+                        temp_col = [col]
+                        if len(temp_name) &gt; 1:
+                            temp_col.extend([col + &#34;_&#34; + str(x) for x in
+                                             range(2, len(temp_name)+1)])
+                        temp_name.index = temp_col
+                    # Add to final data
+                    series = pd.concat([series, temp_name])
+            # Convert Series to DF and transpose it to correct format
+            res = pd.DataFrame(series).transpose()
+        elif not only_ltd:
+            # If BID was not found from the database, try to find
+            # with web search
+            try:
+                res = __fetch_company_data_from_website(bid)
+            except Exception:
+                res = pd.DataFrame([bid], index=[&#34;bid&#34;]).transpose()
+        else:
+            # If user want only ltd info and data was not found
+            res = pd.DataFrame([bid], index=[&#34;bid&#34;]).transpose()
+        # Add to DataFrame
+        if df.empty:
+            df = res
+        else:
+            df = pd.merge(df, res, how=&#34;outer&#34;)
+    # Stop progress bar
+    sys.stdout.write(&#34;\n&#34;)
+    return df</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="osta GitHub page" href="https://github.com/TuomasBorman/osta">
+<img src="./logo/osta_logo.png" alt="">
+</a>
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="osta" href="index.html">osta</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="osta.enrich_data.enrich_data" href="#osta.enrich_data.enrich_data">enrich_data</a></code></li>
+<li><code><a title="osta.enrich_data.fetch_company_data" href="#osta.enrich_data.fetch_company_data">fetch_company_data</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

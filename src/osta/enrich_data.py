@@ -325,7 +325,7 @@ def __add_sums(df, disable_sums=False):
 
 def fetch_company_data(ser, only_ltd=False, **args):
     """
-    This function fetches company data from databases.
+    Fetch company data from databases.
 
     Arguments:
         ```
