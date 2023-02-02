@@ -466,9 +466,11 @@ def __fetch_company_data_from_website(bid):
     """
     This function fetch company data from PRH's website that includes
     all companies (not just limited company).
-    Input: business ID
+    Input: business ID or business name
     Output: df with company data
     """
+    # Test if BID is business ID or name
+    bid_option = utils.__are_valid_bids(pd.Series([bid])).all()
     # Create a driver
     driver_found = False
     for driver in ["firefox", "chrome", "ie"]:
@@ -497,21 +499,24 @@ def __fetch_company_data_from_website(bid):
         browser.implicitly_wait(5)
         # Find Finnish results
         url = "https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=1"
-        res_fi = __search_companies_with_web_search(bid, url, browser)
+        res_fi = __search_companies_with_web_search(bid, bid_option,
+                                                    url, browser)
         # Find Swedish results
         url = "https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=2"
-        res_se = __search_companies_with_web_search(bid, url, browser)
+        res_se = __search_companies_with_web_search(bid, bid_option,
+                                                    url, browser)
         # Find English results
         url = "https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=3"
-        res_en = __search_companies_with_web_search(bid, url, browser)
+        res_en = __search_companies_with_web_search(bid, bid_option,
+                                                    url, browser)
         # Combine result
         res = res_fi
         res.extend(res_se[2:])
         res.extend(res_en[2:])
     else:
         # If driver was not found
-        res = [bid]
-        res.extend([None for x in range(1, 14)])
+        res = [bid, None] if bid_option else [None, bid]
+        res.extend([None for x in range(1, 13)])
     # Names of fields
     colnames = [
         "bid",
@@ -536,7 +541,7 @@ def __fetch_company_data_from_website(bid):
     return df
 
 
-def __search_companies_with_web_search(bid, url, browser):
+def __search_companies_with_web_search(bid, bid_option, url, browser):
     """
     Help function, this function fetch company data from PRH's website. Search
     is similar for different languages
@@ -545,9 +550,13 @@ def __search_companies_with_web_search(bid, url, browser):
     """
     # Go to the web page
     browser.get(url)
-    # Search by BID
-    search_box = browser.find_element(
-        "xpath", "//input[@id='_ctl0_cphSisalto_ytunnus']")
+    # Search by BID or name
+    if bid_option:
+        search_box = browser.find_element(
+            "xpath", "//input[@id='_ctl0_cphSisalto_ytunnus']")
+    else:
+        search_box = browser.find_element(
+            "xpath", "//input[@id='_ctl0_cphSisalto_hakusana']")
     search_box.send_keys(bid)
     # Submit the text to search bar
     search_box.send_keys(Keys.RETURN)
@@ -559,6 +568,9 @@ def __search_companies_with_web_search(bid, url, browser):
     if link is not None:
         r = requests.get(link)
         soup = BeautifulSoup(r.text, 'lxml')
+        # Find Business ID
+        bid = soup.findAll("span", id="_ctl0_cphSisalto_lblytunnus")
+        bid = bid[0].text if len(bid) == 1 else None
         # Find name
         name = soup.findAll("span", id="_ctl0_cphSisalto_lblToiminimi")
         name = name[0].text if len(name) == 1 else None
@@ -585,5 +597,6 @@ def __search_companies_with_web_search(bid, url, browser):
                business_line, liquidation]
     else:
         # Give list with Nones, if link to result page is not found
-        res = [None for x in range(1, 6)]
+        res = [bid, None] if bid_option else [None, bid]
+        res.extend([None for x in range(1, 5)])
     return res

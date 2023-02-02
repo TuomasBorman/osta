@@ -1648,3 +1648,15 @@ DevTools listening on ws://127.0.0.1:47245/devtools/browser/47a4a4c0-91ba-4d3e-9
 console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
 console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
 console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675316849292	geckodriver	INFO	Listening on 127.0.0.1:34225
+1675316849845	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "50003" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilebKvusv"
+*** You are running in headless mode.
+1675316850040	Marionette	INFO	Marionette enabled
+1675316850042	Marionette	INFO	Listening on port 41949
+Read port: 41949
+WebDriver BiDi listening on ws://127.0.0.1:50003
+1675316850099	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilebKvusv/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:50003/devtools/browser/e1ff3a62-2904-4612-af66-d3b0e6d942d8
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
