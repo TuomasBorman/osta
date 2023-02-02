@@ -434,15 +434,16 @@ def fetch_company_data(ser, language="en", only_ltd=False, **args):
                         # If certain data, capitalize and add column names
                         # with language
                         # Remove those values that are outdated
-                        temp = temp.loc[temp["endDate"].isna(), :]
+                        ind = temp["endDate"].isna()
+                        if any(ind):
+                            temp = temp.loc[ind, :]
                         # Get only specific language
                         ind = temp["language"].astype(str).str.lower() == lan
                         if any(ind):
                             temp_name = temp.loc[ind, "name"].astype(
                                 str).str.capitalize()
-                        else:
-                            temp_name = temp.loc[temp.shape[0], "name"].astype(
-                                str).str.capitalize()
+                        # Ensure that there is only one value
+                        temp_name = temp_name.iloc[[0]]
                         temp_name.index = [col]
                     elif any(x in col for x in ["liquidation"]):
                         # If certain data, get name and date and add
