@@ -327,14 +327,19 @@ def fetch_company_data(ser, only_ltd=False, **args):
     """
     This function fetch company data from PRH. Resources of PRH are limited.
     Please use the function only when needed,and store the results if
-    possible.
-    Input: Series
+    possible. Search in smaller batches to prevent problems with resource
+    allocation.
+    Input: Series with BIDs
     Output: df with company data
     """
     # INPUT CHECK
     if not (isinstance(ser, pd.Series) and len(ser) > 0):
         raise Exception(
             "'ser' must be non-empty pandas.Series."
+            )
+    if not isinstance(only_ltd, bool):
+        raise Exception(
+            "'only_ltd' must be True or False."
             )
     # INPUT CHECK END
     # Remove None values
