@@ -1,0 +1,1650 @@
+1675268208838	geckodriver	INFO	Listening on 127.0.0.1:33421
+1675268209387	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "56709" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileYDpwTU"
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1675268209858	Marionette	INFO	Marionette enabled
+1675268209861	Marionette	INFO	Listening on port 39465
+Read port: 39465
+WebDriver BiDi listening on ws://127.0.0.1:56709
+1675268209955	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileYDpwTU/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56709/devtools/browser/5a3ab7a9-7140-4511-b3a3-1cf81bc9857e
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675269368976	geckodriver	INFO	Listening on 127.0.0.1:34885
+1675269369507	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "43815" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilehT2cOg"
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1675269369925	Marionette	INFO	Marionette enabled
+1675269369928	Marionette	INFO	Listening on port 36033
+Read port: 36033
+WebDriver BiDi listening on ws://127.0.0.1:43815
+1675269370053	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilehT2cOg/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:43815/devtools/browser/78cf81ce-fc23-4c9d-b280-e56d52b53d30
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675269996935	geckodriver	INFO	Listening on 127.0.0.1:39741
+1675269997470	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "55897" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileyO3VCc"
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1675269997882	Marionette	INFO	Marionette enabled
+1675269997884	Marionette	INFO	Listening on port 38513
+WebDriver BiDi listening on ws://127.0.0.1:55897
+Read port: 38513
+1675269998002	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileyO3VCc/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:55897/devtools/browser/e2b6ca81-a6f9-4aed-a5f1-8b9ae2d3d197
+1675270023916	Marionette	INFO	Stopped listening on port 38513
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+Sandbox: Unexpected EOF, op 0 flags 00 path /proc/cpuinfo
+1675270218063	geckodriver::marionette	ERROR	Failed to close browser connection: Socket not connected (os error 107)
+1675270296571	geckodriver	INFO	Listening on 127.0.0.1:58417
+1675270297131	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "41489" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileaJE7ds"
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1675270297547	Marionette	INFO	Marionette enabled
+1675270297549	Marionette	INFO	Listening on port 42039
+WebDriver BiDi listening on ws://127.0.0.1:41489
+Read port: 42039
+1675270297713	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileaJE7ds/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:41489/devtools/browser/fcce1cac-dc55-4e2a-b550-aaf4467a11bf
+1675270401324	Marionette	INFO	Stopped listening on port 42039
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+1675271531253	geckodriver	INFO	Listening on 127.0.0.1:48321
+1675271531811	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "53745" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilea5ljmw"
+*** You are running in headless mode.
+1675271532007	Marionette	INFO	Marionette enabled
+1675271532010	Marionette	INFO	Listening on port 36809
+Read port: 36809
+WebDriver BiDi listening on ws://127.0.0.1:53745
+1675271532066	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilea5ljmw/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:53745/devtools/browser/4f1beb3b-eb93-4cd9-bdc1-0951f9024e86
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.error: "Unable to find target with innerWindowId:4294967302"
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675272840774	geckodriver	INFO	Listening on 127.0.0.1:34997
+1675272841303	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "52799" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileprVSeb"
+*** You are running in headless mode.
+1675272841504	Marionette	INFO	Marionette enabled
+1675272841507	Marionette	INFO	Listening on port 32839
+WebDriver BiDi listening on ws://127.0.0.1:52799
+Read port: 32839
+1675272841714	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileprVSeb/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:52799/devtools/browser/90d6132e-4369-486f-9fae-bc53e614a090
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675272920613	geckodriver	INFO	Listening on 127.0.0.1:51147
+1675272921168	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "44961" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileddHJXJ"
+*** You are running in headless mode.
+1675272921366	Marionette	INFO	Marionette enabled
+1675272921369	Marionette	INFO	Listening on port 37927
+WebDriver BiDi listening on ws://127.0.0.1:44961
+Read port: 37927
+1675272921518	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileddHJXJ/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:44961/devtools/browser/1d64ebdb-37b9-46c1-b087-f2e55ff17cf1
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675272984689	geckodriver	INFO	Listening on 127.0.0.1:57473
+1675272985229	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "54199" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileGE8ppT"
+*** You are running in headless mode.
+1675272985440	Marionette	INFO	Marionette enabled
+1675272985442	Marionette	INFO	Listening on port 44313
+WebDriver BiDi listening on ws://127.0.0.1:54199
+Read port: 44313
+1675272985634	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileGE8ppT/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:54199/devtools/browser/a520ecf4-7841-4a02-affd-eaf547fff881
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675273100920	geckodriver	INFO	Listening on 127.0.0.1:60119
+1675273101468	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "42895" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilerRnHTp"
+*** You are running in headless mode.
+1675273101666	Marionette	INFO	Marionette enabled
+1675273101668	Marionette	INFO	Listening on port 46385
+Read port: 46385
+WebDriver BiDi listening on ws://127.0.0.1:42895
+1675273101737	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilerRnHTp/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:42895/devtools/browser/12ca1c4a-db83-4058-937f-ed3f8098a592
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+JavaScript error: resource://devtools/client/framework/toolbox.js, line 3511: TypeError: data.frameData.id is null
+1675273224240	Marionette	WARN	Ignoring event 'pageshow' because document has an invalid readyState of 'interactive'.
+JavaScript error: resource://devtools/client/framework/toolbox.js, line 3511: TypeError: data.frameData.id is null
+JavaScript error: resource://devtools/client/framework/toolbox.js, line 3511: TypeError: data.frameData.id is null
+1675273231934	Marionette	WARN	Ignoring event 'pageshow' because document has an invalid readyState of 'interactive'.
+JavaScript error: resource://devtools/client/framework/toolbox.js, line 3511: TypeError: data.frameData.id is null
+console.warn: ({})
+console.error: "Unable to find target with innerWindowId:4294967310"
+console.warn: ({})
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675276211622	geckodriver	INFO	Listening on 127.0.0.1:43241
+1675276212154	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "55287" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileuF8M8I"
+*** You are running in headless mode.
+1675276212353	Marionette	INFO	Marionette enabled
+1675276212355	Marionette	INFO	Listening on port 34587
+WebDriver BiDi listening on ws://127.0.0.1:55287
+Read port: 34587
+1675276212554	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileuF8M8I/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:55287/devtools/browser/55895d48-0663-40bd-8d40-0c80f77d0a52
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675276356712	geckodriver	INFO	Listening on 127.0.0.1:42667
+1675276357245	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "36175" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilebRqWRF"
+*** You are running in headless mode.
+1675276357445	Marionette	INFO	Marionette enabled
+1675276357447	Marionette	INFO	Listening on port 32949
+WebDriver BiDi listening on ws://127.0.0.1:36175
+Read port: 32949
+1675276357702	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilebRqWRF/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:36175/devtools/browser/527cdb30-d4b2-430c-bcdf-4b5d3c550538
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675276397150	geckodriver	INFO	Listening on 127.0.0.1:50927
+1675276397694	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "55209" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileOe6m7w"
+*** You are running in headless mode.
+1675276397893	Marionette	INFO	Marionette enabled
+1675276397896	Marionette	INFO	Listening on port 45921
+WebDriver BiDi listening on ws://127.0.0.1:55209
+Read port: 45921
+1675276398071	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileOe6m7w/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:55209/devtools/browser/eb37bcce-b910-4f73-983a-b329211011c0
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1675276440177	geckodriver	INFO	Listening on 127.0.0.1:59155
+1675276440722	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "42535" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile0fqS4L"
+*** You are running in headless mode.
+1675276440931	Marionette	INFO	Marionette enabled
+1675276440933	Marionette	INFO	Listening on port 40869
+WebDriver BiDi listening on ws://127.0.0.1:42535
+Read port: 40869
+1675276441117	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile0fqS4L/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:42535/devtools/browser/44d2dd07-c47b-4e9c-8546-0af4ce703877
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675276480313	geckodriver	INFO	Listening on 127.0.0.1:57177
+1675276480835	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "53475" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilebQD6YA"
+*** You are running in headless mode.
+1675276481064	Marionette	INFO	Marionette enabled
+1675276481066	Marionette	INFO	Listening on port 37917
+WebDriver BiDi listening on ws://127.0.0.1:53475
+Read port: 37917
+1675276481250	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilebQD6YA/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:53475/devtools/browser/bd4b5e72-f9b6-4967-85db-12a9f0b3c6e5
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1675276607366	geckodriver	INFO	Listening on 127.0.0.1:58689
+1675276607897	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "47113" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilesHCxPS"
+*** You are running in headless mode.
+1675276608096	Marionette	INFO	Marionette enabled
+1675276608099	Marionette	INFO	Listening on port 42155
+WebDriver BiDi listening on ws://127.0.0.1:47113
+Read port: 42155
+1675276608296	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilesHCxPS/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:47113/devtools/browser/4a1591d7-1e1c-42cc-b37b-b721c818afb9
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675276680597	geckodriver	INFO	Listening on 127.0.0.1:60857
+1675276681130	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "35679" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilexd67Uy"
+*** You are running in headless mode.
+1675276681330	Marionette	INFO	Marionette enabled
+1675276681332	Marionette	INFO	Listening on port 33979
+WebDriver BiDi listening on ws://127.0.0.1:35679
+Read port: 33979
+1675276681572	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilexd67Uy/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:35679/devtools/browser/5d48590c-b9f2-49a7-9b46-d6804e49f510
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675276716754	geckodriver	INFO	Listening on 127.0.0.1:44873
+1675276717306	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "37015" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileAr86xd"
+*** You are running in headless mode.
+1675276717511	Marionette	INFO	Marionette enabled
+1675276717513	Marionette	INFO	Listening on port 38047
+WebDriver BiDi listening on ws://127.0.0.1:37015
+Read port: 38047
+1675276717723	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileAr86xd/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:37015/devtools/browser/fd93369f-7d0d-4850-aed3-d95a13af8b2e
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675276754002	geckodriver	INFO	Listening on 127.0.0.1:41227
+1675276754578	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "52139" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileLq5q09"
+*** You are running in headless mode.
+1675276754774	Marionette	INFO	Marionette enabled
+1675276754776	Marionette	INFO	Listening on port 37655
+Read port: 37655
+WebDriver BiDi listening on ws://127.0.0.1:52139
+1675276754831	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileLq5q09/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:52139/devtools/browser/33e22900-2a05-4450-9e19-ba30d5785198
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675276791886	geckodriver	INFO	Listening on 127.0.0.1:48641
+1675276792437	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "54161" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofiletInzuh"
+*** You are running in headless mode.
+1675276792628	Marionette	INFO	Marionette enabled
+1675276792631	Marionette	INFO	Listening on port 43051
+Read port: 43051
+WebDriver BiDi listening on ws://127.0.0.1:54161
+1675276792686	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofiletInzuh/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:54161/devtools/browser/22ba5cf4-d19f-4e5a-b58c-bcf1401afc87
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1675276968047	geckodriver	INFO	Listening on 127.0.0.1:40067
+1675276968574	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "50605" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofiley2gsiJ"
+*** You are running in headless mode.
+1675276968776	Marionette	INFO	Marionette enabled
+1675276968778	Marionette	INFO	Listening on port 40007
+WebDriver BiDi listening on ws://127.0.0.1:50605
+Read port: 40007
+1675276968977	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofiley2gsiJ/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:50605/devtools/browser/f7991029-c814-4b10-835f-430627af74af
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1675277012401	geckodriver	INFO	Listening on 127.0.0.1:49829
+1675277012951	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "38437" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileD7jFlz"
+*** You are running in headless mode.
+1675277013142	Marionette	INFO	Marionette enabled
+1675277013144	Marionette	INFO	Listening on port 44821
+Read port: 44821
+WebDriver BiDi listening on ws://127.0.0.1:38437
+1675277013201	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileD7jFlz/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:38437/devtools/browser/81db1f79-cd9f-4d83-ac5a-50384dfa3e78
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1675277044465	geckodriver	INFO	Listening on 127.0.0.1:49369
+1675277045018	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "37029" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilexaiBae"
+*** You are running in headless mode.
+1675277045216	Marionette	INFO	Marionette enabled
+1675277045219	Marionette	INFO	Listening on port 43099
+Read port: 43099
+WebDriver BiDi listening on ws://127.0.0.1:37029
+1675277045274	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilexaiBae/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:37029/devtools/browser/10c3a05e-a139-4148-a436-71ca19ab6bdf
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675277175464	geckodriver	INFO	Listening on 127.0.0.1:53947
+1675277176003	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "33697" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileDCYxVT"
+*** You are running in headless mode.
+1675277176205	Marionette	INFO	Marionette enabled
+1675277176208	Marionette	INFO	Listening on port 42187
+WebDriver BiDi listening on ws://127.0.0.1:33697
+Read port: 42187
+1675277176432	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileDCYxVT/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:33697/devtools/browser/c6b33761-62b5-466f-b968-f348cca6ab00
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675277404978	geckodriver	INFO	Listening on 127.0.0.1:42355
+1675277405014	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "56547" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileNeyHKu"
+*** You are running in headless mode.
+1675277405206	Marionette	INFO	Marionette enabled
+1675277405208	Marionette	INFO	Listening on port 34851
+Read port: 34851
+WebDriver BiDi listening on ws://127.0.0.1:56547
+1675277405264	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileNeyHKu/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56547/devtools/browser/b1ec9d9b-8fb5-4417-80b6-8cb1b528413b
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675278580832	geckodriver	INFO	Listening on 127.0.0.1:51333
+1675278581375	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "35389" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilewS8coR"
+*** You are running in headless mode.
+1675278581570	Marionette	INFO	Marionette enabled
+1675278581573	Marionette	INFO	Listening on port 44797
+Read port: 44797
+WebDriver BiDi listening on ws://127.0.0.1:35389
+1675278581629	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilewS8coR/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:35389/devtools/browser/6da9bb28-fe1c-4452-bd17-71d0a002605d
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675278744174	geckodriver	INFO	Listening on 127.0.0.1:49551
+1675278744707	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "59621" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile6wJ8th"
+*** You are running in headless mode.
+1675278744902	Marionette	INFO	Marionette enabled
+1675278744904	Marionette	INFO	Listening on port 42713
+Read port: 42713
+WebDriver BiDi listening on ws://127.0.0.1:59621
+1675278744961	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile6wJ8th/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59621/devtools/browser/18d9419f-0d9a-4c29-9316-0399e5216018
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675278751502	geckodriver	INFO	Listening on 127.0.0.1:36199
+1675278752058	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "56345" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileSeZdNi"
+*** You are running in headless mode.
+1675278752256	Marionette	INFO	Marionette enabled
+1675278752258	Marionette	INFO	Listening on port 39217
+Read port: 39217
+WebDriver BiDi listening on ws://127.0.0.1:56345
+1675278752314	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileSeZdNi/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56345/devtools/browser/42959b6f-4958-4d12-9506-cf645de7b829
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675278759344	geckodriver	INFO	Listening on 127.0.0.1:41199
+1675278759875	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "59699" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofiledt9ZKy"
+*** You are running in headless mode.
+1675278760071	Marionette	INFO	Marionette enabled
+1675278760073	Marionette	INFO	Listening on port 46483
+Read port: 46483
+WebDriver BiDi listening on ws://127.0.0.1:59699
+1675278760128	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofiledt9ZKy/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59699/devtools/browser/4634c27c-2f09-48e5-84bc-8b63a8b9131f
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675278769626	geckodriver	INFO	Listening on 127.0.0.1:50645
+1675278770157	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "54023" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofiledg14ta"
+*** You are running in headless mode.
+1675278770348	Marionette	INFO	Marionette enabled
+1675278770351	Marionette	INFO	Listening on port 39137
+Read port: 39137
+WebDriver BiDi listening on ws://127.0.0.1:54023
+1675278770409	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofiledg14ta/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:54023/devtools/browser/48b68bb0-a2b9-4187-af17-e486e4bed370
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1675278943876	geckodriver	INFO	Listening on 127.0.0.1:35029
+1675278944411	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "39929" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilenngpcm"
+*** You are running in headless mode.
+1675278944613	Marionette	INFO	Marionette enabled
+1675278944616	Marionette	INFO	Listening on port 38645
+WebDriver BiDi listening on ws://127.0.0.1:39929
+Read port: 38645
+1675278944830	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilenngpcm/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:39929/devtools/browser/312fd529-4de4-4105-ac54-96981792c7e7
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279024671	geckodriver	INFO	Listening on 127.0.0.1:47239
+1675279025205	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "44311" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile68J05a"
+*** You are running in headless mode.
+1675279025405	Marionette	INFO	Marionette enabled
+1675279025407	Marionette	INFO	Listening on port 44255
+WebDriver BiDi listening on ws://127.0.0.1:44311
+Read port: 44255
+1675279025623	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile68J05a/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:44311/devtools/browser/9cecd649-a532-4698-915e-eb0a9d147b36
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279031991	geckodriver	INFO	Listening on 127.0.0.1:53491
+1675279032547	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "55763" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilecB4jOx"
+*** You are running in headless mode.
+1675279032740	Marionette	INFO	Marionette enabled
+1675279032742	Marionette	INFO	Listening on port 45825
+Read port: 45825
+WebDriver BiDi listening on ws://127.0.0.1:55763
+1675279032798	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilecB4jOx/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:55763/devtools/browser/eb35271e-a6fb-49b8-ba86-4eac0d73eac5
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279043640	geckodriver	INFO	Listening on 127.0.0.1:38163
+1675279043660	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "42043" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileybWT75"
+*** You are running in headless mode.
+1675279043878	Marionette	INFO	Marionette enabled
+1675279043880	Marionette	INFO	Listening on port 45765
+WebDriver BiDi listening on ws://127.0.0.1:42043
+Read port: 45765
+1675279044061	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileybWT75/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:42043/devtools/browser/d2d94335-4bde-4bb2-935c-727a4b9302a2
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279059645	geckodriver	INFO	Listening on 127.0.0.1:43655
+1675279060176	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "47779" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileNfaAQI"
+*** You are running in headless mode.
+1675279060378	Marionette	INFO	Marionette enabled
+1675279060383	Marionette	INFO	Listening on port 44567
+WebDriver BiDi listening on ws://127.0.0.1:47779
+Read port: 44567
+1675279060561	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileNfaAQI/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:47779/devtools/browser/4178bc19-f0bb-4df4-9dcb-35b4fce92988
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279068539	geckodriver	INFO	Listening on 127.0.0.1:46533
+1675279069067	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "53793" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilecyS3o4"
+*** You are running in headless mode.
+1675279069264	Marionette	INFO	Marionette enabled
+1675279069267	Marionette	INFO	Listening on port 34383
+Read port: 34383
+WebDriver BiDi listening on ws://127.0.0.1:53793
+1675279069326	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilecyS3o4/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:53793/devtools/browser/a823437e-12a2-4f24-8cef-09c81de6117e
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279076922	geckodriver	INFO	Listening on 127.0.0.1:55397
+1675279077467	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "45457" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilejnaDbs"
+*** You are running in headless mode.
+1675279077680	Marionette	INFO	Marionette enabled
+1675279077682	Marionette	INFO	Listening on port 36113
+WebDriver BiDi listening on ws://127.0.0.1:45457
+Read port: 36113
+1675279077892	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilejnaDbs/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:45457/devtools/browser/14c47d61-8b4e-4ec7-b2ce-bc03614bde1e
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279093544	geckodriver	INFO	Listening on 127.0.0.1:53645
+1675279094092	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "48967" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilexY6qsz"
+*** You are running in headless mode.
+1675279094390	Marionette	INFO	Marionette enabled
+1675279094394	Marionette	INFO	Listening on port 37033
+WebDriver BiDi listening on ws://127.0.0.1:48967
+Read port: 37033
+1675279094604	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilexY6qsz/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:48967/devtools/browser/e18a700a-cfb0-4365-929a-019c488f8392
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279101216	geckodriver	INFO	Listening on 127.0.0.1:47609
+1675279101767	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "43789" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilePxoIRC"
+*** You are running in headless mode.
+1675279101966	Marionette	INFO	Marionette enabled
+1675279101968	Marionette	INFO	Listening on port 42765
+WebDriver BiDi listening on ws://127.0.0.1:43789
+Read port: 42765
+1675279102147	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilePxoIRC/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:43789/devtools/browser/604d6c34-41bb-4e9b-824f-abc56f2f15bf
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279109109	geckodriver	INFO	Listening on 127.0.0.1:53187
+1675279109659	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "52407" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilegptyr1"
+*** You are running in headless mode.
+1675279109872	Marionette	INFO	Marionette enabled
+1675279109875	Marionette	INFO	Listening on port 44055
+WebDriver BiDi listening on ws://127.0.0.1:52407
+Read port: 44055
+1675279110090	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilegptyr1/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:52407/devtools/browser/e9233d06-41ad-491a-874c-efa8e855d7f5
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279116479	geckodriver	INFO	Listening on 127.0.0.1:37349
+1675279117025	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "48845" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile5ivAPx"
+*** You are running in headless mode.
+1675279117268	Marionette	INFO	Marionette enabled
+1675279117270	Marionette	INFO	Listening on port 35265
+WebDriver BiDi listening on ws://127.0.0.1:48845
+Read port: 35265
+1675279117460	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile5ivAPx/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:48845/devtools/browser/12326acd-c8a3-45cb-8e82-7fb461c50ef5
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279124250	geckodriver	INFO	Listening on 127.0.0.1:35057
+1675279124786	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "43013" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileCzDtPZ"
+*** You are running in headless mode.
+1675279124999	Marionette	INFO	Marionette enabled
+1675279125002	Marionette	INFO	Listening on port 45117
+WebDriver BiDi listening on ws://127.0.0.1:43013
+Read port: 45117
+1675279125183	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileCzDtPZ/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:43013/devtools/browser/68269075-d7c8-4793-975e-19dc1eb8aee4
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279132242	geckodriver	INFO	Listening on 127.0.0.1:38905
+1675279132769	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "46227" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileAYXRSD"
+*** You are running in headless mode.
+1675279132968	Marionette	INFO	Marionette enabled
+1675279132970	Marionette	INFO	Listening on port 44881
+WebDriver BiDi listening on ws://127.0.0.1:46227
+Read port: 44881
+1675279133160	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileAYXRSD/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:46227/devtools/browser/353c8aec-582c-4258-b41b-6ee561f3279e
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279139741	geckodriver	INFO	Listening on 127.0.0.1:35671
+1675279140302	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "40809" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileQwfpsW"
+*** You are running in headless mode.
+1675279140529	Marionette	INFO	Marionette enabled
+1675279140532	Marionette	INFO	Listening on port 41681
+WebDriver BiDi listening on ws://127.0.0.1:40809
+Read port: 41681
+1675279140746	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileQwfpsW/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:40809/devtools/browser/0b12f306-ea18-46a1-9c4a-d6fdb0b36d2b
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279147727	geckodriver	INFO	Listening on 127.0.0.1:51837
+1675279148279	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "40057" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofiletOGQyv"
+*** You are running in headless mode.
+1675279148493	Marionette	INFO	Marionette enabled
+1675279148495	Marionette	INFO	Listening on port 42831
+WebDriver BiDi listening on ws://127.0.0.1:40057
+Read port: 42831
+1675279148671	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofiletOGQyv/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:40057/devtools/browser/0a5a8cce-3936-4f11-bb4a-c5d79bf086d4
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279156823	geckodriver	INFO	Listening on 127.0.0.1:48535
+1675279157352	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "56523" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile8TGat5"
+*** You are running in headless mode.
+1675279157579	Marionette	INFO	Marionette enabled
+1675279157581	Marionette	INFO	Listening on port 43503
+WebDriver BiDi listening on ws://127.0.0.1:56523
+Read port: 43503
+1675279157806	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile8TGat5/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56523/devtools/browser/9e573779-32bb-43b7-9bcf-9edf53754ec2
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279169146	geckodriver	INFO	Listening on 127.0.0.1:52481
+1675279169183	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "45293" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileMjAeww"
+*** You are running in headless mode.
+1675279169398	Marionette	INFO	Marionette enabled
+1675279169401	Marionette	INFO	Listening on port 35241
+WebDriver BiDi listening on ws://127.0.0.1:45293
+Read port: 35241
+1675279169596	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileMjAeww/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:45293/devtools/browser/b9c8a079-8d11-4547-bffc-3e31a92c6ed1
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279176117	geckodriver	INFO	Listening on 127.0.0.1:37935
+1675279176664	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "37983" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileMMxcvC"
+*** You are running in headless mode.
+1675279176860	Marionette	INFO	Marionette enabled
+1675279176862	Marionette	INFO	Listening on port 46359
+Read port: 46359
+WebDriver BiDi listening on ws://127.0.0.1:37983
+1675279176923	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileMMxcvC/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:37983/devtools/browser/a654496d-cd03-4821-8f9e-7f34324cf6be
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279185537	geckodriver	INFO	Listening on 127.0.0.1:55655
+1675279186094	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "34275" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileo3NEbJ"
+*** You are running in headless mode.
+1675279186304	Marionette	INFO	Marionette enabled
+1675279186306	Marionette	INFO	Listening on port 42681
+WebDriver BiDi listening on ws://127.0.0.1:34275
+Read port: 42681
+1675279186498	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileo3NEbJ/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:34275/devtools/browser/8d44bc7d-b4f4-4703-90e2-78d7445abd28
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279194674	geckodriver	INFO	Listening on 127.0.0.1:53069
+1675279195208	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "40985" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileE3u0fF"
+*** You are running in headless mode.
+1675279195419	Marionette	INFO	Marionette enabled
+1675279195421	Marionette	INFO	Listening on port 36669
+WebDriver BiDi listening on ws://127.0.0.1:40985
+Read port: 36669
+1675279195601	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileE3u0fF/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:40985/devtools/browser/0947251e-f8c7-4378-9bfe-77c6538a7759
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279205543	geckodriver	INFO	Listening on 127.0.0.1:48359
+1675279206086	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "40497" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileqYs9a4"
+*** You are running in headless mode.
+1675279206325	Marionette	INFO	Marionette enabled
+1675279206327	Marionette	INFO	Listening on port 32825
+WebDriver BiDi listening on ws://127.0.0.1:40497
+Read port: 32825
+1675279206526	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileqYs9a4/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:40497/devtools/browser/c746260b-b973-4617-b41c-0c27e836a4c1
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279490544	geckodriver	INFO	Listening on 127.0.0.1:60249
+1675279491062	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "54489" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile2ZeId1"
+*** You are running in headless mode.
+1675279491308	Marionette	INFO	Marionette enabled
+1675279491310	Marionette	INFO	Listening on port 39093
+WebDriver BiDi listening on ws://127.0.0.1:54489
+Read port: 39093
+1675279491521	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile2ZeId1/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:54489/devtools/browser/7087d32c-f1e6-426b-a38c-77a1839526d0
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675279625141	geckodriver	INFO	Listening on 127.0.0.1:52775
+1675279625855	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "55253" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile2v9FuJ"
+*** You are running in headless mode.
+1675279626870	Marionette	INFO	Marionette enabled
+1675279626881	Marionette	INFO	Listening on port 44959
+Read port: 44959
+WebDriver BiDi listening on ws://127.0.0.1:55253
+1675279627060	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile2v9FuJ/search.json.mozlz4", (void 0)))
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+1675280295991	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2199,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2199","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1109","resource:///modules/ContentCrashHandlers.jsm:observe:177"]}] Barrier: quit-application-granted
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2199,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2199","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1109","resource:///modules/ContentCrashHandlers.jsm:observe:177"]}] Barrier: quit-application-granted
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2199,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2199","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1109","resource:///modules/ContentCrashHandlers.jsm:observe:177"]}] Barrier: quit-application-granted
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2199,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2199","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1109","resource:///modules/ContentCrashHandlers.jsm:observe:177"]}] Barrier: quit-application-granted
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2199,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2199","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1109","resource:///modules/ContentCrashHandlers.jsm:observe:177"]}] Barrier: quit-application-granted
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2199,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2199","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1109","resource:///modules/ContentCrashHandlers.jsm:observe:177"]}] Barrier: quit-application-granted
+1675280455740	Marionette	INFO	Stopped listening on port 38645
+1675280455740	Marionette	INFO	Stopped listening on port 36113
+1675280455749	Marionette	INFO	Stopped listening on port 36669
+1675280455752	Marionette	INFO	Stopped listening on port 45765
+1675280455773	Marionette	INFO	Stopped listening on port 43503
+JavaScript error: resource://gre/modules/Sqlite.sys.mjs, line 1037: Error: Transaction timeout, most likely caused by unresolved pending work.
+JavaScript error: resource://gre/modules/Sqlite.sys.mjs, line 1037: Error: Transaction timeout, most likely caused by unresolved pending work.
+1675280455819	Marionette	INFO	Stopped listening on port 35241
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2199,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2199","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1109","resource:///modules/ContentCrashHandlers.jsm:observe:177"]}] Barrier: quit-application-granted
+1675280455833	Marionette	INFO	Stopped listening on port 35265
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+!!! error running onStopped callback: TypeError: callback is not a function
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+JavaScript error: resource://gre/modules/Sqlite.sys.mjs, line 997: Error: Connection is not open.
+DevTools listening on ws://127.0.0.1:55253/devtools/browser/de18eb71-0e62-4fe7-a508-1b1471a8bb44
+console.warn: services.settings: main/query-stripping sync already running
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1675280616267	geckodriver	INFO	Listening on 127.0.0.1:40407
+1675280616818	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "47999" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilep6sjMJ"
+*** You are running in headless mode.
+1675280617054	Marionette	INFO	Marionette enabled
+1675280617057	Marionette	INFO	Listening on port 34063
+Read port: 34063
+WebDriver BiDi listening on ws://127.0.0.1:47999
+1675280617189	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilep6sjMJ/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:47999/devtools/browser/74ea657f-4fd4-49f7-89fd-3df3cffc0356
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280624773	geckodriver	INFO	Listening on 127.0.0.1:56207
+1675280625326	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "49595" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile90JtVr"
+*** You are running in headless mode.
+1675280625528	Marionette	INFO	Marionette enabled
+1675280625531	Marionette	INFO	Listening on port 43001
+WebDriver BiDi listening on ws://127.0.0.1:49595
+Read port: 43001
+1675280625694	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile90JtVr/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:49595/devtools/browser/a5a25845-0d44-4b3e-bf6c-6fbd2cac9a2d
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280632735	geckodriver	INFO	Listening on 127.0.0.1:46745
+1675280632773	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "45949" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile67GjbU"
+*** You are running in headless mode.
+1675280632973	Marionette	INFO	Marionette enabled
+1675280632975	Marionette	INFO	Listening on port 38089
+WebDriver BiDi listening on ws://127.0.0.1:45949
+Read port: 38089
+1675280633158	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile67GjbU/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:45949/devtools/browser/c2e0f172-b1c6-4021-97e0-2d8c0f3ef063
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280642242	geckodriver	INFO	Listening on 127.0.0.1:36177
+1675280642784	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "38949" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileM1BeqI"
+*** You are running in headless mode.
+1675280642982	Marionette	INFO	Marionette enabled
+1675280642985	Marionette	INFO	Listening on port 40373
+WebDriver BiDi listening on ws://127.0.0.1:38949
+Read port: 40373
+1675280643169	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileM1BeqI/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:38949/devtools/browser/5def91f5-37a9-4c4e-9291-1d2f4b1a3c47
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280650627	geckodriver	INFO	Listening on 127.0.0.1:37981
+1675280651169	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "53327" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileT8VyoM"
+*** You are running in headless mode.
+1675280651369	Marionette	INFO	Marionette enabled
+1675280651371	Marionette	INFO	Listening on port 35155
+WebDriver BiDi listening on ws://127.0.0.1:53327
+Read port: 35155
+1675280651573	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileT8VyoM/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:53327/devtools/browser/a56966ae-3d45-40ec-9297-b972ecee5261
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280658123	geckodriver	INFO	Listening on 127.0.0.1:43359
+1675280658677	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "53255" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile0Da5YT"
+*** You are running in headless mode.
+1675280658872	Marionette	INFO	Marionette enabled
+1675280658875	Marionette	INFO	Listening on port 33949
+Read port: 33949
+WebDriver BiDi listening on ws://127.0.0.1:53255
+1675280658935	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile0Da5YT/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:53255/devtools/browser/261a22a2-ed02-4d7b-bc38-68305227ed0c
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280675865	geckodriver	INFO	Listening on 127.0.0.1:39227
+1675280676417	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "55617" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilelLTe9W"
+*** You are running in headless mode.
+1675280676626	Marionette	INFO	Marionette enabled
+1675280676628	Marionette	INFO	Listening on port 35123
+WebDriver BiDi listening on ws://127.0.0.1:55617
+Read port: 35123
+1675280676831	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilelLTe9W/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:55617/devtools/browser/13ed237f-0d31-4d79-9cf9-0219387be510
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280682992	geckodriver	INFO	Listening on 127.0.0.1:36207
+1675280683545	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "43111" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileNUlU3O"
+*** You are running in headless mode.
+1675280683737	Marionette	INFO	Marionette enabled
+1675280683739	Marionette	INFO	Listening on port 41281
+Read port: 41281
+WebDriver BiDi listening on ws://127.0.0.1:43111
+1675280683798	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileNUlU3O/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:43111/devtools/browser/2d410955-2b9c-4ada-9b4c-0c2f5a4fae1c
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280690352	geckodriver	INFO	Listening on 127.0.0.1:48263
+1675280690883	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "38075" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileBmWaBl"
+*** You are running in headless mode.
+1675280691086	Marionette	INFO	Marionette enabled
+1675280691089	Marionette	INFO	Listening on port 41387
+WebDriver BiDi listening on ws://127.0.0.1:38075
+Read port: 41387
+1675280691289	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileBmWaBl/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:38075/devtools/browser/6888d7ba-d443-4f77-b595-04e07f0a9d1b
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280697538	geckodriver	INFO	Listening on 127.0.0.1:47617
+1675280698067	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "57061" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileUKmvZ7"
+*** You are running in headless mode.
+1675280698264	Marionette	INFO	Marionette enabled
+1675280698266	Marionette	INFO	Listening on port 38739
+Read port: 38739
+WebDriver BiDi listening on ws://127.0.0.1:57061
+1675280698323	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileUKmvZ7/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:57061/devtools/browser/706796a0-3251-4036-af9d-76709a2517e7
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280707845	geckodriver	INFO	Listening on 127.0.0.1:35105
+1675280708376	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "37403" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileuqaFbW"
+*** You are running in headless mode.
+1675280708581	Marionette	INFO	Marionette enabled
+1675280708584	Marionette	INFO	Listening on port 41609
+WebDriver BiDi listening on ws://127.0.0.1:37403
+Read port: 41609
+1675280708764	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileuqaFbW/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:37403/devtools/browser/4ca33627-834a-4286-a544-1b6b9708c281
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280716035	geckodriver	INFO	Listening on 127.0.0.1:57193
+1675280716581	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "44087" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilekgMYdc"
+*** You are running in headless mode.
+1675280716780	Marionette	INFO	Marionette enabled
+1675280716783	Marionette	INFO	Listening on port 39897
+WebDriver BiDi listening on ws://127.0.0.1:44087
+Read port: 39897
+1675280716994	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilekgMYdc/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:44087/devtools/browser/a669fab4-dfd4-4217-88f8-64e4c2b906fc
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280723471	geckodriver	INFO	Listening on 127.0.0.1:47023
+1675280724021	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "41627" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileqYyk9S"
+*** You are running in headless mode.
+1675280724221	Marionette	INFO	Marionette enabled
+1675280724223	Marionette	INFO	Listening on port 45629
+WebDriver BiDi listening on ws://127.0.0.1:41627
+Read port: 45629
+1675280724409	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileqYyk9S/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:41627/devtools/browser/56306537-ec4b-493a-ae20-a235500daa76
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280731195	geckodriver	INFO	Listening on 127.0.0.1:55535
+1675280731761	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "49039" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilecXSlqs"
+*** You are running in headless mode.
+1675280731952	Marionette	INFO	Marionette enabled
+1675280731954	Marionette	INFO	Listening on port 33237
+Read port: 33237
+WebDriver BiDi listening on ws://127.0.0.1:49039
+1675280732014	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilecXSlqs/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:49039/devtools/browser/f6fd0a9f-8513-4867-856a-c960391eac87
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280740485	geckodriver	INFO	Listening on 127.0.0.1:49943
+1675280741041	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "42379" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilefvzL17"
+*** You are running in headless mode.
+1675280741245	Marionette	INFO	Marionette enabled
+1675280741248	Marionette	INFO	Listening on port 44863
+WebDriver BiDi listening on ws://127.0.0.1:42379
+Read port: 44863
+1675280741453	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilefvzL17/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:42379/devtools/browser/0d2e1274-84b1-408a-b516-b57d87b84b0a
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280752260	geckodriver	INFO	Listening on 127.0.0.1:58405
+1675280752825	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "34711" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileyvZilQ"
+*** You are running in headless mode.
+1675280753028	Marionette	INFO	Marionette enabled
+1675280753031	Marionette	INFO	Listening on port 37171
+WebDriver BiDi listening on ws://127.0.0.1:34711
+Read port: 37171
+1675280753217	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileyvZilQ/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:34711/devtools/browser/4bad4112-9fce-4295-9f93-cae6735120c2
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280760784	geckodriver	INFO	Listening on 127.0.0.1:53627
+1675280761321	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "46267" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile7GWyqy"
+*** You are running in headless mode.
+1675280761535	Marionette	INFO	Marionette enabled
+1675280761537	Marionette	INFO	Listening on port 45175
+WebDriver BiDi listening on ws://127.0.0.1:46267
+Read port: 45175
+1675280761751	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile7GWyqy/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:46267/devtools/browser/54fcf90c-3730-4e6c-a68a-a0a78434f6cc
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280770133	geckodriver	INFO	Listening on 127.0.0.1:42943
+1675280770667	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "55133" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileCwwbi5"
+*** You are running in headless mode.
+1675280770877	Marionette	INFO	Marionette enabled
+1675280770880	Marionette	INFO	Listening on port 34633
+WebDriver BiDi listening on ws://127.0.0.1:55133
+Read port: 34633
+1675280771069	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileCwwbi5/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:55133/devtools/browser/41a13f62-966f-40ab-aed1-63bce0a6b1b6
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280780124	geckodriver	INFO	Listening on 127.0.0.1:45263
+1675280780674	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "52433" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileDDpEPy"
+*** You are running in headless mode.
+1675280780872	Marionette	INFO	Marionette enabled
+1675280780874	Marionette	INFO	Listening on port 42469
+WebDriver BiDi listening on ws://127.0.0.1:52433
+Read port: 42469
+1675280781089	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileDDpEPy/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:52433/devtools/browser/d94cf9d5-fd90-4d64-870a-3d8c5833a530
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280791263	geckodriver	INFO	Listening on 127.0.0.1:40139
+1675280791792	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "57039" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilewBmdSE"
+*** You are running in headless mode.
+1675280792007	Marionette	INFO	Marionette enabled
+1675280792010	Marionette	INFO	Listening on port 40559
+WebDriver BiDi listening on ws://127.0.0.1:57039
+Read port: 40559
+1675280792204	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilewBmdSE/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:57039/devtools/browser/d456f119-0e29-43f8-a01f-4e620f41c913
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280799867	geckodriver	INFO	Listening on 127.0.0.1:58415
+1675280800417	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "47175" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileUpMDXp"
+*** You are running in headless mode.
+1675280800645	Marionette	INFO	Marionette enabled
+1675280800648	Marionette	INFO	Listening on port 35807
+WebDriver BiDi listening on ws://127.0.0.1:47175
+Read port: 35807
+1675280800834	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileUpMDXp/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:47175/devtools/browser/54afbf04-d963-44d8-9305-0a1a016b943a
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280808308	geckodriver	INFO	Listening on 127.0.0.1:50081
+1675280808853	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "56339" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilecpgG0g"
+*** You are running in headless mode.
+1675280809053	Marionette	INFO	Marionette enabled
+1675280809056	Marionette	INFO	Listening on port 39295
+WebDriver BiDi listening on ws://127.0.0.1:56339
+Read port: 39295
+1675280809246	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilecpgG0g/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56339/devtools/browser/fdd2db45-5d61-4ced-919f-3f31f6b15293
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280815410	geckodriver	INFO	Listening on 127.0.0.1:35433
+1675280815941	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "49759" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilebeIBio"
+*** You are running in headless mode.
+1675280816156	Marionette	INFO	Marionette enabled
+1675280816159	Marionette	INFO	Listening on port 40637
+WebDriver BiDi listening on ws://127.0.0.1:49759
+Read port: 40637
+1675280816388	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilebeIBio/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:49759/devtools/browser/fb539534-8f9a-4a86-8503-18b6082ba7ea
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280825073	geckodriver	INFO	Listening on 127.0.0.1:41953
+1675280825625	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "60535" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilerH16nM"
+*** You are running in headless mode.
+1675280825836	Marionette	INFO	Marionette enabled
+1675280825840	Marionette	INFO	Listening on port 36513
+WebDriver BiDi listening on ws://127.0.0.1:60535
+Read port: 36513
+1675280826037	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilerH16nM/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:60535/devtools/browser/462507b8-f2c6-43f2-ba01-70884fa04284
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280835697	geckodriver	INFO	Listening on 127.0.0.1:59169
+1675280836253	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "51243" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileudrlYU"
+*** You are running in headless mode.
+1675280836467	Marionette	INFO	Marionette enabled
+1675280836469	Marionette	INFO	Listening on port 40223
+WebDriver BiDi listening on ws://127.0.0.1:51243
+Read port: 40223
+1675280836662	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileudrlYU/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:51243/devtools/browser/2f44d9c0-0f00-4742-b656-16c4c1c77288
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280844653	geckodriver	INFO	Listening on 127.0.0.1:50443
+1675280845210	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "41867" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile6qqcPf"
+*** You are running in headless mode.
+1675280845426	Marionette	INFO	Marionette enabled
+1675280845429	Marionette	INFO	Listening on port 38823
+WebDriver BiDi listening on ws://127.0.0.1:41867
+Read port: 38823
+1675280845601	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile6qqcPf/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:41867/devtools/browser/5ad4a8fb-a272-45d8-8311-f289409f3c7a
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280853137	geckodriver	INFO	Listening on 127.0.0.1:51817
+1675280853660	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "50883" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilepFPuC6"
+*** You are running in headless mode.
+1675280853863	Marionette	INFO	Marionette enabled
+1675280853866	Marionette	INFO	Listening on port 37359
+WebDriver BiDi listening on ws://127.0.0.1:50883
+Read port: 37359
+1675280854083	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilepFPuC6/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:50883/devtools/browser/56c25b9a-66df-4c4a-8582-ce32d16edc9a
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280860603	geckodriver	INFO	Listening on 127.0.0.1:39329
+1675280861158	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "35603" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileEUTpkB"
+*** You are running in headless mode.
+1675280861420	Marionette	INFO	Marionette enabled
+1675280861424	Marionette	INFO	Listening on port 44839
+Read port: 44839
+WebDriver BiDi listening on ws://127.0.0.1:35603
+1675280861487	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileEUTpkB/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:35603/devtools/browser/dfc626f0-797a-4bf4-85c3-e6afadc563d0
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280868750	geckodriver	INFO	Listening on 127.0.0.1:39003
+1675280869278	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "33119" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofiledlFAAK"
+*** You are running in headless mode.
+1675280869574	Marionette	INFO	Marionette enabled
+1675280869577	Marionette	INFO	Listening on port 45267
+Read port: 45267
+WebDriver BiDi listening on ws://127.0.0.1:33119
+1675280869649	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofiledlFAAK/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:33119/devtools/browser/1cafae9c-d3b9-47d7-a4e7-f6b3a69e8384
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280878220	geckodriver	INFO	Listening on 127.0.0.1:45767
+1675280878785	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "44195" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileIdy8BX"
+*** You are running in headless mode.
+1675280879085	Marionette	INFO	Marionette enabled
+1675280879087	Marionette	INFO	Listening on port 39743
+WebDriver BiDi listening on ws://127.0.0.1:44195
+Read port: 39743
+1675280879296	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileIdy8BX/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:44195/devtools/browser/7c3b1989-6fbf-4cbe-b81f-1256e583f2c2
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280892481	geckodriver	INFO	Listening on 127.0.0.1:54887
+1675280893021	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "44317" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileFtVXK9"
+*** You are running in headless mode.
+1675280893442	Marionette	INFO	Marionette enabled
+1675280893446	Marionette	INFO	Listening on port 39559
+WebDriver BiDi listening on ws://127.0.0.1:44317
+Read port: 39559
+1675280893571	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileFtVXK9/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:44317/devtools/browser/b8c5677d-6752-48d4-b676-c23817403e8c
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675280921659	geckodriver	INFO	Listening on 127.0.0.1:47473
+1675280924775	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "57325" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileXDM4Wi"
+*** You are running in headless mode.
+1675280965267	Marionette	INFO	Marionette enabled
+1675280971069	Marionette	INFO	Listening on port 35727
+Read port: 35727
+Read port: 35727
+Read port: 35727
+Read port: 35727
+Read port: 35727
+Read port: 35727
+Read port: 35727
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2199,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2199","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1109","resource:///modules/ContentCrashHandlers.jsm:observe:177"]}] Barrier: quit-application-granted
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+1675281102442	Marionette	INFO	Stopped listening on port 41609
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+1675281114647	Marionette	INFO	Stopped listening on port 34063
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2199,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2199","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1109","resource:///modules/ContentCrashHandlers.jsm:observe:177"]}] Barrier: quit-application-granted
+1675281129857	Marionette	INFO	Stopped listening on port 33949
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2199,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2199","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1109","resource:///modules/ContentCrashHandlers.jsm:observe:177"]}] Barrier: quit-application-granted
+1675281141364	Marionette	INFO	Stopped listening on port 35123
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+1675281141800	Marionette	INFO	Stopped listening on port 39295
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+console.error: services.settings: 
+  blocklists/addons-bloomfilters Signature failed  TypeError: NetworkError: Network request failed
+console.error: services.settings: 
+  Message: NetworkError: Network error: TypeError: NetworkError: Network request failed
+  Stack:
+    APIError@resource://services-settings/RemoteSettingsClient.jsm:116:1
+NetworkError@resource://services-settings/RemoteSettingsClient.jsm:120:5
+_adjustedError@resource://services-settings/RemoteSettingsClient.jsm:869:14
+maybeSync@resource://services-settings/RemoteSettingsClient.jsm:774:38
+
+console.warn: services.settings: blocklists/gfx sync interrupted by shutdown
+console.warn: services.settings: main/fxmonitor-breaches sync interrupted by shutdown
+console.warn: services.settings: main/password-recipes sync interrupted by shutdown
+console.log: "RemoteSettingsWorker error: Error: Can't import when we've started shutting down."
+console.error: services.settings: 
+  Message: NetworkError: Network error: TypeError: NetworkError: Network request failed
+  Stack:
+    APIError@resource://services-settings/RemoteSettingsClient.jsm:116:1
+NetworkError@resource://services-settings/RemoteSettingsClient.jsm:120:5
+_adjustedError@resource://services-settings/RemoteSettingsClient.jsm:869:14
+maybeSync@resource://services-settings/RemoteSettingsClient.jsm:774:38
+observe@resource://gre/modules/AsyncShutdown.jsm:574:16
+
+console.warn: services.settings: blocklists/gfx sync interrupted by shutdown
+console.error: services.settings: 
+  Message: StorageError: Storage error: Error: IndexedDB: blocklists/addons-bloomfilters list() IndexedDB:  execute() The application is shutting down
+  Stack:
+    StorageError@resource://services-settings/RemoteSettingsClient.jsm:162:5
+_adjustedError@resource://services-settings/RemoteSettingsClient.jsm:886:14
+maybeSync@resource://services-settings/RemoteSettingsClient.jsm:774:38
+observe@resource://gre/modules/AsyncShutdown.jsm:574:16
+
+console.warn: services.settings: blocklists/gfx sync interrupted by shutdown
+1675281146866	geckodriver	INFO	Listening on 127.0.0.1:38607
+1675281147385	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "50507" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileDM7j42"
+*** You are running in headless mode.
+1675281147710	Marionette	INFO	Marionette enabled
+1675281147714	Marionette	INFO	Listening on port 44313
+Read port: 44313
+WebDriver BiDi listening on ws://127.0.0.1:50507
+1675281147872	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileDM7j42/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:50507/devtools/browser/28ca5916-f85c-4813-8381-5067853c1ef2
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675281172965	geckodriver	INFO	Listening on 127.0.0.1:59035
+1675281173495	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "53591" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilePU8pAB"
+*** You are running in headless mode.
+1675281173902	Marionette	INFO	Marionette enabled
+1675281173906	Marionette	INFO	Listening on port 37677
+WebDriver BiDi listening on ws://127.0.0.1:53591
+Read port: 37677
+1675281174164	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilePU8pAB/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:53591/devtools/browser/6e2d78b6-af50-4990-932c-5c33026b85ee
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675281322534	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281337867	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281340158	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281355945	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281356547	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281595315	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281618153	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+1675281636510	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281645842	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281651344	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: error
+1675281651342	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281657756	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281662254	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281679496	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281686213	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281703839	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+1675281742084	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2199,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2199","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1109","resource:///modules/ContentCrashHandlers.jsm:observe:177"]}] Barrier: quit-application-granted
+1675282218532	Marionette	INFO	Stopped listening on port 37359
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2199,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2199","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1109","resource:///modules/ContentCrashHandlers.jsm:observe:177"]}] Barrier: quit-application-granted
+1675282218822	Marionette	INFO	Stopped listening on port 45175
+1675282218970	Marionette	INFO	Stopped listening on port 39743
+1675282219924	Marionette	INFO	Stopped listening on port 39559
+1675282219801	Marionette	INFO	Stopped listening on port 44839
+1675282220934	Marionette	INFO	Stopped listening on port 40559
+1675282220953	Marionette	INFO	Stopped listening on port 42469
+1675282221386	Marionette	INFO	Stopped listening on port 40223
+1675282221970	Marionette	INFO	Stopped listening on port 45267
+1675282222554	Marionette	INFO	Stopped listening on port 40637
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+console.warn: services.settings: main/hijack-blocklists sync interrupted by shutdown
+console.warn: services.settings: main/url-classifier-skip-urls sync interrupted by shutdown
+console.warn: services.settings: main/pioneer-study-addons-v1 sync interrupted by shutdown
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+console.warn: services.settings: Error retrieving the getLastModified timestamp from blocklists/addons-bloomfilters RemoteSettingsClient Message: Error: IndexedDB: blocklists/addons-bloomfilters getLastModified() IndexedDB:  execute() The application is shutting down
+console.warn: services.settings: Error retrieving the getLastModified timestamp from blocklists/addons-bloomfilters RemoteSettingsClient Message: Error: IndexedDB: blocklists/addons-bloomfilters getLastModified() IndexedDB:  execute() The application is shutting down
+console.error: services.settings: 
+  Message: [Exception... "AddonManager is not initialized"  nsresult: "0xc1f30001 (NS_ERROR_NOT_INITIALIZED)"  location: "JS frame :: resource://gre/modules/AddonManager.jsm :: getAddonTypesByProvider :: line 3693"  data: no]
+  Stack:
+    getAddonTypesByProvider@resource://gre/modules/AddonManager.jsm:3693:24
+@resource://gre/modules/Blocklist.jsm:94:35
+get@resource://gre/modules/XPCOMUtils.sys.mjs:56:51
+_onUpdate@resource://gre/modules/Blocklist.jsm:1118:18
+observe@resource://gre/modules/AsyncShutdown.jsm:574:16
+
+console.warn: services.settings: blocklists/gfx sync interrupted by shutdown
+1675282265768	Marionette	INFO	Stopped listening on port 44313
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+console.error: services.settings: 
+  Message: [Exception... "AddonManager is not initialized"  nsresult: "0xc1f30001 (NS_ERROR_NOT_INITIALIZED)"  location: "JS frame :: resource://gre/modules/AddonManager.jsm :: getAddonTypesByProvider :: line 3693"  data: no]
+  Stack:
+    getAddonTypesByProvider@resource://gre/modules/AddonManager.jsm:3693:24
+@resource://gre/modules/Blocklist.jsm:94:35
+get@resource://gre/modules/XPCOMUtils.sys.mjs:56:51
+_onUpdate@resource://gre/modules/Blocklist.jsm:1118:18
+observe@resource://gre/modules/AsyncShutdown.jsm:574:16
+
+console.warn: services.settings: blocklists/gfx sync interrupted by shutdown
+console.warn: services.settings: main/fxmonitor-breaches sync interrupted by shutdown
+console.error: services.settings: 
+  Message: [Exception... "AddonManager is not initialized"  nsresult: "0xc1f30001 (NS_ERROR_NOT_INITIALIZED)"  location: "JS frame :: resource://gre/modules/AddonManager.jsm :: updateAddonAppDisabledStates :: line 1603"  data: no]
+  Stack:
+    updateAddonAppDisabledStates@resource://gre/modules/AddonManager.jsm:1603:24
+updateAddonAppDisabledStates@resource://gre/modules/AddonManager.jsm:3738:26
+_onUpdate@resource://gre/modules/Blocklist.jsm:1150:30
+observe@resource://gre/modules/AsyncShutdown.jsm:574:16
+
+console.warn: services.settings: blocklists/gfx sync interrupted by shutdown
+console.warn: services.settings: main/password-recipes sync interrupted by shutdown
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+console.warn: services.settings: main/query-stripping sync interrupted by shutdown
+1675282265824	Marionette	INFO	Stopped listening on port 33237
+console.warn: services.settings: main/language-dictionaries sync interrupted by shutdown
+console.warn: services.settings: Error retrieving the getLastModified timestamp from blocklists/addons-bloomfilters RemoteSettingsClient Message: AbortError: IndexedDB: blocklists/addons-bloomfilters getLastModified() IndexedDB:  execute() A request was aborted, for example through a call to IDBTransaction.abort.
+console.warn: services.settings: main/password-rules sync interrupted by shutdown
+console.warn: services.settings: blocklists/gfx sync interrupted by shutdown
+console.warn: services.settings: Error retrieving the getLastModified timestamp from blocklists/addons-bloomfilters RemoteSettingsClient Message: Error: IndexedDB: blocklists/addons-bloomfilters getLastModified() IndexedDB:  execute() The application is shutting down
+console.error: services.settings: 
+  Message: [Exception... "AddonManager is not initialized"  nsresult: "0xc1f30001 (NS_ERROR_NOT_INITIALIZED)"  location: "JS frame :: resource://gre/modules/AddonManager.jsm :: getAddonTypesByProvider :: line 3693"  data: no]
+  Stack:
+    getAddonTypesByProvider@resource://gre/modules/AddonManager.jsm:3693:24
+@resource://gre/modules/Blocklist.jsm:94:35
+get@resource://gre/modules/XPCOMUtils.sys.mjs:56:51
+_onUpdate@resource://gre/modules/Blocklist.jsm:1118:18
+observe@resource://gre/modules/AsyncShutdown.jsm:574:16
+
+console.warn: services.settings: blocklists/gfx sync interrupted by shutdown
+console.warn: services.settings: main/websites-with-shared-credential-backends sync interrupted by shutdown
+console.warn: services.settings: main/fxmonitor-breaches sync interrupted by shutdown
+console.warn: services.settings: main/password-recipes sync interrupted by shutdown
+console.warn: services.settings: main/query-stripping sync interrupted by shutdown
+console.warn: services.settings: main/language-dictionaries sync interrupted by shutdown
+console.warn: services.settings: main/password-rules sync interrupted by shutdown
+console.warn: services.settings: main/websites-with-shared-credential-backends sync interrupted by shutdown
+console.warn: services.settings: Error retrieving the getLastModified timestamp from blocklists/addons-bloomfilters RemoteSettingsClient Message: Error: IndexedDB: blocklists/addons-bloomfilters getLastModified() IndexedDB:  execute() The application is shutting down
+console.error: services.settings: 
+  Message: [Exception... "AddonManager is not initialized"  nsresult: "0xc1f30001 (NS_ERROR_NOT_INITIALIZED)"  location: "JS frame :: resource://gre/modules/AddonManager.jsm :: getAddonTypesByProvider :: line 3693"  data: no]
+  Stack:
+    getAddonTypesByProvider@resource://gre/modules/AddonManager.jsm:3693:24
+@resource://gre/modules/Blocklist.jsm:94:35
+get@resource://gre/modules/XPCOMUtils.sys.mjs:56:51
+_onUpdate@resource://gre/modules/Blocklist.jsm:1118:18
+observe@resource://gre/modules/AsyncShutdown.jsm:574:16
+
+console.warn: services.settings: blocklists/gfx sync interrupted by shutdown
+console.error: services.settings: 
+  blocklists/addons-bloomfilters Signature failed  Error: Shutdown, aborting read-only worker requests.
+console.error: services.settings: 
+  Message: Error: Shutdown, aborting read-only worker requests.
+  Stack:
+    _abortCancelableRequests@resource://services-settings/RemoteSettingsWorker.jsm:145:19
+@resource://services-settings/RemoteSettingsWorker.jsm:221:28
+trigger@resource://gre/modules/AsyncShutdown.jsm:746:23
+_wait@resource://gre/modules/AsyncShutdown.jsm:898:15
+wait@resource://gre/modules/AsyncShutdown.jsm:879:34
+observe@resource://gre/modules/AsyncShutdown.jsm:556:10
+
+console.warn: services.settings: blocklists/gfx sync interrupted by shutdown
+console.error: (new Error("SessionFile is closed", "resource:///modules/sessionstore/SessionFile.jsm", 380))
+1675282267989	geckodriver	INFO	Listening on 127.0.0.1:35579
+1675282268529	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "53111" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileukCvlu"
+*** You are running in headless mode.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1675316167762	geckodriver	INFO	Listening on 127.0.0.1:60393
+1675316168321	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "52225" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileWJUD9k"
+*** You are running in headless mode.
+1675316168532	Marionette	INFO	Marionette enabled
+1675316168535	Marionette	INFO	Listening on port 39893
+WebDriver BiDi listening on ws://127.0.0.1:52225
+Read port: 39893
+1675316168709	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileWJUD9k/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:52225/devtools/browser/bb15d5d1-c8f8-47df-872e-38af460326a6
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675316175544	geckodriver	INFO	Listening on 127.0.0.1:50249
+1675316175563	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "35057" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile0aveBz"
+*** You are running in headless mode.
+1675316175768	Marionette	INFO	Marionette enabled
+1675316175772	Marionette	INFO	Listening on port 42875
+WebDriver BiDi listening on ws://127.0.0.1:35057
+Read port: 42875
+1675316175975	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile0aveBz/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:35057/devtools/browser/e0775ade-179f-42b8-8c7b-9361dbcf8c29
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+1675316184199	geckodriver	INFO	Listening on 127.0.0.1:35283
+1675316184756	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "--remote-debugging-port" "47245" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilehKfElc"
+*** You are running in headless mode.
+1675316184947	Marionette	INFO	Marionette enabled
+1675316184949	Marionette	INFO	Listening on port 36703
+Read port: 36703
+WebDriver BiDi listening on ws://127.0.0.1:47245
+1675316185006	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilehKfElc/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:47245/devtools/browser/47a4a4c0-91ba-4d3e-9a24-a08d1efade2e
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://tietopalvelu.ytj.fi."

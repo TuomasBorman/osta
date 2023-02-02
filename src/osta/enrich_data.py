@@ -6,6 +6,12 @@ import warnings
 import pkg_resources
 import requests
 import sys
+import selenium.webdriver as webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.firefox.options import Options as firefox_opt
+from selenium.webdriver.chrome.options import Options as chrome_opt
+from selenium.webdriver.ie.options import Options as ie_opt
+from bs4 import BeautifulSoup
 
 
 def enrich_data(df, **args):
@@ -317,9 +323,11 @@ def __add_sums(df, disable_sums=False):
     return df
 
 
-def fetch_company_data(ser):
+def fetch_company_data(ser, only_ltd=False, **args):
     """
-    This function fetch company data from PRH.
+    This function fetch company data from PRH. Resources of PRH are limited.
+    Please use the function only when needed,and store the results if
+    possible.
     Input: Series
     Output: df with company data
     """
@@ -329,15 +337,16 @@ def fetch_company_data(ser):
             "'ser' must be non-empty pandas.Series."
             )
     # INPUT CHECK END
-    # For progress bar
+    # Remove None values
+    ser = ser.dropna()
+    # For progress bar, specify the width of it
     progress_bar_width = 50
     # Initialize resulst DF
     df = pd.DataFrame()
     # Loop though BIDs
-    ser = ser.reset_index()
     for bid_i, bid in enumerate(ser.to_numpy()):
         # update the progress bar
-        percent = 100*(bid_i/len(ser))
+        percent = 100*(bid_i/(len(ser)-1))
         sys.stdout.write('\r')
         sys.stdout.write("Completed: [{:{}}] {:>3}%"
                          .format('='*int(percent/(100/progress_bar_width)),
@@ -350,7 +359,6 @@ def fetch_company_data(ser):
         text = r.json()
         # Get results only
         df_temp = pd.json_normalize(text["results"])
-        print(df_temp)
         # If results were found, continue
         if not df_temp.empty:
             # Change names
@@ -358,23 +366,23 @@ def fetch_company_data(ser):
                 "businessId": "bid",
                 "name": "name",
                 "registrationDate": "registration_date",
-                "companyForm": "company_form",
-                "liquidations": "liquidations",
-                "companyForms": "company_forms",
-                "businessLines": "business_lines",
-                "registedOffices": "registed_offices",
+                "companyForm": "company_form_short",
+                "liquidations": "liquidation",
+                "companyForms": "company_form",
+                "businessLines": "business_line",
+                "registedOffices": "muni",
                 "businessIdChanges": "old_bid",
                 })
-            # Get certai data and convert into Series
-            col_info = ["bid", "name", "company_form"]
+            # Get certain data and convert into Series
+            col_info = ["bid", "name", "company_form_short"]
             series = df_temp.loc[:, col_info]
             series = series.squeeze()
             # Loop over certain information columns
             info = [
-                    "liquidations",
-                    "company_forms",
-                    "business_lines",
-                    "registed_offices",
+                    "liquidation",
+                    "company_form",
+                    "business_line",
+                    "muni",
                     "old_bid",
                     ]
             for col in info:
@@ -383,9 +391,9 @@ def fetch_company_data(ser):
                 temp = temp.explode().apply(pd.Series)
                 # If information is included
                 if len(temp.dropna(axis=0, how="all")) > 0:
-                    if any(x in col for x in ["company_forms",
-                                              "business_lines",
-                                              "registed_offices"]):
+                    if any(x in col for x in ["company_form",
+                                              "business_line",
+                                              "muni"]):
                         # If certain data, capitalize and add column names
                         # with language
                         # Remove those values that are outdated
@@ -404,7 +412,7 @@ def fetch_company_data(ser):
                                 temp_col2.append(x)
                             temp_col = temp_col2
                         temp_name.index = temp_col
-                    elif any(x in col for x in ["liquidations"]):
+                    elif any(x in col for x in ["liquidation"]):
                         # If certain data, get name and date and add
                         # column names with language
                         temp_name = temp["description"]
@@ -429,10 +437,16 @@ def fetch_company_data(ser):
                     series = pd.concat([series, temp_name])
             # Convert Series to DF and transpose it to correct format
             res = pd.DataFrame(series).transpose()
+        elif not only_ltd:
+            # If BID was not found from the database, try to find
+            # with web search
+            try:
+                res = __fetch_company_data_from_website(bid)
+            except Exception:
+                res = pd.DataFrame([bid], index=["bid"]).transpose()
         else:
-            # If BID was not found from the database
+            # If user want only ltd info and data was not found
             res = pd.DataFrame([bid], index=["bid"]).transpose()
-        print(res)
         # Add to DataFrame
         if df.empty:
             df = res
@@ -441,3 +455,130 @@ def fetch_company_data(ser):
     # Stop progress bar
     sys.stdout.write("\n")
     return df
+
+
+def __fetch_company_data_from_website(bid):
+    """
+    This function fetch company data from PRH's website that includes
+    all companies (not just limited company).
+    Input: business ID
+    Output: df with company data
+    """
+    # Create a driver
+    driver_found = False
+    for driver in ["firefox", "chrome", "ie"]:
+        # Try to use if these browsers are available
+        try:
+            if driver == "firefox":
+                options = firefox_opt()
+                options.add_argument("--headless")
+                browser = webdriver.Firefox(options=options)
+            elif driver == "chrome":
+                options = chrome_opt()
+                options.add_argument("--headless")
+                browser = webdriver.Chrome(options=options)
+            elif driver == "ie":
+                options = ie_opt()
+                options.add_argument("--headless")
+                browser = webdriver.Ie(options=options)
+        except Exception:
+            pass
+        else:
+            driver_found = True
+            break
+    # IF driver was found
+    if driver_found:
+        # Set implicit wait time
+        browser.implicitly_wait(5)
+        # Find Finnish results
+        url = "https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=1"
+        res_fi = __search_companies_with_web_search(bid, url, browser)
+        # Find Swedish results
+        url = "https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=2"
+        res_se = __search_companies_with_web_search(bid, url, browser)
+        # Find English results
+        url = "https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=3"
+        res_en = __search_companies_with_web_search(bid, url, browser)
+        # Combine result
+        res = res_fi
+        res.extend(res_se[2:])
+        res.extend(res_en[2:])
+    else:
+        # If driver was not found
+        res = [bid]
+        res.extend([None for x in range(1, 14)])
+    # Names of fields
+    colnames = [
+        "bid",
+        "name",
+        "company_form_fi",
+        "muni_fi",
+        "business_line_fi",
+        "liquidation_fi",
+        "company_form_se",
+        "muni_se",
+        "business_line_se",
+        "liquidation_se",
+        "company_form_en",
+        "muni_en",
+        "business_line_en",
+        "liquidation_en",
+        ]
+    # Create series
+    df = pd.DataFrame(res, index=colnames).transpose()
+    # Remove Nones
+    df = df.dropna(axis=1)
+    return df
+
+
+def __search_companies_with_web_search(bid, url, browser):
+    """
+    Help function, this function fetch company data from PRH's website. Search
+    is similar for different languages
+    Input: business ID, url and driver
+    Output: list including company data
+    """
+    # Go to the web page
+    browser.get(url)
+    # Search by BID
+    search_box = browser.find_element(
+        "xpath", "//input[@id='_ctl0_cphSisalto_ytunnus']")
+    search_box.send_keys(bid)
+    # Submit the text to search bar
+    search_box.send_keys(Keys.RETURN)
+    # Find the link for result web page
+    link = browser.find_elements(
+        "xpath", "//a[@id='_ctl0_cphSisalto_rptHakuTulos__ctl1_HyperLink1']")
+    link = link[0].get_attribute("href") if len(link) == 1 else None
+    # Go to the result web page
+    if link is not None:
+        r = requests.get(link)
+        soup = BeautifulSoup(r.text, 'lxml')
+        # Find name
+        name = soup.findAll("span", id="_ctl0_cphSisalto_lblToiminimi")
+        name = name[0].text if len(name) == 1 else None
+        # Find company form
+        company_form = soup.findAll(
+            "span", id="_ctl0_cphSisalto_lblYritysmuoto")
+        company_form = company_form[0].text if len(company_form) == 1 else None
+        # Find home town
+        registed_office = soup.findAll(
+            "span", id="_ctl0_cphSisalto_lblYrityksenKotipaikka")
+        registed_office = registed_office[
+            0].text.capitalize() if len(registed_office) == 1 else None
+        # Find business line
+        business_line = soup.findAll(
+            "span", id="_ctl0_cphSisalto_lblYrityksenToimiala")
+        business_line = business_line[
+            0].text if len(business_line) == 1 else None
+        # Find liquidation information
+        liquidation = soup.findAll(
+            "span", id="_ctl0_cphSisalto_lblKonkurssitieto")
+        liquidation = liquidation[0].text if len(liquidation) == 1 else None
+        # Combine result
+        res = [bid, name, company_form, registed_office,
+               business_line, liquidation]
+    else:
+        # Give list with Nones, if link to result page is not found
+        res = [None for x in range(1, 6)]
+    return res
