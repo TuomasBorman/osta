@@ -323,7 +323,8 @@ def __add_sums(df, disable_sums=False):
     return df
 
 
-def fetch_company_data(ser, language="en", only_ltd=False, **args):
+def fetch_company_data(ser, language="en", only_ltd=False, merge_bid=True,
+                       **args):
     """
     Fetch company data from databases.
 
@@ -337,6 +338,10 @@ def fetch_company_data(ser, language="en", only_ltd=False, **args):
         only_ltd: A Boolean value specifying whether to search results also
         for other than limited companies. The search for them is slower.
         (By default: only_ltd=False)
+
+        merge_bid: A Boolean value specifying whether to combine all old BIDs
+        to one column. If False, each BID is its own columns named
+        'old_bid_*'. (By default: old_bid=True)
 
         ```
 
@@ -369,6 +374,10 @@ def fetch_company_data(ser, language="en", only_ltd=False, **args):
     if not isinstance(only_ltd, bool):
         raise Exception(
             "'only_ltd' must be True or False."
+            )
+    if not isinstance(merge_bid, bool):
+        raise Exception(
+            "'merge_bid' must be True or False."
             )
     # INPUT CHECK END
     # Get language in right format for database
@@ -497,7 +506,7 @@ def fetch_company_data(ser, language="en", only_ltd=False, **args):
         else:
             df = pd.merge(df, res, how="outer")
     # Combine BID columns into one
-    if "old_bid" in df.columns:
+    if merge_bid and "old_bid" in df.columns:
         regex = re.compile(r"old_bid")
         ind = [True if regex.search(x) else False for x in df.columns]
         bid_cols = df.loc[:, ind]
@@ -507,6 +516,33 @@ def fetch_company_data(ser, language="en", only_ltd=False, **args):
         ind = [False if regex.search(x) else True for x in df.columns]
         df = df.loc[:, ind]
         df["old_bid"] = bid_col
+    # Convert column names into right language if Finnish or Swedish
+    if language == "fi":
+        columns = {
+            "registration_date": "rekisteröintipäivä",
+            "company_form_short": "yhtiömuoto_lyhyt",
+            "liquidation": "konkurssitiedot",
+            "company_form": "yhtiömuoto",
+            "business_line": "päätoimiala",
+            "muni": "kotipaikka",
+            "old_bid": "vanha_bid",
+            }
+        df = df.rename(columns=columns)
+        df.columns = [re.sub("old_bid_", "vanha_bid_", str(x))
+                      for x in df.columns.tolist()]
+    elif language == "sv":
+        columns = {
+            "registration_date": "registrering_dag",
+            "company_form_short": "företags_form_kort",
+            "liquidation": "konkurs_info",
+            "company_form": "företags_form",
+            "business_line": "päätoimiala",
+            "muni": "hemkommun",
+            "old_bid": "gamla_bid",
+            }
+        df = df.rename(columns=columns)
+        df.columns = [re.sub("old_bid_", "gamla_bid_", str(x))
+                      for x in df.columns.tolist()]
     # Stop progress bar
     sys.stdout.write("\n")
     return df
