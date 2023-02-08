@@ -42,7 +42,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options as firefox_opt
 from selenium.webdriver.chrome.options import Options as chrome_opt
 from selenium.webdriver.ie.options import Options as ie_opt
-from bs4 import BeautifulSoup
 import re
 
 
@@ -355,7 +354,8 @@ def __add_sums(df, disable_sums=False):
     return df
 
 
-def fetch_company_data(ser, only_ltd=False, **args):
+def fetch_company_data(ser, language=&#34;en&#34;, only_ltd=False, merge_bid=True,
+                       **args):
     &#34;&#34;&#34;
     Fetch company data from databases.
 
@@ -363,9 +363,16 @@ def fetch_company_data(ser, only_ltd=False, **args):
         ```
         ser: pd.Series including business IDs.
 
+        language: A string specifying the language of fetched data. Must be
+        &#34;en&#34; (English), &#34;fi&#34; (Finnish), or &#34;sv&#34; (Swedish).
+
         only_ltd: A Boolean value specifying whether to search results also
         for other than limited companies. The search for them is slower.
         (By default: only_ltd=False)
+
+        merge_bid: A Boolean value specifying whether to combine all old BIDs
+        to one column. If False, each BID is its own columns named
+        &#39;old_bid_*&#39;. (By default: old_bid=True)
 
         ```
 
@@ -391,13 +398,24 @@ def fetch_company_data(ser, only_ltd=False, **args):
         raise Exception(
             &#34;&#39;ser&#39; must be non-empty pandas.Series.&#34;
             )
+    if not (isinstance(language, str) and language in [&#34;fi&#34;, &#34;en&#34;, &#34;sv&#34;]):
+        raise Exception(
+            &#34;&#39;language&#39; must be &#39;en&#39;, &#39;fi&#39;, or &#39;sv&#39;.&#34;
+            )
     if not isinstance(only_ltd, bool):
         raise Exception(
             &#34;&#39;only_ltd&#39; must be True or False.&#34;
             )
+    if not isinstance(merge_bid, bool):
+        raise Exception(
+            &#34;&#39;merge_bid&#39; must be True or False.&#34;
+            )
     # INPUT CHECK END
-    # Remove None values
+    # Get language in right format for database
+    lan = &#34;se&#34; if language == &#34;sv&#34; else language
+    # Remove None values and duplicates
     ser = ser.dropna()
+    ser = ser.drop_duplicates()
     # For progress bar, specify the width of it
     progress_bar_width = 50
     # Initialize resulst DF
@@ -433,7 +451,7 @@ def fetch_company_data(ser, only_ltd=False, **args):
                 &#34;businessIdChanges&#34;: &#34;old_bid&#34;,
                 })
             # Get certain data and convert into Series
-            col_info = [&#34;bid&#34;, &#34;name&#34;, &#34;company_form_short&#34;]
+            col_info = [&#34;bid&#34;, &#34;name&#34;]
             series = df_temp.loc[:, col_info]
             series = series.squeeze()
             # Loop over certain information columns
@@ -456,32 +474,39 @@ def fetch_company_data(ser, only_ltd=False, **args):
                         # If certain data, capitalize and add column names
                         # with language
                         # Remove those values that are outdated
-                        temp = temp.loc[temp[&#34;endDate&#34;].isna(), :]
-                        temp_name = temp[&#34;name&#34;].astype(str).str.capitalize()
-                        temp_col = [col + &#34;_&#34; + x for x in temp[
-                            &#34;language&#34;].astype(str).str.lower()]
-                        # Add number if multiple names per language
-                        if (len(temp_name)/3) &gt; 1:
-                            # Add suffix
-                            temp_col2 = []
-                            for x in temp_col:
-                                count = sum([y == x for y in temp_col2])
-                                if count != 0:
-                                    x = x + &#34;_&#34; + str(count+1)
-                                temp_col2.append(x)
-                            temp_col = temp_col2
-                        temp_name.index = temp_col
+                        ind = temp[&#34;endDate&#34;].isna()
+                        if any(ind):
+                            temp = temp.loc[ind, :]
+                        # Get only specific language
+                        ind = temp[&#34;language&#34;].astype(str).str.lower() == lan
+                        if any(ind):
+                            temp_name = temp.loc[ind, &#34;name&#34;].astype(
+                                str).str.capitalize()
+                        else:
+                            temp_name = temp.loc[:, &#34;name&#34;].astype(
+                                str).str.capitalize()
+                        # Ensure that there is only one value
+                        temp_name = temp_name.iloc[[0]]
+                        temp_name.index = [col]
                     elif any(x in col for x in [&#34;liquidation&#34;]):
-                        # If certain data, get name and date and add
-                        # column names with language
-                        temp_name = temp[&#34;description&#34;]
-                        temp_date = temp.loc[
-                            temp[&#34;language&#34;] == &#34;FI&#34;, &#34;registrationDate&#34;]
-                        temp_col = [col + &#34;_&#34; + x for x in temp[
-                            &#34;language&#34;].astype(str).str.lower()]
-                        temp_name.index = temp_col
-                        # Add date
+                        # If certain data, get name and date with
+                        # specific language
+                        ind = temp[&#34;language&#34;].astype(str).str.lower() == lan
+                        if any(ind):
+                            temp_name = temp.loc[ind, &#34;description&#34;].astype(
+                                str).str.capitalize()
+                            temp_date = temp.loc[ind, &#34;registrationDate&#34;]
+                        else:
+                            temp_name = temp.loc[:, &#34;description&#34;].astype(
+                                str).str.capitalize()
+                            temp_date = temp.loc[:, &#34;registrationDate&#34;]
+                        # Ensure that there is only one value
+                        temp_name = temp_name.iloc[[0]]
+                        temp_date = temp_date.iloc[[0]]
+                        # Add names
+                        temp_name.index = [col]
                         temp_date.index = [col + &#34;_date&#34;]
+                        # Combine results
                         temp_name = pd.concat([temp_name, temp_date])
                     elif any(x in col for x in [&#34;old_bid&#34;]):
                         # If certain data, capitalize and add
@@ -500,7 +525,7 @@ def fetch_company_data(ser, only_ltd=False, **args):
             # If BID was not found from the database, try to find
             # with web search
             try:
-                res = __fetch_company_data_from_website(bid)
+                res = __fetch_company_data_from_website(bid, language)
             except Exception:
                 res = pd.DataFrame([bid], index=[&#34;bid&#34;]).transpose()
         else:
@@ -511,12 +536,50 @@ def fetch_company_data(ser, only_ltd=False, **args):
             df = res
         else:
             df = pd.merge(df, res, how=&#34;outer&#34;)
+    # Combine BID columns into one
+    if merge_bid and &#34;old_bid&#34; in df.columns:
+        regex = re.compile(r&#34;old_bid&#34;)
+        ind = [True if regex.search(x) else False for x in df.columns]
+        bid_cols = df.loc[:, ind]
+        bid_col = bid_cols.apply(lambda x: &#39;, &#39;.join(x.dropna(
+            ).astype(str)), axis=1)
+        # Remove additional BID columns, keep only one
+        ind = [False if regex.search(x) else True for x in df.columns]
+        df = df.loc[:, ind]
+        df[&#34;old_bid&#34;] = bid_col
+    # Convert column names into right language if Finnish or Swedish
+    if language == &#34;fi&#34;:
+        columns = {
+            &#34;registration_date&#34;: &#34;rekisteröintipäivä&#34;,
+            &#34;company_form_short&#34;: &#34;yhtiömuoto_lyhyt&#34;,
+            &#34;liquidation&#34;: &#34;konkurssitiedot&#34;,
+            &#34;company_form&#34;: &#34;yhtiömuoto&#34;,
+            &#34;business_line&#34;: &#34;päätoimiala&#34;,
+            &#34;muni&#34;: &#34;kotipaikka&#34;,
+            &#34;old_bid&#34;: &#34;vanha_bid&#34;,
+            }
+        df = df.rename(columns=columns)
+        df.columns = [re.sub(&#34;old_bid_&#34;, &#34;vanha_bid_&#34;, str(x))
+                      for x in df.columns.tolist()]
+    elif language == &#34;sv&#34;:
+        columns = {
+            &#34;registration_date&#34;: &#34;registrering_dag&#34;,
+            &#34;company_form_short&#34;: &#34;företags_form_kort&#34;,
+            &#34;liquidation&#34;: &#34;konkurs_info&#34;,
+            &#34;company_form&#34;: &#34;företags_form&#34;,
+            &#34;business_line&#34;: &#34;päätoimiala&#34;,
+            &#34;muni&#34;: &#34;hemkommun&#34;,
+            &#34;old_bid&#34;: &#34;gamla_bid&#34;,
+            }
+        df = df.rename(columns=columns)
+        df.columns = [re.sub(&#34;old_bid_&#34;, &#34;gamla_bid_&#34;, str(x))
+                      for x in df.columns.tolist()]
     # Stop progress bar
     sys.stdout.write(&#34;\n&#34;)
     return df
 
 
-def __fetch_company_data_from_website(bid):
+def __fetch_company_data_from_website(bid, language):
     &#34;&#34;&#34;
     This function fetch company data from PRH&#39;s website that includes
     all companies (not just limited company).
@@ -524,7 +587,8 @@ def __fetch_company_data_from_website(bid):
     Output: df with company data
     &#34;&#34;&#34;
     # Test if BID is business ID or name
-    bid_option = utils.__are_valid_bids(pd.Series([bid])).all()
+    # bid_option = utils.__are_valid_bids(pd.Series([bid])).all()
+    bid_option = True
     # Create a driver
     driver_found = False
     for driver in [&#34;firefox&#34;, &#34;chrome&#34;, &#34;ie&#34;]:
@@ -551,22 +615,16 @@ def __fetch_company_data_from_website(bid):
     if driver_found:
         # Set implicit wait time
         browser.implicitly_wait(5)
-        # Find Finnish results
-        url = &#34;https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=1&#34;
-        res_fi = __search_companies_with_web_search(bid, bid_option,
-                                                    url, browser)
-        # Find Swedish results
-        url = &#34;https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=2&#34;
-        res_se = __search_companies_with_web_search(bid, bid_option,
-                                                    url, browser)
-        # Find English results
-        url = &#34;https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=3&#34;
-        res_en = __search_companies_with_web_search(bid, bid_option,
-                                                    url, browser)
-        # Combine result
-        res = res_fi
-        res.extend(res_se[2:])
-        res.extend(res_en[2:])
+        # Get urö based on language
+        if language == &#34;fin&#34;:
+            url = &#34;https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=1&#34;
+        elif language == &#34;sv&#34;:
+            url = &#34;https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=2&#34;
+        else:
+            url = &#34;https://tietopalvelu.ytj.fi/yrityshaku.aspx?kielikoodi=3&#34;
+        # Get results
+        res = __search_companies_with_web_search(bid, bid_option,
+                                                 url, browser)
     else:
         # If driver was not found
         res = [bid, None] if bid_option else [None, bid]
@@ -575,18 +633,10 @@ def __fetch_company_data_from_website(bid):
     colnames = [
         &#34;bid&#34;,
         &#34;name&#34;,
-        &#34;company_form_fi&#34;,
-        &#34;muni_fi&#34;,
-        &#34;business_line_fi&#34;,
-        &#34;liquidation_fi&#34;,
-        &#34;company_form_se&#34;,
-        &#34;muni_se&#34;,
-        &#34;business_line_se&#34;,
-        &#34;liquidation_se&#34;,
-        &#34;company_form_en&#34;,
-        &#34;muni_en&#34;,
-        &#34;business_line_en&#34;,
-        &#34;liquidation_en&#34;,
+        &#34;company_form&#34;,
+        &#34;muni&#34;,
+        &#34;business_line&#34;,
+        &#34;liquidation&#34;,
         ]
     # Create series
     df = pd.DataFrame(res, index=colnames).transpose()
@@ -620,31 +670,32 @@ def __search_companies_with_web_search(bid, bid_option, url, browser):
     link = link[0].get_attribute(&#34;href&#34;) if len(link) == 1 else None
     # Go to the result web page
     if link is not None:
-        r = requests.get(link)
-        soup = BeautifulSoup(r.text, &#39;lxml&#39;)
-        # Find Business ID
-        bid = soup.findAll(&#34;span&#34;, id=&#34;_ctl0_cphSisalto_lblytunnus&#34;)
+        # BeautifulSoup could be used but it misses the language information
+        browser.get(link)
+        bid = browser.find_elements(
+            &#34;xpath&#34;, &#34;//span[@id=&#39;_ctl0_cphSisalto_lblytunnus&#39;]&#34;)
         bid = bid[0].text if len(bid) == 1 else None
         # Find name
-        name = soup.findAll(&#34;span&#34;, id=&#34;_ctl0_cphSisalto_lblToiminimi&#34;)
+        name = browser.find_elements(
+            &#34;xpath&#34;, &#34;//span[@id=&#39;_ctl0_cphSisalto_lblToiminimi&#39;]&#34;)
         name = name[0].text if len(name) == 1 else None
         # Find company form
-        company_form = soup.findAll(
-            &#34;span&#34;, id=&#34;_ctl0_cphSisalto_lblYritysmuoto&#34;)
+        company_form = browser.find_elements(
+            &#34;xpath&#34;, &#34;//span[@id=&#39;_ctl0_cphSisalto_lblYritysmuoto&#39;]&#34;)
         company_form = company_form[0].text if len(company_form) == 1 else None
         # Find home town
-        registed_office = soup.findAll(
-            &#34;span&#34;, id=&#34;_ctl0_cphSisalto_lblYrityksenKotipaikka&#34;)
+        registed_office = browser.find_elements(
+            &#34;xpath&#34;, &#34;//span[@id=&#39;_ctl0_cphSisalto_lblYrityksenKotipaikka&#39;]&#34;)
         registed_office = registed_office[
             0].text.capitalize() if len(registed_office) == 1 else None
         # Find business line
-        business_line = soup.findAll(
-            &#34;span&#34;, id=&#34;_ctl0_cphSisalto_lblYrityksenToimiala&#34;)
+        business_line = browser.find_elements(
+            &#34;xpath&#34;, &#34;//span[@id=&#39;_ctl0_cphSisalto_lblYrityksenToimiala&#39;]&#34;)
         business_line = business_line[
             0].text if len(business_line) == 1 else None
         # Find liquidation information
-        liquidation = soup.findAll(
-            &#34;span&#34;, id=&#34;_ctl0_cphSisalto_lblKonkurssitieto&#34;)
+        liquidation = browser.find_elements(
+            &#34;xpath&#34;, &#34;//span[@id=&#39;_ctl0_cphSisalto_lblKonkurssitieto&#39;]&#34;)
         liquidation = liquidation[0].text if len(liquidation) == 1 else None
         # Combine result
         res = [bid, name, company_form, registed_office,
@@ -737,7 +788,7 @@ def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
         found_year = p.search(found_year).group().split(&#34;-&#34;)
         # Getn only years that are available
         years_temp = [x if int(x) in
-                      range(int(found_year[0]), int(found_year[1]))
+                      list(range(int(found_year[0]), int(found_year[1])+1))
                       else None for x in years]
         years_not_found = [x for i, x in enumerate(years_temp)
                            if x != years[i]]
@@ -813,6 +864,363 @@ def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
         df_temp.loc[&#34;year&#34;, :] = year_temp
         df_temp = df_temp.transpose()
         df = pd.merge(df, df_temp)
+    return df
+
+
+def fetch_financial_data(org_bids, years, subset=True, **args):
+    &#34;&#34;&#34;
+    Fetch financial data of municipalities.
+
+    Arguments:
+        ```
+        org_bids: pd.Series including business IDs of municipalities.
+
+        years: pd.Series including years specifying the year of data
+        that will be fetched.
+
+        subset: a boolean value specifying whether only certain key figures
+        are returned. (By default: subset=True)
+
+        ```
+
+    Details:
+        This function fetches financial data of municipalities
+        (KKNR20XXC12, KKTR20XX, and KKOTR20XX) from the database
+        of State Treasury of Finland (Valtiokonttori).
+
+    Examples:
+        ```
+        codes = pd.Series([&#34;0135202-4&#34;, &#34;0204819-8&#34;])
+        years = pd.Series([&#34;02.05.2021&#34;, &#34;20.10.2020&#34;])
+        df = fetch_financial_data(codes, years)
+        ```
+
+    Output:
+        pd.DataFrame including financial data.
+    &#34;&#34;&#34;
+    years = years.astype(str)
+    df_org = pd.DataFrame([org_bids, years], index=[&#34;org_bid&#34;, &#34;year&#34;])
+    df_org = df_org.transpose()
+    df_org = df_org.drop_duplicates()
+    # For progress bar, specify the width of it
+    progress_bar_width = 50
+    # Loop over rows
+    df = pd.DataFrame()
+    for i, r in df_org.iterrows():
+        # update the progress bar
+        percent = 100*(i/(df_org.shape[0]-1))
+        sys.stdout.write(&#39;\r&#39;)
+        sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
+                         .format(&#39;=&#39;*int(percent/(100/progress_bar_width)),
+                                 progress_bar_width, int(percent)))
+        sys.stdout.flush()
+        # Get data from the database
+        df_temp = __fetch_org_financial_data_help(
+            r[&#34;org_bid&#34;], r[&#34;year&#34;], subset=subset)
+        # Add organization and year info
+        df_temp[&#34;org_bid&#34;] = r[&#34;org_bid&#34;]
+        df_temp[&#34;year&#34;] = r[&#34;year&#34;]
+        # Add to whole data
+        df = pd.concat([df, df_temp])
+    # Reset index and return whole data
+    df = df.reset_index(drop=True)
+    # Stop progress bar
+    sys.stdout.write(&#34;\n&#34;)
+    return df
+
+
+def __fetch_org_financial_data_help(org_bid, year, subset):
+    &#34;&#34;&#34;
+    Fetch financial data of municipalities (KKNR, KKTR, KKOTR).
+
+    Input: business ID of municipality, year,
+    whether to take only certain values
+    Output: pd.DataFrame including financial data.
+    &#34;&#34;&#34;
+    ready_col = &#34;hyvaksymisvaihe&#34;
+    # Get the information on database, what data it includes?
+    url = (&#34;https://prodkuntarest.westeurope.cloudapp.azure.com/&#34; +
+           &#34;rest/v1/json/aineistot&#34;)
+    r = requests.get(url)
+    r.status_code
+    text = r.json()
+    text = text.get(&#34;aineistot&#34;)
+    df_info = pd.DataFrame(text)
+    # Subset by taking only specific city
+    df_info = df_info.loc[df_info[&#34;ytunnus&#34;] == org_bid, :]
+    # Sort data based on the readiness of the data
+    order = [&#34;Lopullinen&#34;, &#34;Hyväksytty&#34;, &#34;Alustava&#34;]
+    df_info[ready_col] = pd.Categorical(
+        df_info[ready_col], categories=order)
+    df_info = df_info.sort_values(ready_col)
+    # Get financial code labels
+    path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;financial_codes.csv&#34;
+    df_lab = pd.read_csv(path, index_col=0)
+    # Initialize result DF
+    df = pd.DataFrame()
+    # Get kknr data
+    key_figs = [
+        &#34;2400-2439 Pitkäaikainen (korollinen vieras pääoma)&#34;,
+        &#34;2500-2539 Lyhytaikainen (korollinen vieras pääoma)&#34;,
+        &#34;5000-5499 Verotulot&#34;,
+        &#34;5500-5899 Valtionosuudet&#34;,
+        &#34;6000-6099 Korkotuotot&#34;,
+        &#34;7000-7299 Poistot ja arvonalentumiset&#34;,
+        &#34;8000-8199 Satunnaiset erät + (-)&#34;,
+        &#34;8800-8800 Tilikauden ylijäämä (alijäämä)&#34;,
+        &#34;Toimintakate&#34;,
+        &#34;Toimintakulut&#34;,
+        &#34;Toimintatulot&#34;,
+        ]
+    df = __fetch_financial_data(
+        df=df, df_info=df_info, df_lab=df_lab,
+        datatype=&#34;KKNR&#34;, year=(year + &#34;C12&#34;), key_figs=key_figs,
+        subset=subset)
+    # Get kktr data
+    key_figs = [
+        &#34;Antolainasaamisten lisäys&#34;,
+        &#34;Antolainasaamisten vähennys&#34;,
+        &#34;Antolainasaamisten muutokset + (-)&#34;,
+        &#34;Antolainasaamisten muutokset&#34;,
+        &#34;Investointien rahavirta&#34;,
+        &#34;Lainakannan muutokset&#34;,
+        &#34;Lyhytaikaisten lainojen lisäys&#34;,
+        &#34;Lyhytaikaisten lainojen vähennys&#34;,
+        &#34;Lyhytaikaisten lainojen muutos&#34;,
+        &#34;Muut maksuvalmiuden muutokset&#34;,
+        &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
+        &#34;Oman pääoman muutokset + (-)&#34;,
+        &#34;Oman pääoman muutokset&#34;,
+        &#34;Pitkäaikaisten lainojen lisäys&#34;,
+        &#34;Pitkäaikaisten lainojen vähennys&#34;,
+        &#34;Pitkäaikaisten lainojen muutos&#34;,
+        &#34;Rahavarat 1.1.&#34;,
+        &#34;Rahavarat 31.12.&#34;,
+        &#34;Rahavarojen muutos&#34;,
+        &#34;Rahoituksen rahavirta&#34;,
+        &#34;Satunnaiset erät&#34;,
+        &#34;Toiminnan rahavirta&#34;,
+        &#34;Toimintakate&#34;,
+        &#34;Toimintakulut&#34;,
+        &#34;Toimintatuotot&#34;,
+        &#34;Tulorahoituksen korjauserät&#34;,
+        &#34;Verotulot&#34;,
+        &#34;Vuosikate&#34;,
+        ]
+    df = __fetch_financial_data(
+        df=df, df_info=df_info, df_lab=df_lab,
+        datatype=&#34;KKTR&#34;, year=year, key_figs=key_figs,
+        subset=subset)
+    # Get kkotr data
+    key_figs = [
+        &#34;Antolainasaamisten lisäys&#34;,
+        &#34;Antolainasaamisten vähennys&#34;,
+        &#34;Antolainasaamisten muutokset + (-)&#34;,
+        &#34;Antolainasaamisten muutokset&#34;,
+        &#34;Investointien rahavirta&#34;,
+        &#34;Korkotuotot&#34;,
+        &#34;Lainakannan muutokset + (-)&#34;,
+        &#34;Lainakannan muutokset&#34;,
+        &#34;Lyhytaikainen (korollinen vieras pääoma)&#34;,
+        &#34;Lyhytaikaisten lainojen lisäys&#34;,
+        &#34;Lyhytaikaisten lainojen vähennys&#34;,
+        &#34;Lyhytaikaisten lainojen muutos&#34;,
+        &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
+        &#34;Muut maksuvalmiuden muutokset&#34;,
+        &#34;Oman pääoman muutokset + (-)&#34;,
+        &#34;Oman pääoman muutokset&#34;,
+        &#34;Pitkäaikaisten lainojen lisäys&#34;,
+        &#34;Pitkäaikaisten lainojen vähennys&#34;,
+        &#34;Pitkäaikaisten lainojen muutos&#34;,
+        &#34;Poistot ja arvonalentumiset&#34;,
+        &#34;Rahavarat 1.1.&#34;,
+        &#34;Rahavarat 31.12.&#34;,
+        &#34;Rahavarojen muutos&#34;,
+        &#34;Rahoituksen rahavirta&#34;,
+        &#34;Tilikauden tulos&#34;,
+        &#34;Tilikauden ylijäämä (alijäämä)&#34;,
+        &#34;Toiminnan rahavirta&#34;,
+        &#34;Tulorahoituksen korjauserät&#34;,
+        &#34;Vuosikate&#34;,
+        ]
+    df = __fetch_financial_data(
+        df=df, df_info=df_info, df_lab=df_lab,
+        datatype=&#34;KKOTR&#34;, year=year, key_figs=key_figs,
+        subset=subset)
+    # Reset index and return whole data
+    df = df.reset_index(drop=True)
+    return df
+
+
+def __fetch_financial_data(df, df_info, df_lab,
+                           datatype, year, key_figs, subset):
+    &#34;&#34;&#34;
+    Fetch certain financial data of municipalities.
+
+    Input: DF to append, DF including URL, DF including labels of financial
+    codes, which data is fetched, year, which values will be returned if
+    subset is True.
+    Output: pd.DataFrame including financial data.
+    &#34;&#34;&#34;
+    # Specify columns where label and values can be found
+    url_col = &#34;tunnusluvut&#34;
+    label_col = &#34;tunnusluku&#34;
+    value_col = &#34;arvo&#34;
+    datatype_col = &#34;raportointikokonaisuus&#34;
+    data_year = &#34;raportointikausi&#34;
+    # Initialize for results
+    df_temp = pd.DataFrame()
+    # Get specific data information
+    ind = ((df_info[datatype_col] == datatype) &amp;
+           (df_info[data_year] == year))
+    # If certain data can be found from the database
+    if any(ind):
+        # Get the data info based on index
+        ind = ind[ind]
+        ind = ind.first_valid_index()
+        # Get the url and fetch the data
+        url = df_info.loc[ind, url_col]
+        r = requests.get(url)
+        text = r.json()
+        # Create DF from the data
+        df_temp = pd.DataFrame(text)
+        # Get labels
+        fields = df_lab.loc[df_lab[datatype_col] == datatype, :]
+        # Add labels to data
+        df_temp[&#34;tunnusluku_lab&#34;] = df_temp[label_col].replace(
+            to_replace=fields.loc[:, &#34;value&#34;].astype(str).tolist(),
+            value=fields.loc[:, &#34;lab&#34;].astype(str).tolist())
+        # Values to float
+        df_temp[value_col] = df_temp[value_col].astype(float)
+        # If certain datatype, there are multiple rows with same label.
+        # Sum them together
+        if datatype == &#34;KKNR&#34;:
+            # Get summed-up values
+            values = df_temp.groupby(&#34;tunnusluku_lab&#34;).aggregate(
+                {value_col: &#34;sum&#34;})
+            # Remove additional rows
+            df_temp = df_temp.drop_duplicates(subset=&#34;tunnusluku_lab&#34;)
+            # Add summed values
+            df_temp = df_temp.drop(value_col, axis=1)
+            df_temp = pd.merge(df_temp, values, on=&#34;tunnusluku_lab&#34;)
+        # Subset
+        if subset:
+            ind = [x in key_figs for x in df_temp[&#34;tunnusluku_lab&#34;]]
+            df_temp = df_temp.loc[ind, :]
+    # Add fetched data to results
+    df = pd.concat([df, df_temp])
+    return df
+
+
+def fetch_org_company_data(org_bids, years, datatype=&#34;TOLT&#34;, **args):
+    &#34;&#34;&#34;
+    Fetch data about companies of municipality.
+
+    Arguments:
+        ```
+        org_bids: pd.Series including business IDs of municipalities.
+
+        years: pd.Series including years specifying the year of data
+        that will be fetched.
+
+        ```
+
+    Details:
+        This function fetches data on companies of municipalities (TOLT)
+        from the database of State Treasury of Finland (Valtiokonttori).
+
+    Examples:
+        ```
+        codes = pd.Series([&#34;0135202-4&#34;, &#34;0204819-8&#34;])
+        years = pd.Series([&#34;02.05.2021&#34;, &#34;20.10.2020&#34;])
+        df = fetch_org_company_data(codes, years)
+        ```
+
+    Output:
+        pd.DataFrame including company data.
+    &#34;&#34;&#34;
+    try:
+        # Test if year can be detected
+        years = pd.to_datetime(years).dt.year
+        years = years.astype(str)
+    except Exception:
+        raise Exception(
+            &#34;&#39;years&#39; data was not detected.&#34;
+            )
+    df_org = pd.DataFrame([org_bids, years], index=[&#34;org_bid&#34;, &#34;year&#34;])
+    df_org = df_org.transpose()
+    df_org = df_org.drop_duplicates()
+    # For progress bar, specify the width of it
+    progress_bar_width = 50
+    # Loop over rows
+    df = pd.DataFrame()
+    for i, r in df_org.iterrows():
+        # update the progress bar
+        percent = 100*(i/(df_org.shape[0]-1))
+        sys.stdout.write(&#39;\r&#39;)
+        sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
+                         .format(&#39;=&#39;*int(percent/(100/progress_bar_width)),
+                                 progress_bar_width, int(percent)))
+        sys.stdout.flush()
+        # Get data from the database
+        df_temp = __fetch_org_company_data_help(
+            r[&#34;org_bid&#34;], r[&#34;year&#34;], datatype)
+        # Add organization and year info
+        df_temp[&#34;org_bid&#34;] = r[&#34;org_bid&#34;]
+        df_temp[&#34;year&#34;] = r[&#34;year&#34;]
+        # Add to whole data
+        df = pd.concat([df, df_temp])
+    # Reset index and return whole data
+    df = df.reset_index(drop=True)
+    # Stop progress bar
+    sys.stdout.write(&#34;\n&#34;)
+    return df
+
+
+def __fetch_org_company_data_help(org_bid, year, datatype):
+    &#34;&#34;&#34;
+    Fetch data about companies of municipality.
+
+    Input: business ID of municipality, year, datatype.
+    Output: pd.DataFrame including company data.
+    &#34;&#34;&#34;
+    # Specify columns of the data
+    bid_col = &#34;ytunnus&#34;
+    ready_col = &#34;hyvaksymisvaihe&#34;
+    data_year = &#34;raportointikausi&#34;
+    datatype_col = &#34;raportointikokonaisuus&#34;
+    url_col = &#34;tolt_tiedot&#34;
+    tolt_col = &#34;tolt_yksiköt&#34;
+    # Get the information on database, what data it includes?
+    url = (&#34;https://prodkuntarest.westeurope.cloudapp.azure.com/&#34; +
+           &#34;rest/v1/json/tolt-aineistot&#34;)
+    r = requests.get(url)
+    text = r.json()
+    text = text.get(&#34;tolt_aineisto&#34;)
+    df_info = pd.DataFrame(text)
+    # Sort data based on the readiness of the data
+    order = [&#34;Lopullinen&#34;, &#34;Hyväksytty&#34;, &#34;Alustava&#34;]
+    df_info[ready_col] = pd.Categorical(
+        df_info[ready_col], categories=order)
+    df_info = df_info.sort_values(ready_col)
+    # Get specific data information
+    ind = ((df_info[datatype_col] == datatype) &amp;
+           (df_info[data_year] == year) &amp;
+           (df_info[bid_col] == org_bid))
+    # If certain data can be found from the database
+    if any(ind):
+        # Get the data info based on index
+        ind = ind[ind]
+        ind = ind.first_valid_index()
+        # Get the url and fetch the data
+        url = df_info.loc[ind, url_col]
+        r = requests.get(url)
+        text = r.json()
+        text = text.get(tolt_col)
+        # Create DF from the data
+        df = pd.DataFrame(text)
+    else:
+        df = pd.DataFrame()
     return df</code></pre>
 </details>
 </section>
@@ -884,16 +1292,23 @@ def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
 </details>
 </dd>
 <dt id="osta.enrich_data.fetch_company_data"><code class="name flex">
-<span>def <span class="ident">fetch_company_data</span></span>(<span>ser, only_ltd=False, **args)</span>
+<span>def <span class="ident">fetch_company_data</span></span>(<span>ser, language='en', only_ltd=False, merge_bid=True, **args)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Fetch company data from databases.</p>
 <h2 id="arguments">Arguments</h2>
 <pre><code>ser: pd.Series including business IDs.
 
+language: A string specifying the language of fetched data. Must be
+&quot;en&quot; (English), &quot;fi&quot; (Finnish), or &quot;sv&quot; (Swedish).
+
 only_ltd: A Boolean value specifying whether to search results also
 for other than limited companies. The search for them is slower.
 (By default: only_ltd=False)
+
+merge_bid: A Boolean value specifying whether to combine all old BIDs
+to one column. If False, each BID is its own columns named
+'old_bid_*'. (By default: old_bid=True)
 
 </code></pre>
 <h2 id="details">Details</h2>
@@ -913,7 +1328,8 @@ df = fetch_company_data(bids)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def fetch_company_data(ser, only_ltd=False, **args):
+<pre><code class="python">def fetch_company_data(ser, language=&#34;en&#34;, only_ltd=False, merge_bid=True,
+                       **args):
     &#34;&#34;&#34;
     Fetch company data from databases.
 
@@ -921,9 +1337,16 @@ df = fetch_company_data(bids)
         ```
         ser: pd.Series including business IDs.
 
+        language: A string specifying the language of fetched data. Must be
+        &#34;en&#34; (English), &#34;fi&#34; (Finnish), or &#34;sv&#34; (Swedish).
+
         only_ltd: A Boolean value specifying whether to search results also
         for other than limited companies. The search for them is slower.
         (By default: only_ltd=False)
+
+        merge_bid: A Boolean value specifying whether to combine all old BIDs
+        to one column. If False, each BID is its own columns named
+        &#39;old_bid_*&#39;. (By default: old_bid=True)
 
         ```
 
@@ -949,13 +1372,24 @@ df = fetch_company_data(bids)
         raise Exception(
             &#34;&#39;ser&#39; must be non-empty pandas.Series.&#34;
             )
+    if not (isinstance(language, str) and language in [&#34;fi&#34;, &#34;en&#34;, &#34;sv&#34;]):
+        raise Exception(
+            &#34;&#39;language&#39; must be &#39;en&#39;, &#39;fi&#39;, or &#39;sv&#39;.&#34;
+            )
     if not isinstance(only_ltd, bool):
         raise Exception(
             &#34;&#39;only_ltd&#39; must be True or False.&#34;
             )
+    if not isinstance(merge_bid, bool):
+        raise Exception(
+            &#34;&#39;merge_bid&#39; must be True or False.&#34;
+            )
     # INPUT CHECK END
-    # Remove None values
+    # Get language in right format for database
+    lan = &#34;se&#34; if language == &#34;sv&#34; else language
+    # Remove None values and duplicates
     ser = ser.dropna()
+    ser = ser.drop_duplicates()
     # For progress bar, specify the width of it
     progress_bar_width = 50
     # Initialize resulst DF
@@ -991,7 +1425,7 @@ df = fetch_company_data(bids)
                 &#34;businessIdChanges&#34;: &#34;old_bid&#34;,
                 })
             # Get certain data and convert into Series
-            col_info = [&#34;bid&#34;, &#34;name&#34;, &#34;company_form_short&#34;]
+            col_info = [&#34;bid&#34;, &#34;name&#34;]
             series = df_temp.loc[:, col_info]
             series = series.squeeze()
             # Loop over certain information columns
@@ -1014,32 +1448,39 @@ df = fetch_company_data(bids)
                         # If certain data, capitalize and add column names
                         # with language
                         # Remove those values that are outdated
-                        temp = temp.loc[temp[&#34;endDate&#34;].isna(), :]
-                        temp_name = temp[&#34;name&#34;].astype(str).str.capitalize()
-                        temp_col = [col + &#34;_&#34; + x for x in temp[
-                            &#34;language&#34;].astype(str).str.lower()]
-                        # Add number if multiple names per language
-                        if (len(temp_name)/3) &gt; 1:
-                            # Add suffix
-                            temp_col2 = []
-                            for x in temp_col:
-                                count = sum([y == x for y in temp_col2])
-                                if count != 0:
-                                    x = x + &#34;_&#34; + str(count+1)
-                                temp_col2.append(x)
-                            temp_col = temp_col2
-                        temp_name.index = temp_col
+                        ind = temp[&#34;endDate&#34;].isna()
+                        if any(ind):
+                            temp = temp.loc[ind, :]
+                        # Get only specific language
+                        ind = temp[&#34;language&#34;].astype(str).str.lower() == lan
+                        if any(ind):
+                            temp_name = temp.loc[ind, &#34;name&#34;].astype(
+                                str).str.capitalize()
+                        else:
+                            temp_name = temp.loc[:, &#34;name&#34;].astype(
+                                str).str.capitalize()
+                        # Ensure that there is only one value
+                        temp_name = temp_name.iloc[[0]]
+                        temp_name.index = [col]
                     elif any(x in col for x in [&#34;liquidation&#34;]):
-                        # If certain data, get name and date and add
-                        # column names with language
-                        temp_name = temp[&#34;description&#34;]
-                        temp_date = temp.loc[
-                            temp[&#34;language&#34;] == &#34;FI&#34;, &#34;registrationDate&#34;]
-                        temp_col = [col + &#34;_&#34; + x for x in temp[
-                            &#34;language&#34;].astype(str).str.lower()]
-                        temp_name.index = temp_col
-                        # Add date
+                        # If certain data, get name and date with
+                        # specific language
+                        ind = temp[&#34;language&#34;].astype(str).str.lower() == lan
+                        if any(ind):
+                            temp_name = temp.loc[ind, &#34;description&#34;].astype(
+                                str).str.capitalize()
+                            temp_date = temp.loc[ind, &#34;registrationDate&#34;]
+                        else:
+                            temp_name = temp.loc[:, &#34;description&#34;].astype(
+                                str).str.capitalize()
+                            temp_date = temp.loc[:, &#34;registrationDate&#34;]
+                        # Ensure that there is only one value
+                        temp_name = temp_name.iloc[[0]]
+                        temp_date = temp_date.iloc[[0]]
+                        # Add names
+                        temp_name.index = [col]
                         temp_date.index = [col + &#34;_date&#34;]
+                        # Combine results
                         temp_name = pd.concat([temp_name, temp_date])
                     elif any(x in col for x in [&#34;old_bid&#34;]):
                         # If certain data, capitalize and add
@@ -1058,7 +1499,7 @@ df = fetch_company_data(bids)
             # If BID was not found from the database, try to find
             # with web search
             try:
-                res = __fetch_company_data_from_website(bid)
+                res = __fetch_company_data_from_website(bid, language)
             except Exception:
                 res = pd.DataFrame([bid], index=[&#34;bid&#34;]).transpose()
         else:
@@ -1069,6 +1510,227 @@ df = fetch_company_data(bids)
             df = res
         else:
             df = pd.merge(df, res, how=&#34;outer&#34;)
+    # Combine BID columns into one
+    if merge_bid and &#34;old_bid&#34; in df.columns:
+        regex = re.compile(r&#34;old_bid&#34;)
+        ind = [True if regex.search(x) else False for x in df.columns]
+        bid_cols = df.loc[:, ind]
+        bid_col = bid_cols.apply(lambda x: &#39;, &#39;.join(x.dropna(
+            ).astype(str)), axis=1)
+        # Remove additional BID columns, keep only one
+        ind = [False if regex.search(x) else True for x in df.columns]
+        df = df.loc[:, ind]
+        df[&#34;old_bid&#34;] = bid_col
+    # Convert column names into right language if Finnish or Swedish
+    if language == &#34;fi&#34;:
+        columns = {
+            &#34;registration_date&#34;: &#34;rekisteröintipäivä&#34;,
+            &#34;company_form_short&#34;: &#34;yhtiömuoto_lyhyt&#34;,
+            &#34;liquidation&#34;: &#34;konkurssitiedot&#34;,
+            &#34;company_form&#34;: &#34;yhtiömuoto&#34;,
+            &#34;business_line&#34;: &#34;päätoimiala&#34;,
+            &#34;muni&#34;: &#34;kotipaikka&#34;,
+            &#34;old_bid&#34;: &#34;vanha_bid&#34;,
+            }
+        df = df.rename(columns=columns)
+        df.columns = [re.sub(&#34;old_bid_&#34;, &#34;vanha_bid_&#34;, str(x))
+                      for x in df.columns.tolist()]
+    elif language == &#34;sv&#34;:
+        columns = {
+            &#34;registration_date&#34;: &#34;registrering_dag&#34;,
+            &#34;company_form_short&#34;: &#34;företags_form_kort&#34;,
+            &#34;liquidation&#34;: &#34;konkurs_info&#34;,
+            &#34;company_form&#34;: &#34;företags_form&#34;,
+            &#34;business_line&#34;: &#34;päätoimiala&#34;,
+            &#34;muni&#34;: &#34;hemkommun&#34;,
+            &#34;old_bid&#34;: &#34;gamla_bid&#34;,
+            }
+        df = df.rename(columns=columns)
+        df.columns = [re.sub(&#34;old_bid_&#34;, &#34;gamla_bid_&#34;, str(x))
+                      for x in df.columns.tolist()]
+    # Stop progress bar
+    sys.stdout.write(&#34;\n&#34;)
+    return df</code></pre>
+</details>
+</dd>
+<dt id="osta.enrich_data.fetch_financial_data"><code class="name flex">
+<span>def <span class="ident">fetch_financial_data</span></span>(<span>org_bids, years, subset=True, **args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fetch financial data of municipalities.</p>
+<h2 id="arguments">Arguments</h2>
+<pre><code>org_bids: pd.Series including business IDs of municipalities.
+
+years: pd.Series including years specifying the year of data
+that will be fetched.
+
+subset: a boolean value specifying whether only certain key figures
+are returned. (By default: subset=True)
+
+</code></pre>
+<h2 id="details">Details</h2>
+<p>This function fetches financial data of municipalities
+(KKNR20XXC12, KKTR20XX, and KKOTR20XX) from the database
+of State Treasury of Finland (Valtiokonttori).</p>
+<h2 id="examples">Examples</h2>
+<pre><code>codes = pd.Series([&quot;0135202-4&quot;, &quot;0204819-8&quot;])
+years = pd.Series([&quot;02.05.2021&quot;, &quot;20.10.2020&quot;])
+df = fetch_financial_data(codes, years)
+</code></pre>
+<h2 id="output">Output</h2>
+<p>pd.DataFrame including financial data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fetch_financial_data(org_bids, years, subset=True, **args):
+    &#34;&#34;&#34;
+    Fetch financial data of municipalities.
+
+    Arguments:
+        ```
+        org_bids: pd.Series including business IDs of municipalities.
+
+        years: pd.Series including years specifying the year of data
+        that will be fetched.
+
+        subset: a boolean value specifying whether only certain key figures
+        are returned. (By default: subset=True)
+
+        ```
+
+    Details:
+        This function fetches financial data of municipalities
+        (KKNR20XXC12, KKTR20XX, and KKOTR20XX) from the database
+        of State Treasury of Finland (Valtiokonttori).
+
+    Examples:
+        ```
+        codes = pd.Series([&#34;0135202-4&#34;, &#34;0204819-8&#34;])
+        years = pd.Series([&#34;02.05.2021&#34;, &#34;20.10.2020&#34;])
+        df = fetch_financial_data(codes, years)
+        ```
+
+    Output:
+        pd.DataFrame including financial data.
+    &#34;&#34;&#34;
+    years = years.astype(str)
+    df_org = pd.DataFrame([org_bids, years], index=[&#34;org_bid&#34;, &#34;year&#34;])
+    df_org = df_org.transpose()
+    df_org = df_org.drop_duplicates()
+    # For progress bar, specify the width of it
+    progress_bar_width = 50
+    # Loop over rows
+    df = pd.DataFrame()
+    for i, r in df_org.iterrows():
+        # update the progress bar
+        percent = 100*(i/(df_org.shape[0]-1))
+        sys.stdout.write(&#39;\r&#39;)
+        sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
+                         .format(&#39;=&#39;*int(percent/(100/progress_bar_width)),
+                                 progress_bar_width, int(percent)))
+        sys.stdout.flush()
+        # Get data from the database
+        df_temp = __fetch_org_financial_data_help(
+            r[&#34;org_bid&#34;], r[&#34;year&#34;], subset=subset)
+        # Add organization and year info
+        df_temp[&#34;org_bid&#34;] = r[&#34;org_bid&#34;]
+        df_temp[&#34;year&#34;] = r[&#34;year&#34;]
+        # Add to whole data
+        df = pd.concat([df, df_temp])
+    # Reset index and return whole data
+    df = df.reset_index(drop=True)
+    # Stop progress bar
+    sys.stdout.write(&#34;\n&#34;)
+    return df</code></pre>
+</details>
+</dd>
+<dt id="osta.enrich_data.fetch_org_company_data"><code class="name flex">
+<span>def <span class="ident">fetch_org_company_data</span></span>(<span>org_bids, years, datatype='TOLT', **args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fetch data about companies of municipality.</p>
+<h2 id="arguments">Arguments</h2>
+<pre><code>org_bids: pd.Series including business IDs of municipalities.
+
+years: pd.Series including years specifying the year of data
+that will be fetched.
+
+</code></pre>
+<h2 id="details">Details</h2>
+<p>This function fetches data on companies of municipalities (TOLT)
+from the database of State Treasury of Finland (Valtiokonttori).</p>
+<h2 id="examples">Examples</h2>
+<pre><code>codes = pd.Series([&quot;0135202-4&quot;, &quot;0204819-8&quot;])
+years = pd.Series([&quot;02.05.2021&quot;, &quot;20.10.2020&quot;])
+df = fetch_org_company_data(codes, years)
+</code></pre>
+<h2 id="output">Output</h2>
+<p>pd.DataFrame including company data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fetch_org_company_data(org_bids, years, datatype=&#34;TOLT&#34;, **args):
+    &#34;&#34;&#34;
+    Fetch data about companies of municipality.
+
+    Arguments:
+        ```
+        org_bids: pd.Series including business IDs of municipalities.
+
+        years: pd.Series including years specifying the year of data
+        that will be fetched.
+
+        ```
+
+    Details:
+        This function fetches data on companies of municipalities (TOLT)
+        from the database of State Treasury of Finland (Valtiokonttori).
+
+    Examples:
+        ```
+        codes = pd.Series([&#34;0135202-4&#34;, &#34;0204819-8&#34;])
+        years = pd.Series([&#34;02.05.2021&#34;, &#34;20.10.2020&#34;])
+        df = fetch_org_company_data(codes, years)
+        ```
+
+    Output:
+        pd.DataFrame including company data.
+    &#34;&#34;&#34;
+    try:
+        # Test if year can be detected
+        years = pd.to_datetime(years).dt.year
+        years = years.astype(str)
+    except Exception:
+        raise Exception(
+            &#34;&#39;years&#39; data was not detected.&#34;
+            )
+    df_org = pd.DataFrame([org_bids, years], index=[&#34;org_bid&#34;, &#34;year&#34;])
+    df_org = df_org.transpose()
+    df_org = df_org.drop_duplicates()
+    # For progress bar, specify the width of it
+    progress_bar_width = 50
+    # Loop over rows
+    df = pd.DataFrame()
+    for i, r in df_org.iterrows():
+        # update the progress bar
+        percent = 100*(i/(df_org.shape[0]-1))
+        sys.stdout.write(&#39;\r&#39;)
+        sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
+                         .format(&#39;=&#39;*int(percent/(100/progress_bar_width)),
+                                 progress_bar_width, int(percent)))
+        sys.stdout.flush()
+        # Get data from the database
+        df_temp = __fetch_org_company_data_help(
+            r[&#34;org_bid&#34;], r[&#34;year&#34;], datatype)
+        # Add organization and year info
+        df_temp[&#34;org_bid&#34;] = r[&#34;org_bid&#34;]
+        df_temp[&#34;year&#34;] = r[&#34;year&#34;]
+        # Add to whole data
+        df = pd.concat([df, df_temp])
+    # Reset index and return whole data
+    df = df.reset_index(drop=True)
     # Stop progress bar
     sys.stdout.write(&#34;\n&#34;)
     return df</code></pre>
@@ -1185,7 +1847,7 @@ df = fetch_org_data(codes, years, language=&quot;fi&quot;)
         found_year = p.search(found_year).group().split(&#34;-&#34;)
         # Getn only years that are available
         years_temp = [x if int(x) in
-                      range(int(found_year[0]), int(found_year[1]))
+                      list(range(int(found_year[0]), int(found_year[1])+1))
                       else None for x in years]
         years_not_found = [x for i, x in enumerate(years_temp)
                            if x != years[i]]
@@ -1289,6 +1951,8 @@ df = fetch_org_data(codes, years, language=&quot;fi&quot;)
 <ul class="">
 <li><code><a title="osta.enrich_data.enrich_data" href="#osta.enrich_data.enrich_data">enrich_data</a></code></li>
 <li><code><a title="osta.enrich_data.fetch_company_data" href="#osta.enrich_data.fetch_company_data">fetch_company_data</a></code></li>
+<li><code><a title="osta.enrich_data.fetch_financial_data" href="#osta.enrich_data.fetch_financial_data">fetch_financial_data</a></code></li>
+<li><code><a title="osta.enrich_data.fetch_org_company_data" href="#osta.enrich_data.fetch_org_company_data">fetch_org_company_data</a></code></li>
 <li><code><a title="osta.enrich_data.fetch_org_data" href="#osta.enrich_data.fetch_org_data">fetch_org_data</a></code></li>
 </ul>
 </li>
