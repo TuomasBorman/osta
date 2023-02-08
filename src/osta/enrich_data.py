@@ -757,7 +757,7 @@ def fetch_org_data(org_codes, years=None, language="en"):
         found_year = p.search(found_year).group().split("-")
         # Getn only years that are available
         years_temp = [x if int(x) in
-                      range(int(found_year[0]), int(found_year[1]))
+                      list(range(int(found_year[0]), int(found_year[1])+1))
                       else None for x in years]
         years_not_found = [x for i, x in enumerate(years_temp)
                            if x != years[i]]
@@ -833,4 +833,276 @@ def fetch_org_data(org_codes, years=None, language="en"):
         df_temp.loc["year", :] = year_temp
         df_temp = df_temp.transpose()
         df = pd.merge(df, df_temp)
+    return df
+
+
+def fetch_financial_data(org_bids, years, subset=True, **args):
+    years = years.astype(str)
+    df_org = pd.DataFrame([org_bids, years], index=["org_bid", "year"])
+    df_org = df_org.transpose()
+    df_org = df_org.drop_duplicates()
+    # For progress bar, specify the width of it
+    progress_bar_width = 50
+    # Loop over rows
+    df = pd.DataFrame()
+    for i, r in df_org.iterrows():
+        # update the progress bar
+        percent = 100*(i/(df_org.shape[0]-1))
+        sys.stdout.write('\r')
+        sys.stdout.write("Completed: [{:{}}] {:>3}%"
+                         .format('='*int(percent/(100/progress_bar_width)),
+                                 progress_bar_width, int(percent)))
+        sys.stdout.flush()
+        # Get data from the database
+        df_temp = __fetch_org_financial_data_help(
+            r["org_bid"], r["year"], subset=subset)
+        # Add organization and year info
+        df_temp["org_bid"] = r["org_bid"]
+        df_temp["year"] = r["year"]
+        # Add to whole data
+        df = pd.concat([df, df_temp])
+    # Reset index and return whole data
+    df = df.reset_index(drop=True)
+    # Stop progress bar
+    sys.stdout.write("\n")
+    return df
+
+
+def __fetch_org_financial_data_help(org_bid, year, subset):
+    ready_col = "hyvaksymisvaihe"
+    # Get the information on database, what data it includes?
+    url = ("https://prodkuntarest.westeurope.cloudapp.azure.com/" +
+           "rest/v1/json/aineistot")
+    r = requests.get(url)
+    r.status_code
+    text = r.json()
+    text = text.get("aineistot")
+    df_info = pd.DataFrame(text)
+    # Subset by taking only specific city
+    df_info = df_info.loc[df_info["ytunnus"] == org_bid, :]
+    # Sort data based on the readiness of the data
+    order = ["Lopullinen", "Hyväksytty", "Alustava"]
+    df_info[ready_col] = pd.Categorical(
+        df_info[ready_col], categories=order)
+    df_info = df_info.sort_values(ready_col)
+    # Get financial code labels
+    path = "~/Python/osta/src/osta/resources/" + "financial_codes.csv"
+    df_lab = pd.read_csv(path, index_col=0)
+    # Initialize result DF
+    df = pd.DataFrame()
+    # Get kknr data
+    key_figs = [
+        "2400-2439 Pitkäaikainen (korollinen vieras pääoma)",
+        "2500-2539 Lyhytaikainen (korollinen vieras pääoma)",
+        "5000-5499 Verotulot",
+        "5500-5899 Valtionosuudet",
+        "6000-6099 Korkotuotot",
+        "7000-7299 Poistot ja arvonalentumiset",
+        "8000-8199 Satunnaiset erät + (-)",
+        "8800-8800 Tilikauden ylijäämä (alijäämä)",
+        "Toimintakate",
+        "Toimintakulut",
+        "Toimintatulot",
+        ]
+    df = __fetch_financial_data(
+        df=df, df_info=df_info, df_lab=df_lab,
+        datatype="KKNR", year=(year + "C12"), key_figs=key_figs,
+        subset=subset)
+    # Get kktr data
+    key_figs = [
+        "Antolainasaamisten lisäys",
+        "Antolainasaamisten vähennys",
+        "Antolainasaamisten muutokset + (-)",
+        "Antolainasaamisten muutokset",
+        "Investointien rahavirta",
+        "Lainakannan muutokset",
+        "Lyhytaikaisten lainojen lisäys",
+        "Lyhytaikaisten lainojen vähennys",
+        "Lyhytaikaisten lainojen muutos",
+        "Muut maksuvalmiuden muutokset",
+        "Muut maksuvalmiuden muutokset + (-)",
+        "Oman pääoman muutokset + (-)",
+        "Oman pääoman muutokset",
+        "Pitkäaikaisten lainojen lisäys",
+        "Pitkäaikaisten lainojen vähennys",
+        "Pitkäaikaisten lainojen muutos",
+        "Rahavarat 1.1.",
+        "Rahavarat 31.12.",
+        "Rahavarojen muutos",
+        "Rahoituksen rahavirta",
+        "Satunnaiset erät",
+        "Toiminnan rahavirta",
+        "Toimintakate",
+        "Toimintakulut",
+        "Toimintatuotot",
+        "Tulorahoituksen korjauserät",
+        "Verotulot",
+        "Vuosikate",
+        ]
+    df = __fetch_financial_data(
+        df=df, df_info=df_info, df_lab=df_lab,
+        datatype="KKTR", year=year, key_figs=key_figs,
+        subset=subset)
+    # Get kkotr data
+    key_figs = [
+        "Antolainasaamisten lisäys",
+        "Antolainasaamisten vähennys",
+        "Antolainasaamisten muutokset + (-)",
+        "Antolainasaamisten muutokset",
+        "Investointien rahavirta",
+        "Korkotuotot",
+        "Lainakannan muutokset + (-)",
+        "Lainakannan muutokset",
+        "Lyhytaikainen (korollinen vieras pääoma)",
+        "Lyhytaikaisten lainojen lisäys",
+        "Lyhytaikaisten lainojen vähennys",
+        "Lyhytaikaisten lainojen muutos",
+        "Muut maksuvalmiuden muutokset + (-)",
+        "Muut maksuvalmiuden muutokset",
+        "Oman pääoman muutokset + (-)",
+        "Oman pääoman muutokset",
+        "Pitkäaikaisten lainojen lisäys",
+        "Pitkäaikaisten lainojen vähennys",
+        "Pitkäaikaisten lainojen muutos",
+        "Poistot ja arvonalentumiset",
+        "Rahavarat 1.1.",
+        "Rahavarat 31.12.",
+        "Rahavarojen muutos",
+        "Rahoituksen rahavirta",
+        "Tilikauden tulos",
+        "Tilikauden ylijäämä (alijäämä)",
+        "Toiminnan rahavirta",
+        "Tulorahoituksen korjauserät",
+        "Vuosikate",
+        ]
+    df = __fetch_financial_data(
+        df=df, df_info=df_info, df_lab=df_lab,
+        datatype="KKOTR", year=year, key_figs=key_figs,
+        subset=subset)
+    # Reset index and return whole data
+    df = df.reset_index(drop=True)
+    return df
+
+
+def __fetch_financial_data(df, df_info, df_lab,
+                           datatype, year, key_figs, subset):
+    # Specify columns where label and values can be found
+    url_col = "tunnusluvut"
+    label_col = "tunnusluku"
+    value_col = "arvo"
+    datatype_col = "raportointikokonaisuus"
+    data_year = "raportointikausi"
+    # Initialize for results
+    df_temp = pd.DataFrame()
+    # Get specific data information
+    ind = ((df_info[datatype_col] == datatype) &
+           (df_info[data_year] == year))
+    # If certain data can be found from the database
+    if any(ind):
+        # Get the data info based on index
+        ind = ind[ind]
+        ind = ind.first_valid_index()
+        # Get the url and fetch the data
+        url = df_info.loc[ind, url_col]
+        r = requests.get(url)
+        text = r.json()
+        # Create DF from the data
+        df_temp = pd.DataFrame(text)
+        # Get labels
+        fields = df_lab.loc[df_lab[datatype_col] == datatype, :]
+        # Add labels to data
+        df_temp["tunnusluku_lab"] = df_temp[label_col].replace(
+            to_replace=fields.loc[:, "value"].astype(str).tolist(),
+            value=fields.loc[:, "lab"].astype(str).tolist())
+        # Values to float
+        df_temp[value_col] = df_temp[value_col].astype(float)
+        # If certain datatype, there are multiple rows with same label.
+        # Sum them together
+        if datatype == "KKNR":
+            # Get summed-up values
+            values = df_temp.groupby("tunnusluku_lab").aggregate(
+                {value_col: "sum"})
+            # Remove additional rows
+            df_temp = df_temp.drop_duplicates(subset="tunnusluku_lab")
+            # Add summed values
+            df_temp = df_temp.drop(value_col, axis=1)
+            df_temp = pd.merge(df_temp, values, on="tunnusluku_lab")
+        # Subset
+        if subset:
+            ind = [x in key_figs for x in df_temp["tunnusluku_lab"]]
+            df_temp = df_temp.loc[ind, :]
+    # Add fetched data to results
+    df = pd.concat([df, df_temp])
+    return df
+
+
+def fetch_org_company_data(org_bids, years, datatype="TOLT", **args):
+    years = years.astype(str)
+    df_org = pd.DataFrame([org_bids, years], index=["org_bid", "year"])
+    df_org = df_org.transpose()
+    df_org = df_org.drop_duplicates()
+    # For progress bar, specify the width of it
+    progress_bar_width = 50
+    # Loop over rows
+    df = pd.DataFrame()
+    for i, r in df_org.iterrows():
+        # update the progress bar
+        percent = 100*(i/(df_org.shape[0]-1))
+        sys.stdout.write('\r')
+        sys.stdout.write("Completed: [{:{}}] {:>3}%"
+                         .format('='*int(percent/(100/progress_bar_width)),
+                                 progress_bar_width, int(percent)))
+        sys.stdout.flush()
+        # Get data from the database
+        df_temp = __fetch_org_company_data_help(
+            r["org_bid"], r["year"], datatype)
+        # Add organization and year info
+        df_temp["org_bid"] = r["org_bid"]
+        df_temp["year"] = r["year"]
+        # Add to whole data
+        df = pd.concat([df, df_temp])
+    # Reset index and return whole data
+    df = df.reset_index(drop=True)
+    # Stop progress bar
+    sys.stdout.write("\n")
+    return df
+
+
+def __fetch_org_company_data_help(org_bid, year, datatype):
+    bid_col = "ytunnus"
+    ready_col = "hyvaksymisvaihe"
+    data_year = "raportointikausi"
+    datatype_col = "raportointikokonaisuus"
+    url_col = "tolt_tiedot"
+    tolt_col = "tolt_yksiköt"
+    # Get the information on database, what data it includes?
+    url = ("https://prodkuntarest.westeurope.cloudapp.azure.com/" +
+           "rest/v1/json/tolt-aineistot")
+    r = requests.get(url)
+    text = r.json()
+    text = text.get("tolt_aineisto")
+    df_info = pd.DataFrame(text)
+    # Sort data based on the readiness of the data
+    order = ["Lopullinen", "Hyväksytty", "Alustava"]
+    df_info[ready_col] = pd.Categorical(
+        df_info[ready_col], categories=order)
+    df_info = df_info.sort_values(ready_col)
+    # Get specific data information
+    ind = ((df_info[datatype_col] == datatype) &
+           (df_info[data_year] == year) &
+           (df_info[bid_col] == org_bid))
+    # If certain data can be found from the database
+    if any(ind):
+        # Get the data info based on index
+        ind = ind[ind]
+        ind = ind.first_valid_index()
+        # Get the url and fetch the data
+        url = df_info.loc[ind, url_col]
+        r = requests.get(url)
+        text = r.json()
+        text = text.get(tolt_col)
+        # Create DF from the data
+        df = pd.DataFrame(text)
+    else:
+        df = pd.DataFrame()
     return df
