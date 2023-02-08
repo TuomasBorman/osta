@@ -837,6 +837,36 @@ def fetch_org_data(org_codes, years=None, language="en"):
 
 
 def fetch_financial_data(org_bids, years, subset=True, **args):
+    """
+    Fetch financial data of municipalities.
+
+    Arguments:
+        ```
+        org_bids: pd.Series including business IDs of municipalities.
+
+        years: pd.Series including years specifying the year of data
+        that will be fetched.
+
+        subset: a boolean value specifying whether only certain key figures
+        are returned. (By default: subset=True)
+
+        ```
+
+    Details:
+        This function fetches financial data of municipalities
+        (KKNR20XXC12, KKTR20XX, and KKOTR20XX) from the database
+        of State Treasury of Finland (Valtiokonttori).
+
+    Examples:
+        ```
+        codes = pd.Series(["0135202-4", "0204819-8"])
+        years = pd.Series(["02.05.2021", "20.10.2020"])
+        df = fetch_financial_data(codes, years)
+        ```
+
+    Output:
+        pd.DataFrame including financial data.
+    """
     years = years.astype(str)
     df_org = pd.DataFrame([org_bids, years], index=["org_bid", "year"])
     df_org = df_org.transpose()
@@ -869,6 +899,13 @@ def fetch_financial_data(org_bids, years, subset=True, **args):
 
 
 def __fetch_org_financial_data_help(org_bid, year, subset):
+    """
+    Fetch financial data of municipalities (KKNR, KKTR, KKOTR).
+
+    Input: business ID of municipality, year,
+    whether to take only certain values
+    Output: pd.DataFrame including financial data.
+    """
     ready_col = "hyvaksymisvaihe"
     # Get the information on database, what data it includes?
     url = ("https://prodkuntarest.westeurope.cloudapp.azure.com/" +
@@ -986,6 +1023,14 @@ def __fetch_org_financial_data_help(org_bid, year, subset):
 
 def __fetch_financial_data(df, df_info, df_lab,
                            datatype, year, key_figs, subset):
+    """
+    Fetch certain financial data of municipalities.
+
+    Input: DF to append, DF including URL, DF including labels of financial
+    codes, which data is fetched, year, which values will be returned if
+    subset is True.
+    Output: pd.DataFrame including financial data.
+    """
     # Specify columns where label and values can be found
     url_col = "tunnusluvut"
     label_col = "tunnusluku"
@@ -1037,7 +1082,40 @@ def __fetch_financial_data(df, df_info, df_lab,
 
 
 def fetch_org_company_data(org_bids, years, datatype="TOLT", **args):
-    years = years.astype(str)
+    """
+    Fetch data about companies of municipality.
+
+    Arguments:
+        ```
+        org_bids: pd.Series including business IDs of municipalities.
+
+        years: pd.Series including years specifying the year of data
+        that will be fetched.
+
+        ```
+
+    Details:
+        This function fetches data on companies of municipalities (TOLT)
+        from the database of State Treasury of Finland (Valtiokonttori).
+
+    Examples:
+        ```
+        codes = pd.Series(["0135202-4", "0204819-8"])
+        years = pd.Series(["02.05.2021", "20.10.2020"])
+        df = fetch_org_company_data(codes, years)
+        ```
+
+    Output:
+        pd.DataFrame including company data.
+    """
+    try:
+        # Test if year can be detected
+        years = pd.to_datetime(years).dt.year
+        years = years.astype(str)
+    except Exception:
+        raise Exception(
+            "'years' data was not detected."
+            )
     df_org = pd.DataFrame([org_bids, years], index=["org_bid", "year"])
     df_org = df_org.transpose()
     df_org = df_org.drop_duplicates()
@@ -1069,6 +1147,13 @@ def fetch_org_company_data(org_bids, years, datatype="TOLT", **args):
 
 
 def __fetch_org_company_data_help(org_bid, year, datatype):
+    """
+    Fetch data about companies of municipality.
+
+    Input: business ID of municipality, year, datatype.
+    Output: pd.DataFrame including company data.
+    """
+    # Specify columns of the data
     bid_col = "ytunnus"
     ready_col = "hyvaksymisvaihe"
     data_year = "raportointikausi"
