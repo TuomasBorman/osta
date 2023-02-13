@@ -12,6 +12,9 @@ from selenium.webdriver.firefox.options import Options as firefox_opt
 from selenium.webdriver.chrome.options import Options as chrome_opt
 from selenium.webdriver.ie.options import Options as ie_opt
 import re
+import tempfile
+import os
+import json
 
 
 def enrich_data(df, **args):
@@ -836,7 +839,7 @@ def fetch_org_data(org_codes, years=None, language="en"):
     return df
 
 
-def fetch_financial_data(org_bids, years, subset=True, **args):
+def fetch_financial_data(org_bids, years, subset=True, language="en", **args):
     """
     Fetch financial data of municipalities.
 
@@ -860,14 +863,27 @@ def fetch_financial_data(org_bids, years, subset=True, **args):
     Examples:
         ```
         codes = pd.Series(["0135202-4", "0204819-8"])
-        years = pd.Series(["02.05.2021", "20.10.2020"])
+        years = pd.Series(["2021", "2020"])
         df = fetch_financial_data(codes, years)
         ```
 
     Output:
         pd.DataFrame including financial data.
     """
-    years = years.astype(str)
+    # INPUT CHECK
+    if not (isinstance(language, str) and language in ["fi", "en", "sv"]):
+        raise Exception(
+            "'language' must be 'en', 'fi', or 'sv'."
+            )
+    # INPUT CHECK END
+    try:
+        # Test if year can be detected
+        years = pd.to_datetime(years).dt.year
+        years = years.astype(str)
+    except Exception:
+        raise Exception(
+            "'years' data was not detected."
+            )
     df_org = pd.DataFrame([org_bids, years], index=["org_bid", "year"])
     df_org = df_org.transpose()
     df_org = df_org.drop_duplicates()
@@ -885,7 +901,7 @@ def fetch_financial_data(org_bids, years, subset=True, **args):
         sys.stdout.flush()
         # Get data from the database
         df_temp = __fetch_org_financial_data_help(
-            r["org_bid"], r["year"], subset=subset)
+            r["org_bid"], r["year"], subset=subset, language=language, **args)
         # Add organization and year info
         df_temp["org_bid"] = r["org_bid"]
         df_temp["year"] = r["year"]
@@ -898,7 +914,7 @@ def fetch_financial_data(org_bids, years, subset=True, **args):
     return df
 
 
-def __fetch_org_financial_data_help(org_bid, year, subset):
+def __fetch_org_financial_data_help(org_bid, year, subset, language, **args):
     """
     Fetch financial data of municipalities (KKNR, KKTR, KKOTR).
 
@@ -922,9 +938,6 @@ def __fetch_org_financial_data_help(org_bid, year, subset):
     df_info[ready_col] = pd.Categorical(
         df_info[ready_col], categories=order)
     df_info = df_info.sort_values(ready_col)
-    # Get financial code labels
-    path = "~/Python/osta/src/osta/resources/" + "financial_codes.csv"
-    df_lab = pd.read_csv(path, index_col=0)
     # Initialize result DF
     df = pd.DataFrame()
     # Get kknr data
@@ -942,9 +955,9 @@ def __fetch_org_financial_data_help(org_bid, year, subset):
         "Toimintatulot",
         ]
     df = __fetch_financial_data(
-        df=df, df_info=df_info, df_lab=df_lab,
+        df=df, df_info=df_info,
         datatype="KKNR", year=(year + "C12"), key_figs=key_figs,
-        subset=subset)
+        subset=subset, language=language, **args)
     # Get kktr data
     key_figs = [
         "Antolainasaamisten lisäys",
@@ -977,9 +990,9 @@ def __fetch_org_financial_data_help(org_bid, year, subset):
         "Vuosikate",
         ]
     df = __fetch_financial_data(
-        df=df, df_info=df_info, df_lab=df_lab,
+        df=df, df_info=df_info,
         datatype="KKTR", year=year, key_figs=key_figs,
-        subset=subset)
+        subset=subset, language=language, **args)
     # Get kkotr data
     key_figs = [
         "Antolainasaamisten lisäys",
@@ -1013,16 +1026,17 @@ def __fetch_org_financial_data_help(org_bid, year, subset):
         "Vuosikate",
         ]
     df = __fetch_financial_data(
-        df=df, df_info=df_info, df_lab=df_lab,
+        df=df, df_info=df_info,
         datatype="KKOTR", year=year, key_figs=key_figs,
-        subset=subset)
+        subset=subset, language=language, **args)
     # Reset index and return whole data
     df = df.reset_index(drop=True)
     return df
 
 
-def __fetch_financial_data(df, df_info, df_lab,
-                           datatype, year, key_figs, subset):
+def __fetch_financial_data(df, df_info,
+                           datatype, year, key_figs,
+                           subset, language, **args):
     """
     Fetch certain financial data of municipalities.
 
@@ -1034,6 +1048,9 @@ def __fetch_financial_data(df, df_info, df_lab,
     # Specify columns where label and values can be found
     url_col = "tunnusluvut"
     label_col = "tunnusluku"
+    field_lab = ("tunnusluku" if language == "fi" else
+                 ("tunnusluku_" + language))
+    field_id = "solutunniste"
     value_col = "arvo"
     datatype_col = "raportointikokonaisuus"
     data_year = "raportointikausi"
@@ -1054,11 +1071,12 @@ def __fetch_financial_data(df, df_info, df_lab,
         # Create DF from the data
         df_temp = pd.DataFrame(text)
         # Get labels
-        fields = df_lab.loc[df_lab[datatype_col] == datatype, :]
+        fields = __fetch_financial_taxonomy(datatype=datatype, subset=subset,
+                                            key_figs=key_figs, **args)
         # Add labels to data
         df_temp["tunnusluku_lab"] = df_temp[label_col].replace(
-            to_replace=fields.loc[:, "value"].astype(str).tolist(),
-            value=fields.loc[:, "lab"].astype(str).tolist())
+            to_replace=fields.loc[:, field_id].astype(str).tolist(),
+            value=fields.loc[:, field_lab].astype(str).tolist())
         # Values to float
         df_temp[value_col] = df_temp[value_col].astype(float)
         # If certain datatype, there are multiple rows with same label.
@@ -1074,8 +1092,8 @@ def __fetch_financial_data(df, df_info, df_lab,
             df_temp = pd.merge(df_temp, values, on="tunnusluku_lab")
         # Subset
         if subset:
-            ind = [x in key_figs for x in df_temp["tunnusluku_lab"]]
-            df_temp = df_temp.loc[ind, :]
+            df_temp = df_temp.loc[df_temp[label_col] !=
+                                  df_temp["tunnusluku_lab"], :]
     # Add fetched data to results
     df = pd.concat([df, df_temp])
     return df
@@ -1190,4 +1208,61 @@ def __fetch_org_company_data_help(org_bid, year, datatype):
         df = pd.DataFrame(text)
     else:
         df = pd.DataFrame()
+    return df
+
+
+def __fetch_financial_taxonomy(datatype, subset, key_figs,
+                               use_cache=True, temp_dir=None,
+                               **args):
+    """
+    Fetch taxonomy of financial data.
+
+    Input: Datatype, wheter to use on-disk cache, the name of temp_dir.
+    Output: pd.DataFrame including taxonomy.
+    """
+    # INPUT CHECK
+    if not isinstance(use_cache, bool):
+        raise Exception(
+            "'use_cache' must be True or False."
+            )
+    if not (isinstance(temp_dir, str) or temp_dir is None):
+        raise Exception(
+            "'temp_dir' must be None or string specifying temporary directory."
+            )
+    # INPUT CHECK END
+    download_from_web = True
+    label_col = "tunnusluku"
+    # If cache is used, check if file can be found from temp directory
+    if use_cache:
+        if temp_dir is None:
+            # Get the name of higher level tmp directory
+            temp_dir_path = tempfile.gettempdir()
+            temp_dir = temp_dir_path + "/osta_tmp_dir"
+        # Check if spedicified directory exists. If not, create it
+        if not os.path.isdir(temp_dir):
+            os.makedirs(temp_dir)
+        # Check if file can be found
+        if (datatype + ".json") in os.listdir(temp_dir):
+            download_from_web = False
+    # Download from web or use cache
+    if download_from_web:
+        url = ("https://tkdpprodjrpstacc02.blob.core.windows.net" +
+               "/kuntataloudentaksonomia/" +
+               datatype + ".json")
+        r = requests.get(url)
+        text = r.json()
+        # Save the file to temporary directory if cache is used
+        if use_cache:
+            with open((temp_dir + "/" + datatype + ".json"), "w") as f:
+                json.dump(text, f)
+    else:
+        # Load the data from cache
+        with open((temp_dir + "/" + datatype + ".json")) as f:
+            text = json.load(f)
+    # Create a DF from the data
+    df = pd.DataFrame(text)
+    # Subset the data if only specific values are wanted
+    if subset:
+        ind = [x in key_figs for x in df[label_col]]
+        df = df.loc[ind, :]
     return df
