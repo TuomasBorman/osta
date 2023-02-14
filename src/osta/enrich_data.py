@@ -871,7 +871,7 @@ def fetch_financial_data(org_bids, years, subset=True,
         in Finnish and Swedish.
 
         When data is subsetted, only certain key figures are returned. They
-        include:
+        include (in Finnish):
             "Antolainasaamisten lisäys",
             "Antolainasaamisten vähennys",
             "Antolainasaamisten muutokset + (-)",
@@ -1328,8 +1328,8 @@ def fetch_org_company_data(org_bids, years, rename_cols=True,
             "sidosyksikkoasemassa": "affiliated_entity",
             "tolt_nimi": "company_name",
             "tolt_toimiala": "industry",
-            "tolt_tunnus": "company_code",
-            "tunniste": "company_id",
+            "tolt_tunnus": "bid",
+            "tunniste": "company_code",
             "tyyppi": "company_type",
             "virhetilanne": "report_error",
             }
