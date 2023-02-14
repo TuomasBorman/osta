@@ -839,7 +839,8 @@ def fetch_org_data(org_codes, years=None, language="en"):
     return df
 
 
-def fetch_financial_data(org_bids, years, subset=True, language="en", **args):
+def fetch_financial_data(org_bids, years, subset=True,
+                         language="en", rename_cols=True, **args):
     """
     Fetch financial data of municipalities.
 
@@ -855,6 +856,10 @@ def fetch_financial_data(org_bids, years, subset=True, language="en", **args):
 
         language: A string specifying the language of fetched data. Must be
         "en" (English), "fi" (Finnish), or "sv" (Swedish).
+
+        rename_cols: A boolean value specifying whether to rename columns in
+        a way that is expected by other functions.
+        (By default: rename_cols=True)
 
         ```
 
@@ -970,6 +975,10 @@ def fetch_financial_data(org_bids, years, subset=True, language="en", **args):
         raise Exception(
             "'language' must be 'en', 'fi', or 'sv'."
             )
+    if not isinstance(rename_cols, bool):
+        raise Exception(
+            "'rename_cols' must be a boolean value."
+            )
     # INPUT CHECK END
     # Test if year can be detected, and convert it to object
     try:
@@ -1005,6 +1014,25 @@ def fetch_financial_data(org_bids, years, subset=True, language="en", **args):
         df = pd.concat([df, df_temp])
     # Reset index and return whole data
     df = df.reset_index(drop=True)
+    # Rename columns if specified
+    if rename_cols:
+        new_colnames = {
+            "alkupvm": "report_start_date",
+            "hyväksymispvm": "report_approval_date",
+            "hyväksymisvaihe": "report_approval_phase",
+            "kieli": "report_language",
+            "kommentti": "comment",
+            "osakokonaisuus": "report_subentity",
+            "raportointikausi": "reporting_period",
+            "raportointikokonaisuus": "report_entity",
+            "taksonomia": "report_taxonomy",
+            "tarkastushavainnot": "report_observations",
+            "tunnusluku": "key_figure",
+            "ytunnus": "bid",
+            "tunnusluku_lab": "key_figure_label",
+            "arvo": "value",
+            }
+        df = df.rename(columns=new_colnames)
     # Stop progress bar
     sys.stdout.write("\n")
     return df
@@ -1195,7 +1223,7 @@ def __fetch_financial_data(df, df_info,
     return df
 
 
-def fetch_org_company_data(org_bids, years, rename=True,
+def fetch_org_company_data(org_bids, years, rename_cols=True,
                            **args):
     """
     Fetch data about companies of municipality.
@@ -1206,6 +1234,10 @@ def fetch_org_company_data(org_bids, years, rename=True,
 
         years: pd.Series including years specifying the year of data
         that will be fetched.
+
+        rename_cols: A boolean value specifying whether to rename columns in
+        a way that is expected by other functions.
+        (By default: rename_cols=True)
 
         ```
 
@@ -1234,9 +1266,9 @@ def fetch_org_company_data(org_bids, years, rename=True,
             "'years' must be None or non-empty pandas.Series matching with " +
             "'org_codes'."
             )
-    if not isinstance(rename, bool):
+    if not isinstance(rename_cols, bool):
         raise Exception(
-            "'rename' must be a boolean value."
+            "'rename_cols' must be a boolean value."
             )
     # INPUT CHECK END
     # Test if year can be detected
@@ -1280,28 +1312,33 @@ def fetch_org_company_data(org_bids, years, rename=True,
     # Reset index and return whole data
     df = df.reset_index(drop=True)
     # Rename columns if specified
-    if rename:
+    if rename_cols:
         new_colnames = {
-            "alkupvm": "start_date",
-            "hyväksymispvm": "fff",
-            "hyväksymisvaihe": "registration_date",
-            "kieli": "company_form_short",
-            "kunta_ytunnus": "liquidation",
-            "lei_tunnus": "company_form",
-            "loppupvm": "business_line",
-            "osuus_aanivallasta": "muni",
-            "osuus_osakepaaomasta": "old_bid",
-            "raportointikausi": "old_bid",
-            "raportointikokonaisuus": "old_bid",
-            "sidosyksikkoasemassa": "old_bid",
-            "tolt_nimi": "old_bid",
-            "tolt_toimiala": "old_bid",
-            "tolt_tunnus": "old_bid",
-            "tunniste": "old_bid",
-            "tyyppi": "old_bid",
-            "virhetilanne": "old_bid",
+            "alkupvm": "report_start_date",
+            "hyväksymispvm": "report_approval_date",
+            "hyväksymisvaihe": "report_approval_phase",
+            "kieli": "report_language",
+            "kunta_ytunnus": "municipality_bid",
+            "lei_tunnus": "lei_code",
+            "loppupvm": "report_end_date",
+            "osuus_aanivallasta": "share_vote",
+            "osuus_osakepaaomasta": "share_capital",
+            "raportointikausi": "reporting_period",
+            "raportointikokonaisuus": "report_entity",
+            "sidosyksikkoasemassa": "affiliated_entity",
+            "tolt_nimi": "company_name",
+            "tolt_toimiala": "industry",
+            "tolt_tunnus": "company_code",
+            "tunniste": "company_id",
+            "tyyppi": "company_type",
+            "virhetilanne": "report_error",
             }
-        df_temp = df_temp.rename(columns=new_colnames)
+        df = df.rename(columns=new_colnames)
+    # Convert specific column to numeric
+    if "share_vote" in df.columns:
+        df["share_vote"] = df["share_vote"].astype(float)
+    if "share_capital" in df.columns:
+        df["share_capital"] = df["share_capital"].astype(float)
     # Stop progress bar
     sys.stdout.write("\n")
     return df
@@ -1388,6 +1425,7 @@ def __fetch_financial_taxonomy(datatype, subset, key_figs,
         if (datatype + ".json") in os.listdir(temp_dir):
             download_from_web = False
     # Download from web or use cache
+    # https://api.tutkihallintoa.fi/kuntatalous/v1/taksonomia
     if download_from_web:
         url = ("https://tkdpprodjrpstacc02.blob.core.windows.net" +
                "/kuntataloudentaksonomia/" +

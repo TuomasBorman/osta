@@ -12,3 +12,8 @@ enrich_data
 -asukasluku, tilastokeskuksen rajapinta
 -taloustiedot, valtiokonttorin rajapinta
 - TOLT_aineistosta saa, kunka paljoj kaupunki omistaa yms
+
+- Viimeistele valtiokonttorirajapinta
+- Löytyykö rajapintaa myös tililuettelolle?
+- rename financial data columns
+- rename org company columns --> can values be named in different languages???
