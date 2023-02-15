@@ -81,21 +81,33 @@ def __add_org_data(df, disable_org=False, org_data=None, **args):
         return df
     # INPUT CHECK END
     # Load default database
-    if org_data is None:
-        # path = pkg_resources.resource_filename(
-        #     "osta", "resources/" + "municipality_codes.csv")
-        path = "~/Python/osta/src/osta/resources/" + "municipality_codes.csv"
-        org_data = pd.read_csv(path, index_col=0)
+    # path = pkg_resources.resource_filename(
+    #     "osta", "resources/" + "municipality_codes.csv")
+    path = "~/Python/osta/src/osta/resources/" + "municipality_codes.csv"
+    org_data_def = pd.read_csv(path, index_col=0)
     # Column of db that are matched with columns that are being checked
     # Subset to match with cols_to_check
     cols_to_match = ["bid", "vat_number", "number", "name"]
     cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
                      if x in cols_to_check]
-    # Add data from database
-    df = __add_data_from_db(df=df, df_db=org_data,
+    # Add data from default database
+    df = __add_data_from_db(df=df, df_db=org_data_def,
                             cols_to_check=cols_to_check,
                             cols_to_match=cols_to_match,
                             prefix="org")
+    # If user has specified database, add it
+    if org_data is not None:
+        # Get columns that are added and matched
+        cols_df = ["org_id", "org_vat_number", "org_number", "org_name"]
+        cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
+        cols_to_match = ["bid", "vat_number", "number", "name"]
+        cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                         if x in cols_to_check]
+        # Add data
+        df = __add_data_from_db(df=df, df_db=org_data,
+                                cols_to_check=cols_to_check,
+                                cols_to_match=cols_to_match,
+                                prefix="org")
     return df
 
 
@@ -128,8 +140,8 @@ def __add_account_data(df, disable_account=False, account_data=None,
         path = "~/Python/osta/src/osta/resources/" + "account_info.csv"
         account_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years
-        account_data = __subset_data_based_on_year(df, df_db=account_data,
-                                                   **args)
+        account_data = utils.__subset_data_based_on_year(
+            df, df_db=account_data, **args)
         # If user specified balance sheet or income statement,
         # get only specified accounts
         if subset_account_data is not None:
@@ -176,8 +188,8 @@ def __add_service_data(df, disable_service=False, service_data=None, **args):
         path = "~/Python/osta/src/osta/resources/" + "service_codes.csv"
         service_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years SIIRRÄ UTILSIIN
-        service_data = __subset_data_based_on_year(df, df_db=service_data,
-                                                   **args)
+        service_data = utils.__subset_data_based_on_year(
+            df, df_db=service_data, **args)
     # Column of db that are matched with columns that are being checked
     # Subset to match with cols_to_check
     cols_to_match = ["number", "name"]
@@ -327,6 +339,7 @@ def __add_sums(df, disable_sums=False):
 
 
 def fetch_company_data(ser, language="en", only_ltd=False, merge_bid=True,
+                       use_cache=True, temp_dir=None,
                        **args):
     """
     Fetch company data from databases.
@@ -338,13 +351,20 @@ def fetch_company_data(ser, language="en", only_ltd=False, merge_bid=True,
         language: A string specifying the language of fetched data. Must be
         "en" (English), "fi" (Finnish), or "sv" (Swedish).
 
-        only_ltd: A Boolean value specifying whether to search results also
+        only_ltd: A boolean value specifying whether to search results also
         for other than limited companies. The search for them is slower.
         (By default: only_ltd=False)
 
-        merge_bid: A Boolean value specifying whether to combine all old BIDs
+        merge_bid: A boolean value specifying whether to combine all old BIDs
         to one column. If False, each BID is its own columns named
         'old_bid_*'. (By default: old_bid=True)
+
+        use_cache: A boolean value specifying whether to store results to
+        on-disk cache. (By default: use_cache=True)
+
+        temp_dir: None or a string specifying path of temporary directory
+        to store cache. If None, device's default temporary directory is used.
+        (By default: temp_dir=None)
 
         ```
 
@@ -382,16 +402,42 @@ def fetch_company_data(ser, language="en", only_ltd=False, merge_bid=True,
         raise Exception(
             "'merge_bid' must be True or False."
             )
+    if not isinstance(use_cache, bool):
+        raise Exception(
+            "'use_cache' must be True or False."
+            )
+    if not (isinstance(temp_dir, str) or temp_dir is None):
+        raise Exception(
+            "'temp_dir' must be None or string specifying temporary directory."
+            )
     # INPUT CHECK END
     # Get language in right format for database
     lan = "se" if language == "sv" else language
     # Remove None values and duplicates
     ser = ser.dropna()
     ser = ser.drop_duplicates()
+    # Initialize result DF
+    df = pd.DataFrame()
+
+    # If cache is used, check if file can be found from temp directory
+    filename = "company_data_from_prh_cache.csv"
+    if use_cache:
+        if temp_dir is None:
+            # Get the name of higher level tmp directory
+            temp_dir_path = tempfile.gettempdir()
+            temp_dir = temp_dir_path + "/osta_tmp_dir"
+        # Check if spedicified directory exists. If not, create it
+        if not os.path.isdir(temp_dir):
+            os.makedirs(temp_dir)
+        # Check if file can be found and load it
+        if filename in os.listdir(temp_dir):
+            df = pd.read_csv((temp_dir + "/" + filename), index_col=0)
+            # Remove those business ids that can be already found in cache
+            if "bid" in df.columns:
+                ser = ser[~ser.isin(df["bid"])]
+
     # For progress bar, specify the width of it
     progress_bar_width = 50
-    # Initialize resulst DF
-    df = pd.DataFrame()
     # Loop though BIDs
     for bid_i, bid in enumerate(ser.to_numpy()):
         # update the progress bar
@@ -428,11 +474,11 @@ def fetch_company_data(ser, language="en", only_ltd=False, merge_bid=True,
             series = series.squeeze()
             # Loop over certain information columns
             info = [
-                    "liquidation",
-                    "company_form",
-                    "business_line",
-                    "muni",
-                    "old_bid",
+                "liquidation",
+                "company_form",
+                "business_line",
+                "muni",
+                "old_bid",
                     ]
             for col in info:
                 # Get data
@@ -508,6 +554,10 @@ def fetch_company_data(ser, language="en", only_ltd=False, merge_bid=True,
             df = res
         else:
             df = pd.merge(df, res, how="outer")
+        # In every 50 BID, save the result to cache
+        if use_cache and bid_i % 50:
+            df.to_csv((temp_dir + "/" + filename))
+
     # Combine BID columns into one
     if merge_bid and "old_bid" in df.columns:
         regex = re.compile(r"old_bid")

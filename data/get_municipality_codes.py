@@ -21,26 +21,13 @@ df.columns = [
     "population_density_km-2",
     ]
 
-# Floats to correct format
-df["area_total_km2"] = df["area_total_km2"].astype(str).str.replace(
-    ",", ".").str.split().str.join("").astype(float)
-df["area_land_km2"] = df["area_land_km2"].astype(str).str.replace(
-    ",", ".").str.split().str.join("").astype(float)
-df["population_density_km-2"] = df["population_density_km-2"].astype(
-    str).str.replace(
-    ",", ".").str.split().str.join("").astype(float)
-# Integer to correct format
-df["population"] = df["population"].astype(str).str.split(
-    ).str.join("").astype(int)
 # Remove pattern (citation)
 df = df.replace(r"\[.*?\]", "", regex=True)
 # Add leading zeroes to code
-df["code"] = df["code"].astype(str).str.rjust(3, "0")
-# Remove logo
-df.drop("logo", axis=1, inplace=True)
+df["number"] = df["number"].astype(str).str.rjust(3, "0")
 
 # Load BIDs
-path = "../src/osta/osta/resources/municipality_bids.csv"
+path = "data/municipality_bids.csv"
 bids = pd.read_csv(path, index_col=0)
 # Add BIDs
 df = df.merge(bids, on="name")
@@ -54,13 +41,9 @@ columns = [
     "mun_center",
     "province",
     "subregion",
-    "population",
-    "area_total_km2",
-    "area_land_km2",
-    "population_density_km-2",
     ]
 
 df = df.loc[:, columns]
 # Run in data folder
-path = "../src/osta/resources/municipality_codes.csv"
+path = "src/osta/resources/municipality_codes.csv"
 df.to_csv(path)
