@@ -1,19 +1,7 @@
 TODO:
 
 enrich_data
-- find databases from avoindata etc...
-- Kuntien pinta-alatiedot tilastokeksus
-- KUntien talousitedot valtiokonttori
 - Kuntien tuloveroprosentti?
-- pinta-alat maanmittauslaitokselta (kaikki muut tiedot pois, alkuperäisestä datasta, koska muut muuttuvat vuoden mukaan?)
 
-- org-dataan vain nimitiedot
-- pinta-alat --> oma pinta-ala-tidosto, kaikki vuodet, tilastokeskuksella alue-aikasarja
--asukasluku, tilastokeskuksen rajapinta
--taloustiedot, valtiokonttorin rajapinta
-- TOLT_aineistosta saa, kunka paljoj kaupunki omistaa yms
-
-- Viimeistele valtiokonttorirajapinta
 - Löytyykö rajapintaa myös tililuettelolle?
-- rename financial data columns
-- rename org company columns --> can values be named in different languages???
+https://avoindata.tutkihallintoa.fi/apis

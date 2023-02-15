@@ -43,6 +43,9 @@ from selenium.webdriver.firefox.options import Options as firefox_opt
 from selenium.webdriver.chrome.options import Options as chrome_opt
 from selenium.webdriver.ie.options import Options as ie_opt
 import re
+import tempfile
+import os
+import json
 
 
 def enrich_data(df, **args):
@@ -109,21 +112,33 @@ def __add_org_data(df, disable_org=False, org_data=None, **args):
         return df
     # INPUT CHECK END
     # Load default database
-    if org_data is None:
-        # path = pkg_resources.resource_filename(
-        #     &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
-        path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;municipality_codes.csv&#34;
-        org_data = pd.read_csv(path, index_col=0)
+    # path = pkg_resources.resource_filename(
+    #     &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
+    path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;municipality_codes.csv&#34;
+    org_data_def = pd.read_csv(path, index_col=0)
     # Column of db that are matched with columns that are being checked
     # Subset to match with cols_to_check
     cols_to_match = [&#34;bid&#34;, &#34;vat_number&#34;, &#34;number&#34;, &#34;name&#34;]
     cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
                      if x in cols_to_check]
-    # Add data from database
-    df = __add_data_from_db(df=df, df_db=org_data,
+    # Add data from default database
+    df = __add_data_from_db(df=df, df_db=org_data_def,
                             cols_to_check=cols_to_check,
                             cols_to_match=cols_to_match,
                             prefix=&#34;org&#34;)
+    # If user has specified database, add it
+    if org_data is not None:
+        # Get columns that are added and matched
+        cols_df = [&#34;org_id&#34;, &#34;org_vat_number&#34;, &#34;org_number&#34;, &#34;org_name&#34;]
+        cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
+        cols_to_match = [&#34;bid&#34;, &#34;vat_number&#34;, &#34;number&#34;, &#34;name&#34;]
+        cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                         if x in cols_to_check]
+        # Add data
+        df = __add_data_from_db(df=df, df_db=org_data,
+                                cols_to_check=cols_to_check,
+                                cols_to_match=cols_to_match,
+                                prefix=&#34;org&#34;)
     return df
 
 
@@ -156,8 +171,8 @@ def __add_account_data(df, disable_account=False, account_data=None,
         path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;account_info.csv&#34;
         account_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years
-        account_data = __subset_data_based_on_year(df, df_db=account_data,
-                                                   **args)
+        account_data = utils.__subset_data_based_on_year(
+            df, df_db=account_data, **args)
         # If user specified balance sheet or income statement,
         # get only specified accounts
         if subset_account_data is not None:
@@ -204,8 +219,8 @@ def __add_service_data(df, disable_service=False, service_data=None, **args):
         path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;service_codes.csv&#34;
         service_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years SIIRRÄ UTILSIIN
-        service_data = __subset_data_based_on_year(df, df_db=service_data,
-                                                   **args)
+        service_data = utils.__subset_data_based_on_year(
+            df, df_db=service_data, **args)
     # Column of db that are matched with columns that are being checked
     # Subset to match with cols_to_check
     cols_to_match = [&#34;number&#34;, &#34;name&#34;]
@@ -355,6 +370,7 @@ def __add_sums(df, disable_sums=False):
 
 
 def fetch_company_data(ser, language=&#34;en&#34;, only_ltd=False, merge_bid=True,
+                       use_cache=True, temp_dir=None,
                        **args):
     &#34;&#34;&#34;
     Fetch company data from databases.
@@ -366,13 +382,20 @@ def fetch_company_data(ser, language=&#34;en&#34;, only_ltd=False, merge_bid=Tru
         language: A string specifying the language of fetched data. Must be
         &#34;en&#34; (English), &#34;fi&#34; (Finnish), or &#34;sv&#34; (Swedish).
 
-        only_ltd: A Boolean value specifying whether to search results also
+        only_ltd: A boolean value specifying whether to search results also
         for other than limited companies. The search for them is slower.
         (By default: only_ltd=False)
 
-        merge_bid: A Boolean value specifying whether to combine all old BIDs
+        merge_bid: A boolean value specifying whether to combine all old BIDs
         to one column. If False, each BID is its own columns named
         &#39;old_bid_*&#39;. (By default: old_bid=True)
+
+        use_cache: A boolean value specifying whether to store results to
+        on-disk cache. (By default: use_cache=True)
+
+        temp_dir: None or a string specifying path of temporary directory
+        to store cache. If None, device&#39;s default temporary directory is used.
+        (By default: temp_dir=None)
 
         ```
 
@@ -410,16 +433,42 @@ def fetch_company_data(ser, language=&#34;en&#34;, only_ltd=False, merge_bid=Tru
         raise Exception(
             &#34;&#39;merge_bid&#39; must be True or False.&#34;
             )
+    if not isinstance(use_cache, bool):
+        raise Exception(
+            &#34;&#39;use_cache&#39; must be True or False.&#34;
+            )
+    if not (isinstance(temp_dir, str) or temp_dir is None):
+        raise Exception(
+            &#34;&#39;temp_dir&#39; must be None or string specifying temporary directory.&#34;
+            )
     # INPUT CHECK END
     # Get language in right format for database
     lan = &#34;se&#34; if language == &#34;sv&#34; else language
     # Remove None values and duplicates
     ser = ser.dropna()
     ser = ser.drop_duplicates()
+    # Initialize result DF
+    df = pd.DataFrame()
+
+    # If cache is used, check if file can be found from temp directory
+    filename = &#34;company_data_from_prh_cache.csv&#34;
+    if use_cache:
+        if temp_dir is None:
+            # Get the name of higher level tmp directory
+            temp_dir_path = tempfile.gettempdir()
+            temp_dir = temp_dir_path + &#34;/osta_tmp_dir&#34;
+        # Check if spedicified directory exists. If not, create it
+        if not os.path.isdir(temp_dir):
+            os.makedirs(temp_dir)
+        # Check if file can be found and load it
+        if filename in os.listdir(temp_dir):
+            df = pd.read_csv((temp_dir + &#34;/&#34; + filename), index_col=0)
+            # Remove those business ids that can be already found in cache
+            if &#34;bid&#34; in df.columns:
+                ser = ser[~ser.isin(df[&#34;bid&#34;])]
+
     # For progress bar, specify the width of it
     progress_bar_width = 50
-    # Initialize resulst DF
-    df = pd.DataFrame()
     # Loop though BIDs
     for bid_i, bid in enumerate(ser.to_numpy()):
         # update the progress bar
@@ -456,11 +505,11 @@ def fetch_company_data(ser, language=&#34;en&#34;, only_ltd=False, merge_bid=Tru
             series = series.squeeze()
             # Loop over certain information columns
             info = [
-                    &#34;liquidation&#34;,
-                    &#34;company_form&#34;,
-                    &#34;business_line&#34;,
-                    &#34;muni&#34;,
-                    &#34;old_bid&#34;,
+                &#34;liquidation&#34;,
+                &#34;company_form&#34;,
+                &#34;business_line&#34;,
+                &#34;muni&#34;,
+                &#34;old_bid&#34;,
                     ]
             for col in info:
                 # Get data
@@ -536,6 +585,10 @@ def fetch_company_data(ser, language=&#34;en&#34;, only_ltd=False, merge_bid=Tru
             df = res
         else:
             df = pd.merge(df, res, how=&#34;outer&#34;)
+        # In every 50 BID, save the result to cache
+        if use_cache and bid_i % 50:
+            df.to_csv((temp_dir + &#34;/&#34; + filename))
+
     # Combine BID columns into one
     if merge_bid and &#34;old_bid&#34; in df.columns:
         regex = re.compile(r&#34;old_bid&#34;)
@@ -867,7 +920,8 @@ def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
     return df
 
 
-def fetch_financial_data(org_bids, years, subset=True, **args):
+def fetch_financial_data(org_bids, years, subset=True,
+                         language=&#34;en&#34;, rename_cols=True, **args):
     &#34;&#34;&#34;
     Fetch financial data of municipalities.
 
@@ -881,24 +935,141 @@ def fetch_financial_data(org_bids, years, subset=True, **args):
         subset: a boolean value specifying whether only certain key figures
         are returned. (By default: subset=True)
 
+        language: A string specifying the language of fetched data. Must be
+        &#34;en&#34; (English), &#34;fi&#34; (Finnish), or &#34;sv&#34; (Swedish).
+
+        rename_cols: A boolean value specifying whether to rename columns in
+        a way that is expected by other functions.
+        (By default: rename_cols=True)
+
         ```
 
     Details:
         This function fetches financial data of municipalities
         (KKNR20XXC12, KKTR20XX, and KKOTR20XX) from the database
-        of State Treasury of Finland (Valtiokonttori).
+        of State Treasury of Finland (Valtiokonttori). The data is fetched
+        based on business ID and year. Currently, database include data only
+        in Finnish and Swedish.
+
+        When data is subsetted, only certain key figures are returned. They
+        include (in Finnish):
+            &#34;Antolainasaamisten lisäys&#34;,
+            &#34;Antolainasaamisten vähennys&#34;,
+            &#34;Antolainasaamisten muutokset + (-)&#34;,
+            &#34;Antolainasaamisten muutokset&#34;,
+            &#34;Investointien rahavirta&#34;,
+            &#34;Lainakannan muutokset&#34;,
+            &#34;Lyhytaikaisten lainojen lisäys&#34;,
+            &#34;Lyhytaikaisten lainojen vähennys&#34;,
+            &#34;Lyhytaikaisten lainojen muutos&#34;,
+            &#34;Muut maksuvalmiuden muutokset&#34;,
+            &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
+            &#34;Oman pääoman muutokset + (-)&#34;,
+            &#34;Oman pääoman muutokset&#34;,
+            &#34;Pitkäaikaisten lainojen lisäys&#34;,
+            &#34;Pitkäaikaisten lainojen vähennys&#34;,
+            &#34;Pitkäaikaisten lainojen muutos&#34;,
+            &#34;Rahavarat 1.1.&#34;,
+            &#34;Rahavarat 31.12.&#34;,
+            &#34;Rahavarojen muutos&#34;,
+            &#34;Rahoituksen rahavirta&#34;,
+            &#34;Satunnaiset erät&#34;,
+            &#34;Toiminnan rahavirta&#34;,
+            &#34;Toimintakate&#34;,
+            &#34;Toimintakulut&#34;,
+            &#34;Toimintatuotot&#34;,
+            &#34;Tulorahoituksen korjauserät&#34;,
+            &#34;Verotulot&#34;,
+            &#34;Vuosikate&#34;,
+            &#34;2400-2439 Pitkäaikainen (korollinen vieras pääoma)&#34;,
+            &#34;2500-2539 Lyhytaikainen (korollinen vieras pääoma)&#34;,
+            &#34;5000-5499 Verotulot&#34;,
+            &#34;5500-5899 Valtionosuudet&#34;,
+            &#34;6000-6099 Korkotuotot&#34;,
+            &#34;7000-7299 Poistot ja arvonalentumiset&#34;,
+            &#34;8000-8199 Satunnaiset erät + (-)&#34;,
+            &#34;8800-8800 Tilikauden ylijäämä (alijäämä)&#34;,
+            &#34;Toimintakate&#34;,
+            &#34;Toimintakulut&#34;,
+            &#34;Toimintatulot&#34;
+
+        ... of municipality and...
+
+            &#34;Antolainasaamisten lisäys&#34;,
+            &#34;Antolainasaamisten vähennys&#34;,
+            &#34;Antolainasaamisten muutokset + (-)&#34;,
+            &#34;Antolainasaamisten muutokset&#34;,
+            &#34;Investointien rahavirta&#34;,
+            &#34;Korkotuotot&#34;,
+            &#34;Lainakannan muutokset + (-)&#34;,
+            &#34;Lainakannan muutokset&#34;,
+            &#34;Lyhytaikainen (korollinen vieras pääoma)&#34;,
+            &#34;Lyhytaikaisten lainojen lisäys&#34;,
+            &#34;Lyhytaikaisten lainojen vähennys&#34;,
+            &#34;Lyhytaikaisten lainojen muutos&#34;,
+            &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
+            &#34;Muut maksuvalmiuden muutokset&#34;,
+            &#34;Oman pääoman muutokset + (-)&#34;,
+            &#34;Oman pääoman muutokset&#34;,
+            &#34;Pitkäaikaisten lainojen lisäys&#34;,
+            &#34;Pitkäaikaisten lainojen vähennys&#34;,
+            &#34;Pitkäaikaisten lainojen muutos&#34;,
+            &#34;Poistot ja arvonalentumiset&#34;,
+            &#34;Rahavarat 1.1.&#34;,
+            &#34;Rahavarat 31.12.&#34;,
+            &#34;Rahavarojen muutos&#34;,
+            &#34;Rahoituksen rahavirta&#34;,
+            &#34;Tilikauden tulos&#34;,
+            &#34;Tilikauden ylijäämä (alijäämä)&#34;,
+            &#34;Toiminnan rahavirta&#34;,
+            &#34;Tulorahoituksen korjauserät&#34;,
+            &#34;Vuosikate&#34;
+
+        ... of municipal group.
 
     Examples:
         ```
         codes = pd.Series([&#34;0135202-4&#34;, &#34;0204819-8&#34;])
-        years = pd.Series([&#34;02.05.2021&#34;, &#34;20.10.2020&#34;])
+        years = pd.Series([&#34;2021&#34;, &#34;2020&#34;])
         df = fetch_financial_data(codes, years)
         ```
 
     Output:
         pd.DataFrame including financial data.
     &#34;&#34;&#34;
-    years = years.astype(str)
+    # INPUT CHECK
+    if not (isinstance(org_bids, pd.Series) and len(org_bids) &gt; 0):
+        raise Exception(
+            &#34;&#39;org_bids&#39; must be non-empty pandas.Series.&#34;
+            )
+    if not ((isinstance(years, pd.Series) and len(years) == len(org_bids))
+            or years is None):
+        raise Exception(
+            &#34;&#39;years&#39; must be None or non-empty pandas.Series matching with &#34; +
+            &#34;&#39;org_codes&#39;.&#34;
+            )
+    if not isinstance(subset, bool):
+        raise Exception(
+            &#34;&#39;subset&#39; must be a boolean value.&#34;
+            )
+    if not (isinstance(language, str) and language in [&#34;fi&#34;, &#34;en&#34;, &#34;sv&#34;]):
+        raise Exception(
+            &#34;&#39;language&#39; must be &#39;en&#39;, &#39;fi&#39;, or &#39;sv&#39;.&#34;
+            )
+    if not isinstance(rename_cols, bool):
+        raise Exception(
+            &#34;&#39;rename_cols&#39; must be a boolean value.&#34;
+            )
+    # INPUT CHECK END
+    # Test if year can be detected, and convert it to object
+    try:
+        years = pd.to_datetime(years).dt.year
+        years = years.astype(str)
+    except Exception:
+        raise Exception(
+            &#34;&#39;years&#39; data was not detected.&#34;
+            )
+        # Create a dataframe and remove duplicates
     df_org = pd.DataFrame([org_bids, years], index=[&#34;org_bid&#34;, &#34;year&#34;])
     df_org = df_org.transpose()
     df_org = df_org.drop_duplicates()
@@ -916,7 +1087,7 @@ def fetch_financial_data(org_bids, years, subset=True, **args):
         sys.stdout.flush()
         # Get data from the database
         df_temp = __fetch_org_financial_data_help(
-            r[&#34;org_bid&#34;], r[&#34;year&#34;], subset=subset)
+            r[&#34;org_bid&#34;], r[&#34;year&#34;], subset=subset, language=language, **args)
         # Add organization and year info
         df_temp[&#34;org_bid&#34;] = r[&#34;org_bid&#34;]
         df_temp[&#34;year&#34;] = r[&#34;year&#34;]
@@ -924,12 +1095,31 @@ def fetch_financial_data(org_bids, years, subset=True, **args):
         df = pd.concat([df, df_temp])
     # Reset index and return whole data
     df = df.reset_index(drop=True)
+    # Rename columns if specified
+    if rename_cols:
+        new_colnames = {
+            &#34;alkupvm&#34;: &#34;report_start_date&#34;,
+            &#34;hyväksymispvm&#34;: &#34;report_approval_date&#34;,
+            &#34;hyväksymisvaihe&#34;: &#34;report_approval_phase&#34;,
+            &#34;kieli&#34;: &#34;report_language&#34;,
+            &#34;kommentti&#34;: &#34;comment&#34;,
+            &#34;osakokonaisuus&#34;: &#34;report_subentity&#34;,
+            &#34;raportointikausi&#34;: &#34;reporting_period&#34;,
+            &#34;raportointikokonaisuus&#34;: &#34;report_entity&#34;,
+            &#34;taksonomia&#34;: &#34;report_taxonomy&#34;,
+            &#34;tarkastushavainnot&#34;: &#34;report_observations&#34;,
+            &#34;tunnusluku&#34;: &#34;key_figure&#34;,
+            &#34;ytunnus&#34;: &#34;bid&#34;,
+            &#34;tunnusluku_lab&#34;: &#34;key_figure_label&#34;,
+            &#34;arvo&#34;: &#34;value&#34;,
+            }
+        df = df.rename(columns=new_colnames)
     # Stop progress bar
     sys.stdout.write(&#34;\n&#34;)
     return df
 
 
-def __fetch_org_financial_data_help(org_bid, year, subset):
+def __fetch_org_financial_data_help(org_bid, year, subset, language, **args):
     &#34;&#34;&#34;
     Fetch financial data of municipalities (KKNR, KKTR, KKOTR).
 
@@ -953,9 +1143,6 @@ def __fetch_org_financial_data_help(org_bid, year, subset):
     df_info[ready_col] = pd.Categorical(
         df_info[ready_col], categories=order)
     df_info = df_info.sort_values(ready_col)
-    # Get financial code labels
-    path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;financial_codes.csv&#34;
-    df_lab = pd.read_csv(path, index_col=0)
     # Initialize result DF
     df = pd.DataFrame()
     # Get kknr data
@@ -973,9 +1160,9 @@ def __fetch_org_financial_data_help(org_bid, year, subset):
         &#34;Toimintatulot&#34;,
         ]
     df = __fetch_financial_data(
-        df=df, df_info=df_info, df_lab=df_lab,
+        df=df, df_info=df_info,
         datatype=&#34;KKNR&#34;, year=(year + &#34;C12&#34;), key_figs=key_figs,
-        subset=subset)
+        subset=subset, language=language, **args)
     # Get kktr data
     key_figs = [
         &#34;Antolainasaamisten lisäys&#34;,
@@ -1008,9 +1195,9 @@ def __fetch_org_financial_data_help(org_bid, year, subset):
         &#34;Vuosikate&#34;,
         ]
     df = __fetch_financial_data(
-        df=df, df_info=df_info, df_lab=df_lab,
+        df=df, df_info=df_info,
         datatype=&#34;KKTR&#34;, year=year, key_figs=key_figs,
-        subset=subset)
+        subset=subset, language=language, **args)
     # Get kkotr data
     key_figs = [
         &#34;Antolainasaamisten lisäys&#34;,
@@ -1044,16 +1231,17 @@ def __fetch_org_financial_data_help(org_bid, year, subset):
         &#34;Vuosikate&#34;,
         ]
     df = __fetch_financial_data(
-        df=df, df_info=df_info, df_lab=df_lab,
+        df=df, df_info=df_info,
         datatype=&#34;KKOTR&#34;, year=year, key_figs=key_figs,
-        subset=subset)
+        subset=subset, language=language, **args)
     # Reset index and return whole data
     df = df.reset_index(drop=True)
     return df
 
 
-def __fetch_financial_data(df, df_info, df_lab,
-                           datatype, year, key_figs, subset):
+def __fetch_financial_data(df, df_info,
+                           datatype, year, key_figs,
+                           subset, language, **args):
     &#34;&#34;&#34;
     Fetch certain financial data of municipalities.
 
@@ -1065,6 +1253,9 @@ def __fetch_financial_data(df, df_info, df_lab,
     # Specify columns where label and values can be found
     url_col = &#34;tunnusluvut&#34;
     label_col = &#34;tunnusluku&#34;
+    field_lab = (&#34;tunnusluku&#34; if language == &#34;fi&#34; else
+                 (&#34;tunnusluku_&#34; + language))
+    field_id = &#34;solutunniste&#34;
     value_col = &#34;arvo&#34;
     datatype_col = &#34;raportointikokonaisuus&#34;
     data_year = &#34;raportointikausi&#34;
@@ -1085,11 +1276,12 @@ def __fetch_financial_data(df, df_info, df_lab,
         # Create DF from the data
         df_temp = pd.DataFrame(text)
         # Get labels
-        fields = df_lab.loc[df_lab[datatype_col] == datatype, :]
+        fields = __fetch_financial_taxonomy(datatype=datatype, subset=subset,
+                                            key_figs=key_figs, **args)
         # Add labels to data
         df_temp[&#34;tunnusluku_lab&#34;] = df_temp[label_col].replace(
-            to_replace=fields.loc[:, &#34;value&#34;].astype(str).tolist(),
-            value=fields.loc[:, &#34;lab&#34;].astype(str).tolist())
+            to_replace=fields.loc[:, field_id].astype(str).tolist(),
+            value=fields.loc[:, field_lab].astype(str).tolist())
         # Values to float
         df_temp[value_col] = df_temp[value_col].astype(float)
         # If certain datatype, there are multiple rows with same label.
@@ -1105,14 +1297,15 @@ def __fetch_financial_data(df, df_info, df_lab,
             df_temp = pd.merge(df_temp, values, on=&#34;tunnusluku_lab&#34;)
         # Subset
         if subset:
-            ind = [x in key_figs for x in df_temp[&#34;tunnusluku_lab&#34;]]
-            df_temp = df_temp.loc[ind, :]
+            df_temp = df_temp.loc[df_temp[label_col] !=
+                                  df_temp[&#34;tunnusluku_lab&#34;], :]
     # Add fetched data to results
     df = pd.concat([df, df_temp])
     return df
 
 
-def fetch_org_company_data(org_bids, years, datatype=&#34;TOLT&#34;, **args):
+def fetch_org_company_data(org_bids, years, rename_cols=True,
+                           **args):
     &#34;&#34;&#34;
     Fetch data about companies of municipality.
 
@@ -1123,6 +1316,10 @@ def fetch_org_company_data(org_bids, years, datatype=&#34;TOLT&#34;, **args):
         years: pd.Series including years specifying the year of data
         that will be fetched.
 
+        rename_cols: A boolean value specifying whether to rename columns in
+        a way that is expected by other functions.
+        (By default: rename_cols=True)
+
         ```
 
     Details:
@@ -1131,31 +1328,54 @@ def fetch_org_company_data(org_bids, years, datatype=&#34;TOLT&#34;, **args):
 
     Examples:
         ```
-        codes = pd.Series([&#34;0135202-4&#34;, &#34;0204819-8&#34;])
-        years = pd.Series([&#34;02.05.2021&#34;, &#34;20.10.2020&#34;])
+        codes = pd.Series([&#34;0135202-4&#34;, &#34;1567535-0&#34;])
+        years = pd.Series([&#34;2021&#34;, &#34;2022&#34;])
         df = fetch_org_company_data(codes, years)
         ```
 
     Output:
         pd.DataFrame including company data.
     &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (isinstance(org_bids, pd.Series) and len(org_bids) &gt; 0):
+        raise Exception(
+            &#34;&#39;org_bids&#39; must be non-empty pandas.Series.&#34;
+            )
+    if not ((isinstance(years, pd.Series) and len(years) == len(org_bids))
+            or years is None):
+        raise Exception(
+            &#34;&#39;years&#39; must be None or non-empty pandas.Series matching with &#34; +
+            &#34;&#39;org_codes&#39;.&#34;
+            )
+    if not isinstance(rename_cols, bool):
+        raise Exception(
+            &#34;&#39;rename_cols&#39; must be a boolean value.&#34;
+            )
+    # INPUT CHECK END
+    # Test if year can be detected
     try:
-        # Test if year can be detected
         years = pd.to_datetime(years).dt.year
         years = years.astype(str)
     except Exception:
         raise Exception(
             &#34;&#39;years&#39; data was not detected.&#34;
             )
+    # Create a DF and remove duplicates
     df_org = pd.DataFrame([org_bids, years], index=[&#34;org_bid&#34;, &#34;year&#34;])
     df_org = df_org.transpose()
     df_org = df_org.drop_duplicates()
+    # Add different datatypes
+    df_org[&#34;type&#34;] = &#34;TOLT&#34;
+    df_org_temp = df_org.copy()
+    df_org_temp[&#34;type&#34;] = &#34;HTOLT&#34;
+    df_org = pd.concat([df_org, df_org_temp])
+    df_org = df_org.reset_index(drop=True)
     # For progress bar, specify the width of it
     progress_bar_width = 50
     # Loop over rows
     df = pd.DataFrame()
     for i, r in df_org.iterrows():
-        # update the progress bar
+        # Update the progress bar
         percent = 100*(i/(df_org.shape[0]-1))
         sys.stdout.write(&#39;\r&#39;)
         sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
@@ -1164,7 +1384,7 @@ def fetch_org_company_data(org_bids, years, datatype=&#34;TOLT&#34;, **args):
         sys.stdout.flush()
         # Get data from the database
         df_temp = __fetch_org_company_data_help(
-            r[&#34;org_bid&#34;], r[&#34;year&#34;], datatype)
+            r[&#34;org_bid&#34;], r[&#34;year&#34;], r[&#34;type&#34;])
         # Add organization and year info
         df_temp[&#34;org_bid&#34;] = r[&#34;org_bid&#34;]
         df_temp[&#34;year&#34;] = r[&#34;year&#34;]
@@ -1172,6 +1392,34 @@ def fetch_org_company_data(org_bids, years, datatype=&#34;TOLT&#34;, **args):
         df = pd.concat([df, df_temp])
     # Reset index and return whole data
     df = df.reset_index(drop=True)
+    # Rename columns if specified
+    if rename_cols:
+        new_colnames = {
+            &#34;alkupvm&#34;: &#34;report_start_date&#34;,
+            &#34;hyväksymispvm&#34;: &#34;report_approval_date&#34;,
+            &#34;hyväksymisvaihe&#34;: &#34;report_approval_phase&#34;,
+            &#34;kieli&#34;: &#34;report_language&#34;,
+            &#34;kunta_ytunnus&#34;: &#34;municipality_bid&#34;,
+            &#34;lei_tunnus&#34;: &#34;lei_code&#34;,
+            &#34;loppupvm&#34;: &#34;report_end_date&#34;,
+            &#34;osuus_aanivallasta&#34;: &#34;share_vote&#34;,
+            &#34;osuus_osakepaaomasta&#34;: &#34;share_capital&#34;,
+            &#34;raportointikausi&#34;: &#34;reporting_period&#34;,
+            &#34;raportointikokonaisuus&#34;: &#34;report_entity&#34;,
+            &#34;sidosyksikkoasemassa&#34;: &#34;affiliated_entity&#34;,
+            &#34;tolt_nimi&#34;: &#34;company_name&#34;,
+            &#34;tolt_toimiala&#34;: &#34;industry&#34;,
+            &#34;tolt_tunnus&#34;: &#34;bid&#34;,
+            &#34;tunniste&#34;: &#34;company_code&#34;,
+            &#34;tyyppi&#34;: &#34;company_type&#34;,
+            &#34;virhetilanne&#34;: &#34;report_error&#34;,
+            }
+        df = df.rename(columns=new_colnames)
+    # Convert specific column to numeric
+    if &#34;share_vote&#34; in df.columns:
+        df[&#34;share_vote&#34;] = df[&#34;share_vote&#34;].astype(float)
+    if &#34;share_capital&#34; in df.columns:
+        df[&#34;share_capital&#34;] = df[&#34;share_capital&#34;].astype(float)
     # Stop progress bar
     sys.stdout.write(&#34;\n&#34;)
     return df
@@ -1221,6 +1469,64 @@ def __fetch_org_company_data_help(org_bid, year, datatype):
         df = pd.DataFrame(text)
     else:
         df = pd.DataFrame()
+    return df
+
+
+def __fetch_financial_taxonomy(datatype, subset, key_figs,
+                               use_cache=True, temp_dir=None,
+                               **args):
+    &#34;&#34;&#34;
+    Fetch taxonomy of financial data.
+
+    Input: Datatype, wheter to use on-disk cache, the name of temp_dir.
+    Output: pd.DataFrame including taxonomy.
+    &#34;&#34;&#34;
+    # INPUT CHECK
+    if not isinstance(use_cache, bool):
+        raise Exception(
+            &#34;&#39;use_cache&#39; must be True or False.&#34;
+            )
+    if not (isinstance(temp_dir, str) or temp_dir is None):
+        raise Exception(
+            &#34;&#39;temp_dir&#39; must be None or string specifying temporary directory.&#34;
+            )
+    # INPUT CHECK END
+    download_from_web = True
+    label_col = &#34;tunnusluku&#34;
+    # If cache is used, check if file can be found from temp directory
+    if use_cache:
+        if temp_dir is None:
+            # Get the name of higher level tmp directory
+            temp_dir_path = tempfile.gettempdir()
+            temp_dir = temp_dir_path + &#34;/osta_tmp_dir&#34;
+        # Check if spedicified directory exists. If not, create it
+        if not os.path.isdir(temp_dir):
+            os.makedirs(temp_dir)
+        # Check if file can be found
+        if (datatype + &#34;.json&#34;) in os.listdir(temp_dir):
+            download_from_web = False
+    # Download from web or use cache
+    # https://api.tutkihallintoa.fi/kuntatalous/v1/taksonomia
+    if download_from_web:
+        url = (&#34;https://tkdpprodjrpstacc02.blob.core.windows.net&#34; +
+               &#34;/kuntataloudentaksonomia/&#34; +
+               datatype + &#34;.json&#34;)
+        r = requests.get(url)
+        text = r.json()
+        # Save the file to temporary directory if cache is used
+        if use_cache:
+            with open((temp_dir + &#34;/&#34; + datatype + &#34;.json&#34;), &#34;w&#34;) as f:
+                json.dump(text, f)
+    else:
+        # Load the data from cache
+        with open((temp_dir + &#34;/&#34; + datatype + &#34;.json&#34;)) as f:
+            text = json.load(f)
+    # Create a DF from the data
+    df = pd.DataFrame(text)
+    # Subset the data if only specific values are wanted
+    if subset:
+        ind = [x in key_figs for x in df[label_col]]
+        df = df.loc[ind, :]
     return df</code></pre>
 </details>
 </section>
@@ -1292,7 +1598,7 @@ def __fetch_org_company_data_help(org_bid, year, datatype):
 </details>
 </dd>
 <dt id="osta.enrich_data.fetch_company_data"><code class="name flex">
-<span>def <span class="ident">fetch_company_data</span></span>(<span>ser, language='en', only_ltd=False, merge_bid=True, **args)</span>
+<span>def <span class="ident">fetch_company_data</span></span>(<span>ser, language='en', only_ltd=False, merge_bid=True, use_cache=True, temp_dir=None, **args)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Fetch company data from databases.</p>
@@ -1302,13 +1608,20 @@ def __fetch_org_company_data_help(org_bid, year, datatype):
 language: A string specifying the language of fetched data. Must be
 &quot;en&quot; (English), &quot;fi&quot; (Finnish), or &quot;sv&quot; (Swedish).
 
-only_ltd: A Boolean value specifying whether to search results also
+only_ltd: A boolean value specifying whether to search results also
 for other than limited companies. The search for them is slower.
 (By default: only_ltd=False)
 
-merge_bid: A Boolean value specifying whether to combine all old BIDs
+merge_bid: A boolean value specifying whether to combine all old BIDs
 to one column. If False, each BID is its own columns named
 'old_bid_*'. (By default: old_bid=True)
+
+use_cache: A boolean value specifying whether to store results to
+on-disk cache. (By default: use_cache=True)
+
+temp_dir: None or a string specifying path of temporary directory
+to store cache. If None, device's default temporary directory is used.
+(By default: temp_dir=None)
 
 </code></pre>
 <h2 id="details">Details</h2>
@@ -1329,6 +1642,7 @@ df = fetch_company_data(bids)
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def fetch_company_data(ser, language=&#34;en&#34;, only_ltd=False, merge_bid=True,
+                       use_cache=True, temp_dir=None,
                        **args):
     &#34;&#34;&#34;
     Fetch company data from databases.
@@ -1340,13 +1654,20 @@ df = fetch_company_data(bids)
         language: A string specifying the language of fetched data. Must be
         &#34;en&#34; (English), &#34;fi&#34; (Finnish), or &#34;sv&#34; (Swedish).
 
-        only_ltd: A Boolean value specifying whether to search results also
+        only_ltd: A boolean value specifying whether to search results also
         for other than limited companies. The search for them is slower.
         (By default: only_ltd=False)
 
-        merge_bid: A Boolean value specifying whether to combine all old BIDs
+        merge_bid: A boolean value specifying whether to combine all old BIDs
         to one column. If False, each BID is its own columns named
         &#39;old_bid_*&#39;. (By default: old_bid=True)
+
+        use_cache: A boolean value specifying whether to store results to
+        on-disk cache. (By default: use_cache=True)
+
+        temp_dir: None or a string specifying path of temporary directory
+        to store cache. If None, device&#39;s default temporary directory is used.
+        (By default: temp_dir=None)
 
         ```
 
@@ -1384,16 +1705,42 @@ df = fetch_company_data(bids)
         raise Exception(
             &#34;&#39;merge_bid&#39; must be True or False.&#34;
             )
+    if not isinstance(use_cache, bool):
+        raise Exception(
+            &#34;&#39;use_cache&#39; must be True or False.&#34;
+            )
+    if not (isinstance(temp_dir, str) or temp_dir is None):
+        raise Exception(
+            &#34;&#39;temp_dir&#39; must be None or string specifying temporary directory.&#34;
+            )
     # INPUT CHECK END
     # Get language in right format for database
     lan = &#34;se&#34; if language == &#34;sv&#34; else language
     # Remove None values and duplicates
     ser = ser.dropna()
     ser = ser.drop_duplicates()
+    # Initialize result DF
+    df = pd.DataFrame()
+
+    # If cache is used, check if file can be found from temp directory
+    filename = &#34;company_data_from_prh_cache.csv&#34;
+    if use_cache:
+        if temp_dir is None:
+            # Get the name of higher level tmp directory
+            temp_dir_path = tempfile.gettempdir()
+            temp_dir = temp_dir_path + &#34;/osta_tmp_dir&#34;
+        # Check if spedicified directory exists. If not, create it
+        if not os.path.isdir(temp_dir):
+            os.makedirs(temp_dir)
+        # Check if file can be found and load it
+        if filename in os.listdir(temp_dir):
+            df = pd.read_csv((temp_dir + &#34;/&#34; + filename), index_col=0)
+            # Remove those business ids that can be already found in cache
+            if &#34;bid&#34; in df.columns:
+                ser = ser[~ser.isin(df[&#34;bid&#34;])]
+
     # For progress bar, specify the width of it
     progress_bar_width = 50
-    # Initialize resulst DF
-    df = pd.DataFrame()
     # Loop though BIDs
     for bid_i, bid in enumerate(ser.to_numpy()):
         # update the progress bar
@@ -1430,11 +1777,11 @@ df = fetch_company_data(bids)
             series = series.squeeze()
             # Loop over certain information columns
             info = [
-                    &#34;liquidation&#34;,
-                    &#34;company_form&#34;,
-                    &#34;business_line&#34;,
-                    &#34;muni&#34;,
-                    &#34;old_bid&#34;,
+                &#34;liquidation&#34;,
+                &#34;company_form&#34;,
+                &#34;business_line&#34;,
+                &#34;muni&#34;,
+                &#34;old_bid&#34;,
                     ]
             for col in info:
                 # Get data
@@ -1510,6 +1857,10 @@ df = fetch_company_data(bids)
             df = res
         else:
             df = pd.merge(df, res, how=&#34;outer&#34;)
+        # In every 50 BID, save the result to cache
+        if use_cache and bid_i % 50:
+            df.to_csv((temp_dir + &#34;/&#34; + filename))
+
     # Combine BID columns into one
     if merge_bid and &#34;old_bid&#34; in df.columns:
         regex = re.compile(r&#34;old_bid&#34;)
@@ -1554,7 +1905,7 @@ df = fetch_company_data(bids)
 </details>
 </dd>
 <dt id="osta.enrich_data.fetch_financial_data"><code class="name flex">
-<span>def <span class="ident">fetch_financial_data</span></span>(<span>org_bids, years, subset=True, **args)</span>
+<span>def <span class="ident">fetch_financial_data</span></span>(<span>org_bids, years, subset=True, language='en', rename_cols=True, **args)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Fetch financial data of municipalities.</p>
@@ -1567,14 +1918,96 @@ that will be fetched.
 subset: a boolean value specifying whether only certain key figures
 are returned. (By default: subset=True)
 
+language: A string specifying the language of fetched data. Must be
+&quot;en&quot; (English), &quot;fi&quot; (Finnish), or &quot;sv&quot; (Swedish).
+
+rename_cols: A boolean value specifying whether to rename columns in
+a way that is expected by other functions.
+(By default: rename_cols=True)
+
 </code></pre>
 <h2 id="details">Details</h2>
 <p>This function fetches financial data of municipalities
 (KKNR20XXC12, KKTR20XX, and KKOTR20XX) from the database
-of State Treasury of Finland (Valtiokonttori).</p>
+of State Treasury of Finland (Valtiokonttori). The data is fetched
+based on business ID and year. Currently, database include data only
+in Finnish and Swedish.</p>
+<p>When data is subsetted, only certain key figures are returned. They
+include (in Finnish):
+"Antolainasaamisten lisäys",
+"Antolainasaamisten vähennys",
+"Antolainasaamisten muutokset + (-)",
+"Antolainasaamisten muutokset",
+"Investointien rahavirta",
+"Lainakannan muutokset",
+"Lyhytaikaisten lainojen lisäys",
+"Lyhytaikaisten lainojen vähennys",
+"Lyhytaikaisten lainojen muutos",
+"Muut maksuvalmiuden muutokset",
+"Muut maksuvalmiuden muutokset + (-)",
+"Oman pääoman muutokset + (-)",
+"Oman pääoman muutokset",
+"Pitkäaikaisten lainojen lisäys",
+"Pitkäaikaisten lainojen vähennys",
+"Pitkäaikaisten lainojen muutos",
+"Rahavarat 1.1.",
+"Rahavarat 31.12.",
+"Rahavarojen muutos",
+"Rahoituksen rahavirta",
+"Satunnaiset erät",
+"Toiminnan rahavirta",
+"Toimintakate",
+"Toimintakulut",
+"Toimintatuotot",
+"Tulorahoituksen korjauserät",
+"Verotulot",
+"Vuosikate",
+"2400-2439 Pitkäaikainen (korollinen vieras pääoma)",
+"2500-2539 Lyhytaikainen (korollinen vieras pääoma)",
+"5000-5499 Verotulot",
+"5500-5899 Valtionosuudet",
+"6000-6099 Korkotuotot",
+"7000-7299 Poistot ja arvonalentumiset",
+"8000-8199 Satunnaiset erät + (-)",
+"8800-8800 Tilikauden ylijäämä (alijäämä)",
+"Toimintakate",
+"Toimintakulut",
+"Toimintatulot"</p>
+<p>&hellip; of municipality and&hellip;</p>
+<pre><code>"Antolainasaamisten lisäys",
+"Antolainasaamisten vähennys",
+"Antolainasaamisten muutokset + (-)",
+"Antolainasaamisten muutokset",
+"Investointien rahavirta",
+"Korkotuotot",
+"Lainakannan muutokset + (-)",
+"Lainakannan muutokset",
+"Lyhytaikainen (korollinen vieras pääoma)",
+"Lyhytaikaisten lainojen lisäys",
+"Lyhytaikaisten lainojen vähennys",
+"Lyhytaikaisten lainojen muutos",
+"Muut maksuvalmiuden muutokset + (-)",
+"Muut maksuvalmiuden muutokset",
+"Oman pääoman muutokset + (-)",
+"Oman pääoman muutokset",
+"Pitkäaikaisten lainojen lisäys",
+"Pitkäaikaisten lainojen vähennys",
+"Pitkäaikaisten lainojen muutos",
+"Poistot ja arvonalentumiset",
+"Rahavarat 1.1.",
+"Rahavarat 31.12.",
+"Rahavarojen muutos",
+"Rahoituksen rahavirta",
+"Tilikauden tulos",
+"Tilikauden ylijäämä (alijäämä)",
+"Toiminnan rahavirta",
+"Tulorahoituksen korjauserät",
+"Vuosikate"
+</code></pre>
+<p>&hellip; of municipal group.</p>
 <h2 id="examples">Examples</h2>
 <pre><code>codes = pd.Series([&quot;0135202-4&quot;, &quot;0204819-8&quot;])
-years = pd.Series([&quot;02.05.2021&quot;, &quot;20.10.2020&quot;])
+years = pd.Series([&quot;2021&quot;, &quot;2020&quot;])
 df = fetch_financial_data(codes, years)
 </code></pre>
 <h2 id="output">Output</h2>
@@ -1583,7 +2016,8 @@ df = fetch_financial_data(codes, years)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def fetch_financial_data(org_bids, years, subset=True, **args):
+<pre><code class="python">def fetch_financial_data(org_bids, years, subset=True,
+                         language=&#34;en&#34;, rename_cols=True, **args):
     &#34;&#34;&#34;
     Fetch financial data of municipalities.
 
@@ -1597,24 +2031,141 @@ df = fetch_financial_data(codes, years)
         subset: a boolean value specifying whether only certain key figures
         are returned. (By default: subset=True)
 
+        language: A string specifying the language of fetched data. Must be
+        &#34;en&#34; (English), &#34;fi&#34; (Finnish), or &#34;sv&#34; (Swedish).
+
+        rename_cols: A boolean value specifying whether to rename columns in
+        a way that is expected by other functions.
+        (By default: rename_cols=True)
+
         ```
 
     Details:
         This function fetches financial data of municipalities
         (KKNR20XXC12, KKTR20XX, and KKOTR20XX) from the database
-        of State Treasury of Finland (Valtiokonttori).
+        of State Treasury of Finland (Valtiokonttori). The data is fetched
+        based on business ID and year. Currently, database include data only
+        in Finnish and Swedish.
+
+        When data is subsetted, only certain key figures are returned. They
+        include (in Finnish):
+            &#34;Antolainasaamisten lisäys&#34;,
+            &#34;Antolainasaamisten vähennys&#34;,
+            &#34;Antolainasaamisten muutokset + (-)&#34;,
+            &#34;Antolainasaamisten muutokset&#34;,
+            &#34;Investointien rahavirta&#34;,
+            &#34;Lainakannan muutokset&#34;,
+            &#34;Lyhytaikaisten lainojen lisäys&#34;,
+            &#34;Lyhytaikaisten lainojen vähennys&#34;,
+            &#34;Lyhytaikaisten lainojen muutos&#34;,
+            &#34;Muut maksuvalmiuden muutokset&#34;,
+            &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
+            &#34;Oman pääoman muutokset + (-)&#34;,
+            &#34;Oman pääoman muutokset&#34;,
+            &#34;Pitkäaikaisten lainojen lisäys&#34;,
+            &#34;Pitkäaikaisten lainojen vähennys&#34;,
+            &#34;Pitkäaikaisten lainojen muutos&#34;,
+            &#34;Rahavarat 1.1.&#34;,
+            &#34;Rahavarat 31.12.&#34;,
+            &#34;Rahavarojen muutos&#34;,
+            &#34;Rahoituksen rahavirta&#34;,
+            &#34;Satunnaiset erät&#34;,
+            &#34;Toiminnan rahavirta&#34;,
+            &#34;Toimintakate&#34;,
+            &#34;Toimintakulut&#34;,
+            &#34;Toimintatuotot&#34;,
+            &#34;Tulorahoituksen korjauserät&#34;,
+            &#34;Verotulot&#34;,
+            &#34;Vuosikate&#34;,
+            &#34;2400-2439 Pitkäaikainen (korollinen vieras pääoma)&#34;,
+            &#34;2500-2539 Lyhytaikainen (korollinen vieras pääoma)&#34;,
+            &#34;5000-5499 Verotulot&#34;,
+            &#34;5500-5899 Valtionosuudet&#34;,
+            &#34;6000-6099 Korkotuotot&#34;,
+            &#34;7000-7299 Poistot ja arvonalentumiset&#34;,
+            &#34;8000-8199 Satunnaiset erät + (-)&#34;,
+            &#34;8800-8800 Tilikauden ylijäämä (alijäämä)&#34;,
+            &#34;Toimintakate&#34;,
+            &#34;Toimintakulut&#34;,
+            &#34;Toimintatulot&#34;
+
+        ... of municipality and...
+
+            &#34;Antolainasaamisten lisäys&#34;,
+            &#34;Antolainasaamisten vähennys&#34;,
+            &#34;Antolainasaamisten muutokset + (-)&#34;,
+            &#34;Antolainasaamisten muutokset&#34;,
+            &#34;Investointien rahavirta&#34;,
+            &#34;Korkotuotot&#34;,
+            &#34;Lainakannan muutokset + (-)&#34;,
+            &#34;Lainakannan muutokset&#34;,
+            &#34;Lyhytaikainen (korollinen vieras pääoma)&#34;,
+            &#34;Lyhytaikaisten lainojen lisäys&#34;,
+            &#34;Lyhytaikaisten lainojen vähennys&#34;,
+            &#34;Lyhytaikaisten lainojen muutos&#34;,
+            &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
+            &#34;Muut maksuvalmiuden muutokset&#34;,
+            &#34;Oman pääoman muutokset + (-)&#34;,
+            &#34;Oman pääoman muutokset&#34;,
+            &#34;Pitkäaikaisten lainojen lisäys&#34;,
+            &#34;Pitkäaikaisten lainojen vähennys&#34;,
+            &#34;Pitkäaikaisten lainojen muutos&#34;,
+            &#34;Poistot ja arvonalentumiset&#34;,
+            &#34;Rahavarat 1.1.&#34;,
+            &#34;Rahavarat 31.12.&#34;,
+            &#34;Rahavarojen muutos&#34;,
+            &#34;Rahoituksen rahavirta&#34;,
+            &#34;Tilikauden tulos&#34;,
+            &#34;Tilikauden ylijäämä (alijäämä)&#34;,
+            &#34;Toiminnan rahavirta&#34;,
+            &#34;Tulorahoituksen korjauserät&#34;,
+            &#34;Vuosikate&#34;
+
+        ... of municipal group.
 
     Examples:
         ```
         codes = pd.Series([&#34;0135202-4&#34;, &#34;0204819-8&#34;])
-        years = pd.Series([&#34;02.05.2021&#34;, &#34;20.10.2020&#34;])
+        years = pd.Series([&#34;2021&#34;, &#34;2020&#34;])
         df = fetch_financial_data(codes, years)
         ```
 
     Output:
         pd.DataFrame including financial data.
     &#34;&#34;&#34;
-    years = years.astype(str)
+    # INPUT CHECK
+    if not (isinstance(org_bids, pd.Series) and len(org_bids) &gt; 0):
+        raise Exception(
+            &#34;&#39;org_bids&#39; must be non-empty pandas.Series.&#34;
+            )
+    if not ((isinstance(years, pd.Series) and len(years) == len(org_bids))
+            or years is None):
+        raise Exception(
+            &#34;&#39;years&#39; must be None or non-empty pandas.Series matching with &#34; +
+            &#34;&#39;org_codes&#39;.&#34;
+            )
+    if not isinstance(subset, bool):
+        raise Exception(
+            &#34;&#39;subset&#39; must be a boolean value.&#34;
+            )
+    if not (isinstance(language, str) and language in [&#34;fi&#34;, &#34;en&#34;, &#34;sv&#34;]):
+        raise Exception(
+            &#34;&#39;language&#39; must be &#39;en&#39;, &#39;fi&#39;, or &#39;sv&#39;.&#34;
+            )
+    if not isinstance(rename_cols, bool):
+        raise Exception(
+            &#34;&#39;rename_cols&#39; must be a boolean value.&#34;
+            )
+    # INPUT CHECK END
+    # Test if year can be detected, and convert it to object
+    try:
+        years = pd.to_datetime(years).dt.year
+        years = years.astype(str)
+    except Exception:
+        raise Exception(
+            &#34;&#39;years&#39; data was not detected.&#34;
+            )
+        # Create a dataframe and remove duplicates
     df_org = pd.DataFrame([org_bids, years], index=[&#34;org_bid&#34;, &#34;year&#34;])
     df_org = df_org.transpose()
     df_org = df_org.drop_duplicates()
@@ -1632,7 +2183,7 @@ df = fetch_financial_data(codes, years)
         sys.stdout.flush()
         # Get data from the database
         df_temp = __fetch_org_financial_data_help(
-            r[&#34;org_bid&#34;], r[&#34;year&#34;], subset=subset)
+            r[&#34;org_bid&#34;], r[&#34;year&#34;], subset=subset, language=language, **args)
         # Add organization and year info
         df_temp[&#34;org_bid&#34;] = r[&#34;org_bid&#34;]
         df_temp[&#34;year&#34;] = r[&#34;year&#34;]
@@ -1640,13 +2191,32 @@ df = fetch_financial_data(codes, years)
         df = pd.concat([df, df_temp])
     # Reset index and return whole data
     df = df.reset_index(drop=True)
+    # Rename columns if specified
+    if rename_cols:
+        new_colnames = {
+            &#34;alkupvm&#34;: &#34;report_start_date&#34;,
+            &#34;hyväksymispvm&#34;: &#34;report_approval_date&#34;,
+            &#34;hyväksymisvaihe&#34;: &#34;report_approval_phase&#34;,
+            &#34;kieli&#34;: &#34;report_language&#34;,
+            &#34;kommentti&#34;: &#34;comment&#34;,
+            &#34;osakokonaisuus&#34;: &#34;report_subentity&#34;,
+            &#34;raportointikausi&#34;: &#34;reporting_period&#34;,
+            &#34;raportointikokonaisuus&#34;: &#34;report_entity&#34;,
+            &#34;taksonomia&#34;: &#34;report_taxonomy&#34;,
+            &#34;tarkastushavainnot&#34;: &#34;report_observations&#34;,
+            &#34;tunnusluku&#34;: &#34;key_figure&#34;,
+            &#34;ytunnus&#34;: &#34;bid&#34;,
+            &#34;tunnusluku_lab&#34;: &#34;key_figure_label&#34;,
+            &#34;arvo&#34;: &#34;value&#34;,
+            }
+        df = df.rename(columns=new_colnames)
     # Stop progress bar
     sys.stdout.write(&#34;\n&#34;)
     return df</code></pre>
 </details>
 </dd>
 <dt id="osta.enrich_data.fetch_org_company_data"><code class="name flex">
-<span>def <span class="ident">fetch_org_company_data</span></span>(<span>org_bids, years, datatype='TOLT', **args)</span>
+<span>def <span class="ident">fetch_org_company_data</span></span>(<span>org_bids, years, rename_cols=True, **args)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Fetch data about companies of municipality.</p>
@@ -1656,13 +2226,17 @@ df = fetch_financial_data(codes, years)
 years: pd.Series including years specifying the year of data
 that will be fetched.
 
+rename_cols: A boolean value specifying whether to rename columns in
+a way that is expected by other functions.
+(By default: rename_cols=True)
+
 </code></pre>
 <h2 id="details">Details</h2>
 <p>This function fetches data on companies of municipalities (TOLT)
 from the database of State Treasury of Finland (Valtiokonttori).</p>
 <h2 id="examples">Examples</h2>
-<pre><code>codes = pd.Series([&quot;0135202-4&quot;, &quot;0204819-8&quot;])
-years = pd.Series([&quot;02.05.2021&quot;, &quot;20.10.2020&quot;])
+<pre><code>codes = pd.Series([&quot;0135202-4&quot;, &quot;1567535-0&quot;])
+years = pd.Series([&quot;2021&quot;, &quot;2022&quot;])
 df = fetch_org_company_data(codes, years)
 </code></pre>
 <h2 id="output">Output</h2>
@@ -1671,7 +2245,8 @@ df = fetch_org_company_data(codes, years)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def fetch_org_company_data(org_bids, years, datatype=&#34;TOLT&#34;, **args):
+<pre><code class="python">def fetch_org_company_data(org_bids, years, rename_cols=True,
+                           **args):
     &#34;&#34;&#34;
     Fetch data about companies of municipality.
 
@@ -1682,6 +2257,10 @@ df = fetch_org_company_data(codes, years)
         years: pd.Series including years specifying the year of data
         that will be fetched.
 
+        rename_cols: A boolean value specifying whether to rename columns in
+        a way that is expected by other functions.
+        (By default: rename_cols=True)
+
         ```
 
     Details:
@@ -1690,31 +2269,54 @@ df = fetch_org_company_data(codes, years)
 
     Examples:
         ```
-        codes = pd.Series([&#34;0135202-4&#34;, &#34;0204819-8&#34;])
-        years = pd.Series([&#34;02.05.2021&#34;, &#34;20.10.2020&#34;])
+        codes = pd.Series([&#34;0135202-4&#34;, &#34;1567535-0&#34;])
+        years = pd.Series([&#34;2021&#34;, &#34;2022&#34;])
         df = fetch_org_company_data(codes, years)
         ```
 
     Output:
         pd.DataFrame including company data.
     &#34;&#34;&#34;
+    # INPUT CHECK
+    if not (isinstance(org_bids, pd.Series) and len(org_bids) &gt; 0):
+        raise Exception(
+            &#34;&#39;org_bids&#39; must be non-empty pandas.Series.&#34;
+            )
+    if not ((isinstance(years, pd.Series) and len(years) == len(org_bids))
+            or years is None):
+        raise Exception(
+            &#34;&#39;years&#39; must be None or non-empty pandas.Series matching with &#34; +
+            &#34;&#39;org_codes&#39;.&#34;
+            )
+    if not isinstance(rename_cols, bool):
+        raise Exception(
+            &#34;&#39;rename_cols&#39; must be a boolean value.&#34;
+            )
+    # INPUT CHECK END
+    # Test if year can be detected
     try:
-        # Test if year can be detected
         years = pd.to_datetime(years).dt.year
         years = years.astype(str)
     except Exception:
         raise Exception(
             &#34;&#39;years&#39; data was not detected.&#34;
             )
+    # Create a DF and remove duplicates
     df_org = pd.DataFrame([org_bids, years], index=[&#34;org_bid&#34;, &#34;year&#34;])
     df_org = df_org.transpose()
     df_org = df_org.drop_duplicates()
+    # Add different datatypes
+    df_org[&#34;type&#34;] = &#34;TOLT&#34;
+    df_org_temp = df_org.copy()
+    df_org_temp[&#34;type&#34;] = &#34;HTOLT&#34;
+    df_org = pd.concat([df_org, df_org_temp])
+    df_org = df_org.reset_index(drop=True)
     # For progress bar, specify the width of it
     progress_bar_width = 50
     # Loop over rows
     df = pd.DataFrame()
     for i, r in df_org.iterrows():
-        # update the progress bar
+        # Update the progress bar
         percent = 100*(i/(df_org.shape[0]-1))
         sys.stdout.write(&#39;\r&#39;)
         sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
@@ -1723,7 +2325,7 @@ df = fetch_org_company_data(codes, years)
         sys.stdout.flush()
         # Get data from the database
         df_temp = __fetch_org_company_data_help(
-            r[&#34;org_bid&#34;], r[&#34;year&#34;], datatype)
+            r[&#34;org_bid&#34;], r[&#34;year&#34;], r[&#34;type&#34;])
         # Add organization and year info
         df_temp[&#34;org_bid&#34;] = r[&#34;org_bid&#34;]
         df_temp[&#34;year&#34;] = r[&#34;year&#34;]
@@ -1731,6 +2333,34 @@ df = fetch_org_company_data(codes, years)
         df = pd.concat([df, df_temp])
     # Reset index and return whole data
     df = df.reset_index(drop=True)
+    # Rename columns if specified
+    if rename_cols:
+        new_colnames = {
+            &#34;alkupvm&#34;: &#34;report_start_date&#34;,
+            &#34;hyväksymispvm&#34;: &#34;report_approval_date&#34;,
+            &#34;hyväksymisvaihe&#34;: &#34;report_approval_phase&#34;,
+            &#34;kieli&#34;: &#34;report_language&#34;,
+            &#34;kunta_ytunnus&#34;: &#34;municipality_bid&#34;,
+            &#34;lei_tunnus&#34;: &#34;lei_code&#34;,
+            &#34;loppupvm&#34;: &#34;report_end_date&#34;,
+            &#34;osuus_aanivallasta&#34;: &#34;share_vote&#34;,
+            &#34;osuus_osakepaaomasta&#34;: &#34;share_capital&#34;,
+            &#34;raportointikausi&#34;: &#34;reporting_period&#34;,
+            &#34;raportointikokonaisuus&#34;: &#34;report_entity&#34;,
+            &#34;sidosyksikkoasemassa&#34;: &#34;affiliated_entity&#34;,
+            &#34;tolt_nimi&#34;: &#34;company_name&#34;,
+            &#34;tolt_toimiala&#34;: &#34;industry&#34;,
+            &#34;tolt_tunnus&#34;: &#34;bid&#34;,
+            &#34;tunniste&#34;: &#34;company_code&#34;,
+            &#34;tyyppi&#34;: &#34;company_type&#34;,
+            &#34;virhetilanne&#34;: &#34;report_error&#34;,
+            }
+        df = df.rename(columns=new_colnames)
+    # Convert specific column to numeric
+    if &#34;share_vote&#34; in df.columns:
+        df[&#34;share_vote&#34;] = df[&#34;share_vote&#34;].astype(float)
+    if &#34;share_capital&#34; in df.columns:
+        df[&#34;share_capital&#34;] = df[&#34;share_capital&#34;].astype(float)
     # Stop progress bar
     sys.stdout.write(&#34;\n&#34;)
     return df</code></pre>
