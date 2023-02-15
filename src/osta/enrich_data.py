@@ -1008,6 +1008,7 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
             "Tilikauden ylijäämä (alijäämä)",
             "Toiminnan rahavirta",
             "Tulorahoituksen korjauserät",
+            "Tuloveroprosentti",
             "Vuosikate"
 
         ... of municipal group.
@@ -1230,6 +1231,14 @@ def __fetch_org_financial_data_help(org_bid, year, subset, language, **args):
         df=df, df_info=df_info,
         datatype="KKOTR", year=year, key_figs=key_figs,
         subset=subset, language=language, **args)
+    # Get ktpe data including only tax rate
+    key_figs = [
+        "Tuloveroprosentti",
+        ]
+    df = __fetch_financial_data(
+        df=df, df_info=df_info,
+        datatype="KKOTR", year=year, key_figs=key_figs,
+        subset=True, language=language, **args)
     # Reset index and return whole data
     df = df.reset_index(drop=True)
     return df
