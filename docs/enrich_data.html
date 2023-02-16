@@ -1034,78 +1034,147 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
         When data is subsetted, only certain key figures are returned. They
         include (in Finnish):
 
-            &#34;Antolainasaamisten lisäys&#34;,
-            &#34;Antolainasaamisten vähennys&#34;,
-            &#34;Antolainasaamisten muutokset + (-)&#34;,
-            &#34;Antolainasaamisten muutokset&#34;,
-            &#34;Investointien rahavirta&#34;,
-            &#34;Lainakannan muutokset&#34;,
-            &#34;Lyhytaikaisten lainojen lisäys&#34;,
-            &#34;Lyhytaikaisten lainojen vähennys&#34;,
-            &#34;Lyhytaikaisten lainojen muutos&#34;,
-            &#34;Muut maksuvalmiuden muutokset&#34;,
-            &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
-            &#34;Oman pääoman muutokset + (-)&#34;,
-            &#34;Oman pääoman muutokset&#34;,
-            &#34;Pitkäaikaisten lainojen lisäys&#34;,
-            &#34;Pitkäaikaisten lainojen vähennys&#34;,
-            &#34;Pitkäaikaisten lainojen muutos&#34;,
-            &#34;Rahavarat 1.1.&#34;,
-            &#34;Rahavarat 31.12.&#34;,
-            &#34;Rahavarojen muutos&#34;,
-            &#34;Rahoituksen rahavirta&#34;,
-            &#34;Satunnaiset erät&#34;,
-            &#34;Toiminnan rahavirta&#34;,
-            &#34;Toimintakate&#34;,
-            &#34;Toimintakulut&#34;,
-            &#34;Toimintatuotot&#34;,
-            &#34;Tulorahoituksen korjauserät&#34;,
-            &#34;Verotulot&#34;,
-            &#34;Vuosikate&#34;,
-            &#34;2400-2439 Pitkäaikainen (korollinen vieras pääoma)&#34;,
-            &#34;2500-2539 Lyhytaikainen (korollinen vieras pääoma)&#34;,
-            &#34;5000-5499 Verotulot&#34;,
-            &#34;5500-5899 Valtionosuudet&#34;,
-            &#34;6000-6099 Korkotuotot&#34;,
-            &#34;7000-7299 Poistot ja arvonalentumiset&#34;,
-            &#34;8000-8199 Satunnaiset erät + (-)&#34;,
-            &#34;8800-8800 Tilikauden ylijäämä (alijäämä)&#34;,
-            &#34;Toimintakate&#34;,
-            &#34;Toimintakulut&#34;,
-            &#34;Toimintatulot&#34;
+        &#34;Antolainasaamisten lisäys&#34;,
+
+        &#34;Antolainasaamisten vähennys&#34;,
+
+        &#34;Antolainasaamisten muutokset + (-)&#34;,
+
+        &#34;Antolainasaamisten muutokset&#34;,
+
+        &#34;Investointien rahavirta&#34;,
+
+        &#34;Lainakannan muutokset&#34;,
+
+        &#34;Lyhytaikaisten lainojen lisäys&#34;,
+
+        &#34;Lyhytaikaisten lainojen vähennys&#34;,
+
+        &#34;Lyhytaikaisten lainojen muutos&#34;,
+
+        &#34;Muut maksuvalmiuden muutokset&#34;,
+
+        &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
+
+        &#34;Oman pääoman muutokset + (-)&#34;,
+
+        &#34;Oman pääoman muutokset&#34;,
+
+        &#34;Pitkäaikaisten lainojen lisäys&#34;,
+
+        &#34;Pitkäaikaisten lainojen vähennys&#34;,
+
+        &#34;Pitkäaikaisten lainojen muutos&#34;,
+
+        &#34;Rahavarat 1.1.&#34;,
+
+        &#34;Rahavarat 31.12.&#34;,
+
+        &#34;Rahavarojen muutos&#34;,
+
+        &#34;Rahoituksen rahavirta&#34;,
+
+        &#34;Satunnaiset erät&#34;,
+
+        &#34;Toiminnan rahavirta&#34;,
+
+        &#34;Toimintakate&#34;,
+
+        &#34;Toimintakulut&#34;,
+
+        &#34;Toimintatuotot&#34;,
+
+        &#34;Tulorahoituksen korjauserät&#34;,
+
+        &#34;Verotulot&#34;,
+
+        &#34;Vuosikate&#34;,
+
+        &#34;2400-2439 Pitkäaikainen (korollinen vieras pääoma)&#34;,
+
+        &#34;2500-2539 Lyhytaikainen (korollinen vieras pääoma)&#34;,
+
+        &#34;5000-5499 Verotulot&#34;,
+
+        &#34;5500-5899 Valtionosuudet&#34;,
+
+        &#34;6000-6099 Korkotuotot&#34;,
+
+        &#34;7000-7299 Poistot ja arvonalentumiset&#34;,
+
+        &#34;8000-8199 Satunnaiset erät + (-)&#34;,
+
+        &#34;8800-8800 Tilikauden ylijäämä (alijäämä)&#34;,
+
+        &#34;Toimintakate&#34;,
+
+        &#34;Toimintakulut&#34;,
+
+        &#34;Toimintatulot&#34;,
+
+        &#34;Tuloveroprosentti&#34;
 
         ... of municipality and...
 
-            &#34;Antolainasaamisten lisäys&#34;,
-            &#34;Antolainasaamisten vähennys&#34;,
-            &#34;Antolainasaamisten muutokset + (-)&#34;,
-            &#34;Antolainasaamisten muutokset&#34;,
-            &#34;Investointien rahavirta&#34;,
-            &#34;Korkotuotot&#34;,
-            &#34;Lainakannan muutokset + (-)&#34;,
-            &#34;Lainakannan muutokset&#34;,
-            &#34;Lyhytaikainen (korollinen vieras pääoma)&#34;,
-            &#34;Lyhytaikaisten lainojen lisäys&#34;,
-            &#34;Lyhytaikaisten lainojen vähennys&#34;,
-            &#34;Lyhytaikaisten lainojen muutos&#34;,
-            &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
-            &#34;Muut maksuvalmiuden muutokset&#34;,
-            &#34;Oman pääoman muutokset + (-)&#34;,
-            &#34;Oman pääoman muutokset&#34;,
-            &#34;Pitkäaikaisten lainojen lisäys&#34;,
-            &#34;Pitkäaikaisten lainojen vähennys&#34;,
-            &#34;Pitkäaikaisten lainojen muutos&#34;,
-            &#34;Poistot ja arvonalentumiset&#34;,
-            &#34;Rahavarat 1.1.&#34;,
-            &#34;Rahavarat 31.12.&#34;,
-            &#34;Rahavarojen muutos&#34;,
-            &#34;Rahoituksen rahavirta&#34;,
-            &#34;Tilikauden tulos&#34;,
-            &#34;Tilikauden ylijäämä (alijäämä)&#34;,
-            &#34;Toiminnan rahavirta&#34;,
-            &#34;Tulorahoituksen korjauserät&#34;,
-            &#34;Tuloveroprosentti&#34;,
-            &#34;Vuosikate&#34;
+        &#34;Antolainasaamisten lisäys&#34;,
+
+        &#34;Antolainasaamisten vähennys&#34;,
+
+        &#34;Antolainasaamisten muutokset + (-)&#34;,
+
+        &#34;Antolainasaamisten muutokset&#34;,
+
+        &#34;Investointien rahavirta&#34;,
+
+        &#34;Korkotuotot&#34;,
+
+        &#34;Lainakannan muutokset + (-)&#34;,
+
+        &#34;Lainakannan muutokset&#34;,
+
+        &#34;Lyhytaikainen (korollinen vieras pääoma)&#34;,
+
+        &#34;Lyhytaikaisten lainojen lisäys&#34;,
+
+        &#34;Lyhytaikaisten lainojen vähennys&#34;,
+
+        &#34;Lyhytaikaisten lainojen muutos&#34;,
+
+        &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
+
+        &#34;Muut maksuvalmiuden muutokset&#34;,
+
+        &#34;Oman pääoman muutokset + (-)&#34;,
+
+        &#34;Oman pääoman muutokset&#34;,
+
+        &#34;Pitkäaikaisten lainojen lisäys&#34;,
+
+        &#34;Pitkäaikaisten lainojen vähennys&#34;,
+
+        &#34;Pitkäaikaisten lainojen muutos&#34;,
+
+        &#34;Poistot ja arvonalentumiset&#34;,
+
+        &#34;Rahavarat 1.1.&#34;,
+
+        &#34;Rahavarat 31.12.&#34;,
+
+        &#34;Rahavarojen muutos&#34;,
+
+        &#34;Rahoituksen rahavirta&#34;,
+
+        &#34;Tilikauden tulos&#34;,
+
+        &#34;Tilikauden ylijäämä (alijäämä)&#34;,
+
+        &#34;Toiminnan rahavirta&#34;,
+
+        &#34;Tulorahoituksen korjauserät&#34;,
+
+        &#34;Tuloveroprosentti&#34;,
+
+        &#34;Vuosikate&#34;
 
         ... of municipal group.
 
@@ -2148,78 +2217,77 @@ in Finnish and Swedish. The function requires working internet
 connection.</p>
 <p>When data is subsetted, only certain key figures are returned. They
 include (in Finnish):</p>
-<pre><code>"Antolainasaamisten lisäys",
-"Antolainasaamisten vähennys",
-"Antolainasaamisten muutokset + (-)",
-"Antolainasaamisten muutokset",
-"Investointien rahavirta",
-"Lainakannan muutokset",
-"Lyhytaikaisten lainojen lisäys",
-"Lyhytaikaisten lainojen vähennys",
-"Lyhytaikaisten lainojen muutos",
-"Muut maksuvalmiuden muutokset",
-"Muut maksuvalmiuden muutokset + (-)",
-"Oman pääoman muutokset + (-)",
-"Oman pääoman muutokset",
-"Pitkäaikaisten lainojen lisäys",
-"Pitkäaikaisten lainojen vähennys",
-"Pitkäaikaisten lainojen muutos",
-"Rahavarat 1.1.",
-"Rahavarat 31.12.",
-"Rahavarojen muutos",
-"Rahoituksen rahavirta",
-"Satunnaiset erät",
-"Toiminnan rahavirta",
-"Toimintakate",
-"Toimintakulut",
-"Toimintatuotot",
-"Tulorahoituksen korjauserät",
-"Verotulot",
-"Vuosikate",
-"2400-2439 Pitkäaikainen (korollinen vieras pääoma)",
-"2500-2539 Lyhytaikainen (korollinen vieras pääoma)",
-"5000-5499 Verotulot",
-"5500-5899 Valtionosuudet",
-"6000-6099 Korkotuotot",
-"7000-7299 Poistot ja arvonalentumiset",
-"8000-8199 Satunnaiset erät + (-)",
-"8800-8800 Tilikauden ylijäämä (alijäämä)",
-"Toimintakate",
-"Toimintakulut",
-"Toimintatulot"
-</code></pre>
+<p>"Antolainasaamisten lisäys",</p>
+<p>"Antolainasaamisten vähennys",</p>
+<p>"Antolainasaamisten muutokset + (-)",</p>
+<p>"Antolainasaamisten muutokset",</p>
+<p>"Investointien rahavirta",</p>
+<p>"Lainakannan muutokset",</p>
+<p>"Lyhytaikaisten lainojen lisäys",</p>
+<p>"Lyhytaikaisten lainojen vähennys",</p>
+<p>"Lyhytaikaisten lainojen muutos",</p>
+<p>"Muut maksuvalmiuden muutokset",</p>
+<p>"Muut maksuvalmiuden muutokset + (-)",</p>
+<p>"Oman pääoman muutokset + (-)",</p>
+<p>"Oman pääoman muutokset",</p>
+<p>"Pitkäaikaisten lainojen lisäys",</p>
+<p>"Pitkäaikaisten lainojen vähennys",</p>
+<p>"Pitkäaikaisten lainojen muutos",</p>
+<p>"Rahavarat 1.1.",</p>
+<p>"Rahavarat 31.12.",</p>
+<p>"Rahavarojen muutos",</p>
+<p>"Rahoituksen rahavirta",</p>
+<p>"Satunnaiset erät",</p>
+<p>"Toiminnan rahavirta",</p>
+<p>"Toimintakate",</p>
+<p>"Toimintakulut",</p>
+<p>"Toimintatuotot",</p>
+<p>"Tulorahoituksen korjauserät",</p>
+<p>"Verotulot",</p>
+<p>"Vuosikate",</p>
+<p>"2400-2439 Pitkäaikainen (korollinen vieras pääoma)",</p>
+<p>"2500-2539 Lyhytaikainen (korollinen vieras pääoma)",</p>
+<p>"5000-5499 Verotulot",</p>
+<p>"5500-5899 Valtionosuudet",</p>
+<p>"6000-6099 Korkotuotot",</p>
+<p>"7000-7299 Poistot ja arvonalentumiset",</p>
+<p>"8000-8199 Satunnaiset erät + (-)",</p>
+<p>"8800-8800 Tilikauden ylijäämä (alijäämä)",</p>
+<p>"Toimintakate",</p>
+<p>"Toimintakulut",</p>
+<p>"Toimintatulot",</p>
+<p>"Tuloveroprosentti"</p>
 <p>&hellip; of municipality and&hellip;</p>
-<pre><code>"Antolainasaamisten lisäys",
-"Antolainasaamisten vähennys",
-"Antolainasaamisten muutokset + (-)",
-"Antolainasaamisten muutokset",
-"Investointien rahavirta",
-"Korkotuotot",
-"Lainakannan muutokset + (-)",
-"Lainakannan muutokset",
-"Lyhytaikainen (korollinen vieras pääoma)",
-"Lyhytaikaisten lainojen lisäys",
-"Lyhytaikaisten lainojen vähennys",
-"Lyhytaikaisten lainojen muutos",
-"Muut maksuvalmiuden muutokset + (-)",
-"Muut maksuvalmiuden muutokset",
-"Oman pääoman muutokset + (-)",
-"Oman pääoman muutokset",
-"Pitkäaikaisten lainojen lisäys",
-"Pitkäaikaisten lainojen vähennys",
-"Pitkäaikaisten lainojen muutos",
-"Poistot ja arvonalentumiset",
-"Rahavarat 1.1.",
-"Rahavarat 31.12.",
-"Rahavarojen muutos",
-"Rahoituksen rahavirta",
-"Tilikauden tulos",
-"Tilikauden ylijäämä (alijäämä)",
-"Toiminnan rahavirta",
-"Tulorahoituksen korjauserät",
-"Tuloveroprosentti",
-"Vuosikate"
-</code></pre>
+<p>"Antolainasaamisten lisäys",</p>
+<p>"Antolainasaamisten vähennys",</p>
+<p>"Antolainasaamisten muutokset + (-)",</p>
+<p>"Antolainasaamisten muutokset",</p>
+<p>"Investointien rahavirta",</p>
+<p>"Korkotuotot",</p>
+<p>"Lainakannan muutokset + (-)",</p>
+<p>"Lainakannan muutokset",</p>
+<p>"Lyhytaikainen (korollinen vieras pääoma)",</p>
+<p>"Lyhytaikaisten lainojen lisäys",</p>
+<p>"Lyhytaikaisten lainojen vähennys",</p>
+<p>"Lyhytaikaisten lainojen muutos",</p>
+<p>"Muut maksuvalmiuden muutokset + (-)",</p>
+<p>"Muut maksuvalmiuden muutokset",</p>
+<p>"Oman pääoman muutokset + (-)",</p>
+<p>"Oman pääoman muutokset",</p>
+<p>"Pitkäaikaisten lainojen lisäys",</p>
+<p>"Pitkäaikaisten lainojen vähennys",</p>
+<p>"Pitkäaikaisten lainojen muutos",</p>
+<p>"Poistot ja arvonalentumiset",</p>
+<p>"Rahavarat 1.1.",</p>
+<p>"Rahavarat 31.12.",</p>
+<p>"Rahavarojen muutos",</p>
+<p>"Rahoituksen rahavirta",</p>
+<p>"Tilikauden tulos",</p>
+<p>"Tilikauden ylijäämä (alijäämä)",</p>
+<p>"Toiminnan rahavirta",</p>
+<p>"Tulorahoituksen korjauserät",</p>
+<p>"Tuloveroprosentti",</p>
+<p>"Vuosikate"</p>
 <p>&hellip; of municipal group.</p>
 <h2 id="examples">Examples</h2>
 <pre><code>codes = pd.Series([&quot;0135202-4&quot;, &quot;0204819-8&quot;])
@@ -2269,78 +2337,147 @@ df = fetch_financial_data(codes, years)
         When data is subsetted, only certain key figures are returned. They
         include (in Finnish):
 
-            &#34;Antolainasaamisten lisäys&#34;,
-            &#34;Antolainasaamisten vähennys&#34;,
-            &#34;Antolainasaamisten muutokset + (-)&#34;,
-            &#34;Antolainasaamisten muutokset&#34;,
-            &#34;Investointien rahavirta&#34;,
-            &#34;Lainakannan muutokset&#34;,
-            &#34;Lyhytaikaisten lainojen lisäys&#34;,
-            &#34;Lyhytaikaisten lainojen vähennys&#34;,
-            &#34;Lyhytaikaisten lainojen muutos&#34;,
-            &#34;Muut maksuvalmiuden muutokset&#34;,
-            &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
-            &#34;Oman pääoman muutokset + (-)&#34;,
-            &#34;Oman pääoman muutokset&#34;,
-            &#34;Pitkäaikaisten lainojen lisäys&#34;,
-            &#34;Pitkäaikaisten lainojen vähennys&#34;,
-            &#34;Pitkäaikaisten lainojen muutos&#34;,
-            &#34;Rahavarat 1.1.&#34;,
-            &#34;Rahavarat 31.12.&#34;,
-            &#34;Rahavarojen muutos&#34;,
-            &#34;Rahoituksen rahavirta&#34;,
-            &#34;Satunnaiset erät&#34;,
-            &#34;Toiminnan rahavirta&#34;,
-            &#34;Toimintakate&#34;,
-            &#34;Toimintakulut&#34;,
-            &#34;Toimintatuotot&#34;,
-            &#34;Tulorahoituksen korjauserät&#34;,
-            &#34;Verotulot&#34;,
-            &#34;Vuosikate&#34;,
-            &#34;2400-2439 Pitkäaikainen (korollinen vieras pääoma)&#34;,
-            &#34;2500-2539 Lyhytaikainen (korollinen vieras pääoma)&#34;,
-            &#34;5000-5499 Verotulot&#34;,
-            &#34;5500-5899 Valtionosuudet&#34;,
-            &#34;6000-6099 Korkotuotot&#34;,
-            &#34;7000-7299 Poistot ja arvonalentumiset&#34;,
-            &#34;8000-8199 Satunnaiset erät + (-)&#34;,
-            &#34;8800-8800 Tilikauden ylijäämä (alijäämä)&#34;,
-            &#34;Toimintakate&#34;,
-            &#34;Toimintakulut&#34;,
-            &#34;Toimintatulot&#34;
+        &#34;Antolainasaamisten lisäys&#34;,
+
+        &#34;Antolainasaamisten vähennys&#34;,
+
+        &#34;Antolainasaamisten muutokset + (-)&#34;,
+
+        &#34;Antolainasaamisten muutokset&#34;,
+
+        &#34;Investointien rahavirta&#34;,
+
+        &#34;Lainakannan muutokset&#34;,
+
+        &#34;Lyhytaikaisten lainojen lisäys&#34;,
+
+        &#34;Lyhytaikaisten lainojen vähennys&#34;,
+
+        &#34;Lyhytaikaisten lainojen muutos&#34;,
+
+        &#34;Muut maksuvalmiuden muutokset&#34;,
+
+        &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
+
+        &#34;Oman pääoman muutokset + (-)&#34;,
+
+        &#34;Oman pääoman muutokset&#34;,
+
+        &#34;Pitkäaikaisten lainojen lisäys&#34;,
+
+        &#34;Pitkäaikaisten lainojen vähennys&#34;,
+
+        &#34;Pitkäaikaisten lainojen muutos&#34;,
+
+        &#34;Rahavarat 1.1.&#34;,
+
+        &#34;Rahavarat 31.12.&#34;,
+
+        &#34;Rahavarojen muutos&#34;,
+
+        &#34;Rahoituksen rahavirta&#34;,
+
+        &#34;Satunnaiset erät&#34;,
+
+        &#34;Toiminnan rahavirta&#34;,
+
+        &#34;Toimintakate&#34;,
+
+        &#34;Toimintakulut&#34;,
+
+        &#34;Toimintatuotot&#34;,
+
+        &#34;Tulorahoituksen korjauserät&#34;,
+
+        &#34;Verotulot&#34;,
+
+        &#34;Vuosikate&#34;,
+
+        &#34;2400-2439 Pitkäaikainen (korollinen vieras pääoma)&#34;,
+
+        &#34;2500-2539 Lyhytaikainen (korollinen vieras pääoma)&#34;,
+
+        &#34;5000-5499 Verotulot&#34;,
+
+        &#34;5500-5899 Valtionosuudet&#34;,
+
+        &#34;6000-6099 Korkotuotot&#34;,
+
+        &#34;7000-7299 Poistot ja arvonalentumiset&#34;,
+
+        &#34;8000-8199 Satunnaiset erät + (-)&#34;,
+
+        &#34;8800-8800 Tilikauden ylijäämä (alijäämä)&#34;,
+
+        &#34;Toimintakate&#34;,
+
+        &#34;Toimintakulut&#34;,
+
+        &#34;Toimintatulot&#34;,
+
+        &#34;Tuloveroprosentti&#34;
 
         ... of municipality and...
 
-            &#34;Antolainasaamisten lisäys&#34;,
-            &#34;Antolainasaamisten vähennys&#34;,
-            &#34;Antolainasaamisten muutokset + (-)&#34;,
-            &#34;Antolainasaamisten muutokset&#34;,
-            &#34;Investointien rahavirta&#34;,
-            &#34;Korkotuotot&#34;,
-            &#34;Lainakannan muutokset + (-)&#34;,
-            &#34;Lainakannan muutokset&#34;,
-            &#34;Lyhytaikainen (korollinen vieras pääoma)&#34;,
-            &#34;Lyhytaikaisten lainojen lisäys&#34;,
-            &#34;Lyhytaikaisten lainojen vähennys&#34;,
-            &#34;Lyhytaikaisten lainojen muutos&#34;,
-            &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
-            &#34;Muut maksuvalmiuden muutokset&#34;,
-            &#34;Oman pääoman muutokset + (-)&#34;,
-            &#34;Oman pääoman muutokset&#34;,
-            &#34;Pitkäaikaisten lainojen lisäys&#34;,
-            &#34;Pitkäaikaisten lainojen vähennys&#34;,
-            &#34;Pitkäaikaisten lainojen muutos&#34;,
-            &#34;Poistot ja arvonalentumiset&#34;,
-            &#34;Rahavarat 1.1.&#34;,
-            &#34;Rahavarat 31.12.&#34;,
-            &#34;Rahavarojen muutos&#34;,
-            &#34;Rahoituksen rahavirta&#34;,
-            &#34;Tilikauden tulos&#34;,
-            &#34;Tilikauden ylijäämä (alijäämä)&#34;,
-            &#34;Toiminnan rahavirta&#34;,
-            &#34;Tulorahoituksen korjauserät&#34;,
-            &#34;Tuloveroprosentti&#34;,
-            &#34;Vuosikate&#34;
+        &#34;Antolainasaamisten lisäys&#34;,
+
+        &#34;Antolainasaamisten vähennys&#34;,
+
+        &#34;Antolainasaamisten muutokset + (-)&#34;,
+
+        &#34;Antolainasaamisten muutokset&#34;,
+
+        &#34;Investointien rahavirta&#34;,
+
+        &#34;Korkotuotot&#34;,
+
+        &#34;Lainakannan muutokset + (-)&#34;,
+
+        &#34;Lainakannan muutokset&#34;,
+
+        &#34;Lyhytaikainen (korollinen vieras pääoma)&#34;,
+
+        &#34;Lyhytaikaisten lainojen lisäys&#34;,
+
+        &#34;Lyhytaikaisten lainojen vähennys&#34;,
+
+        &#34;Lyhytaikaisten lainojen muutos&#34;,
+
+        &#34;Muut maksuvalmiuden muutokset + (-)&#34;,
+
+        &#34;Muut maksuvalmiuden muutokset&#34;,
+
+        &#34;Oman pääoman muutokset + (-)&#34;,
+
+        &#34;Oman pääoman muutokset&#34;,
+
+        &#34;Pitkäaikaisten lainojen lisäys&#34;,
+
+        &#34;Pitkäaikaisten lainojen vähennys&#34;,
+
+        &#34;Pitkäaikaisten lainojen muutos&#34;,
+
+        &#34;Poistot ja arvonalentumiset&#34;,
+
+        &#34;Rahavarat 1.1.&#34;,
+
+        &#34;Rahavarat 31.12.&#34;,
+
+        &#34;Rahavarojen muutos&#34;,
+
+        &#34;Rahoituksen rahavirta&#34;,
+
+        &#34;Tilikauden tulos&#34;,
+
+        &#34;Tilikauden ylijäämä (alijäämä)&#34;,
+
+        &#34;Toiminnan rahavirta&#34;,
+
+        &#34;Tulorahoituksen korjauserät&#34;,
+
+        &#34;Tuloveroprosentti&#34;,
+
+        &#34;Vuosikate&#34;
 
         ... of municipal group.
 
