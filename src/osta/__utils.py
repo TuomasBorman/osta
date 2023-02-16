@@ -306,3 +306,47 @@ def __not_duplicated_columns_found(df, cols_to_check):
             category=Warning
             )
     return cols_to_check
+
+
+def __subset_data_based_on_year(df, df_db, db_year=None,
+                                date_format="%d-%m-%Y", **args):
+    """
+    This function subsets database by taking only specific years that user
+    has specified or that can be found from the data.
+    Input: df, data base, year_option, date_format
+    Output: Subsetted data base
+    """
+    if db_year is not None:
+        db_year = [db_year] if isinstance(db_year, int) else db_year
+        db_year = [x for x in db_year if any(x == df_db["year"])]
+        if len(db_year) > 0:
+            # Subset data
+            ind = (df_db["year"] <= max(db_year)).values & (
+                df_db["year"] >= min(db_year)).values
+            df_db = df_db.loc[ind, :]
+        else:
+            years = df_db["year"].drop_duplicates().values.tolist()
+            raise Exception(
+                f"'db_year' must be one of the following options: "
+                f"{years}",
+                )
+    else:
+        # Check if column(s) is found as non-duplicated
+        cols_to_check = ["date"]
+        cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+        if len(cols_to_check) == 1:
+            col_to_check = cols_to_check[0]
+            # INPUT CHECK END
+            # Get date column
+            date = df.loc[:, col_to_check]
+            # Extract year if possible
+            if "date" in df.columns:
+                try:
+                    year = pd.to_datetime(date, format=date_format)
+                    year = date.dt.year.drop_duplicates().sort_values()
+                    df_db = df_db.loc[df_db["year"] == year, :]
+                except Exception:
+                    pass
+    # Get only unique values
+    df_db = df_db.drop_duplicates(subset=["number", "name"])
+    return df_db

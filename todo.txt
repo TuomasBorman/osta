@@ -1,7 +1,11 @@
 TODO:
 
 enrich_data
-- Kuntien tuloveroprosentti?
+- viimeistely ja esimerkit, toimiiko?
+- dokumentointi ja testit
 
-- Löytyykö rajapintaa myös tililuettelolle?
+- Löytyykö rajapintaa myös tililuettelolle? (ja palveluluokille)
 https://avoindata.tutkihallintoa.fi/apis
+(Poista sen jälkeen subset_database_by_year...)
+
+- funktioiden nimet (lower camelcase) argumenttien nimet?

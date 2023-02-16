@@ -20,23 +20,90 @@ import numpy as np
 
 def enrich_data(df, **args):
     """
-    Change column names of pandas.DataFrame
+    This function adds external data to dataset.
 
     Arguments:
         ```
         df: pandas.DataFrame containing invoice data.
 
+        org_data: None or non-empty pandas.DataFrame containing
+        organization data. It must include a column named "bid"
+        (business ID), "vat_number" (VAT number), "number"
+        (organization code), or "name" (name) which is used to
+        match data with df. Business ID takes precedence, and
+        match based on name is checked last if other matches
+        are not found. If None, only general information,
+        such as business ID and province, from package's
+        database is added. (By default: org_data=None)
+
+        suppl_data: None or non-empty pandas.DataFrame containing
+        supplier data. It must include a column named "bid"
+        (business ID), "vat_number" (VAT number), "number"
+        (organization code), or "name" (name) which is used to
+        match data with df. Business ID takes precedence, and
+        match based on name is checked last if other matches
+        are not found. (By default: suppl_data=None)
+
+        service_data: None or non-empty pandas.DataFrame containing
+        service category data. It must include a column named "number"
+        (code) or "name" (name) which is used to match data with df.
+        Number takes precedence, and match based on name is checked
+        last if other matches are not found. If None, information from
+        package's own database is added. (By default: service_data=None)
+
+        account_data: None or non-empty pandas.DataFrame containing
+        account data. It must include a column named "number"
+        (code) or "name" (name) which is used to match data with df.
+        Number takes precedence, and match based on name is checked
+        last if other matches are not found. If None, information from
+        package's own database is added. (By default: account_data=None)
+
+        disable_org: A boolean value specifying whether to add organization
+        data to the dataset (df). (By default: disable_org=False)
+
+        disable_suppl: A boolean value specifying whether to add supplier
+        data to the dataset (df). (By default: disable_suppl=False)
+
+        disable_service: A boolean value specifying whether to add service
+        data to the dataset (df). (By default: disable_service=False)
+
+        disable_account: A boolean value specifying whether to add account
+        data to the dataset (df). (By default: disable_account=False)
+
+        disable_sums: A boolean value specifying whether to calculate
+        possible missing value (total, VAT amount or price excluding VAT)
+        based on other two values. (By default: disable_sums=False)
+
+        subset_account_data: None or a string value ("tase" or "tuloslaskelma")
+        specifying whether to use account data from package's database from
+        balance sheet ("tase") or income statement ("tuloslaskelma").
+        If None, unique values are taken where balance sheet takes the
+        precedence. (By default: subset_account_data=None)
+
+        db_year: An integer value specifying the year of service and
+        account database. If None, unique values are taken where the most
+        present values take the precedence (By default: df_year=None)
+
         ```
 
     Details:
+        This function enriches the dataset. The package includes some
+        basic information, e.g., on organization, but you get more out of it
+        by feeding more sophisticated and detailed data to the function with
+        arguments. The datasets that are added must include specific columns.
+        More detailed information is given in desciptions of each argument.
+
+        Furthermore, the function is used to complement the data if one of
+        the values descriping price, VAT and total price is missing.
 
     Examples:
         ```
+        df = enrich_data(df, org_data=org_data, suppl_data=suppl_data)
 
         ```
 
     Output:
-
+        A pandas.DataFrame including enriched dataset.
 
     """
     # INPUT CHECK
@@ -127,6 +194,10 @@ def __add_account_data(df, disable_account=False, account_data=None,
     if not isinstance(disable_account, bool):
         raise Exception(
             "'disable_account' must be True or False."
+            )
+    if subset_account_data not in ["tase", "tuloslaskelma"]:
+        raise Exception(
+            "'subset_account_data' must be 'tase' or 'tuloslaskelma'."
             )
     # Check if column(s) is found as non-duplicated
     cols_df = ["account_number", "account_name"]
@@ -375,7 +446,8 @@ def fetch_company_data(ser, language="en", only_ltd=False, merge_bid=True,
         Information System (Yritystietojärjestelmä, YTJ). Resources of
         services are limited. Please use the function only when needed, and
         store the results if possible. Search in smaller batches to prevent
-        problems with resource allocation.
+        problems with resource allocation. The function requires working
+        internet connection.
 
     Examples:
         ```
@@ -755,7 +827,8 @@ def fetch_org_data(org_codes, years, language="en", add_bid=True):
 
     Details:
         This function fetches municipality key figures from the database of
-        Statistics Finland (Tilastokeskus).
+        Statistics Finland (Tilastokeskus). The function requires working
+        internet connection.
 
     Examples:
         ```
@@ -933,7 +1006,8 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
         (KKNR20XXC12, KKTR20XX, and KKOTR20XX) from the database
         of State Treasury of Finland (Valtiokonttori). The data is fetched
         based on business ID and year. Currently, database include data only
-        in Finnish and Swedish.
+        in Finnish and Swedish. The function requires working internet
+        connection.
 
         When data is subsetted, only certain key figures are returned. They
         include (in Finnish):
@@ -1330,6 +1404,7 @@ def fetch_org_company_data(org_bids, years, rename_cols=True,
     Details:
         This function fetches data on companies of municipalities (TOLT)
         from the database of State Treasury of Finland (Valtiokonttori).
+        The function requires working internet connection.
 
     Examples:
         ```
