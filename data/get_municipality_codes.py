@@ -36,6 +36,7 @@ columns = [
     "number",
     "name",
     "bid",
+    "vat_number",
     "city_or_mun",
     "language",
     "mun_center",

@@ -1,8 +1,8 @@
 TODO:
 
 enrich_data
-- viimeistely ja esimerkit, toimiiko?
-- dokumentointi ja testit
+- testit, data lisätään oikein, summa lasketaan oiken
+-testit, että hakee oikean tiedon databaseista
 
 - Löytyykö rajapintaa myös tililuettelolle? (ja palveluluokille)
 https://avoindata.tutkihallintoa.fi/apis

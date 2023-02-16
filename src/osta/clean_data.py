@@ -1235,7 +1235,7 @@ def __check_variable_pair(df, cols_to_check, dtypes, **args):
     return df
 
 
-def __check_vat_number(df, cols_to_check, **args):
+def __check_vat_number(df, cols_to_check, disable_vat_number=False, **args):
     """
     This function checks that VAT numbers has correct patterns
     and match with business IDs.
@@ -1243,10 +1243,14 @@ def __check_vat_number(df, cols_to_check, **args):
     Output: df
     """
     # INPUT CHECK
+    if not isinstance(disable_vat_number, bool):
+        raise Exception(
+            "'disable_vat_number' must be True or False."
+            )
     # Check if column(s) is found as non-duplicated
     cols_to_check = utils.__not_duplicated_columns_found(df, cols_to_check)
     # All columns must be present
-    if len(cols_to_check) != 3:
+    if len(cols_to_check) != 3 or disable_vat_number:
         return df
     # INPUT CHECK END
     # Get vat number and bid column names

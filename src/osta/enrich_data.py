@@ -1162,10 +1162,9 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
         raise Exception(
             "'org_bids' must be non-empty pandas.Series."
             )
-    if not ((isinstance(years, pd.Series) and len(years) == len(org_bids))
-            or years is None):
+    if not (isinstance(years, pd.Series) and len(years) == len(org_bids)):
         raise Exception(
-            "'years' must be None or non-empty pandas.Series matching with " +
+            "'years' must be non-empty pandas.Series matching with " +
             "'org_codes'."
             )
     if not isinstance(subset, bool):
@@ -1250,7 +1249,7 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
     return df
 
 
-def __fetch_org_financial_data_help(org_bid, year, subset, language, **args):
+def __fetch_org_financial_data_help(org_bid, year, subset, language):
     """
     Fetch financial data of municipalities (KKNR, KKTR, KKOTR).
 
@@ -1293,7 +1292,7 @@ def __fetch_org_financial_data_help(org_bid, year, subset, language, **args):
     df = __fetch_financial_data(
         df=df, df_info=df_info,
         datatype="KKNR", year=(year + "C12"), key_figs=key_figs,
-        subset=subset, language=language, **args)
+        subset=subset, language=language)
     # Get kktr data
     key_figs = [
         "Antolainasaamisten lisäys",
@@ -1328,7 +1327,7 @@ def __fetch_org_financial_data_help(org_bid, year, subset, language, **args):
     df = __fetch_financial_data(
         df=df, df_info=df_info,
         datatype="KKTR", year=year, key_figs=key_figs,
-        subset=subset, language=language, **args)
+        subset=subset, language=language)
     # Get kkotr data
     key_figs = [
         "Antolainasaamisten lisäys",
@@ -1364,7 +1363,7 @@ def __fetch_org_financial_data_help(org_bid, year, subset, language, **args):
     df = __fetch_financial_data(
         df=df, df_info=df_info,
         datatype="KKOTR", year=year, key_figs=key_figs,
-        subset=subset, language=language, **args)
+        subset=subset, language=language)
     # Get ktpe data including only tax rate
     key_figs = [
         "Tuloveroprosentti",
@@ -1372,7 +1371,7 @@ def __fetch_org_financial_data_help(org_bid, year, subset, language, **args):
     df = __fetch_financial_data(
         df=df, df_info=df_info,
         datatype="KTPE", year=year, key_figs=key_figs,
-        subset=True, language=language, **args)
+        subset=True, language=language)
     # Reset index and return whole data
     df = df.reset_index(drop=True)
     return df
@@ -1380,7 +1379,7 @@ def __fetch_org_financial_data_help(org_bid, year, subset, language, **args):
 
 def __fetch_financial_data(df, df_info,
                            datatype, year, key_figs,
-                           subset, language, **args):
+                           subset, language):
     """
     Fetch certain financial data of municipalities.
 
@@ -1416,7 +1415,7 @@ def __fetch_financial_data(df, df_info,
         df_temp = pd.DataFrame(text)
         # Get labels
         fields = __fetch_financial_taxonomy(datatype=datatype, subset=subset,
-                                            key_figs=key_figs, **args)
+                                            key_figs=key_figs)
         # Add labels to data
         df_temp["tunnusluku_lab"] = df_temp[label_col].replace(
             to_replace=fields.loc[:, field_id].astype(str).tolist(),
@@ -1443,8 +1442,7 @@ def __fetch_financial_data(df, df_info,
     return df
 
 
-def fetch_org_company_data(org_bids, years, rename_cols=True,
-                           **args):
+def fetch_org_company_data(org_bids, years, rename_cols=True):
     """
     Fetch data about companies of municipality.
 

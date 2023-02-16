@@ -8,8 +8,10 @@ import pkg_resources
 
 def test_check_names_wrong_arguments():
     df = __create_dummy_data()
-    with pytest.raises(Exception):
-        df = clean_data()
+    # Some tests give warnings...
+    with pytest.warns(Warning):
+        with pytest.raises(Exception):
+            df = clean_data()
         with pytest.raises(Exception):
             df = clean_data(pd.DataFrame())
         with pytest.raises(Exception):
@@ -115,13 +117,9 @@ def test_check_names_wrong_arguments():
         with pytest.raises(Exception):
             df = clean_data(df, service_data=0)
         with pytest.raises(Exception):
-            df = clean_data(df, service="test_file")
-        with pytest.raises(Exception):
-            df = clean_data(df, date_format="test")
-        with pytest.raises(Exception):
-            df = clean_data(df, date_format=True)
-        with pytest.raises(Exception):
-            df = clean_data(df, date_format=1)
+            df = clean_data(df, service_data="test_file")
+        # date_fomat does not raise errors, pandas can take different values
+        # and it is fed to it.
         with pytest.raises(Exception):
             df = clean_data(df, country_format="test")
         with pytest.raises(Exception):
