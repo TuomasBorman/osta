@@ -16,35 +16,34 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
     functions in osta package require.
 
     Arguments:
-        ```
-        df: pandas.DataFrame containing invoice data.
+        `df`: pandas.DataFrame containing invoice data.
 
-        guess_names: A boolean value specifying whether to guess column names
+        `guess_names`: A boolean value specifying whether to guess column names
         that did not have exact matches or not. (By default: guess_names=True)
 
-        make_unique: A boolean value specifying whether to add a suffix to
+        `make_unique`: A boolean value specifying whether to add a suffix to
         duplicated column names. (By default: make_unique=True)
 
-        fields: A pandas.DataFrame or a dictionary containing
+        `fields`: A pandas.DataFrame or a dictionary containing
         matches between existing column names (key) and
         standardized names (value), a string specifying a path
         to such CSV file or None. When fields=None,function's
         default dictionary is used. (By default: fields=None)
 
-        **args: Additional arguments passes into other functions:
-            pattern_th: A numeric value [0,1] specifying the threshold of
-            enough good match. Value over threshold have enough strong
-            pattern and it is interpreted to be a match.
-            (By default: pattern_th=0.9)
+        `**args`: Additional arguments passes into other functions:
 
-            scorer: A scorer function passed into fuzzywuzzy.process.extractOne
-            function. (By default: scorer=fuzz.token_sort_ratio)
+        `pattern_th`: A numeric value [0,1] specifying the threshold of
+        enough good match. Value over threshold have enough strong
+        pattern and it is interpreted to be a match.
+        (By default: pattern_th=0.9)
 
-            match_th: A numeric value [0,1] specifying the strength of
-            pattern in the data. The observation specifies the portion of
-            observations where the pattern must be present to conclude that
-            column includes specific type of data. (By default: match_th=0.2)
-        ```
+        `scorer`: A scorer function passed into fuzzywuzzy.process.extractOne
+        function. (By default: scorer=fuzz.token_sort_ratio)
+
+        `match_th`: A numeric value [0,1] specifying the strength of
+        pattern in the data. The observation specifies the portion of
+        observations where the pattern must be present to conclude that
+        column includes specific type of data. (By default: match_th=0.2)
 
     Details:
         This function changes the column names to standardized names that are

@@ -23,10 +23,11 @@ def enrich_data(df, **args):
     This function adds external data to dataset.
 
     Arguments:
-        ```
-        df: pandas.DataFrame containing invoice data.
+        `df`: pandas.DataFrame containing invoice data.
 
-        org_data: None or non-empty pandas.DataFrame containing
+        `**args`: Additional arguments passes into other functions:
+
+        `org_data`: None or non-empty pandas.DataFrame containing
         organization data. It must include a column named "bid"
         (business ID), "vat_number" (VAT number), "number"
         (organization code), or "name" (name) which is used to
@@ -36,7 +37,7 @@ def enrich_data(df, **args):
         such as business ID and province, from package's
         database is added. (By default: org_data=None)
 
-        suppl_data: None or non-empty pandas.DataFrame containing
+        `suppl_data`: None or non-empty pandas.DataFrame containing
         supplier data. It must include a column named "bid"
         (business ID), "vat_number" (VAT number), "number"
         (organization code), or "name" (name) which is used to
@@ -44,47 +45,46 @@ def enrich_data(df, **args):
         match based on name is checked last if other matches
         are not found. (By default: suppl_data=None)
 
-        service_data: None or non-empty pandas.DataFrame containing
+        `service_data`: None or non-empty pandas.DataFrame containing
         service category data. It must include a column named "number"
         (code) or "name" (name) which is used to match data with df.
         Number takes precedence, and match based on name is checked
         last if other matches are not found. If None, information from
         package's own database is added. (By default: service_data=None)
 
-        account_data: None or non-empty pandas.DataFrame containing
+        `account_data`: None or non-empty pandas.DataFrame containing
         account data. It must include a column named "number"
         (code) or "name" (name) which is used to match data with df.
         Number takes precedence, and match based on name is checked
         last if other matches are not found. If None, information from
         package's own database is added. (By default: account_data=None)
 
-        disable_org: A boolean value specifying whether to add organization
+        `disable_org`: A boolean value specifying whether to add organization
         data to the dataset (df). (By default: disable_org=False)
 
-        disable_suppl: A boolean value specifying whether to add supplier
+        `disable_suppl`: A boolean value specifying whether to add supplier
         data to the dataset (df). (By default: disable_suppl=False)
 
-        disable_service: A boolean value specifying whether to add service
+        `disable_service`: A boolean value specifying whether to add service
         data to the dataset (df). (By default: disable_service=False)
 
-        disable_account: A boolean value specifying whether to add account
+        `disable_account`: A boolean value specifying whether to add account
         data to the dataset (df). (By default: disable_account=False)
 
-        disable_sums: A boolean value specifying whether to calculate
+        `disable_sums`: A boolean value specifying whether to calculate
         possible missing value (total, VAT amount or price excluding VAT)
         based on other two values. (By default: disable_sums=False)
 
-        subset_account_data: None or a string value ("tase" or "tuloslaskelma")
-        specifying whether to use account data from package's database from
-        balance sheet ("tase") or income statement ("tuloslaskelma").
-        If None, unique values are taken where balance sheet takes the
-        precedence. (By default: subset_account_data=None)
+        `subset_account_data`: None or a string value ("tase" or
+        "tuloslaskelma") specifying whether to use account data from
+        package's database from balance sheet ("tase") or income statement
+        ("tuloslaskelma"). If None, unique values are taken where balance
+        sheet takes the precedence. (By default: subset_account_data=None)
 
-        db_year: An integer value specifying the year of service and
+        `db_year`: An integer value specifying the year of service and
         account database. If None, unique values are taken where the most
         present values take the precedence (By default: df_year=None)
 
-        ```
 
     Details:
         This function enriches the dataset. The package includes some
@@ -417,28 +417,25 @@ def fetch_company_data(ser, language="en", only_ltd=False, merge_bid=True,
     Fetch company data from databases.
 
     Arguments:
-        ```
-        ser: pd.Series including business IDs.
+        `ser`: pd.Series including business IDs.
 
-        language: A string specifying the language of fetched data. Must be
+        `language`: A string specifying the language of fetched data. Must be
         "en" (English), "fi" (Finnish), or "sv" (Swedish).
 
-        only_ltd: A boolean value specifying whether to search results also
+        `only_ltd`: A boolean value specifying whether to search results also
         for other than limited companies. The search for them is slower.
         (By default: only_ltd=False)
 
-        merge_bid: A boolean value specifying whether to combine all old BIDs
+        `merge_bid`: A boolean value specifying whether to combine all old BIDs
         to one column. If False, each BID is its own columns named
         'old_bid_*'. (By default: old_bid=True)
 
-        use_cache: A boolean value specifying whether to store results to
+        `use_cache`: A boolean value specifying whether to store results to
         on-disk cache. (By default: use_cache=True)
 
-        temp_dir: None or a string specifying path of temporary directory
+        `temp_dir`: None or a string specifying path of temporary directory
         to store cache. If None, device's default temporary directory is used.
         (By default: temp_dir=None)
-
-        ```
 
     Details:
         This function fetches company data from Finnish Patent and Registration
@@ -807,23 +804,20 @@ def fetch_org_data(org_codes, years, language="en", add_bid=True):
     Fetch municipality data from databases.
 
     Arguments:
-        ```
-        org_codes: pd.Series including municipality codes.
+        `org_codes`: pd.Series including municipality codes.
 
-        years: pd.Series including years specifying the year of data
+        `years`: pd.Series including years specifying the year of data
         that will be fetched. The lenght must be equal with
         'org_codes'.
 
-        language: A string specifying the language of fetched data. Must be
+        `language`: A string specifying the language of fetched data. Must be
         "en" (English), "fi" (Finnish), or "sv" (Swedish).
         (By default: language="en")
 
-        add_bid: A boolean value specifying whether to add business ID of
+        `add_bid`: A boolean value specifying whether to add business ID of
         organization so that the returned table has a common identifier that
         matches with returned table of other interfaces.
         (By default: add_bid=True)
-
-        ```
 
     Details:
         This function fetches municipality key figures from the database of
@@ -978,28 +972,25 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
     Fetch financial data of municipalities.
 
     Arguments:
-        ```
-        org_bids: pd.Series including business IDs of municipalities.
+        `org_bids`: pd.Series including business IDs of municipalities.
 
-        years: pd.Series including years specifying the year of data
+        `years`: pd.Series including years specifying the year of data
         that will be fetched.
 
-        subset: a boolean value specifying whether only certain key figures
+        `subset`: a boolean value specifying whether only certain key figures
         are returned. (By default: subset=True)
 
-        wide_format: a boolean value specifying whether result is returned as
+        `wide_format`: a boolean value specifying whether result is returned as
         wide format. When wide format is specified, the returned table contains
         only columns with financial values and corresponding organization
         without report metadata. (By default: wide_format=True)
 
-        language: A string specifying the language of fetched data. Must be
+        `language`: A string specifying the language of fetched data. Must be
         "en" (English), "fi" (Finnish), or "sv" (Swedish).
 
-        rename_cols: A boolean value specifying whether to rename columns in
+        `rename_cols`: A boolean value specifying whether to rename columns in
         a way that is expected by other functions.
         (By default: rename_cols=True)
-
-        ```
 
     Details:
         This function fetches financial data of municipalities
@@ -1389,17 +1380,14 @@ def fetch_org_company_data(org_bids, years, rename_cols=True,
     Fetch data about companies of municipality.
 
     Arguments:
-        ```
-        org_bids: pd.Series including business IDs of municipalities.
+        `org_bids`: pd.Series including business IDs of municipalities.
 
-        years: pd.Series including years specifying the year of data
+        `years`: pd.Series including years specifying the year of data
         that will be fetched.
 
-        rename_cols: A boolean value specifying whether to rename columns in
+        `rename_cols`: A boolean value specifying whether to rename columns in
         a way that is expected by other functions.
         (By default: rename_cols=True)
-
-        ```
 
     Details:
         This function fetches data on companies of municipalities (TOLT)

@@ -18,78 +18,76 @@ def clean_data(df, **args):
     does not meet requirements, the function gives a warning.
 
     Arguments:
-        ```
-        df: pandas.DataFrame containing invoice data.
+        `df`: pandas.DataFrame containing invoice data.
 
-        **args: Additional arguments passes into other functions:
-            date_format: The format of date that will be in output data.
-            (By default: date_format="%d-%m-%Y")
+        `**args`: Additional arguments passes into other functions:
 
-            dayfirst: Boolean value or None to specify the format of date
-            in input data. 'If day comes before month in the date.'
-            If None, function determines the format automatically.
-            (By default: dayfirst=None)
+        `date_format`: The format of date that will be in output data.
+        (By default: date_format="%d-%m-%Y")
 
-            yearfirst: Boolean value or None to specify the format of date
-            in input data. 'If year comes first in the date.'
-            If None, function determines the format automatically.
-            (By default: yearfirst=None)
+        `dayfirst`: Boolean value or None to specify the format of date
+        in input data. 'If day comes before month in the date.'
+        If None, function determines the format automatically.
+        (By default: dayfirst=None)
 
-            country_format: A string speciying the format of country in the
-            output data. Must be one of the following options: 'name_fin',
-            'name_en', "code_2char", 'code_3char', 'code_num', or 'code_iso'.
-            (By default: country_format='code_2char')
+        `yearfirst`: Boolean value or None to specify the format of date
+        in input data. 'If year comes first in the date.'
+        If None, function determines the format automatically.
+        (By default: yearfirst=None)
 
-            pattern_th: A numeric value [0,1] specifying the threshold of
-            enough good match between names, e.g., 'org_name', and database.
-            Value over threshold have enough strong pattern and it is
-            interpreted to be a match. (By default: pattern_th=0.7)
+        `country_format`: A string speciying the format of country in the
+        output data. Must be one of the following options: 'name_fin',
+        'name_en', "code_2char", 'code_3char', 'code_num', or 'code_iso'.
+        (By default: country_format='code_2char')
 
-            scorer: A scorer function passed into fuzzywuzzy.process.extractOne
-            function that evaluates the match between names and database.
-            (By default: scorer=fuzz.token_sort_ratio)
+        `pattern_th`: A numeric value [0,1] specifying the threshold of
+        enough good match between names, e.g., 'org_name', and database.
+        Value over threshold have enough strong pattern and it is
+        interpreted to be a match. (By default: pattern_th=0.7)
 
-            org_data: pd.DataFrame or None. Database for organization data.
-            Data must include on of the following columns: 'name', 'number', or
-            'bid' specifying the name, number and business ID of organizations,
-            respectively. If None, packages default database is used.
-            (By default: org_data=None)
+        `scorer`: A scorer function passed into fuzzywuzzy.process.extractOne
+        function that evaluates the match between names and database.
+        (By default: scorer=fuzz.token_sort_ratio)
 
-            suppl_data: pd.DataFrame or None. Database for supplier data.
-            Data must include on of the following columns: 'name', 'number', or
-            'bid' specifying the name, number and business ID of suppliers,
-            respectively. If None, no database is used.
-            (By default: org_data=None)
+        `org_data`: pd.DataFrame or None. Database for organization data.
+        Data must include on of the following columns: 'name', 'number', or
+        'bid' specifying the name, number and business ID of organizations,
+        respectively. If None, packages default database is used.
+        (By default: org_data=None)
 
-            account_data: pd.DataFrame or None. Database for account data.
-            Data must include on of the following columns: 'name', or
-            'number' specifying the name and number accounts,
-            respectively. If None, packages default database is used.
-            (By default: account_data=None)
+        `suppl_data`: pd.DataFrame or None. Database for supplier data.
+        Data must include on of the following columns: 'name', 'number', or
+        'bid' specifying the name, number and business ID of suppliers,
+        respectively. If None, no database is used.
+        (By default: org_data=None)
 
-            subset_account_data: None or string to specify which database is
-            used for account data. Available options are 'balance_sheet' and
-            'income_statement'. If None, both databases are used and the result
-            value will be the first occurence.
-            (By default: subset_account_data=None)
+        `account_data`: pd.DataFrame or None. Database for account data.
+        Data must include on of the following columns: 'name', or
+        'number' specifying the name and number accounts,
+        respectively. If None, packages default database is used.
+        (By default: account_data=None)
 
-            service_data: pd.DataFrame or None. Database for service data.
-            Data must include on of the following columns: 'name', or
-            'number' specifying the name and number service categories,
-            respectively. If None, packages default database is used.
-            (By default: service_data=None)
+        `subset_account_data`: None or string to specify which database is
+        used for account data. Available options are 'balance_sheet' and
+        'income_statement'. If None, both databases are used and the result
+        value will be the first occurence.
+        (By default: subset_account_data=None)
 
-            db_year: Integer value or None specifying the year (2021, 2021,
-            or 2023) that will be used to match account and service data.
-            If None, the most current information is used and duplicates from
-            previous years are removed. (By default: db_year=None)
+        `service_data`: pd.DataFrame or None. Database for service data.
+        Data must include on of the following columns: 'name', or
+        'number' specifying the name and number service categories,
+        respectively. If None, packages default database is used.
+        (By default: service_data=None)
 
-            disable_*: A boolean value specifying whether * data
-            is checked. * can be one of the following options: 'org',
-            'suppl', 'date', 'sums', 'country', 'voucher', 'account' or
-            'service'. (By default: disable_*=False)
+        `db_year`: Integer value or None specifying the year (2021, 2021,
+        or 2023) that will be used to match account and service data.
+        If None, the most current information is used and duplicates from
+        previous years are removed. (By default: db_year=None)
 
-        ```
+        `disable_*`: A boolean value specifying whether * data
+        is checked. * can be one of the following options: 'org',
+        'suppl', 'date', 'sums', 'country', 'voucher', 'account' or
+        'service'. (By default: disable_*=False)
 
     Details:
         This function standardize the data and checks that it is in correct
