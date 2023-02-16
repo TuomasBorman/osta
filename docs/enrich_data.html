@@ -46,27 +46,95 @@ import re
 import tempfile
 import os
 import json
+import numpy as np
 
 
 def enrich_data(df, **args):
     &#34;&#34;&#34;
-    Change column names of pandas.DataFrame
+    This function adds external data to dataset.
 
     Arguments:
         ```
         df: pandas.DataFrame containing invoice data.
 
+        org_data: None or non-empty pandas.DataFrame containing
+        organization data. It must include a column named &#34;bid&#34;
+        (business ID), &#34;vat_number&#34; (VAT number), &#34;number&#34;
+        (organization code), or &#34;name&#34; (name) which is used to
+        match data with df. Business ID takes precedence, and
+        match based on name is checked last if other matches
+        are not found. If None, only general information,
+        such as business ID and province, from package&#39;s
+        database is added. (By default: org_data=None)
+
+        suppl_data: None or non-empty pandas.DataFrame containing
+        supplier data. It must include a column named &#34;bid&#34;
+        (business ID), &#34;vat_number&#34; (VAT number), &#34;number&#34;
+        (organization code), or &#34;name&#34; (name) which is used to
+        match data with df. Business ID takes precedence, and
+        match based on name is checked last if other matches
+        are not found. (By default: suppl_data=None)
+
+        service_data: None or non-empty pandas.DataFrame containing
+        service category data. It must include a column named &#34;number&#34;
+        (code) or &#34;name&#34; (name) which is used to match data with df.
+        Number takes precedence, and match based on name is checked
+        last if other matches are not found. If None, information from
+        package&#39;s own database is added. (By default: service_data=None)
+
+        account_data: None or non-empty pandas.DataFrame containing
+        account data. It must include a column named &#34;number&#34;
+        (code) or &#34;name&#34; (name) which is used to match data with df.
+        Number takes precedence, and match based on name is checked
+        last if other matches are not found. If None, information from
+        package&#39;s own database is added. (By default: account_data=None)
+
+        disable_org: A boolean value specifying whether to add organization
+        data to the dataset (df). (By default: disable_org=False)
+
+        disable_suppl: A boolean value specifying whether to add supplier
+        data to the dataset (df). (By default: disable_suppl=False)
+
+        disable_service: A boolean value specifying whether to add service
+        data to the dataset (df). (By default: disable_service=False)
+
+        disable_account: A boolean value specifying whether to add account
+        data to the dataset (df). (By default: disable_account=False)
+
+        disable_sums: A boolean value specifying whether to calculate
+        possible missing value (total, VAT amount or price excluding VAT)
+        based on other two values. (By default: disable_sums=False)
+
+        subset_account_data: None or a string value (&#34;tase&#34; or &#34;tuloslaskelma&#34;)
+        specifying whether to use account data from package&#39;s database from
+        balance sheet (&#34;tase&#34;) or income statement (&#34;tuloslaskelma&#34;).
+        If None, unique values are taken where balance sheet takes the
+        precedence. (By default: subset_account_data=None)
+
+        db_year: An integer value specifying the year of service and
+        account database. If None, unique values are taken where the most
+        present values take the precedence (By default: df_year=None)
+
         ```
 
     Details:
+        This function enriches the dataset. The package includes some
+        basic information, e.g., on organization, but you get more out of it
+        by feeding more sophisticated and detailed data to the function with
+        arguments. The datasets that are added must include specific columns.
+        More detailed information is given in desciptions of each argument.
+
+        Furthermore, the function is used to complement the data if one of
+        the values descriping price, VAT and total price is missing.
 
     Examples:
         ```
+        df = enrich_data(df, org_data=org_data, suppl_data=suppl_data)
 
         ```
 
     Output:
-
+        A pandas.DataFrame including enriched dataset.
 
     &#34;&#34;&#34;
     # INPUT CHECK
@@ -157,6 +225,10 @@ def __add_account_data(df, disable_account=False, account_data=None,
     if not isinstance(disable_account, bool):
         raise Exception(
             &#34;&#39;disable_account&#39; must be True or False.&#34;
+            )
+    if subset_account_data not in [&#34;tase&#34;, &#34;tuloslaskelma&#34;]:
+        raise Exception(
+            &#34;&#39;subset_account_data&#39; must be &#39;tase&#39; or &#39;tuloslaskelma&#39;.&#34;
             )
     # Check if column(s) is found as non-duplicated
     cols_df = [&#34;account_number&#34;, &#34;account_name&#34;]
@@ -405,7 +477,8 @@ def fetch_company_data(ser, language=&#34;en&#34;, only_ltd=False, merge_bid=Tru
         Information System (Yritystietojärjestelmä, YTJ). Resources of
         services are limited. Please use the function only when needed, and
         store the results if possible. Search in smaller batches to prevent
-        problems with resource allocation.
+        problems with resource allocation. The function requires working
+        internet connection.
 
     Examples:
         ```
@@ -471,8 +544,8 @@ def fetch_company_data(ser, language=&#34;en&#34;, only_ltd=False, merge_bid=Tru
     progress_bar_width = 50
     # Loop though BIDs
     for bid_i, bid in enumerate(ser.to_numpy()):
-        # update the progress bar
-        percent = 100*(bid_i/(len(ser)-1))
+        # Update the progress bar
+        percent = 100*((bid_i+1)/len(ser))
         sys.stdout.write(&#39;\r&#39;)
         sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
                          .format(&#39;=&#39;*int(percent/(100/progress_bar_width)),
@@ -760,7 +833,7 @@ def __search_companies_with_web_search(bid, bid_option, url, browser):
     return res
 
 
-def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
+def fetch_org_data(org_codes, years, language=&#34;en&#34;, add_bid=True):
     &#34;&#34;&#34;
     Fetch municipality data from databases.
 
@@ -768,18 +841,25 @@ def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
         ```
         org_codes: pd.Series including municipality codes.
 
-        years: None or pd.Series including years specifying the year of data
-        that will be fetched. If not None, the lenght must be equal with
-        &#39;org_codes&#39;. If None, the most previous data will be fetched.
-        (By default: years=None)
+        years: pd.Series including years specifying the year of data
+        that will be fetched. The lenght must be equal with
+        &#39;org_codes&#39;.
 
         language: A string specifying the language of fetched data. Must be
         &#34;en&#34; (English), &#34;fi&#34; (Finnish), or &#34;sv&#34; (Swedish).
+        (By default: language=&#34;en&#34;)
+
+        add_bid: A boolean value specifying whether to add business ID of
+        organization so that the returned table has a common identifier that
+        matches with returned table of other interfaces.
+        (By default: add_bid=True)
+
         ```
 
     Details:
         This function fetches municipality key figures from the database of
-        Statistics Finland (Tilastokeskus).
+        Statistics Finland (Tilastokeskus). The function requires working
+        internet connection.
 
     Examples:
         ```
@@ -796,33 +876,38 @@ def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
         raise Exception(
             &#34;&#39;org_codes&#39; must be non-empty pandas.Series.&#34;
             )
-    if not ((isinstance(years, pd.Series) and len(years) == len(org_codes))
-            or years is None):
+    if not ((isinstance(years, pd.Series) and len(years) == len(org_codes))):
         raise Exception(
-            &#34;&#39;years&#39; must be None or non-empty pandas.Series matching with &#34; +
+            &#34;&#39;years&#39; must be non-empty pandas.Series matching with &#34; +
             &#34;&#39;org_codes&#39;.&#34;
             )
     if not (isinstance(language, str) and language in [&#34;fi&#34;, &#34;en&#34;, &#34;sv&#34;]):
         raise Exception(
             &#34;&#39;language&#39; must be &#39;en&#39;, &#39;fi&#39;, or &#39;sv&#39;.&#34;
             )
+    if not isinstance(add_bid, bool):
+        raise Exception(
+            &#34;&#39;add_bid&#39; must be True or False.&#34;
+            )
     # INPUT CHECK END
-    # If years were provided
-    if years is not None:
-        try:
-            # Test if year can be detected
-            years = pd.to_datetime(years).dt.year
-            years = years.astype(str)
-        except Exception:
-            warnings.warn(
-                message=&#34;&#39;years&#39; were not detected. The most recent data &#34; +
-                &#34;from database is being fetched.&#34;,
-                category=Warning
-                )
-            years = None
+    # Check that years are in correct format
+    try:
+        # Test if year can be detected
+        years = pd.to_datetime(years).dt.year
+        years = years.astype(str)
+    except Exception:
+        raise Exception(
+            &#34;&#39;years&#39; were not detected.&#34;
+            )
     # Find the most recent data
     url = &#34;https://statfin.stat.fi/PXWeb/api/v1/fi/Kuntien_avainluvut&#34;
     r = requests.get(url)
+
+    # If the call was not succesfull, return empty DF
+    df = pd.DataFrame()
+    if not r.ok:
+        return df
+
     text = r.json()
     available_years = [x.get(&#34;id&#34;) for x in text]
     year_max = max(available_years)
@@ -832,27 +917,24 @@ def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
     url = (&#34;https://statfin.stat.fi/PXWeb/api/v1/fi/Kuntien_avainluvut/&#34; +
            year_max)
     r = requests.get(url)
-    try:
-        text = r.json()
-        # Find available years based on pattern in id
-        found_year = [x.get(&#34;text&#34;) for x in text if x.get(&#34;id&#34;) ==
-                      &#34;kuntien_avainluvut_&#34; + year_max + &#34;_aikasarja.px&#34;][0]
-        p = re.compile(&#34;\\d\\d\\d\\d-\\d\\d\\d\\d&#34;)
-        found_year = p.search(found_year).group().split(&#34;-&#34;)
-        # Getn only years that are available
-        years_temp = [x if int(x) in
-                      list(range(int(found_year[0]), int(found_year[1])+1))
-                      else None for x in years]
-        years_not_found = [x for i, x in enumerate(years_temp)
-                           if x != years[i]]
-        if len(years_not_found):
-            warnings.warn(
-                message=f&#34;The following &#39;years&#39; were not found from the &#34;
-                f&#34;database: {years_not_found}&#34;,
-                category=Warning
-                )
-    except Exception:
-        years_temp = years
+    text = r.json()
+    # Find available years based on pattern in id
+    found_year = [x.get(&#34;text&#34;) for x in text if x.get(&#34;id&#34;) ==
+                  &#34;kuntien_avainluvut_&#34; + year_max + &#34;_aikasarja.px&#34;][0]
+    p = re.compile(&#34;\\d\\d\\d\\d-\\d\\d\\d\\d&#34;)
+    found_year = p.search(found_year).group().split(&#34;-&#34;)
+    # Getn only years that are available
+    years_temp = [x if int(x) in
+                  list(range(int(found_year[0]), int(found_year[1])+1))
+                  else None for x in years]
+    years_not_found = [x for i, x in enumerate(years)
+                       if x != years_temp[i]]
+    if len(years_not_found):
+        warnings.warn(
+            message=f&#34;The following &#39;years&#39; were not found from the &#34;
+            f&#34;database: {np.unique(years_not_found).tolist()}&#34;,
+            category=Warning
+            )
     # Check which municipalties are found from the database / are correct
     # path = pkg_resources.resource_filename(
     #     &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
@@ -861,16 +943,16 @@ def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
     # Get only correct municipality codes
     codes_temp = [x if x in org_data[&#34;number&#34;].tolist() else
                   None for x in org_codes]
-    codes_not_found = [x for i, x in enumerate(codes_temp)
-                       if x != org_codes[i]]
+    codes_not_found = [x for i, x in enumerate(org_codes)
+                       if x != codes_temp[i]]
     if len(codes_not_found):
         warnings.warn(
             message=f&#34;The following &#39;codes&#39; were not found from the database: &#34;
-            f&#34;{codes_not_found}&#34;,
+            f&#34;{np.unique(codes_not_found).tolist()}&#34;,
             category=Warning
             )
     # Create DF, drop duplicates, and remove incorrect years and codes
-    df = pd.DataFrame({&#34;code&#34;: codes_temp, &#34;year&#34;: years_temp})
+    df = pd.DataFrame({&#34;number&#34;: codes_temp, &#34;year&#34;: years_temp})
     df = df.drop_duplicates()
     df = df.dropna()
     # Get URL and correct parameters of the time series database
@@ -879,7 +961,8 @@ def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
            year_max + &#34;_aikasarja.px&#34;)
     params = {&#34;query&#34;: [{&#34;code&#34;: &#34;Alue &#34; + year_max,
                          &#34;selection&#34;: {&#34;filter&#34;: &#34;item&#34;, &#34;values&#34;:
-                                       df[&#34;code&#34;].drop_duplicates().tolist()}},
+                                       df[&#34;number&#34;].drop_duplicates(
+                                           ).tolist()}},
                         {&#34;code&#34;: &#34;Vuosi&#34;,
                          &#34;selection&#34;: {&#34;filter&#34;: &#34;item&#34;, &#34;values&#34;:
                                        df[&#34;year&#34;
@@ -888,7 +971,7 @@ def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
               }
     # Find results
     r = requests.post(url, json=params)
-    if r.status_code:
+    if r.ok:
         text = r.json()
         # Find labels, code, years and values
         label = list(text.get(&#34;dimension&#34;).get(&#34;Tiedot&#34;).get(
@@ -910,17 +993,17 @@ def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
             df_temp = pd.concat([df_temp, temp], axis=1)
         # Add label and code
         df_temp.index = label
-        df_temp.loc[&#34;code&#34;, :] = [x for x in code for i in range(len(years))]
-        year_temp = []
-        for x in [years for i in range(len(code))]:
-            year_temp.extend(x)
-        df_temp.loc[&#34;year&#34;, :] = year_temp
+        df_temp.loc[&#34;number&#34;, :] = [x for x in code for i in range(len(years))]
         df_temp = df_temp.transpose()
         df = pd.merge(df, df_temp)
+    # If specified, add business ID
+    if add_bid and not df.empty:
+        df = pd.merge(df, org_data.loc[:, [&#34;number&#34;, &#34;bid&#34;]],
+                      how=&#34;left&#34;, left_on=&#34;number&#34;, right_on=&#34;number&#34;)
     return df
 
 
-def fetch_financial_data(org_bids, years, subset=True,
+def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
                          language=&#34;en&#34;, rename_cols=True, **args):
     &#34;&#34;&#34;
     Fetch financial data of municipalities.
@@ -934,6 +1017,11 @@ def fetch_financial_data(org_bids, years, subset=True,
 
         subset: a boolean value specifying whether only certain key figures
         are returned. (By default: subset=True)
+
+        wide_format: a boolean value specifying whether result is returned as
+        wide format. When wide format is specified, the returned table contains
+        only columns with financial values and corresponding organization
+        without report metadata. (By default: wide_format=True)
 
         language: A string specifying the language of fetched data. Must be
         &#34;en&#34; (English), &#34;fi&#34; (Finnish), or &#34;sv&#34; (Swedish).
@@ -949,10 +1037,12 @@ def fetch_financial_data(org_bids, years, subset=True,
         (KKNR20XXC12, KKTR20XX, and KKOTR20XX) from the database
         of State Treasury of Finland (Valtiokonttori). The data is fetched
         based on business ID and year. Currently, database include data only
-        in Finnish and Swedish.
+        in Finnish and Swedish. The function requires working internet
+        connection.
 
         When data is subsetted, only certain key figures are returned. They
         include (in Finnish):
+
             &#34;Antolainasaamisten lisäys&#34;,
             &#34;Antolainasaamisten vähennys&#34;,
             &#34;Antolainasaamisten muutokset + (-)&#34;,
@@ -1023,6 +1113,7 @@ def fetch_financial_data(org_bids, years, subset=True,
             &#34;Tilikauden ylijäämä (alijäämä)&#34;,
             &#34;Toiminnan rahavirta&#34;,
             &#34;Tulorahoituksen korjauserät&#34;,
+            &#34;Tuloveroprosentti&#34;,
             &#34;Vuosikate&#34;
 
         ... of municipal group.
@@ -1052,6 +1143,10 @@ def fetch_financial_data(org_bids, years, subset=True,
         raise Exception(
             &#34;&#39;subset&#39; must be a boolean value.&#34;
             )
+    if not isinstance(wide_format, bool):
+        raise Exception(
+            &#34;&#39;wide_format&#39; must be a boolean value.&#34;
+            )
     if not (isinstance(language, str) and language in [&#34;fi&#34;, &#34;en&#34;, &#34;sv&#34;]):
         raise Exception(
             &#34;&#39;language&#39; must be &#39;en&#39;, &#39;fi&#39;, or &#39;sv&#39;.&#34;
@@ -1073,13 +1168,14 @@ def fetch_financial_data(org_bids, years, subset=True,
     df_org = pd.DataFrame([org_bids, years], index=[&#34;org_bid&#34;, &#34;year&#34;])
     df_org = df_org.transpose()
     df_org = df_org.drop_duplicates()
+    df_org = df_org.reset_index(drop=True)
     # For progress bar, specify the width of it
     progress_bar_width = 50
     # Loop over rows
     df = pd.DataFrame()
     for i, r in df_org.iterrows():
-        # update the progress bar
-        percent = 100*(i/(df_org.shape[0]-1))
+        # Update the progress bar
+        percent = 100*((i+1)/df_org.shape[0])
         sys.stdout.write(&#39;\r&#39;)
         sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
                          .format(&#39;=&#39;*int(percent/(100/progress_bar_width)),
@@ -1089,7 +1185,7 @@ def fetch_financial_data(org_bids, years, subset=True,
         df_temp = __fetch_org_financial_data_help(
             r[&#34;org_bid&#34;], r[&#34;year&#34;], subset=subset, language=language, **args)
         # Add organization and year info
-        df_temp[&#34;org_bid&#34;] = r[&#34;org_bid&#34;]
+        df_temp[&#34;bid&#34;] = r[&#34;org_bid&#34;]
         df_temp[&#34;year&#34;] = r[&#34;year&#34;]
         # Add to whole data
         df = pd.concat([df, df_temp])
@@ -1109,11 +1205,17 @@ def fetch_financial_data(org_bids, years, subset=True,
             &#34;taksonomia&#34;: &#34;report_taxonomy&#34;,
             &#34;tarkastushavainnot&#34;: &#34;report_observations&#34;,
             &#34;tunnusluku&#34;: &#34;key_figure&#34;,
-            &#34;ytunnus&#34;: &#34;bid&#34;,
+            &#34;ytunnus&#34;: &#34;org_bid&#34;,
             &#34;tunnusluku_lab&#34;: &#34;key_figure_label&#34;,
             &#34;arvo&#34;: &#34;value&#34;,
             }
         df = df.rename(columns=new_colnames)
+    # If specified, convert into wide format
+    if wide_format:
+        df = df.pivot_table(index=&#34;bid&#34;,
+                            columns=&#34;key_figure_label&#34;,
+                            values=&#34;value&#34;)
+        df = df.reset_index(drop=False)
     # Stop progress bar
     sys.stdout.write(&#34;\n&#34;)
     return df
@@ -1234,6 +1336,14 @@ def __fetch_org_financial_data_help(org_bid, year, subset, language, **args):
         df=df, df_info=df_info,
         datatype=&#34;KKOTR&#34;, year=year, key_figs=key_figs,
         subset=subset, language=language, **args)
+    # Get ktpe data including only tax rate
+    key_figs = [
+        &#34;Tuloveroprosentti&#34;,
+        ]
+    df = __fetch_financial_data(
+        df=df, df_info=df_info,
+        datatype=&#34;KTPE&#34;, year=year, key_figs=key_figs,
+        subset=True, language=language, **args)
     # Reset index and return whole data
     df = df.reset_index(drop=True)
     return df
@@ -1325,6 +1435,7 @@ def fetch_org_company_data(org_bids, years, rename_cols=True,
     Details:
         This function fetches data on companies of municipalities (TOLT)
         from the database of State Treasury of Finland (Valtiokonttori).
+        The function requires working internet connection.
 
     Examples:
         ```
@@ -1376,7 +1487,7 @@ def fetch_org_company_data(org_bids, years, rename_cols=True,
     df = pd.DataFrame()
     for i, r in df_org.iterrows():
         # Update the progress bar
-        percent = 100*(i/(df_org.shape[0]-1))
+        percent = 100*((i+1)/df_org.shape[0])
         sys.stdout.write(&#39;\r&#39;)
         sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
                          .format(&#39;=&#39;*int(percent/(100/progress_bar_width)),
@@ -1415,11 +1526,13 @@ def fetch_org_company_data(org_bids, years, rename_cols=True,
             &#34;virhetilanne&#34;: &#34;report_error&#34;,
             }
         df = df.rename(columns=new_colnames)
-    # Convert specific column to numeric
+    # Convert specific column to float
     if &#34;share_vote&#34; in df.columns:
-        df[&#34;share_vote&#34;] = df[&#34;share_vote&#34;].astype(float)
+        df[&#34;share_vote&#34;] = df[&#34;share_vote&#34;].astype(str).str.strip(
+            ).replace(r&#39;^\s*$&#39;, None, regex=True).astype(float)
     if &#34;share_capital&#34; in df.columns:
-        df[&#34;share_capital&#34;] = df[&#34;share_capital&#34;].astype(float)
+        df[&#34;share_capital&#34;] = df[&#34;share_capital&#34;].astype(str).str.strip(
+            ).replace(r&#39;^\s*$&#39;, None, regex=True).astype(float)
     # Stop progress bar
     sys.stdout.write(&#34;\n&#34;)
     return df
@@ -1541,39 +1654,173 @@ def __fetch_financial_taxonomy(datatype, subset, key_figs,
 <span>def <span class="ident">enrich_data</span></span>(<span>df, **args)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Change column names of pandas.DataFrame</p>
+<div class="desc"><p>This function adds external data to dataset.</p>
 <h2 id="arguments">Arguments</h2>
 <pre><code>df: pandas.DataFrame containing invoice data.
 
+org_data: None or non-empty pandas.DataFrame containing
+organization data. It must include a column named &quot;bid&quot;
+(business ID), &quot;vat_number&quot; (VAT number), &quot;number&quot;
+(organization code), or &quot;name&quot; (name) which is used to
+match data with df. Business ID takes precedence, and
+match based on name is checked last if other matches
+are not found. If None, only general information,
+such as business ID and province, from package's
+database is added. (By default: org_data=None)
+
+suppl_data: None or non-empty pandas.DataFrame containing
+supplier data. It must include a column named &quot;bid&quot;
+(business ID), &quot;vat_number&quot; (VAT number), &quot;number&quot;
+(organization code), or &quot;name&quot; (name) which is used to
+match data with df. Business ID takes precedence, and
+match based on name is checked last if other matches
+are not found. (By default: suppl_data=None)
+
+service_data: None or non-empty pandas.DataFrame containing
+service category data. It must include a column named &quot;number&quot;
+(code) or &quot;name&quot; (name) which is used to match data with df.
+Number takes precedence, and match based on name is checked
+last if other matches are not found. If None, information from
+package's own database is added. (By default: service_data=None)
+
+account_data: None or non-empty pandas.DataFrame containing
+account data. It must include a column named &quot;number&quot;
+(code) or &quot;name&quot; (name) which is used to match data with df.
+Number takes precedence, and match based on name is checked
+last if other matches are not found. If None, information from
+package's own database is added. (By default: account_data=None)
+
+disable_org: A boolean value specifying whether to add organization
+data to the dataset (df). (By default: disable_org=False)
+
+disable_suppl: A boolean value specifying whether to add supplier
+data to the dataset (df). (By default: disable_suppl=False)
+
+disable_service: A boolean value specifying whether to add service
+data to the dataset (df). (By default: disable_service=False)
+
+disable_account: A boolean value specifying whether to add account
+data to the dataset (df). (By default: disable_account=False)
+
+disable_sums: A boolean value specifying whether to calculate
+possible missing value (total, VAT amount or price excluding VAT)
+based on other two values. (By default: disable_sums=False)
+
+subset_account_data: None or a string value (&quot;tase&quot; or &quot;tuloslaskelma&quot;)
+specifying whether to use account data from package's database from
+balance sheet (&quot;tase&quot;) or income statement (&quot;tuloslaskelma&quot;).
+If None, unique values are taken where balance sheet takes the
+precedence. (By default: subset_account_data=None)
+
+db_year: An integer value specifying the year of service and
+account database. If None, unique values are taken where the most
+present values take the precedence (By default: df_year=None)
+
 </code></pre>
-<p>Details:</p>
+<h2 id="details">Details</h2>
+<p>This function enriches the dataset. The package includes some
+basic information, e.g., on organization, but you get more out of it
+by feeding more sophisticated and detailed data to the function with
+arguments. The datasets that are added must include specific columns.
+More detailed information is given in desciptions of each argument.</p>
+<p>Furthermore, the function is used to complement the data if one of
+the values descriping price, VAT and total price is missing.</p>
 <h2 id="examples">Examples</h2>
-<pre><code>
+<pre><code>df = enrich_data(df, org_data=org_data, suppl_data=suppl_data)
+
 </code></pre>
-<p>Output:</p></div>
+<h2 id="output">Output</h2>
+<p>A pandas.DataFrame including enriched dataset.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def enrich_data(df, **args):
     &#34;&#34;&#34;
-    Change column names of pandas.DataFrame
+    This function adds external data to dataset.
 
     Arguments:
         ```
         df: pandas.DataFrame containing invoice data.
 
+        org_data: None or non-empty pandas.DataFrame containing
+        organization data. It must include a column named &#34;bid&#34;
+        (business ID), &#34;vat_number&#34; (VAT number), &#34;number&#34;
+        (organization code), or &#34;name&#34; (name) which is used to
+        match data with df. Business ID takes precedence, and
+        match based on name is checked last if other matches
+        are not found. If None, only general information,
+        such as business ID and province, from package&#39;s
+        database is added. (By default: org_data=None)
+
+        suppl_data: None or non-empty pandas.DataFrame containing
+        supplier data. It must include a column named &#34;bid&#34;
+        (business ID), &#34;vat_number&#34; (VAT number), &#34;number&#34;
+        (organization code), or &#34;name&#34; (name) which is used to
+        match data with df. Business ID takes precedence, and
+        match based on name is checked last if other matches
+        are not found. (By default: suppl_data=None)
+
+        service_data: None or non-empty pandas.DataFrame containing
+        service category data. It must include a column named &#34;number&#34;
+        (code) or &#34;name&#34; (name) which is used to match data with df.
+        Number takes precedence, and match based on name is checked
+        last if other matches are not found. If None, information from
+        package&#39;s own database is added. (By default: service_data=None)
+
+        account_data: None or non-empty pandas.DataFrame containing
+        account data. It must include a column named &#34;number&#34;
+        (code) or &#34;name&#34; (name) which is used to match data with df.
+        Number takes precedence, and match based on name is checked
+        last if other matches are not found. If None, information from
+        package&#39;s own database is added. (By default: account_data=None)
+
+        disable_org: A boolean value specifying whether to add organization
+        data to the dataset (df). (By default: disable_org=False)
+
+        disable_suppl: A boolean value specifying whether to add supplier
+        data to the dataset (df). (By default: disable_suppl=False)
+
+        disable_service: A boolean value specifying whether to add service
+        data to the dataset (df). (By default: disable_service=False)
+
+        disable_account: A boolean value specifying whether to add account
+        data to the dataset (df). (By default: disable_account=False)
+
+        disable_sums: A boolean value specifying whether to calculate
+        possible missing value (total, VAT amount or price excluding VAT)
+        based on other two values. (By default: disable_sums=False)
+
+        subset_account_data: None or a string value (&#34;tase&#34; or &#34;tuloslaskelma&#34;)
+        specifying whether to use account data from package&#39;s database from
+        balance sheet (&#34;tase&#34;) or income statement (&#34;tuloslaskelma&#34;).
+        If None, unique values are taken where balance sheet takes the
+        precedence. (By default: subset_account_data=None)
+
+        db_year: An integer value specifying the year of service and
+        account database. If None, unique values are taken where the most
+        present values take the precedence (By default: df_year=None)
+
         ```
 
     Details:
+        This function enriches the dataset. The package includes some
+        basic information, e.g., on organization, but you get more out of it
+        by feeding more sophisticated and detailed data to the function with
+        arguments. The datasets that are added must include specific columns.
+        More detailed information is given in desciptions of each argument.
+
+        Furthermore, the function is used to complement the data if one of
+        the values descriping price, VAT and total price is missing.
 
     Examples:
         ```
+        df = enrich_data(df, org_data=org_data, suppl_data=suppl_data)
 
         ```
 
     Output:
-
+        A pandas.DataFrame including enriched dataset.
 
     &#34;&#34;&#34;
     # INPUT CHECK
@@ -1630,7 +1877,8 @@ Office (Patentti- ja Rekisterihallitus, PRH) and The Business
 Information System (Yritystietojärjestelmä, YTJ). Resources of
 services are limited. Please use the function only when needed, and
 store the results if possible. Search in smaller batches to prevent
-problems with resource allocation.</p>
+problems with resource allocation. The function requires working
+internet connection.</p>
 <h2 id="examples">Examples</h2>
 <pre><code>bids = pd.Series([&quot;1458359-3&quot;, &quot;2403929-2&quot;])
 df = fetch_company_data(bids)
@@ -1677,7 +1925,8 @@ df = fetch_company_data(bids)
         Information System (Yritystietojärjestelmä, YTJ). Resources of
         services are limited. Please use the function only when needed, and
         store the results if possible. Search in smaller batches to prevent
-        problems with resource allocation.
+        problems with resource allocation. The function requires working
+        internet connection.
 
     Examples:
         ```
@@ -1743,8 +1992,8 @@ df = fetch_company_data(bids)
     progress_bar_width = 50
     # Loop though BIDs
     for bid_i, bid in enumerate(ser.to_numpy()):
-        # update the progress bar
-        percent = 100*(bid_i/(len(ser)-1))
+        # Update the progress bar
+        percent = 100*((bid_i+1)/len(ser))
         sys.stdout.write(&#39;\r&#39;)
         sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
                          .format(&#39;=&#39;*int(percent/(100/progress_bar_width)),
@@ -1905,7 +2154,7 @@ df = fetch_company_data(bids)
 </details>
 </dd>
 <dt id="osta.enrich_data.fetch_financial_data"><code class="name flex">
-<span>def <span class="ident">fetch_financial_data</span></span>(<span>org_bids, years, subset=True, language='en', rename_cols=True, **args)</span>
+<span>def <span class="ident">fetch_financial_data</span></span>(<span>org_bids, years, subset=True, wide_format=True, language='en', rename_cols=True, **args)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Fetch financial data of municipalities.</p>
@@ -1917,6 +2166,11 @@ that will be fetched.
 
 subset: a boolean value specifying whether only certain key figures
 are returned. (By default: subset=True)
+
+wide_format: a boolean value specifying whether result is returned as
+wide format. When wide format is specified, the returned table contains
+only columns with financial values and corresponding organization
+without report metadata. (By default: wide_format=True)
 
 language: A string specifying the language of fetched data. Must be
 &quot;en&quot; (English), &quot;fi&quot; (Finnish), or &quot;sv&quot; (Swedish).
@@ -1931,10 +2185,11 @@ a way that is expected by other functions.
 (KKNR20XXC12, KKTR20XX, and KKOTR20XX) from the database
 of State Treasury of Finland (Valtiokonttori). The data is fetched
 based on business ID and year. Currently, database include data only
-in Finnish and Swedish.</p>
+in Finnish and Swedish. The function requires working internet
+connection.</p>
 <p>When data is subsetted, only certain key figures are returned. They
-include (in Finnish):
-"Antolainasaamisten lisäys",
+include (in Finnish):</p>
+<pre><code>"Antolainasaamisten lisäys",
 "Antolainasaamisten vähennys",
 "Antolainasaamisten muutokset + (-)",
 "Antolainasaamisten muutokset",
@@ -1972,7 +2227,8 @@ include (in Finnish):
 "8800-8800 Tilikauden ylijäämä (alijäämä)",
 "Toimintakate",
 "Toimintakulut",
-"Toimintatulot"</p>
+"Toimintatulot"
+</code></pre>
 <p>&hellip; of municipality and&hellip;</p>
 <pre><code>"Antolainasaamisten lisäys",
 "Antolainasaamisten vähennys",
@@ -2002,6 +2258,7 @@ include (in Finnish):
 "Tilikauden ylijäämä (alijäämä)",
 "Toiminnan rahavirta",
 "Tulorahoituksen korjauserät",
+"Tuloveroprosentti",
 "Vuosikate"
 </code></pre>
 <p>&hellip; of municipal group.</p>
@@ -2016,7 +2273,7 @@ df = fetch_financial_data(codes, years)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def fetch_financial_data(org_bids, years, subset=True,
+<pre><code class="python">def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
                          language=&#34;en&#34;, rename_cols=True, **args):
     &#34;&#34;&#34;
     Fetch financial data of municipalities.
@@ -2030,6 +2287,11 @@ df = fetch_financial_data(codes, years)
 
         subset: a boolean value specifying whether only certain key figures
         are returned. (By default: subset=True)
+
+        wide_format: a boolean value specifying whether result is returned as
+        wide format. When wide format is specified, the returned table contains
+        only columns with financial values and corresponding organization
+        without report metadata. (By default: wide_format=True)
 
         language: A string specifying the language of fetched data. Must be
         &#34;en&#34; (English), &#34;fi&#34; (Finnish), or &#34;sv&#34; (Swedish).
@@ -2045,10 +2307,12 @@ df = fetch_financial_data(codes, years)
         (KKNR20XXC12, KKTR20XX, and KKOTR20XX) from the database
         of State Treasury of Finland (Valtiokonttori). The data is fetched
         based on business ID and year. Currently, database include data only
-        in Finnish and Swedish.
+        in Finnish and Swedish. The function requires working internet
+        connection.
 
         When data is subsetted, only certain key figures are returned. They
         include (in Finnish):
+
             &#34;Antolainasaamisten lisäys&#34;,
             &#34;Antolainasaamisten vähennys&#34;,
             &#34;Antolainasaamisten muutokset + (-)&#34;,
@@ -2119,6 +2383,7 @@ df = fetch_financial_data(codes, years)
             &#34;Tilikauden ylijäämä (alijäämä)&#34;,
             &#34;Toiminnan rahavirta&#34;,
             &#34;Tulorahoituksen korjauserät&#34;,
+            &#34;Tuloveroprosentti&#34;,
             &#34;Vuosikate&#34;
 
         ... of municipal group.
@@ -2148,6 +2413,10 @@ df = fetch_financial_data(codes, years)
         raise Exception(
             &#34;&#39;subset&#39; must be a boolean value.&#34;
             )
+    if not isinstance(wide_format, bool):
+        raise Exception(
+            &#34;&#39;wide_format&#39; must be a boolean value.&#34;
+            )
     if not (isinstance(language, str) and language in [&#34;fi&#34;, &#34;en&#34;, &#34;sv&#34;]):
         raise Exception(
             &#34;&#39;language&#39; must be &#39;en&#39;, &#39;fi&#39;, or &#39;sv&#39;.&#34;
@@ -2169,13 +2438,14 @@ df = fetch_financial_data(codes, years)
     df_org = pd.DataFrame([org_bids, years], index=[&#34;org_bid&#34;, &#34;year&#34;])
     df_org = df_org.transpose()
     df_org = df_org.drop_duplicates()
+    df_org = df_org.reset_index(drop=True)
     # For progress bar, specify the width of it
     progress_bar_width = 50
     # Loop over rows
     df = pd.DataFrame()
     for i, r in df_org.iterrows():
-        # update the progress bar
-        percent = 100*(i/(df_org.shape[0]-1))
+        # Update the progress bar
+        percent = 100*((i+1)/df_org.shape[0])
         sys.stdout.write(&#39;\r&#39;)
         sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
                          .format(&#39;=&#39;*int(percent/(100/progress_bar_width)),
@@ -2185,7 +2455,7 @@ df = fetch_financial_data(codes, years)
         df_temp = __fetch_org_financial_data_help(
             r[&#34;org_bid&#34;], r[&#34;year&#34;], subset=subset, language=language, **args)
         # Add organization and year info
-        df_temp[&#34;org_bid&#34;] = r[&#34;org_bid&#34;]
+        df_temp[&#34;bid&#34;] = r[&#34;org_bid&#34;]
         df_temp[&#34;year&#34;] = r[&#34;year&#34;]
         # Add to whole data
         df = pd.concat([df, df_temp])
@@ -2205,11 +2475,17 @@ df = fetch_financial_data(codes, years)
             &#34;taksonomia&#34;: &#34;report_taxonomy&#34;,
             &#34;tarkastushavainnot&#34;: &#34;report_observations&#34;,
             &#34;tunnusluku&#34;: &#34;key_figure&#34;,
-            &#34;ytunnus&#34;: &#34;bid&#34;,
+            &#34;ytunnus&#34;: &#34;org_bid&#34;,
             &#34;tunnusluku_lab&#34;: &#34;key_figure_label&#34;,
             &#34;arvo&#34;: &#34;value&#34;,
             }
         df = df.rename(columns=new_colnames)
+    # If specified, convert into wide format
+    if wide_format:
+        df = df.pivot_table(index=&#34;bid&#34;,
+                            columns=&#34;key_figure_label&#34;,
+                            values=&#34;value&#34;)
+        df = df.reset_index(drop=False)
     # Stop progress bar
     sys.stdout.write(&#34;\n&#34;)
     return df</code></pre>
@@ -2233,7 +2509,8 @@ a way that is expected by other functions.
 </code></pre>
 <h2 id="details">Details</h2>
 <p>This function fetches data on companies of municipalities (TOLT)
-from the database of State Treasury of Finland (Valtiokonttori).</p>
+from the database of State Treasury of Finland (Valtiokonttori).
+The function requires working internet connection.</p>
 <h2 id="examples">Examples</h2>
 <pre><code>codes = pd.Series([&quot;0135202-4&quot;, &quot;1567535-0&quot;])
 years = pd.Series([&quot;2021&quot;, &quot;2022&quot;])
@@ -2266,6 +2543,7 @@ df = fetch_org_company_data(codes, years)
     Details:
         This function fetches data on companies of municipalities (TOLT)
         from the database of State Treasury of Finland (Valtiokonttori).
+        The function requires working internet connection.
 
     Examples:
         ```
@@ -2317,7 +2595,7 @@ df = fetch_org_company_data(codes, years)
     df = pd.DataFrame()
     for i, r in df_org.iterrows():
         # Update the progress bar
-        percent = 100*(i/(df_org.shape[0]-1))
+        percent = 100*((i+1)/df_org.shape[0])
         sys.stdout.write(&#39;\r&#39;)
         sys.stdout.write(&#34;Completed: [{:{}}] {:&gt;3}%&#34;
                          .format(&#39;=&#39;*int(percent/(100/progress_bar_width)),
@@ -2356,35 +2634,44 @@ df = fetch_org_company_data(codes, years)
             &#34;virhetilanne&#34;: &#34;report_error&#34;,
             }
         df = df.rename(columns=new_colnames)
-    # Convert specific column to numeric
+    # Convert specific column to float
     if &#34;share_vote&#34; in df.columns:
-        df[&#34;share_vote&#34;] = df[&#34;share_vote&#34;].astype(float)
+        df[&#34;share_vote&#34;] = df[&#34;share_vote&#34;].astype(str).str.strip(
+            ).replace(r&#39;^\s*$&#39;, None, regex=True).astype(float)
     if &#34;share_capital&#34; in df.columns:
-        df[&#34;share_capital&#34;] = df[&#34;share_capital&#34;].astype(float)
+        df[&#34;share_capital&#34;] = df[&#34;share_capital&#34;].astype(str).str.strip(
+            ).replace(r&#39;^\s*$&#39;, None, regex=True).astype(float)
     # Stop progress bar
     sys.stdout.write(&#34;\n&#34;)
     return df</code></pre>
 </details>
 </dd>
 <dt id="osta.enrich_data.fetch_org_data"><code class="name flex">
-<span>def <span class="ident">fetch_org_data</span></span>(<span>org_codes, years=None, language='en')</span>
+<span>def <span class="ident">fetch_org_data</span></span>(<span>org_codes, years, language='en', add_bid=True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Fetch municipality data from databases.</p>
 <h2 id="arguments">Arguments</h2>
 <pre><code>org_codes: pd.Series including municipality codes.
 
-years: None or pd.Series including years specifying the year of data
-that will be fetched. If not None, the lenght must be equal with
-'org_codes'. If None, the most previous data will be fetched.
-(By default: years=None)
+years: pd.Series including years specifying the year of data
+that will be fetched. The lenght must be equal with
+'org_codes'.
 
 language: A string specifying the language of fetched data. Must be
 &quot;en&quot; (English), &quot;fi&quot; (Finnish), or &quot;sv&quot; (Swedish).
+(By default: language=&quot;en&quot;)
+
+add_bid: A boolean value specifying whether to add business ID of
+organization so that the returned table has a common identifier that
+matches with returned table of other interfaces.
+(By default: add_bid=True)
+
 </code></pre>
 <h2 id="details">Details</h2>
 <p>This function fetches municipality key figures from the database of
-Statistics Finland (Tilastokeskus).</p>
+Statistics Finland (Tilastokeskus). The function requires working
+internet connection.</p>
 <h2 id="examples">Examples</h2>
 <pre><code>codes = pd.Series([&quot;005&quot;, &quot;020&quot;])
 years = pd.Series([&quot;02.05.2021&quot;, &quot;20.10.2020&quot;])
@@ -2396,7 +2683,7 @@ df = fetch_org_data(codes, years, language=&quot;fi&quot;)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def fetch_org_data(org_codes, years=None, language=&#34;en&#34;):
+<pre><code class="python">def fetch_org_data(org_codes, years, language=&#34;en&#34;, add_bid=True):
     &#34;&#34;&#34;
     Fetch municipality data from databases.
 
@@ -2404,18 +2691,25 @@ df = fetch_org_data(codes, years, language=&quot;fi&quot;)
         ```
         org_codes: pd.Series including municipality codes.
 
-        years: None or pd.Series including years specifying the year of data
-        that will be fetched. If not None, the lenght must be equal with
-        &#39;org_codes&#39;. If None, the most previous data will be fetched.
-        (By default: years=None)
+        years: pd.Series including years specifying the year of data
+        that will be fetched. The lenght must be equal with
+        &#39;org_codes&#39;.
 
         language: A string specifying the language of fetched data. Must be
         &#34;en&#34; (English), &#34;fi&#34; (Finnish), or &#34;sv&#34; (Swedish).
+        (By default: language=&#34;en&#34;)
+
+        add_bid: A boolean value specifying whether to add business ID of
+        organization so that the returned table has a common identifier that
+        matches with returned table of other interfaces.
+        (By default: add_bid=True)
+
         ```
 
     Details:
         This function fetches municipality key figures from the database of
-        Statistics Finland (Tilastokeskus).
+        Statistics Finland (Tilastokeskus). The function requires working
+        internet connection.
 
     Examples:
         ```
@@ -2432,33 +2726,38 @@ df = fetch_org_data(codes, years, language=&quot;fi&quot;)
         raise Exception(
             &#34;&#39;org_codes&#39; must be non-empty pandas.Series.&#34;
             )
-    if not ((isinstance(years, pd.Series) and len(years) == len(org_codes))
-            or years is None):
+    if not ((isinstance(years, pd.Series) and len(years) == len(org_codes))):
         raise Exception(
-            &#34;&#39;years&#39; must be None or non-empty pandas.Series matching with &#34; +
+            &#34;&#39;years&#39; must be non-empty pandas.Series matching with &#34; +
             &#34;&#39;org_codes&#39;.&#34;
             )
     if not (isinstance(language, str) and language in [&#34;fi&#34;, &#34;en&#34;, &#34;sv&#34;]):
         raise Exception(
             &#34;&#39;language&#39; must be &#39;en&#39;, &#39;fi&#39;, or &#39;sv&#39;.&#34;
             )
+    if not isinstance(add_bid, bool):
+        raise Exception(
+            &#34;&#39;add_bid&#39; must be True or False.&#34;
+            )
     # INPUT CHECK END
-    # If years were provided
-    if years is not None:
-        try:
-            # Test if year can be detected
-            years = pd.to_datetime(years).dt.year
-            years = years.astype(str)
-        except Exception:
-            warnings.warn(
-                message=&#34;&#39;years&#39; were not detected. The most recent data &#34; +
-                &#34;from database is being fetched.&#34;,
-                category=Warning
-                )
-            years = None
+    # Check that years are in correct format
+    try:
+        # Test if year can be detected
+        years = pd.to_datetime(years).dt.year
+        years = years.astype(str)
+    except Exception:
+        raise Exception(
+            &#34;&#39;years&#39; were not detected.&#34;
+            )
     # Find the most recent data
     url = &#34;https://statfin.stat.fi/PXWeb/api/v1/fi/Kuntien_avainluvut&#34;
     r = requests.get(url)
+
+    # If the call was not succesfull, return empty DF
+    df = pd.DataFrame()
+    if not r.ok:
+        return df
+
     text = r.json()
     available_years = [x.get(&#34;id&#34;) for x in text]
     year_max = max(available_years)
@@ -2468,27 +2767,24 @@ df = fetch_org_data(codes, years, language=&quot;fi&quot;)
     url = (&#34;https://statfin.stat.fi/PXWeb/api/v1/fi/Kuntien_avainluvut/&#34; +
            year_max)
     r = requests.get(url)
-    try:
-        text = r.json()
-        # Find available years based on pattern in id
-        found_year = [x.get(&#34;text&#34;) for x in text if x.get(&#34;id&#34;) ==
-                      &#34;kuntien_avainluvut_&#34; + year_max + &#34;_aikasarja.px&#34;][0]
-        p = re.compile(&#34;\\d\\d\\d\\d-\\d\\d\\d\\d&#34;)
-        found_year = p.search(found_year).group().split(&#34;-&#34;)
-        # Getn only years that are available
-        years_temp = [x if int(x) in
-                      list(range(int(found_year[0]), int(found_year[1])+1))
-                      else None for x in years]
-        years_not_found = [x for i, x in enumerate(years_temp)
-                           if x != years[i]]
-        if len(years_not_found):
-            warnings.warn(
-                message=f&#34;The following &#39;years&#39; were not found from the &#34;
-                f&#34;database: {years_not_found}&#34;,
-                category=Warning
-                )
-    except Exception:
-        years_temp = years
+    text = r.json()
+    # Find available years based on pattern in id
+    found_year = [x.get(&#34;text&#34;) for x in text if x.get(&#34;id&#34;) ==
+                  &#34;kuntien_avainluvut_&#34; + year_max + &#34;_aikasarja.px&#34;][0]
+    p = re.compile(&#34;\\d\\d\\d\\d-\\d\\d\\d\\d&#34;)
+    found_year = p.search(found_year).group().split(&#34;-&#34;)
+    # Getn only years that are available
+    years_temp = [x if int(x) in
+                  list(range(int(found_year[0]), int(found_year[1])+1))
+                  else None for x in years]
+    years_not_found = [x for i, x in enumerate(years)
+                       if x != years_temp[i]]
+    if len(years_not_found):
+        warnings.warn(
+            message=f&#34;The following &#39;years&#39; were not found from the &#34;
+            f&#34;database: {np.unique(years_not_found).tolist()}&#34;,
+            category=Warning
+            )
     # Check which municipalties are found from the database / are correct
     # path = pkg_resources.resource_filename(
     #     &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
@@ -2497,16 +2793,16 @@ df = fetch_org_data(codes, years, language=&quot;fi&quot;)
     # Get only correct municipality codes
     codes_temp = [x if x in org_data[&#34;number&#34;].tolist() else
                   None for x in org_codes]
-    codes_not_found = [x for i, x in enumerate(codes_temp)
-                       if x != org_codes[i]]
+    codes_not_found = [x for i, x in enumerate(org_codes)
+                       if x != codes_temp[i]]
     if len(codes_not_found):
         warnings.warn(
             message=f&#34;The following &#39;codes&#39; were not found from the database: &#34;
-            f&#34;{codes_not_found}&#34;,
+            f&#34;{np.unique(codes_not_found).tolist()}&#34;,
             category=Warning
             )
     # Create DF, drop duplicates, and remove incorrect years and codes
-    df = pd.DataFrame({&#34;code&#34;: codes_temp, &#34;year&#34;: years_temp})
+    df = pd.DataFrame({&#34;number&#34;: codes_temp, &#34;year&#34;: years_temp})
     df = df.drop_duplicates()
     df = df.dropna()
     # Get URL and correct parameters of the time series database
@@ -2515,7 +2811,8 @@ df = fetch_org_data(codes, years, language=&quot;fi&quot;)
            year_max + &#34;_aikasarja.px&#34;)
     params = {&#34;query&#34;: [{&#34;code&#34;: &#34;Alue &#34; + year_max,
                          &#34;selection&#34;: {&#34;filter&#34;: &#34;item&#34;, &#34;values&#34;:
-                                       df[&#34;code&#34;].drop_duplicates().tolist()}},
+                                       df[&#34;number&#34;].drop_duplicates(
+                                           ).tolist()}},
                         {&#34;code&#34;: &#34;Vuosi&#34;,
                          &#34;selection&#34;: {&#34;filter&#34;: &#34;item&#34;, &#34;values&#34;:
                                        df[&#34;year&#34;
@@ -2524,7 +2821,7 @@ df = fetch_org_data(codes, years, language=&quot;fi&quot;)
               }
     # Find results
     r = requests.post(url, json=params)
-    if r.status_code:
+    if r.ok:
         text = r.json()
         # Find labels, code, years and values
         label = list(text.get(&#34;dimension&#34;).get(&#34;Tiedot&#34;).get(
@@ -2546,13 +2843,13 @@ df = fetch_org_data(codes, years, language=&quot;fi&quot;)
             df_temp = pd.concat([df_temp, temp], axis=1)
         # Add label and code
         df_temp.index = label
-        df_temp.loc[&#34;code&#34;, :] = [x for x in code for i in range(len(years))]
-        year_temp = []
-        for x in [years for i in range(len(code))]:
-            year_temp.extend(x)
-        df_temp.loc[&#34;year&#34;, :] = year_temp
+        df_temp.loc[&#34;number&#34;, :] = [x for x in code for i in range(len(years))]
         df_temp = df_temp.transpose()
         df = pd.merge(df, df_temp)
+    # If specified, add business ID
+    if add_bid and not df.empty:
+        df = pd.merge(df, org_data.loc[:, [&#34;number&#34;, &#34;bid&#34;]],
+                      how=&#34;left&#34;, left_on=&#34;number&#34;, right_on=&#34;number&#34;)
     return df</code></pre>
 </details>
 </dd>

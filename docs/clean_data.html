@@ -804,8 +804,8 @@ def __standardize_account(df, disable_account=False, account_data=None,
             &#34;osta&#34;, &#34;resources/&#34; + &#34;account_info.csv&#34;)
         account_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years
-        account_data = __subset_data_based_on_year(df, df_db=account_data,
-                                                   **args)
+        account_data = utils.__subset_data_based_on_year(
+            df, df_db=account_data, **args)
         # If user specified balance sheet or income statement,
         # get only specified accounts
         if subset_account_data is not None:
@@ -856,8 +856,8 @@ def __standardize_service(df, disable_service=False,
             &#34;osta&#34;, &#34;resources/&#34; + &#34;service_codes.csv&#34;)
         service_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years
-        service_data = __subset_data_based_on_year(df, df_db=service_data,
-                                                   **args)
+        service_data = utils.__subset_data_based_on_year(
+            df, df_db=service_data, **args)
     # Column of db that are matched with columns that are being checked
     # Subset to match with cols_to_check
     cols_to_match = [&#34;number&#34;, &#34;name&#34;]
@@ -1364,51 +1364,7 @@ def __check_voucher(df, disable_voucher=False, **args):
             &#34;voucher values. Please check it for errors.&#34;,
             category=Warning
             )
-    return df
-
-
-def __subset_data_based_on_year(df, df_db, db_year=None,
-                                date_format=&#34;%d-%m-%Y&#34;, **args):
-    &#34;&#34;&#34;
-    This function subsets database by taking only specific years that user
-    has specified or that can be found from the data.
-    Input: df, data base, year_option, date_format
-    Output: Subsetted data base
-    &#34;&#34;&#34;
-    if db_year is not None:
-        db_year = [db_year] if isinstance(db_year, int) else db_year
-        db_year = [x for x in db_year if any(x == df_db[&#34;year&#34;])]
-        if len(db_year) &gt; 0:
-            # Subset data
-            ind = (df_db[&#34;year&#34;] &lt;= max(db_year)).values &amp; (
-                df_db[&#34;year&#34;] &gt;= min(db_year)).values
-            df_db = df_db.loc[ind, :]
-        else:
-            years = df_db[&#34;year&#34;].drop_duplicates().values.tolist()
-            raise Exception(
-                f&#34;&#39;db_year&#39; must be one of the following options: &#34;
-                f&#34;{years}&#34;,
-                )
-    else:
-        # Check if column(s) is found as non-duplicated
-        cols_to_check = [&#34;date&#34;]
-        cols_to_check = utils.__not_duplicated_columns_found(df, cols_to_check)
-        if len(cols_to_check) == 1:
-            col_to_check = cols_to_check[0]
-            # INPUT CHECK END
-            # Get date column
-            date = df.loc[:, col_to_check]
-            # Extract year if possible
-            if &#34;date&#34; in df.columns:
-                try:
-                    year = pd.to_datetime(date, format=date_format)
-                    year = date.dt.year.drop_duplicates().sort_values()
-                    df_db = df_db.loc[df_db[&#34;year&#34;] == year, :]
-                except Exception:
-                    pass
-    # Get only unique values
-    df_db = df_db.drop_duplicates(subset=[&#34;number&#34;, &#34;name&#34;])
-    return df_db</code></pre>
+    return df</code></pre>
 </details>
 </section>
 <section>
