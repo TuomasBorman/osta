@@ -308,4 +308,3 @@ def __create_dummy_data():
             }
     df = pd.DataFrame(data)
     return df
-
