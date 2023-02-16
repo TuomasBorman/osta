@@ -287,6 +287,9 @@ def test_fetch_org_data_wrong_arguments():
 
 def test_enrich_data():
     df = __create_dummy_data()
+    # Check that data is added correctly
+    # Check tat sum is calculated correctly
+    # Check that arguments work
 
 
 def __create_dummy_data():
