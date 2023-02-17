@@ -286,7 +286,6 @@ def test_enrich_data():
     df = enrich_data(df, org_data=df_add)
     df = df.loc[:, ["test", "org_number", "org_info"]]
     df_expect["org_info"] = ["information", None, None]
-    # Expect that are equal
     assert_frame_equal(df, df_expect)
 
     df = __create_dummy_data()
@@ -300,7 +299,6 @@ def test_enrich_data():
     df = enrich_data(df, suppl_data=df_add)
     df = df.loc[:, ["suppl_name", "test", "suppl_info"]]
     df_expect["suppl_info"] = ["information", None, "information"]
-    # Expect that are equal
     assert_frame_equal(df, df_expect)
 
     df = __create_dummy_data()
@@ -314,7 +312,6 @@ def test_enrich_data():
     df = enrich_data(df, account_data=df_add)
     df = df.loc[:, ["account_name", "test", "account_info"]]
     df_expect["account_info"] = ["information", None, "information"]
-    # Expect that are equal
     assert_frame_equal(df, df_expect)
 
     df = __create_dummy_data()
@@ -327,7 +324,6 @@ def test_enrich_data():
     df = enrich_data(df, service_data=df_add)
     df = df.loc[:, ["test", "service_cat", "service_info"]]
     df_expect["service_info"] = ["information", None, None]
-    # Expect that are equal
     assert_frame_equal(df, df_expect)
 
     df = __create_dummy_data()
@@ -338,7 +334,6 @@ def test_enrich_data():
     df_add = pd.DataFrame(data)
     df_expect = df.copy()
     df = enrich_data(df, service_data=df_add, disable_service=True)
-    # Expect that are equal
     assert_frame_equal(df, df_expect)
 
     data = {"vat_amount": [0.5, 1, 4],
@@ -348,7 +343,6 @@ def test_enrich_data():
     df_expect = df.copy()
     df = enrich_data(df)
     df_expect["price_ex_vat"] = [0.5, 0.5, 1]
-    # Expect that are equal
     assert_frame_equal(df, df_expect)
 
     data = {"vat_amount": [0.5, 1, 4],
