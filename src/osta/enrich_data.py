@@ -195,7 +195,8 @@ def __add_account_data(df, disable_account=False, account_data=None,
         raise Exception(
             "'disable_account' must be True or False."
             )
-    if subset_account_data not in ["tase", "tuloslaskelma"]:
+    if not (subset_account_data in ["tase", "tuloslaskelma"] or
+            subset_account_data is None):
         raise Exception(
             "'subset_account_data' must be 'tase' or 'tuloslaskelma'."
             )
@@ -373,7 +374,7 @@ def __add_data_from_db(df, df_db, cols_to_check, cols_to_match, prefix):
     return df
 
 
-def __add_sums(df, disable_sums=False):
+def __add_sums(df, disable_sums=False, **args):
     """
     This function adds sums (total, vat_amount or price_ex_vat) if
     some is missing.

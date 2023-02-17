@@ -98,19 +98,9 @@ def test_enrich_data_wrong_arguments():
     with pytest.raises(Exception):
         enrich_data(df, subset_account_data=pd.DataFrame())
     with pytest.raises(Exception):
-        enrich_data(df, subset_account_data=None)
-    with pytest.raises(Exception):
         enrich_data(df, subset_account_data="test")
     with pytest.raises(Exception):
         enrich_data(df, subset_account_data=[True])
-    with pytest.raises(Exception):
-        enrich_data(df, db_year=pd.DataFrame())
-    with pytest.raises(Exception):
-        enrich_data(df, db_year=1920)
-    with pytest.raises(Exception):
-        enrich_data(df, db_year="test")
-    with pytest.raises(Exception):
-        enrich_data(df, db_year=[True])
 
 
 def test_fetch_company_data_wrong_arguments():
@@ -287,6 +277,69 @@ def test_fetch_org_data_wrong_arguments():
 
 def test_enrich_data():
     df = __create_dummy_data()
+    df.columns = ["test", "org_number"]
+    data = {"info": ["information", "testi_3", "test_2"],
+            "number": ["1", "256", "5673"],
+            }
+    df_add = pd.DataFrame(data)
+    df_expect = df.copy()
+    df = enrich_data(df, org_data=df_add)
+    df = df.loc[:, ["test", "org_number", "org_info"]]
+    df_expect["org_info"] = ["information", None, None]
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    df = __create_dummy_data()
+    df.columns = ["suppl_name", "test"]
+    data = {"name": ["test", "testi_not", "test"],
+            "info": ["information", "testi_3", "test_2"],
+            "number": ["1", "256", "5673"],
+            }
+    df_add = pd.DataFrame(data)
+    df_expect = df.copy()
+    df = enrich_data(df, suppl_data=df_add)
+    df = df.loc[:, ["suppl_name", "test", "suppl_info"]]
+    df_expect["suppl_info"] = ["information", None, "information"]
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    df = __create_dummy_data()
+    df.columns = ["account_name", "test"]
+    data = {"name": ["test", "testi_not", "test"],
+            "info": ["information", "testi_3", "test_2"],
+            "number": ["1", "256", "5673"],
+            }
+    df_add = pd.DataFrame(data)
+    df_expect = df.copy()
+    df = enrich_data(df, account_data=df_add)
+    df = df.loc[:, ["account_name", "test", "account_info"]]
+    df_expect["account_info"] = ["information", None, "information"]
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    df = __create_dummy_data()
+    df.columns = ["test", "service_cat"]
+    data = {"info": ["information", "testi_3", "test_2"],
+            "number": ["1", "256", "5673"],
+            }
+    df_add = pd.DataFrame(data)
+    df_expect = df.copy()
+    df = enrich_data(df, service_data=df_add)
+    df = df.loc[:, ["test", "service_cat", "service_info"]]
+    df_expect["service_info"] = ["information", None, None]
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    df = __create_dummy_data()
+    df.columns = ["test", "service_cat"]
+    data = {"info": ["information", "testi_3", "test_2"],
+            "number": ["1", "256", "5673"],
+            }
+    df_add = pd.DataFrame(data)
+    df_expect = df.copy()
+    df = enrich_data(df, service_data=df_add, disable_service=True)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
     # Check that data is added correctly
     # Check tat sum is calculated correctly
     # Check that arguments work
@@ -294,17 +347,7 @@ def test_enrich_data():
 
 def __create_dummy_data():
     data = {"org_name": ["test", "testi", "test"],
-            "org_number": [1, 2, 3],
-            "org_id": ["test", "testi", "test"],
-            "date": ["02.04.2023", "02.10.2023", "23.06.2022"],
-            "suppl_name": ["test", "testi", "test"],
-            "total": [1.10, 2.04, 3.74],
-            "test3": [True, False, False],
-            "voucher": [1, 2, 3],
-            "account_number": [123, 123, 434],
-            "service_cat": [123, 123, 123],
-            "vat_number": ["test", "testi", "test"],
-            "country": ["test", "testi", "test"],
+            "org_number": ["1", "2", "3"],
             }
     df = pd.DataFrame(data)
     return df

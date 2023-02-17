@@ -316,6 +316,13 @@ def __subset_data_based_on_year(df, df_db, db_year=None,
     Input: df, data base, year_option, date_format
     Output: Subsetted data base
     """
+    # INPUT CHECK
+    if not (db_year is None or isinstance(db_year, str) or
+            isinstance(db_year, int)):
+        raise Exception(
+            "'db_year' must be None, string or integer specifying a year."
+            )
+    # INPUT CHECK END
     if db_year is not None:
         db_year = [db_year] if isinstance(db_year, int) else db_year
         db_year = [x for x in db_year if any(x == df_db["year"])]
