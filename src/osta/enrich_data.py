@@ -1202,6 +1202,7 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
     progress_bar_width = 50
     # Loop over rows
     df = pd.DataFrame()
+    df_not_found = pd.DataFrame()
     for i, r in df_org.iterrows():
         # Update the progress bar
         percent = 100*((i+1)/df_org.shape[0])
@@ -1216,8 +1217,14 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
         # Add organization and year info
         df_temp["bid"] = r["org_bid"]
         df_temp["year"] = r["year"]
-        # Add to whole data
-        df = pd.concat([df, df_temp])
+        # If the data was not found
+        if df_temp.empty:
+            df_temp = pd.DataFrame([r["org_bid"], r["year"]],
+                                   index=["bid", "year"]).transpose()
+            df_not_found = pd.concat([df_not_found, df_temp])
+        else:
+            # Add to whole data
+            df = pd.concat([df, df_temp])
     # Reset index and return whole data
     df = df.reset_index(drop=True)
     # Rename columns if specified
@@ -1245,12 +1252,19 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
                             columns="key_figure_label",
                             values="value")
         df = df.reset_index(drop=False)
+    # Give warning if some input values were not found
+    if not df_not_found.empty:
+        warnings.warn(
+            message=f"The following BID-year combinations were not found:\n"
+            f"{df_not_found}",
+            category=Warning
+            )
     # Stop progress bar
     sys.stdout.write("\n")
     return df
 
 
-def __fetch_org_financial_data_help(org_bid, year, subset, language):
+def __fetch_org_financial_data_help(org_bid, year, subset, language, **args):
     """
     Fetch financial data of municipalities (KKNR, KKTR, KKOTR).
 
@@ -1293,7 +1307,7 @@ def __fetch_org_financial_data_help(org_bid, year, subset, language):
     df = __fetch_financial_data(
         df=df, df_info=df_info,
         datatype="KKNR", year=(year + "C12"), key_figs=key_figs,
-        subset=subset, language=language)
+        subset=subset, language=language, **args)
     # Get kktr data
     key_figs = [
         "Antolainasaamisten lisäys",
@@ -1328,7 +1342,7 @@ def __fetch_org_financial_data_help(org_bid, year, subset, language):
     df = __fetch_financial_data(
         df=df, df_info=df_info,
         datatype="KKTR", year=year, key_figs=key_figs,
-        subset=subset, language=language)
+        subset=subset, language=language, **args)
     # Get kkotr data
     key_figs = [
         "Antolainasaamisten lisäys",
@@ -1364,7 +1378,7 @@ def __fetch_org_financial_data_help(org_bid, year, subset, language):
     df = __fetch_financial_data(
         df=df, df_info=df_info,
         datatype="KKOTR", year=year, key_figs=key_figs,
-        subset=subset, language=language)
+        subset=subset, language=language, **args)
     # Get ktpe data including only tax rate
     key_figs = [
         "Tuloveroprosentti",
@@ -1372,7 +1386,7 @@ def __fetch_org_financial_data_help(org_bid, year, subset, language):
     df = __fetch_financial_data(
         df=df, df_info=df_info,
         datatype="KTPE", year=year, key_figs=key_figs,
-        subset=True, language=language)
+        subset=True, language=language, **args)
     # Reset index and return whole data
     df = df.reset_index(drop=True)
     return df
@@ -1380,7 +1394,7 @@ def __fetch_org_financial_data_help(org_bid, year, subset, language):
 
 def __fetch_financial_data(df, df_info,
                            datatype, year, key_figs,
-                           subset, language):
+                           subset, language, **args):
     """
     Fetch certain financial data of municipalities.
 
@@ -1416,7 +1430,7 @@ def __fetch_financial_data(df, df_info,
         df_temp = pd.DataFrame(text)
         # Get labels
         fields = __fetch_financial_taxonomy(datatype=datatype, subset=subset,
-                                            key_figs=key_figs)
+                                            key_figs=key_figs, **args)
         # Add labels to data
         df_temp["tunnusluku_lab"] = df_temp[label_col].replace(
             to_replace=fields.loc[:, field_id].astype(str).tolist(),

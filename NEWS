@@ -2,3 +2,4 @@ Changes in version 0.*.*
 - Added change_names function
 - Rename package to osta
 - Added clean_data function
+- Added enrich_data fnction and functions that fetch data from different interfaces

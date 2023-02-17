@@ -351,7 +351,6 @@ def test_enrich_data():
     df = pd.DataFrame(data)
     df_expect = df.copy()
     df = enrich_data(df, disable_sums=True)
-    # Expect that are equal
     assert_frame_equal(df, df_expect)
 
 
@@ -367,7 +366,54 @@ def __test_internet_connection(url, timeout=5):
 @pytest.mark.skipif(not __test_internet_connection('https://www.google.com/'),
                     reason="No internet access")
 def test_fetch_company_data():
-    print("rjrjrj")
+    bids = pd.Series(["1567535-0", "2403929-2", "test"])
+    with pytest.warns(Warning):
+        df = fetch_company_data(bids, use_cache=False)
+    df = df.loc[:, ["bid", "name"]]
+    data = {"bid": ["1567535-0", "2403929-2", "test"],
+            "name": ["HUS-yhtymä", "Uros Oy", None],
+            }
+    df_expect = pd.DataFrame(data)
+    assert_frame_equal(df, df_expect)
+
+
+@pytest.mark.skipif(not __test_internet_connection('https://www.google.com/'),
+                    reason="No internet access")
+def test_fetch_financial_data():
+    codes = pd.Series(["0135202-4", "test"])
+    years = pd.Series(["2021", "2020"])
+    with pytest.warns(Warning):
+        df = fetch_financial_data(codes, years, use_cache=False)
+    df = df.loc[:, ["bid", "Lainakannan muutokset"]]
+    data = {"bid": ["0135202-4"],
+            "Lainakannan muutokset": [-286476.0],
+            }
+    df_expect = pd.DataFrame(data)
+    assert_frame_equal(df, df_expect, check_names=False)
+
+
+@pytest.mark.skipif(not __test_internet_connection('https://www.google.com/'),
+                    reason="No internet access")
+def test_fetch_org_company_data():
+    codes = pd.Series(["0204819-8"])
+    years = pd.Series(["2021"])
+    df = fetch_org_company_data(codes, years)
+    assert all(x in df["company_name"].tolist() for x in [
+        "Arkea Oy", "Kaarea Oy", "Turun Vesihuolto Oy"])
+
+
+@pytest.mark.skipif(not __test_internet_connection('https://www.google.com/'),
+                    reason="No internet access")
+def test_fetch_org_data():
+    codes = pd.Series(["005", "020"])
+    years = pd.Series(["2021", "2020"])
+    df = fetch_org_data(codes, years)
+    df = df.loc[:, ["number", "Population"]]
+    data = {"number": ["005", "005", "020", "020"],
+            "Population": ["9419", "9311", "16391", "16467"],
+            }
+    df_expect = pd.DataFrame(data)
+    assert_frame_equal(df, df_expect)
 
 
 def __create_dummy_data():
