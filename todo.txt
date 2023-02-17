@@ -1,7 +1,6 @@
 TODO:
 
 enrich_data
-- testit, data lisätään oikein, summa lasketaan oiken
 -testit, että hakee oikean tiedon databaseista
 
 - Löytyykö rajapintaa myös tililuettelolle? (ja palveluluokille)

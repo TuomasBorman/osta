@@ -355,6 +355,11 @@ def test_enrich_data():
     assert_frame_equal(df, df_expect)
 
 
+@pytest.mark.requires_internet
+def test_fetch_company_data():
+    print("rjrjrj")
+
+
 def __create_dummy_data():
     data = {"org_name": ["test", "testi", "test"],
             "org_number": ["1", "2", "3"],
