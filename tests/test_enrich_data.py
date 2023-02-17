@@ -8,7 +8,7 @@ from osta.enrich_data import fetch_org_data
 import pandas as pd
 from pandas.testing import assert_frame_equal
 import pytest
-import pkg_resources
+import requests
 
 
 def test_enrich_data_wrong_arguments():
@@ -355,7 +355,17 @@ def test_enrich_data():
     assert_frame_equal(df, df_expect)
 
 
-@pytest.mark.requires_internet
+def __test_internet_connection(url, timeout=5):
+    try:
+        request = requests.get(url, timeout=timeout)
+        res = request.ok
+    except Exception:
+        res = False
+    return res
+
+
+@pytest.mark.skipif(not __test_internet_connection('https://www.google.com/'),
+                    reason="No internet access")
 def test_fetch_company_data():
     print("rjrjrj")
 
