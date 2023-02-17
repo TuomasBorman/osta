@@ -340,9 +340,25 @@ def test_enrich_data():
     df = enrich_data(df, service_data=df_add, disable_service=True)
     # Expect that are equal
     assert_frame_equal(df, df_expect)
-    # Check that data is added correctly
-    # Check tat sum is calculated correctly
-    # Check that arguments work
+
+    data = {"vat_amount": [0.5, 1, 4],
+            "total": [1, 1.5, 5],
+            }
+    df = pd.DataFrame(data)
+    df_expect = df.copy()
+    df = enrich_data(df)
+    df_expect["price_ex_vat"] = [0.5, 0.5, 1]
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"vat_amount": [0.5, 1, 4],
+            "total": [1, 1.5, 5],
+            }
+    df = pd.DataFrame(data)
+    df_expect = df.copy()
+    df = enrich_data(df, disable_sums=True)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
 
 
 def __create_dummy_data():
