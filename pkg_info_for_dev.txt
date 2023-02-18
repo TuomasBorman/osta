@@ -50,7 +50,7 @@ pytest
 mypy src
 
 documentation:
-pdoc --html --output-dir ./docs --force  .
+pdoc --html --output-dir ./docs --template-dir ./docs/theme --force  .
 mv docs/osta/* docs
 rmdir docs/osta
 

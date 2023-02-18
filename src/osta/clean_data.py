@@ -18,83 +18,83 @@ def clean_data(df, **args):
     does not meet requirements, the function gives a warning.
 
     Arguments:
-        ```
-        df: pandas.DataFrame containing invoice data.
+        `df`: pandas.DataFrame containing invoice data.
 
-        **args: Additional arguments passes into other functions:
-            date_format: The format of date that will be in output data.
-            (By default: date_format="%d-%m-%Y")
+        `**args`: Additional arguments passes into other functions:
 
-            dayfirst: Boolean value or None to specify the format of date
-            in input data. 'If day comes before month in the date.'
-            If None, function determines the format automatically.
-            (By default: dayfirst=None)
+        `date_format`: The format of date that will be in output data.
+        (By default: date_format="%d-%m-%Y")
 
-            yearfirst: Boolean value or None to specify the format of date
-            in input data. 'If year comes first in the date.'
-            If None, function determines the format automatically.
-            (By default: yearfirst=None)
+        `dayfirst`: Boolean value or None to specify the format of date
+        in input data. 'If day comes before month in the date.'
+        If None, function determines the format automatically.
+        (By default: dayfirst=None)
 
-            country_format: A string speciying the format of country in the
-            output data. Must be one of the following options: 'name_fin',
-            'name_en', "code_2char", 'code_3char', 'code_num', or 'code_iso'.
-            (By default: country_format='code_2char')
+        `yearfirst`: Boolean value or None to specify the format of date
+        in input data. 'If year comes first in the date.'
+        If None, function determines the format automatically.
+        (By default: yearfirst=None)
 
-            pattern_th: A numeric value [0,1] specifying the threshold of
-            enough good match between names, e.g., 'org_name', and database.
-            Value over threshold have enough strong pattern and it is
-            interpreted to be a match. (By default: pattern_th=0.7)
+        `country_format`: A string speciying the format of country in the
+        output data. Must be one of the following options: 'name_fin',
+        'name_en', "code_2char", 'code_3char', 'code_num', or 'code_iso'.
+        (By default: country_format='code_2char')
 
-            scorer: A scorer function passed into fuzzywuzzy.process.extractOne
-            function that evaluates the match between names and database.
-            (By default: scorer=fuzz.token_sort_ratio)
+        `pattern_th`: A numeric value [0,1] specifying the threshold of
+        enough good match between names, e.g., 'org_name', and database.
+        Value over threshold have enough strong pattern and it is
+        interpreted to be a match. (By default: pattern_th=0.7)
 
-            org_data: pd.DataFrame or None. Database for organization data.
-            Data must include on of the following columns: 'name', 'number', or
-            'bid' specifying the name, number and business ID of organizations,
-            respectively. If None, packages default database is used.
-            (By default: org_data=None)
+        `scorer`: A scorer function passed into fuzzywuzzy.process.extractOne
+        function that evaluates the match between names and database.
+        (By default: scorer=fuzz.token_sort_ratio)
 
-            suppl_data: pd.DataFrame or None. Database for supplier data.
-            Data must include on of the following columns: 'name', 'number', or
-            'bid' specifying the name, number and business ID of suppliers,
-            respectively. If None, no database is used.
-            (By default: org_data=None)
+        `org_data`: pd.DataFrame or None. Database for organization data.
+        Data must include on of the following columns: 'name', 'number', or
+        'bid' specifying the name, number and business ID of organizations,
+        respectively. If None, packages default database is used.
+        (By default: org_data=None)
 
-            account_data: pd.DataFrame or None. Database for account data.
-            Data must include on of the following columns: 'name', or
-            'number' specifying the name and number accounts,
-            respectively. If None, packages default database is used.
-            (By default: account_data=None)
+        `suppl_data`: pd.DataFrame or None. Database for supplier data.
+        Data must include on of the following columns: 'name', 'number', or
+        'bid' specifying the name, number and business ID of suppliers,
+        respectively. If None, no database is used.
+        (By default: org_data=None)
 
-            subset_account_data: None or string to specify which database is
-            used for account data. Available options are 'balance_sheet' and
-            'income_statement'. If None, both databases are used and the result
-            value will be the first occurence.
-            (By default: subset_account_data=None)
+        `account_data`: pd.DataFrame or None. Database for account data.
+        Data must include on of the following columns: 'name', or
+        'number' specifying the name and number accounts,
+        respectively. If None, packages default database is used.
+        (By default: account_data=None)
 
-            service_data: pd.DataFrame or None. Database for service data.
-            Data must include on of the following columns: 'name', or
-            'number' specifying the name and number service categories,
-            respectively. If None, packages default database is used.
-            (By default: service_data=None)
+        `subset_account_data`: None or string to specify which database is
+        used for account data. Available options are 'balance_sheet' and
+        'income_statement'. If None, both databases are used and the result
+        value will be the first occurence.
+        (By default: subset_account_data=None)
 
-            db_year: Integer value or None specifying the year (2021, 2021,
-            or 2023) that will be used to match account and service data.
-            If None, the most current information is used and duplicates from
-            previous years are removed. (By default: db_year=None)
+        `service_data`: pd.DataFrame or None. Database for service data.
+        Data must include on of the following columns: 'name', or
+        'number' specifying the name and number service categories,
+        respectively. If None, packages default database is used.
+        (By default: service_data=None)
 
-            disable_*: A boolean value specifying whether * data
-            is checked. * can be one of the following options: 'org',
-            'suppl', 'date', 'sums', 'country', 'voucher', 'account' or
-            'service'. (By default: disable_*=False)
+        `db_year`: Integer value or None specifying the year (2021, 2021,
+        or 2023) that will be used to match account and service data.
+        If None, the most current information is used and duplicates from
+        previous years are removed. (By default: db_year=None)
 
-        ```
+        `disable_*`: A boolean value specifying whether * data
+        is checked. * can be one of the following options: 'org',
+        'suppl', 'date', 'sums', 'country', 'voucher', 'account' or
+        'service'. (By default: disable_*=False)
 
     Details:
         This function standardize the data and checks that it is in correct
         format. If the data is not in expected format containing erroneous
         data that cannot be standardized, the function gives a warning.
+        Moreover, empty rows and columns along with spaces before or after
+        values are removed.
 
         The function expects that columns are in specific format.
         Not all the columns must be included in the data. Below is a
@@ -221,7 +221,7 @@ def __standardize_country(df, disable_country=False,
             )
     # Check if column(s) is found as non-duplicated
     cols_to_check = ["country"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_to_check)
     if disable_country or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
@@ -280,7 +280,7 @@ def __clean_sums(df, disable_sums=False, **args):
             )
     # Check if column(s) is found as non-duplicated
     cols_df = ["total", "vat_amount", "price_ex_vat"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_df)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
     if disable_sums or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
@@ -306,25 +306,6 @@ def __clean_sums(df, disable_sums=False, **args):
                     f"float: {col}",
                     category=Warning
                     )
-    # TODO: move to enrich data: If there were some columns missing,
-    # calculate them
-    # if len(col_missing) > 0 and all(df.dtypes[col_found] == "float64"):
-    #     # If total is missing
-    #     if "total" in col_missing and all(c in col_found
-    #                                       for c in ["price_ex_vat",
-    #                                                 "vat_amount"]):
-    #         df["total"] = df["price_ex_vat"] + df["vat_amount"]
-    #     # If price_ex_vat is missing
-    #     elif "price_ex_vat" in col_missing and all(c in col_found
-    #                                                for c in ["total",
-    #                                                          "vat_amount"]):
-    #         df["price_ex_vat"] = df["total"] - df["vat_amount"]
-    #     # If vat_amount is missing
-    #     elif "vat_amount" in col_missing and all(c in col_found
-    #                                              for c in ["total",
-    #                                                        "price_ex_vat"]):
-    #         df["vat_amount"] = df["total"] - df["price_ex_vat"]
-
     # Calcute the expected value, and check if it's matching
     if len(cols_missing) == 0 and all(df.dtypes[cols_to_check] == "float64"):
         test = df["price_ex_vat"] + df["vat_amount"]
@@ -362,7 +343,7 @@ def __standardize_date(df, disable_date=False, date_format="%d-%m-%Y",
             )
     # Check if column(s) is found as non-duplicated
     cols_to_check = ["date"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_to_check)
     if disable_date or len(cols_to_check) == 0:
         return df
     col_to_check = cols_to_check[0]
@@ -732,19 +713,19 @@ def __standardize_org(df, disable_org=False, org_data=None, **args):
             )
     # Check if column(s) is found as non-duplicated
     cols_df = ["org_id", "org_vat_number", "org_number", "org_name"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_df)
-    # Column of db that are matched with columns that are being checked
-    # Subset to match with cols_to_check
-    cols_to_match = ["bid", "vat_number", "number", "name"]
-    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
-                     if x in cols_to_check]
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
     if disable_org or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
     if org_data is None:
         path = pkg_resources.resource_filename(
             "osta", "resources/" + "municipality_codes.csv")
-        org_data = pd.read_csv(path, index_col=0)
+        org_data = pd.read_csv(path, index_col=0, dtype=str)
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = ["bid", "vat_number", "number", "name"]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=org_data,
                                    cols_to_check=cols_to_check,
@@ -781,12 +762,7 @@ def __standardize_account(df, disable_account=False, account_data=None,
             )
     # Check if column(s) is found as non-duplicated
     cols_df = ["account_number", "account_name"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_df)
-    # Column of db that are matched with columns that are being checked
-    # Subset to match with cols_to_check
-    cols_to_match = ["number", "name"]
-    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
-                     if x in cols_to_check]
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
     if disable_account or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
@@ -795,13 +771,18 @@ def __standardize_account(df, disable_account=False, account_data=None,
             "osta", "resources/" + "account_info.csv")
         account_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years
-        account_data = __subset_data_based_on_year(df, df_db=account_data,
-                                                   **args)
+        account_data = utils.__subset_data_based_on_year(
+            df, df_db=account_data, **args)
         # If user specified balance sheet or income statement,
         # get only specified accounts
         if subset_account_data is not None:
             account_data = account_data.loc[
                 :, account_data["cat_1"] == subset_account_data]
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = ["number", "name"]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
     # Data types to check
     dtypes = ["int64", "object"]
     # Standardize organization data
@@ -833,12 +814,7 @@ def __standardize_service(df, disable_service=False,
             )
     # Check if column(s) is found as non-duplicated
     cols_df = ["service_cat", "service_cat_name"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_df)
-    # Column of db that are matched with columns that are being checked
-    # Subset to match with cols_to_check
-    cols_to_match = ["number", "name"]
-    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
-                     if x in cols_to_check]
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
     if disable_service or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
@@ -847,8 +823,13 @@ def __standardize_service(df, disable_service=False,
             "osta", "resources/" + "service_codes.csv")
         service_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years
-        service_data = __subset_data_based_on_year(df, df_db=service_data,
-                                                   **args)
+        service_data = utils.__subset_data_based_on_year(
+            df, df_db=service_data, **args)
+    # Column of db that are matched with columns that are being checked
+    # Subset to match with cols_to_check
+    cols_to_match = ["number", "name"]
+    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                     if x in cols_to_check]
     # Data types to check
     dtypes = ["int64", "object"]
     # Standardize organization data
@@ -880,16 +861,16 @@ def __standardize_suppl(df, disable_suppl=False, suppl_data=None, **args):
     # Check if column(s) is found as non-duplicated
     cols_df = ["suppl_id", "vat_number", "suppl_number", "suppl_name",
                "country"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_df)
-    # Column of db that are matched with columns that are being checked
-    # Subset to match with cols_to_check
-    cols_to_match = ["bid", "vat_number", "number", "name", "country"]
-    cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
-                     if x in cols_to_check]
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_df)
     if disable_suppl or len(cols_to_check) == 0:
         return df
     # INPUT CHECK END
     if suppl_data is not None:
+        # Column of db that are matched with columns that are being checked
+        # Subset to match with cols_to_check
+        cols_to_match = ["bid", "vat_number", "number", "name", "country"]
+        cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
+                         if x in cols_to_check]
         # Standardize organization data
         df = __standardize_based_on_db(df=df, df_db=suppl_data,
                                        cols_to_check=cols_to_check,
@@ -1254,7 +1235,7 @@ def __check_variable_pair(df, cols_to_check, dtypes, **args):
     return df
 
 
-def __check_vat_number(df, cols_to_check, **args):
+def __check_vat_number(df, cols_to_check, disable_vat_number=False, **args):
     """
     This function checks that VAT numbers has correct patterns
     and match with business IDs.
@@ -1262,10 +1243,14 @@ def __check_vat_number(df, cols_to_check, **args):
     Output: df
     """
     # INPUT CHECK
+    if not isinstance(disable_vat_number, bool):
+        raise Exception(
+            "'disable_vat_number' must be True or False."
+            )
     # Check if column(s) is found as non-duplicated
-    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_to_check)
     # All columns must be present
-    if len(cols_to_check) != 3:
+    if len(cols_to_check) != 3 or disable_vat_number:
         return df
     # INPUT CHECK END
     # Get vat number and bid column names
@@ -1332,7 +1317,7 @@ def __check_voucher(df, disable_voucher=False, **args):
             "'disable_voucher' must be True or False."
             )
     cols_to_check = ["voucher"]
-    cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
+    cols_to_check = utils.__not_duplicated_columns_found(df, cols_to_check)
     # All columns must be present
     if disable_voucher or len(cols_to_check) == 0:
         return df
@@ -1351,74 +1336,3 @@ def __check_voucher(df, disable_voucher=False, **args):
             category=Warning
             )
     return df
-
-
-def __subset_data_based_on_year(df, df_db, db_year=None,
-                                date_format="%d-%m-%Y", **args):
-    """
-    This function subsets database by taking only specific years that user
-    has specified or that can be found from the data.
-    Input: df, data base, year_option, date_format
-    Output: Subsetted data base
-    """
-    if db_year is not None:
-        db_year = [db_year] if isinstance(db_year, int) else db_year
-        db_year = [x for x in db_year if any(x == df_db["year"])]
-        if len(db_year) > 0:
-            # Subset data
-            ind = (df_db["year"] <= max(db_year)).values & (
-                df_db["year"] >= min(db_year)).values
-            df_db = df_db.loc[ind, :]
-        else:
-            years = df_db["year"].drop_duplicates().values.tolist()
-            raise Exception(
-                f"'db_year' must be one of the following options: "
-                f"{years}",
-                )
-    else:
-        # Check if column(s) is found as non-duplicated
-        cols_to_check = ["date"]
-        cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
-        if len(cols_to_check) == 1:
-            col_to_check = cols_to_check[0]
-            # INPUT CHECK END
-            # Get date column
-            date = df.loc[:, col_to_check]
-            # Extract year if possible
-            if "date" in df.columns:
-                try:
-                    year = pd.to_datetime(date, format=date_format)
-                    year = date.dt.year.drop_duplicates().sort_values()
-                    df_db = df_db.loc[df_db["year"] == year, :]
-                except Exception:
-                    pass
-    # Get only unique values
-    df_db = df_db.drop_duplicates(subset=["number", "name"])
-    return df_db
-
-
-def __not_duplicated_columns_found(df, cols_to_check):
-    """
-    This function checks if specific columns can be found and they are
-    duplicated.
-    Input: df, columns, duplicated columns
-    Output: columns that fulfill criteria
-    """
-    # Found columns
-    cols_to_check = [x for x in cols_to_check if x in df.columns]
-    # Get columns from df
-    cols_df = [x for x in df.columns if x in cols_to_check]
-    # Get unique values and their counts
-    unique, counts = np.unique(cols_df, return_counts=True)
-    # Get duplicated values
-    duplicated = unique[counts > 1]
-    # Are columns found and not duplicated? Return True if any found.
-    cols_to_check = [x for x in cols_to_check if x not in duplicated]
-    # If there were duplicated columns, give warning
-    if len(duplicated) > 0:
-        warnings.warn(
-            message=f"The following column names are duplicated. "
-            f"Please check them for errors.\n {duplicated.tolist()}",
-            category=Warning
-            )
-    return cols_to_check
