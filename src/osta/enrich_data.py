@@ -149,9 +149,8 @@ def __add_org_data(df, disable_org=False, org_data=None, **args):
         return df
     # INPUT CHECK END
     # Load default database
-    # path = pkg_resources.resource_filename(
-    #     "osta", "resources/" + "municipality_codes.csv")
-    path = "~/Python/osta/src/osta/resources/" + "municipality_codes.csv"
+    path = pkg_resources.resource_filename(
+        "osta", "resources/" + "municipality_codes.csv")
     org_data_def = pd.read_csv(path, index_col=0)
     # Column of db that are matched with columns that are being checked
     # Subset to match with cols_to_check
@@ -208,9 +207,8 @@ def __add_account_data(df, disable_account=False, account_data=None,
     # INPUT CHECK END
     # Load default database
     if account_data is None:
-        # path = pkg_resources.resource_filename(
-        #     "osta", "resources/" + "account_info.csv")
-        path = "~/Python/osta/src/osta/resources/" + "account_info.csv"
+        path = pkg_resources.resource_filename(
+            "osta", "resources/" + "account_info.csv")
         account_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years
         account_data = utils.__subset_data_based_on_year(
@@ -256,9 +254,8 @@ def __add_service_data(df, disable_service=False, service_data=None, **args):
     # INPUT CHECK END
     # Load default database
     if service_data is None:
-        # path = pkg_resources.resource_filename(
-        #     "osta", "resources/" + "service_codes.csv")
-        path = "~/Python/osta/src/osta/resources/" + "service_codes.csv"
+        path = pkg_resources.resource_filename(
+            "osta", "resources/" + "service_codes.csv")
         service_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years SIIRRÄ UTILSIIN
         service_data = utils.__subset_data_based_on_year(
@@ -900,9 +897,8 @@ def fetch_org_data(org_codes, years, language="en", add_bid=True):
             category=Warning
             )
     # Check which municipalties are found from the database / are correct
-    # path = pkg_resources.resource_filename(
-    #     "osta", "resources/" + "municipality_codes.csv")
-    path = "~/Python/osta/src/osta/resources/" + "municipality_codes.csv"
+    path = pkg_resources.resource_filename(
+        "osta", "resources/" + "municipality_codes.csv")
     org_data = pd.read_csv(path, index_col=0, dtype="object")
     # Get only correct municipality codes
     codes_temp = [x if x in org_data["number"].tolist() else

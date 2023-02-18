@@ -354,7 +354,7 @@ def test_enrich_data():
     assert_frame_equal(df, df_expect)
 
 
-def __test_internet_connection(url, timeout=5):
+def internet_connection_ok(url, timeout=5):
     try:
         request = requests.get(url, timeout=timeout)
         res = request.ok
@@ -363,7 +363,7 @@ def __test_internet_connection(url, timeout=5):
     return res
 
 
-@pytest.mark.skipif(not __test_internet_connection('https://www.google.com/'),
+@pytest.mark.skipif(not internet_connection_ok("https://www.google.com/"),
                     reason="No internet access")
 def test_fetch_company_data():
     bids = pd.Series(["1567535-0", "2403929-2", "test"])
@@ -377,7 +377,8 @@ def test_fetch_company_data():
     assert_frame_equal(df, df_expect)
 
 
-@pytest.mark.skipif(not __test_internet_connection('https://www.google.com/'),
+# This test requires too much resources to be performed
+@pytest.mark.skipif(not internet_connection_ok("https://www.google.com/"),
                     reason="No internet access")
 def test_fetch_financial_data():
     codes = pd.Series(["0135202-4", "test"])
@@ -392,7 +393,8 @@ def test_fetch_financial_data():
     assert_frame_equal(df, df_expect, check_names=False)
 
 
-@pytest.mark.skipif(not __test_internet_connection('https://www.google.com/'),
+# This test requires too much resources to be performed
+@pytest.mark.skipif(not internet_connection_ok("https://www.google.com/"),
                     reason="No internet access")
 def test_fetch_org_company_data():
     codes = pd.Series(["0204819-8"])
@@ -402,15 +404,16 @@ def test_fetch_org_company_data():
         "Arkea Oy", "Kaarea Oy", "Turun Vesihuolto Oy"])
 
 
-@pytest.mark.skipif(not __test_internet_connection('https://www.google.com/'),
-                    reason="No internet access")
+@pytest.mark.skipif(not internet_connection_ok(
+    "https://www.google.com/"), reason="No internet access")
 def test_fetch_org_data():
     codes = pd.Series(["005", "020"])
     years = pd.Series(["2021", "2020"])
     df = fetch_org_data(codes, years)
     df = df.loc[:, ["number", "Population"]]
+    df["Population"] = df["Population"].astype(float)
     data = {"number": ["005", "005", "020", "020"],
-            "Population": ["9419", "9311", "16391", "16467"],
+            "Population": [9419.0, 9311.0, 16391.0, 16467.0],
             }
     df_expect = pd.DataFrame(data)
     assert_frame_equal(df, df_expect)
