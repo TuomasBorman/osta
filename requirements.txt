@@ -4,3 +4,4 @@ pkg_resources
 warnings
 selenium==4.8.0
 beautifulsoup4==4.11.2
+requests==2.28.2
