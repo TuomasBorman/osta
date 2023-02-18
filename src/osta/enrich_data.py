@@ -685,17 +685,25 @@ def __fetch_company_data_from_website(bid, language):
         # Try to use if these browsers are available
         try:
             if driver == "firefox":
-                options = firefox_opt()
-                options.add_argument("--headless")
-                browser = webdriver.Firefox(options=options)
+                options_ff = firefox_opt()
+                options_ff.add_argument("--headless")
+                # Ignore errors of mypy (if certain browser is not installed
+                # it gives error related to expression vs variable type
+                # missmatch)
+                browser = webdriver.Firefox(
+                    options=options_ff)  # type: ignore
             elif driver == "chrome":
-                options = chrome_opt()
-                options.add_argument("--headless")
-                browser = webdriver.Chrome(options=options)
+                options_ch = chrome_opt()
+                options_ch.add_argument("--headless")
+                # Ignore errors of mypy
+                browser = webdriver.Chrome(
+                    options=options_ch)  # type: ignore
             elif driver == "ie":
-                options = ie_opt()
-                options.add_argument("--headless")
-                browser = webdriver.Ie(options=options)
+                options_ie = ie_opt()
+                options_ie.add_argument("--headless")
+                # Ignore errors of mypy
+                browser = webdriver.Ie(
+                    options=options_ie)  # type: ignore
         except Exception:
             pass
         else:
@@ -883,7 +891,9 @@ def fetch_org_data(org_codes, years, language="en", add_bid=True):
     found_year = [x.get("text") for x in text if x.get("id") ==
                   "kuntien_avainluvut_" + year_max + "_aikasarja.px"][0]
     p = re.compile("\\d\\d\\d\\d-\\d\\d\\d\\d")
-    found_year = p.search(found_year).group().split("-")
+    found_year = p.search(found_year)
+    if found_year is not None:
+        found_year = found_year.group().split("-")
     # Getn only years that are available
     years_temp = [x if int(x) in
                   list(range(int(found_year[0]), int(found_year[1])+1))
