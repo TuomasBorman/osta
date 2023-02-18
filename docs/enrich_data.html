@@ -180,9 +180,8 @@ def __add_org_data(df, disable_org=False, org_data=None, **args):
         return df
     # INPUT CHECK END
     # Load default database
-    # path = pkg_resources.resource_filename(
-    #     &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
-    path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;municipality_codes.csv&#34;
+    path = pkg_resources.resource_filename(
+        &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
     org_data_def = pd.read_csv(path, index_col=0)
     # Column of db that are matched with columns that are being checked
     # Subset to match with cols_to_check
@@ -226,7 +225,8 @@ def __add_account_data(df, disable_account=False, account_data=None,
         raise Exception(
             &#34;&#39;disable_account&#39; must be True or False.&#34;
             )
-    if subset_account_data not in [&#34;tase&#34;, &#34;tuloslaskelma&#34;]:
+    if not (subset_account_data in [&#34;tase&#34;, &#34;tuloslaskelma&#34;] or
+            subset_account_data is None):
         raise Exception(
             &#34;&#39;subset_account_data&#39; must be &#39;tase&#39; or &#39;tuloslaskelma&#39;.&#34;
             )
@@ -238,9 +238,8 @@ def __add_account_data(df, disable_account=False, account_data=None,
     # INPUT CHECK END
     # Load default database
     if account_data is None:
-        # path = pkg_resources.resource_filename(
-        #     &#34;osta&#34;, &#34;resources/&#34; + &#34;account_info.csv&#34;)
-        path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;account_info.csv&#34;
+        path = pkg_resources.resource_filename(
+            &#34;osta&#34;, &#34;resources/&#34; + &#34;account_info.csv&#34;)
         account_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years
         account_data = utils.__subset_data_based_on_year(
@@ -286,9 +285,8 @@ def __add_service_data(df, disable_service=False, service_data=None, **args):
     # INPUT CHECK END
     # Load default database
     if service_data is None:
-        # path = pkg_resources.resource_filename(
-        #     &#34;osta&#34;, &#34;resources/&#34; + &#34;service_codes.csv&#34;)
-        path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;service_codes.csv&#34;
+        path = pkg_resources.resource_filename(
+            &#34;osta&#34;, &#34;resources/&#34; + &#34;service_codes.csv&#34;)
         service_data = pd.read_csv(path, index_col=0)
         # Subset by taking only specific years SIIRRÄ UTILSIIN
         service_data = utils.__subset_data_based_on_year(
@@ -404,7 +402,7 @@ def __add_data_from_db(df, df_db, cols_to_check, cols_to_match, prefix):
     return df
 
 
-def __add_sums(df, disable_sums=False):
+def __add_sums(df, disable_sums=False, **args):
     &#34;&#34;&#34;
     This function adds sums (total, vat_amount or price_ex_vat) if
     some is missing.
@@ -718,17 +716,25 @@ def __fetch_company_data_from_website(bid, language):
         # Try to use if these browsers are available
         try:
             if driver == &#34;firefox&#34;:
-                options = firefox_opt()
-                options.add_argument(&#34;--headless&#34;)
-                browser = webdriver.Firefox(options=options)
+                options_ff = firefox_opt()
+                options_ff.add_argument(&#34;--headless&#34;)
+                # Ignore errors of mypy (if certain browser is not installed
+                # it gives error related to expression vs variable type
+                # missmatch)
+                browser = webdriver.Firefox(
+                    options=options_ff)  # type: ignore
             elif driver == &#34;chrome&#34;:
-                options = chrome_opt()
-                options.add_argument(&#34;--headless&#34;)
-                browser = webdriver.Chrome(options=options)
+                options_ch = chrome_opt()
+                options_ch.add_argument(&#34;--headless&#34;)
+                # Ignore errors of mypy
+                browser = webdriver.Chrome(
+                    options=options_ch)  # type: ignore
             elif driver == &#34;ie&#34;:
-                options = ie_opt()
-                options.add_argument(&#34;--headless&#34;)
-                browser = webdriver.Ie(options=options)
+                options_ie = ie_opt()
+                options_ie.add_argument(&#34;--headless&#34;)
+                # Ignore errors of mypy
+                browser = webdriver.Ie(
+                    options=options_ie)  # type: ignore
         except Exception:
             pass
         else:
@@ -916,7 +922,9 @@ def fetch_org_data(org_codes, years, language=&#34;en&#34;, add_bid=True):
     found_year = [x.get(&#34;text&#34;) for x in text if x.get(&#34;id&#34;) ==
                   &#34;kuntien_avainluvut_&#34; + year_max + &#34;_aikasarja.px&#34;][0]
     p = re.compile(&#34;\\d\\d\\d\\d-\\d\\d\\d\\d&#34;)
-    found_year = p.search(found_year).group().split(&#34;-&#34;)
+    found_year = p.search(found_year)
+    if found_year is not None:
+        found_year = found_year.group().split(&#34;-&#34;)
     # Getn only years that are available
     years_temp = [x if int(x) in
                   list(range(int(found_year[0]), int(found_year[1])+1))
@@ -930,9 +938,8 @@ def fetch_org_data(org_codes, years, language=&#34;en&#34;, add_bid=True):
             category=Warning
             )
     # Check which municipalties are found from the database / are correct
-    # path = pkg_resources.resource_filename(
-    #     &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
-    path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;municipality_codes.csv&#34;
+    path = pkg_resources.resource_filename(
+        &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
     org_data = pd.read_csv(path, index_col=0, dtype=&#34;object&#34;)
     # Get only correct municipality codes
     codes_temp = [x if x in org_data[&#34;number&#34;].tolist() else
@@ -1193,10 +1200,9 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
         raise Exception(
             &#34;&#39;org_bids&#39; must be non-empty pandas.Series.&#34;
             )
-    if not ((isinstance(years, pd.Series) and len(years) == len(org_bids))
-            or years is None):
+    if not (isinstance(years, pd.Series) and len(years) == len(org_bids)):
         raise Exception(
-            &#34;&#39;years&#39; must be None or non-empty pandas.Series matching with &#34; +
+            &#34;&#39;years&#39; must be non-empty pandas.Series matching with &#34; +
             &#34;&#39;org_codes&#39;.&#34;
             )
     if not isinstance(subset, bool):
@@ -1233,6 +1239,7 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
     progress_bar_width = 50
     # Loop over rows
     df = pd.DataFrame()
+    df_not_found = pd.DataFrame()
     for i, r in df_org.iterrows():
         # Update the progress bar
         percent = 100*((i+1)/df_org.shape[0])
@@ -1247,8 +1254,14 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
         # Add organization and year info
         df_temp[&#34;bid&#34;] = r[&#34;org_bid&#34;]
         df_temp[&#34;year&#34;] = r[&#34;year&#34;]
-        # Add to whole data
-        df = pd.concat([df, df_temp])
+        # If the data was not found
+        if df_temp.empty:
+            df_temp = pd.DataFrame([r[&#34;org_bid&#34;], r[&#34;year&#34;]],
+                                   index=[&#34;bid&#34;, &#34;year&#34;]).transpose()
+            df_not_found = pd.concat([df_not_found, df_temp])
+        else:
+            # Add to whole data
+            df = pd.concat([df, df_temp])
     # Reset index and return whole data
     df = df.reset_index(drop=True)
     # Rename columns if specified
@@ -1276,6 +1289,13 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
                             columns=&#34;key_figure_label&#34;,
                             values=&#34;value&#34;)
         df = df.reset_index(drop=False)
+    # Give warning if some input values were not found
+    if not df_not_found.empty:
+        warnings.warn(
+            message=f&#34;The following BID-year combinations were not found:\n&#34;
+            f&#34;{df_not_found}&#34;,
+            category=Warning
+            )
     # Stop progress bar
     sys.stdout.write(&#34;\n&#34;)
     return df
@@ -1474,8 +1494,7 @@ def __fetch_financial_data(df, df_info,
     return df
 
 
-def fetch_org_company_data(org_bids, years, rename_cols=True,
-                           **args):
+def fetch_org_company_data(org_bids, years, rename_cols=True):
     &#34;&#34;&#34;
     Fetch data about companies of municipality.
 
@@ -2496,10 +2515,9 @@ df = fetch_financial_data(codes, years)
         raise Exception(
             &#34;&#39;org_bids&#39; must be non-empty pandas.Series.&#34;
             )
-    if not ((isinstance(years, pd.Series) and len(years) == len(org_bids))
-            or years is None):
+    if not (isinstance(years, pd.Series) and len(years) == len(org_bids)):
         raise Exception(
-            &#34;&#39;years&#39; must be None or non-empty pandas.Series matching with &#34; +
+            &#34;&#39;years&#39; must be non-empty pandas.Series matching with &#34; +
             &#34;&#39;org_codes&#39;.&#34;
             )
     if not isinstance(subset, bool):
@@ -2536,6 +2554,7 @@ df = fetch_financial_data(codes, years)
     progress_bar_width = 50
     # Loop over rows
     df = pd.DataFrame()
+    df_not_found = pd.DataFrame()
     for i, r in df_org.iterrows():
         # Update the progress bar
         percent = 100*((i+1)/df_org.shape[0])
@@ -2550,8 +2569,14 @@ df = fetch_financial_data(codes, years)
         # Add organization and year info
         df_temp[&#34;bid&#34;] = r[&#34;org_bid&#34;]
         df_temp[&#34;year&#34;] = r[&#34;year&#34;]
-        # Add to whole data
-        df = pd.concat([df, df_temp])
+        # If the data was not found
+        if df_temp.empty:
+            df_temp = pd.DataFrame([r[&#34;org_bid&#34;], r[&#34;year&#34;]],
+                                   index=[&#34;bid&#34;, &#34;year&#34;]).transpose()
+            df_not_found = pd.concat([df_not_found, df_temp])
+        else:
+            # Add to whole data
+            df = pd.concat([df, df_temp])
     # Reset index and return whole data
     df = df.reset_index(drop=True)
     # Rename columns if specified
@@ -2579,13 +2604,20 @@ df = fetch_financial_data(codes, years)
                             columns=&#34;key_figure_label&#34;,
                             values=&#34;value&#34;)
         df = df.reset_index(drop=False)
+    # Give warning if some input values were not found
+    if not df_not_found.empty:
+        warnings.warn(
+            message=f&#34;The following BID-year combinations were not found:\n&#34;
+            f&#34;{df_not_found}&#34;,
+            category=Warning
+            )
     # Stop progress bar
     sys.stdout.write(&#34;\n&#34;)
     return df</code></pre>
 </details>
 </dd>
 <dt id="osta.enrich_data.fetch_org_company_data"><code class="name flex">
-<span>def <span class="ident">fetch_org_company_data</span></span>(<span>org_bids, years, rename_cols=True, **args)</span>
+<span>def <span class="ident">fetch_org_company_data</span></span>(<span>org_bids, years, rename_cols=True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Fetch data about companies of municipality.</p>
@@ -2611,8 +2643,7 @@ df = fetch_org_company_data(codes, years)
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def fetch_org_company_data(org_bids, years, rename_cols=True,
-                           **args):
+<pre><code class="python">def fetch_org_company_data(org_bids, years, rename_cols=True):
     &#34;&#34;&#34;
     Fetch data about companies of municipality.
 
@@ -2850,7 +2881,9 @@ df = fetch_org_data(codes, years, language=&quot;fi&quot;)
     found_year = [x.get(&#34;text&#34;) for x in text if x.get(&#34;id&#34;) ==
                   &#34;kuntien_avainluvut_&#34; + year_max + &#34;_aikasarja.px&#34;][0]
     p = re.compile(&#34;\\d\\d\\d\\d-\\d\\d\\d\\d&#34;)
-    found_year = p.search(found_year).group().split(&#34;-&#34;)
+    found_year = p.search(found_year)
+    if found_year is not None:
+        found_year = found_year.group().split(&#34;-&#34;)
     # Getn only years that are available
     years_temp = [x if int(x) in
                   list(range(int(found_year[0]), int(found_year[1])+1))
@@ -2864,9 +2897,8 @@ df = fetch_org_data(codes, years, language=&quot;fi&quot;)
             category=Warning
             )
     # Check which municipalties are found from the database / are correct
-    # path = pkg_resources.resource_filename(
-    #     &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
-    path = &#34;~/Python/osta/src/osta/resources/&#34; + &#34;municipality_codes.csv&#34;
+    path = pkg_resources.resource_filename(
+        &#34;osta&#34;, &#34;resources/&#34; + &#34;municipality_codes.csv&#34;)
     org_data = pd.read_csv(path, index_col=0, dtype=&#34;object&#34;)
     # Get only correct municipality codes
     codes_temp = [x if x in org_data[&#34;number&#34;].tolist() else
