@@ -169,7 +169,7 @@ def read_files(file_path, **args):
     Examples:
         ```
         df_urls = fetch_data_urls("ostolasku")
-        df_list = read_files(df_urls.loc[1:3, "url"])
+        df_list = read_files(df_urls.loc[:, "url"])
         ```
 
     Output:
@@ -371,13 +371,14 @@ def __detect_format_and_open_file(
 
     # Polish data, i.e., remove empty rows and columns
     if polish_data:
+        # Remove spaces from beginning and end of the value
+        df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+        # Replace empty strings with None
+        df = df.replace(r'^\s*$', None, regex=True)
         # Drop empty rows
-        if any(df.isna().sum(axis=1) == df.shape[0]):
-            df.dropna(axis=0, how='all', inplace=True)
-
+        df.dropna(axis=0, how='all', inplace=True)
         # Drop empty columns
-        if any(df.isna().sum(axis=0) == df.shape[1]):
-            df.dropna(axis=1, how='all', inplace=True)
+        df.dropna(axis=1, how='all', inplace=True)
 
         # If the first row contained empty values, there are columns named
         # "Unnamed". Replace column names with the values of the first row
@@ -386,7 +387,7 @@ def __detect_format_and_open_file(
             df.columns = df.iloc[0, :].values
             df = df.iloc[1:, :]
 
-        # If there are colmns wih spaces
+        # If there are columns wih spaces
         bools = [all(df.iloc[:, x[0]].astype(str).str.isspace())
                  for x in enumerate(df.columns)]
         if any(bools):

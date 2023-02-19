@@ -176,6 +176,10 @@ def clean_data(df, **args):
             "'df' must be non-empty pandas.DataFrame."
             )
     # INPUT CHECK END
+    # Remove spaces from beginning and end of the value
+    df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+    # Replace empty strings with None
+    df = df.replace(r'^\s*$', None, regex=True)
     # Check if there are empty rows or columns, and remove them
     if any(df.isna().all(axis=0)) or any(df.isna().all(axis=1)):
         df = df.dropna(axis=0, how="all")
@@ -185,8 +189,6 @@ def clean_data(df, **args):
             "that are now removed.\n",
             category=Warning
             )
-    # Remove spaces from beginning and end of the value
-    df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
 
     # Test if voucher is correct
     __check_voucher(df, **args)
