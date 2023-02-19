@@ -133,7 +133,7 @@ def fetch_data_urls(search_words, **args):
                                         "id": id_list,
                                         "format": format_list,
                                         "info": info_list})
-    
+
                 # Add data to main DataFrame
                 df = pd.concat([df, df_temp])
         # Reset index
