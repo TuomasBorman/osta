@@ -65,7 +65,7 @@ def fetch_data_urls(search_words, **args):
         # Find how many results there are in total
         tot_num_res = soup.find(
             "h3", {"class": "m-0 search-form__result-text"}).text
-        tot_num_res = int(re.findall(r'[0-9]+', tot_num_res)[0])
+        tot_num_res = int("".join(re.findall(r'[0-9]+', tot_num_res)))
         i = 1
         # For progress bar, specify the width of it
         progress_bar_width = 50
