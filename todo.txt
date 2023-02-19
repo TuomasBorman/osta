@@ -6,5 +6,6 @@ enrich_data
 - Löytyykö rajapintaa myös tililuettelolle? (ja palveluluokille)
 https://avoindata.tutkihallintoa.fi/apis
 (Poista sen jälkeen subset_database_by_year...)
+---> on vain valtion, ei kuntien
 
 - funktioiden nimet (lower camelcase) argumenttien nimet?
