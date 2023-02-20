@@ -16,6 +16,7 @@ import os
 import filetype
 import cchardet
 import csv
+from osta.change_names import change_names
 
 
 def fetch_data_urls(search_words, **args):
@@ -156,7 +157,7 @@ def fetch_data_urls(search_words, **args):
     return df
 
 
-def read_files(file_path, **args):
+def read_files(file_path, as_df=True, **args):
     """
     Read single CSV or Excel file to pandas.DataFrame.
 
@@ -211,9 +212,14 @@ def read_files(file_path, **args):
                 message=f"Error while loading the following path. "
                 f"It is excluded from the output: \n {path_temp}",
                 category=UserWarning)
+    # Merge list to one DF
+    if as_df and len(df_list) > 0:
+        res = pd.concat(df_list)
+    else:
+        res = df_list
     # Stop progress bar
     sys.stdout.write("\n")
-    return df_list
+    return res
 
 
 def read_file(file_path, temp_dir=None, **args):
@@ -311,7 +317,7 @@ def __detect_format_and_open_file(
         file_path,
         encoding=None, guess_encoding=True,
         delimiter=None, guess_delimiter=True,
-        polish_data=True,
+        polish_data=True, change_colnames=True,
         **args):
     """
     This function is a helper function to load and detect the format of the
@@ -392,4 +398,7 @@ def __detect_format_and_open_file(
                  for x in enumerate(df.columns)]
         if any(bools):
             df = df.loc[:, [not x for x in bools]]
+    # Change colnames if specified
+    if change_colnames:
+        df = change_names(df, **args)
     return df

@@ -276,7 +276,7 @@ def __guess_name(df, col_i, colnames, fields, pattern_th=0.9, match_th=0.8,
         raise Exception(
             "'pattern_th' must be a number between 0-1."
             )
-    # match_th must be numeric value 0-100
+    # # match_th must be numeric value 0-100
     if not utils.__is_percentage(match_th):
         raise Exception(
             "'match_th' must be a number between 0-1."
@@ -294,8 +294,9 @@ def __guess_name(df, col_i, colnames, fields, pattern_th=0.9, match_th=0.8,
     # If there were match, column is renamed
     if res != col:
         col = res
-    # Try if column is ID column
-    elif __test_if_BID(df=df, col_i=col_i, match_th=match_th):
+    # Try if column is ID column (hard-coded since the column should contain
+    # BIDs if at least one is found...)
+    elif __test_if_BID(df=df, col_i=col_i, match_th=0.1):
         # BID can be from organization or supplier
         col = __org_or_suppl_BID(df=df, col_i=col_i, colnames=colnames,
                                  match_th=match_th)
@@ -431,17 +432,12 @@ def __test_if_BID(df, col_i, match_th):
     # Test if pattern found
     patt_found = utils.__are_valid_bids(df.iloc[:, col_i])
     patt_found = patt_found.value_counts()/df.shape[0]
-    # Test of length correct
-    len_correct = df.iloc[:, col_i].astype(str).str.len() == 9
-    len_correct = len_correct.value_counts()/df.shape[0]
     # If Trues exist in both, get the smaller portion. Otherwise, True was not
     # found and the result is 0 / not found
-    if True in patt_found.index and True in len_correct.index:
+    print(patt_found)
+    if True in patt_found.index:
         # Get portion of Trues and take only value
         patt_found = patt_found[patt_found.index][0]
-        len_correct = len_correct[len_correct.index][0]
-        # Get smaller value
-        patt_found = min(patt_found, len_correct)
     else:
         patt_found = 0
     # Check if over threshold
@@ -496,7 +492,7 @@ def __org_or_suppl_BID(df, col_i, colnames, match_th):
                                         df.iloc[:, colnames.index("org_id")]):
             res = "org_id"
         # If there are not many unique values, it might be organization ID
-        if df.iloc[:, col_i].nunique()/df.shape[0] < 0.5:
+        if df.iloc[:, col_i].nunique()/df.shape[0] < 0.2:
             res = "org_id"
     return res
 
@@ -524,7 +520,9 @@ def __test_match_between_colnames(df, col_i, colnames, cols_match, datatype):
                 n_uniq = temp.drop_duplicates().shape[0]
                 # If there are as many combinations as there are
                 # individual values these columns match
-                if n_uniq == df.iloc[:, colnames.index(col_match)].nunique():
+                if (n_uniq == df.iloc[:, colnames.index(col_match)].nunique()
+                    and n_uniq == df.iloc[
+                        :, col_i].nunique()):
                     res = True
     return res
 

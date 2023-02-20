@@ -1,7 +1,7 @@
 TODO:
 
-enrich_data
--testit, että hakee oikean tiedon databaseista
+warnings to log file 
+https://stackoverflow.com/questions/41764345/python-3-how-to-log-warnings-and-errors-to-log-file
 
 - Löytyykö rajapintaa myös tililuettelolle? (ja palveluluokille)
 https://avoindata.tutkihallintoa.fi/apis
