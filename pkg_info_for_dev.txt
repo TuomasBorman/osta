@@ -7,6 +7,16 @@ directory. Additional resource files are in src/pkg/resources
 directory. data directory contains scripts that are used to
 update resources.
 
+__init___.py files tells that the directory is a module.
+
+'if __name__ == "__main__":' is not used. If file/module is run by individually
+the code inside the if statement is executed. If file/module is imported from
+the other file/module, the __name__ is not __main__ and the code is not executed.
+This statement could be useful if the file/module was used as a main function
+and specific code was wanted to be executed when file/module is executed.
+(Set some default values, create certain object...) However, that is not the
+case for the functions in this package.
+
 docs/pkg direcotory contains documentation of package.
 
 dist directory contains software files that can be distributed.
