@@ -613,6 +613,7 @@ def test_clean_data_date():
             "test": ["0135202-4", "0135202-4", "test"]
             }
     df_expect = pd.DataFrame(data)
+    print(df)
     # Expect that are equal
     assert_frame_equal(df, df_expect)
 

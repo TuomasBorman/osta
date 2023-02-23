@@ -159,7 +159,7 @@ def __are_valid_vat_numbers(values):
     return res
 
 
-def __test_if_date(df):
+def __test_if_date(df, wo_sep=False, **args):
     """
     This function checks if the column defines dates
     Input: Series
@@ -184,6 +184,18 @@ def __test_if_date(df):
             "^\\d\\d\\d\\d[-/.]\\d\\d[-/.]\\d$",
             "^\\d\\d[-/.]\\d[-/.]\\d$",
             ]
+        patt_wo_sep = [
+            "^\\d\\d\\d\\d\\d\\d\\d\\d$",
+            "^\\d\\d\\d\\d\\d\\d\\d$",
+            "^\\d\\d\\d\\d\\d\\d\\d$",
+            "^\\d\\d\\d\\d\\d\\d$",
+            "^\\d\\d\\d\\d\\d$",
+            "^\\d\\d\\d\\d$"
+            ]
+        # If specified search also dates without separators
+        if wo_sep:
+            patt_to_search.extend(patt_wo_sep)
+        # Find patterns
         patt_found = df.astype(str).str.contains("|".join(patt_to_search))
         if all(patt_found):
             res = True

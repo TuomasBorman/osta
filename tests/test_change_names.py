@@ -247,7 +247,7 @@ def test_change_names_test_sums():
 def test_change_names_data_patterns():
     # matching land code, date, and voucher
     data = {"test1": ["FI", "FI", "DK", "FI"],
-            "test2": ["02/01/2023", "2-1-2023", "212023", "20.1.2023"],
+            "test2": ["02/01/2023", "2-1-2023", "20.12.2023", "20.1.2023"],
             "test3": [1, 2, 2, 3]
             }
     df = pd.DataFrame(data)
@@ -395,9 +395,9 @@ def test_change_names_match_th1():
     df_ref = copy.copy(df)
     # Expect a warning
     with pytest.warns(Warning):
-        df = change_names(df, match_th=0.65)
+        df = change_names(df, match_th=0.65, make_unique=False)
     # Expected names
-    df_ref.columns = ["account_number", "account_number_2",
+    df_ref.columns = ["account_name", "account_number",
                       "Test3", "account_name"]
     # Expect that are equal
     assert_frame_equal(df, df_ref)
@@ -416,8 +416,9 @@ def test_change_names_match_th2():
     with pytest.warns(Warning):
         df = change_names(df, match_th=0.67)
     # Expected names
-    df_ref.columns = ["Test1", "Test2", "Test3"]
-    # Expect that are equal
+    df_ref.columns = ["Test1", "Test2", "bid"]
+    # Expect that are equal (if there are any BIDs, it is probable that column
+    # includes BID values... --> match_th does not affect)
     assert_frame_equal(df, df_ref)
 
     # Original names

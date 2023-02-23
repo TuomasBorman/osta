@@ -677,7 +677,7 @@ def __check_format_of_values(df, match_th=0.8, **args):
         "org_sub_sub_number",
         "suppl_number",
         "account_number",
-        "service_cat_number",
+        "service_cat",
         "vat_code",
         "cost_pool_id",
         "cost_pool_sub_id",

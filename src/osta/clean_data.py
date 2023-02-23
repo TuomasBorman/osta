@@ -373,7 +373,7 @@ def __standardize_date(df, disable_date=False, date_format="%d-%m-%Y",
                 df_date_mod)
         convert_date = True
     # Try to reformat DDMMYYYY format
-    elif utils.__test_if_date(df_date_mod.iloc[:, 0]):
+    elif utils.__test_if_date(df_date_mod.iloc[:, 0], wo_sep=True):
         # Get only the series
         df_date_mod = df_date_mod.iloc[:, 0]
         # Get format of date
