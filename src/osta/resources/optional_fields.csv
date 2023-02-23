@@ -31,9 +31,11 @@ vastuualue,org_sub_sub_sub_name
 vastuualueen nimi,org_sub_sub_sub_name
 vastuualue nro,org_sub_sub_sub_number
 vastuualuetunnus,org_sub_sub_sub_number
-vatuualuenumero,org_sub_sub_sub_number
+vastuualuenumero,org_sub_sub_sub_number
 tulosyksikkö,org_sub_sub_sub_sub_name
 tulosyksikön nimi,org_sub_sub_sub_sub_name
+tulosyksikön numero,org_sub_sub_sub_sub_number
+tulosyksikön nro,org_sub_sub_sub_sub_number
 toiminnon nimi,function_name
 toiminto,function_name
 toimintonumero,function_number
