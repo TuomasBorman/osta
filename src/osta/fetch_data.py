@@ -314,10 +314,10 @@ def read_file(file_path, temp_dir=None, **args):
 
 
 def __detect_format_and_open_file(
-        file_path,
+        file_path, save_dir=None,
         encoding=None, guess_encoding=True,
         delimiter=None, guess_delimiter=True,
-        polish_data=True, change_colnames=True,
+        polish_data=True, change_colnames=False,
         **args):
     """
     This function is a helper function to load and detect the format of the
@@ -325,6 +325,10 @@ def __detect_format_and_open_file(
     The returned value is pandas.DataFrame.
     """
     # INPUT CHECK
+    if not (isinstance(save_dir, str) or save_dir is None):
+        raise Exception(
+            "'save_dir' must be None or string specifying temporary directory."
+            )
     if not (isinstance(encoding, str) or encoding is None):
         raise Exception(
             "'encoding' must be a string or None."
@@ -351,8 +355,13 @@ def __detect_format_and_open_file(
     if file_type is not None and (file_type.extension == "xls" or
                                   file_type.extension == "xlsx"):
         file_type = "excel"
-    else:
+    elif file_type is None or file_type.extension == "csv":
+        # Otherwise try filetype csv unless filetype is guessed to be other
         file_type = "csv"
+    else:
+        raise Exception(
+            "The format of the file is not supported."
+            )
 
     # If encoding is not determined and user wants to guess it for csv file
     if file_type == "csv" and encoding is None and guess_encoding:
@@ -367,6 +376,10 @@ def __detect_format_and_open_file(
         rawdata = codecs.open(file_path, 'r', encoding=encoding)
         # Get delimiter
         delimiter = csv.Sniffer().sniff(rawdata.read()).delimiter
+        # If the delimiter is just space, the file contains empty strings for
+        # the missing entries --> empty space is not correct delimiter, try \t
+        if delimiter == " ":
+            delimiter = "\t"
 
     # Based on file format, open the file with correct function
     if file_type == "excel":
@@ -401,4 +414,22 @@ def __detect_format_and_open_file(
     # Change colnames if specified
     if change_colnames:
         df = change_names(df, **args)
+    # If save_dir is not None, save the file to specified folder
+    if save_dir is not None:
+        # Check if spedicified directory exists. If not, create it
+        if not os.path.isdir(save_dir):
+            os.makedirs(save_dir)
+        file_path = file_path.split("/")
+        file_path = file_path[-1]
+        file_path = re.split(r".csv|.xls|.xlsx", file_path)
+        file_path = file_path[0]
+        file_path = os.path.join(save_dir, file_path)
+        # Save file, do not overwrite
+        if os.path.exists(file_path + ".csv"):
+            i = 0
+            while os.path.exists(f"{file_path}{str(i)}.csv"):
+                i += 1
+            file_path = "file_path_" + str(i) + ".csv"
+        file_path = file_path + ".csv"
+        df.to_csv(file_path)
     return df

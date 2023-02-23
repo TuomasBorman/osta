@@ -434,7 +434,6 @@ def __test_if_BID(df, col_i, match_th):
     patt_found = patt_found.value_counts()/df.shape[0]
     # If Trues exist in both, get the smaller portion. Otherwise, True was not
     # found and the result is 0 / not found
-    print(patt_found)
     if True in patt_found.index:
         # Get portion of Trues and take only value
         patt_found = patt_found[patt_found.index][0]
