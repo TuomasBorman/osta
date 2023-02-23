@@ -264,8 +264,7 @@ def read_file(file_path, temp_dir=None, **args):
         if not os.path.isdir(temp_dir):
             os.makedirs(temp_dir)
         # Get temporary file path
-        file_path = file_path.split("/")
-        file_path = file_path[-1]
+        file_path = file_path.replace("/", "_")
         file_path = os.path.join(temp_dir, file_path)
         # Try to access the file based on url address if it is not already
         # laoded in cache
