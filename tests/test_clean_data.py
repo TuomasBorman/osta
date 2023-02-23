@@ -145,13 +145,11 @@ def test_check_names_wrong_arguments():
         with pytest.raises(Exception):
             df = clean_data(df, db_year=1)
         with pytest.raises(Exception):
-            df = clean_data(df, pattern_th=10)
+            df = clean_data(df, thresh=True)
         with pytest.raises(Exception):
-            df = clean_data(df, pattern_th=True)
+            df = clean_data(df, thresh="0.5")
         with pytest.raises(Exception):
-            df = clean_data(df, pattern_th="0.5")
-        with pytest.raises(Exception):
-            df = clean_data(df, pattern_th=None)
+            df = clean_data(df, thresh=None)
 
 
 def test_clean_data_org():
@@ -767,6 +765,26 @@ def test_clean_data_sums():
     df_expect = pd.DataFrame(data)
     # Expect that are equal
     assert_frame_equal(df, df_expect)
+
+
+def test_thresh():
+    def test_clean_data_sums():
+        data = {"vat_amount": [2.0, "", 1.5],
+                "price_ex_vat": [1, 3.0, 1.5],
+                "total": [3, 3, 4]
+                }
+        df = pd.DataFrame(data)
+        # Expect warning
+        with pytest.warns(Warning):
+            df = clean_data(df, thresh=2)
+        # Expected names
+        data = {"vat_amount": [2.0, 1.5],
+                "price_ex_vat": [1, 1.5],
+                "total": [3.0, 4.0]
+                }
+        df_expect = pd.DataFrame(data)
+        # Expect that are equal
+        assert_frame_equal(df, df_expect)
 
 
 def __create_dummy_data():

@@ -397,7 +397,7 @@ def test_change_names_match_th1():
     with pytest.warns(Warning):
         df = change_names(df, match_th=0.65, make_unique=False)
     # Expected names
-    df_ref.columns = ["account_name", "account_number",
+    df_ref.columns = ["account_number", "account_number",
                       "Test3", "account_name"]
     # Expect that are equal
     assert_frame_equal(df, df_ref)

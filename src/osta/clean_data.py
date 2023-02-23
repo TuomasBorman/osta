@@ -89,6 +89,12 @@ def clean_data(df, **args):
         'suppl', 'date', 'sums', 'country', 'voucher', 'account' or
         'service'. (By default: disable_*=False)
 
+        `thresh`: An integer specifying the number of values each observation
+        should contain to preserve it. Some datasets might have rows with
+        additional information such as additional rows for price. These rows
+        can be dropped by specifying thresh. For example, thresh=df.shape[0]-5
+        removes all rows that have over 5 empty values. (By default: thresh=0)
+
     Details:
         This function standardize the data and checks that it is in correct
         format. If the data is not in expected format containing erroneous
@@ -189,6 +195,8 @@ def clean_data(df, **args):
             "that are now removed.\n",
             category=Warning
             )
+    # Check if there are rows that are missing values
+    df = __check_empty_observations(df, **args)
 
     # Test if voucher is correct
     __check_voucher(df, **args)
@@ -1335,6 +1343,35 @@ def __check_voucher(df, disable_voucher=False, **args):
         warnings.warn(
             message="It seems that 'voucher' column does not include " +
             "voucher values. Please check it for errors.",
+            category=Warning
+            )
+    return df
+
+
+def __check_empty_observations(df, thresh=0, **args):
+    """
+    This function checks if rows include empty values.
+    Input: df
+    Output: df
+    """
+    # INPUT CHECK
+    if not (isinstance(thresh, int) and not isinstance(thresh, bool)):
+        raise Exception(
+            "'thresh' must be an integer."
+            )
+    # INPUT CHECK END
+    # Remove columns that have less than thresh amount of non-empty values
+    if thresh > 0:
+        df = df.dropna(axis=0, thresh=thresh)
+    # Calculate empty values per row
+    empty_values = df.apply(lambda x: len(x)-x.count(), axis=1)
+    if any(empty_values > 0):
+        max_num = max(empty_values)
+        warnings.warn(
+            message=f"It seems that the data includes rows with up to "
+            f"{max_num} empty values. Please check them for errors. "
+            f"5 first rows with empty values printed below.\n"
+            f"{df.loc[empty_values>0,:].head()}",
             category=Warning
             )
     return df
