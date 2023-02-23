@@ -181,7 +181,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             )
 
     # Check that the format of the values are correct
-    df = __check_format_of_values(df, match_th=0.9)
+    df = __check_format_of_values(df, **args)
 
     # If there are duplicated column names and user want to make them unique
     if len(set(df.columns)) != df.shape[1] and make_unique:
@@ -279,7 +279,7 @@ def __guess_name(df, col_i, colnames, fields, pattern_th=0.9, match_th=0.8,
         raise Exception(
             "'pattern_th' must be a number between 0-1."
             )
-    # # match_th must be numeric value 0-100
+    # match_th must be numeric value 0-100
     if not utils.__is_percentage(match_th):
         raise Exception(
             "'match_th' must be a number between 0-1."
@@ -670,6 +670,13 @@ def __check_format_of_values(df, match_th=0.8, **args):
     Input: df
     Output: df with corrected column names
     """
+    # INPUT CHECK
+    # match_th must be numeric value 0-100
+    if not utils.__is_percentage(match_th):
+        raise Exception(
+            "'match_th' must be a number between 0-1."
+            )
+    # INPUT CHECK END
     # Variable names that are matched
     var_num = [
         "org_number",
@@ -742,12 +749,4 @@ def __check_format_of_values(df, match_th=0.8, **args):
             f"... were replaced with \n {new}",
             category=Warning
             )
-        # Katso jos muuttujan määrittelelemä (var1) sarake on df:ssä
-        # ota muuttujan määrittelemät sarakkeet, looppaa niiden yli
-        # katso vastaako yksittäisen sarakkeen arvo "type":ä.
-        # Voiko ei-nonet muuttaa digitiksi, is.digit
-        # Jos ei, ota var2 ja anna warning (laita listaan ja anna warning lopuksi).
-        # JOs kyllä, jatka ilman mitään
-    # Voi olla duplikaatteja nimiä
-    # Katso että pytest menee läpi
     return df
