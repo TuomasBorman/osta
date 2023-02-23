@@ -1,46 +1,54 @@
-key,value,
-vat-tunnus,vat_id,
-alv-koodi,vat_code,
-alv-numero,vat_code,
-alv-nimi,vat_code_name,
-alv nimi,vat_code_name,
-kustannuspaikan nimi,cost_pool_name,
-kustannuspaikka_nimi,cost_pool_name,
-kustannuspaikka nimi,cost_pool_name,
-kp:n nimi,cost_pool_name,
-kustannuspaikka,cost_pool,
-kustannuspaikka_numero,cost_pool_id,int
-kustannuspaikka_id,cost_pool_id,
-Kustannus-paikka nro,cost_pool_id,
-kp,cost_pool_id,
-hilma-tunnus,hilma_code,NA
-docid,doc_id,
-id,doc_id,
-rondo id,doc_id,
-toimielin (t),org_sub_name,
-toimielin,org_sub_name,
-toimielintunnus,org_sub_number,int
-toimielin nro,org_sub_number,
-vastuualuetunnus,cost_pool_sub_id,
-tulosalue,org_sub_sub_name,
-tulosalueen nimi,org_sub_sub_name,
-toiminnon nimi,org_sub_sub_name,
-tulosaluenumero,org_sub_sub_number,
-tulosalue nro,org_sub_sub_number,
-toiminto,org_sub_sub_number,
-vastuualue,cost_pool_sub_name,
-toslaji,voucher_type,
-tositelaji,voucher_type,
-tositesarja,voucher_type,
-projekti,project_number,
-hanke,project_number,
-projekti/hanke,project_number,
-projektinumero,project_number,
-hankenumero,project_number,
-projekti/hankenumero,project_number,
-projektinro,project_number,
-hankenro,project_number,
-projekti/hanke nro,project_number,
-projektin nimi,project_name,
-hankkeen nimi,project_name,
-projekti/hanke nimi,project_name,
+key,value
+vat-tunnus,vat_id
+alv-koodi,vat_code
+alv-numero,vat_code
+alv-nimi,vat_code_name
+alv nimi,vat_code_name
+kustannuspaikan nimi,cost_pool_name
+kustannuspaikka_nimi,cost_pool_name
+kustannuspaikka nimi,cost_pool_name
+kp:n nimi,cost_pool_name
+kustannuspaikka,cost_pool_id
+kustannuspaikka_numero,cost_pool_id
+kustannuspaikka_id,cost_pool_id
+Kustannus-paikka nro,cost_pool_id
+kp,cost_pool_id
+hilma-tunnus,hilma_code
+docid,doc_id
+id,doc_id
+rondo id,doc_id
+toimielin (t),org_sub_name
+toimielin,org_sub_name
+tulosyksikön numero,org_sub_number
+tulosyksikon_id,org_sub_number
+toimielintunnus,org_sub_number
+toimielin nro,org_sub_number
+tulosalue,org_sub_sub_name
+tulosalueen nimi,org_sub_sub_name
+tulosaluenumero,org_sub_sub_number
+tulosalue nro,org_sub_sub_number
+vastuualue,org_sub_sub_sub_name
+vastuualueen nimi,org_sub_sub_sub_name
+vastuualue nro,org_sub_sub_sub_number
+vastuualuetunnus,org_sub_sub_sub_number
+vatuualuenumero,org_sub_sub_sub_number
+tulosyksikkö,org_sub_sub_sub_sub_name
+tulosyksikön nimi,org_sub_sub_sub_sub_name
+toiminnon nimi,function_name
+toiminto,function_name
+toimintonumero,function_number
+toslaji,voucher_type
+tositelaji,voucher_type
+tositesarja,voucher_type
+projekti,project_number
+hanke,project_number
+projekti/hanke,project_number
+projektinumero,project_number
+hankenumero,project_number
+projekti/hankenumero,project_number
+projektinro,project_number
+hankenro,project_number
+projekti/hanke nro,project_number
+projektin nimi,project_name
+hankkeen nimi,project_name
+projekti/hanke nimi,project_name

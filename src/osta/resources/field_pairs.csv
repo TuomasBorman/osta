@@ -1,0 +1,14 @@
+var_num,var_name
+org_number,org_name
+org_sub_number,org_sub_name
+org_sub_sub_number,org_sub_sub_name
+org_sub_sub_sub_number,org_sub_sub_sub_name
+org_sub_sub_sub_sub_number,org_sub_sub_sub_sub_name
+suppl_number,suppl_name
+account_number,account_name
+account_group_number,account_group_name
+service_cat,service_cat_name
+vat_code,vat_code_name
+cost_pool_id,cost_pool_name
+function_number,function_name
+project_number,project_name

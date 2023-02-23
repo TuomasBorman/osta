@@ -677,39 +677,19 @@ def __check_format_of_values(df, match_th=0.8, **args):
             "'match_th' must be a number between 0-1."
             )
     # INPUT CHECK END
-    # Variable names that are matched
-    var_num = [
-        "org_number",
-        "org_sub_number",
-        "org_sub_sub_number",
-        "suppl_number",
-        "account_number",
-        "service_cat",
-        "vat_code",
-        "cost_pool_id",
-        "cost_pool_sub_id",
-        "project_number"
-        ]
-    var_name = [
-        "org_name",
-        "org_sub_number",
-        "org_sub_sub_number",
-        "suppl_name",
-        "account_name",
-        "service_cat",
-        "vat_code_name",
-        "cost_pool_name",
-        "cost_pool_sub_name",
-        "project_name"
-        ]
-    # Create DFs from them
-    df_num = pd.DataFrame({"var1": var_num,
-                           "var2": var_name,
-                           "type": ["int"] * len(var_num)
+    # Load variable pairs that will be matched
+    path = pkg_resources.resource_filename(
+        "osta", "resources/" + "field_pairs.csv")
+    df_var = pd.read_csv(path)
+    # Create DF where all variables are in one column, their corresponding
+    # variable in second column and type of variable 1 in third column
+    df_num = pd.DataFrame({"var1": df_var["var_num"],
+                           "var2": df_var["var_name"],
+                           "type": ["int"] * df_var.shape[0]
                            })
-    df_name = pd.DataFrame({"var1": var_name,
-                            "var2": var_num,
-                            "type": ["str"] * len(var_num)
+    df_name = pd.DataFrame({"var1": df_var["var_name"],
+                            "var2": df_var["var_num"],
+                            "type": ["str"] * df_var.shape[0]
                             })
     df_var = pd.concat([df_num, df_name])
     df_var = df_var.reset_index(drop=True)
@@ -744,7 +724,7 @@ def __check_format_of_values(df, match_th=0.8, **args):
         df.columns = colnames
         # Give warning
         warnings.warn(
-            message=f"Based on expected value types the following"
+            message=f"Based on expected value types the following "
             f"column names... \n {orig}\n"
             f"... were replaced with \n {new}",
             category=Warning
