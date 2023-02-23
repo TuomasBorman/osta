@@ -180,6 +180,9 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             category=Warning
             )
 
+    # Check that the format of the values are correct
+    df = __check_format_of_values(df, match_th=0.9)
+
     # If there are duplicated column names and user want to make them unique
     if len(set(df.columns)) != df.shape[1] and make_unique:
         # Initialize a list for new column names
@@ -657,3 +660,94 @@ def __test_if_in_db(df, col_i, colnames, test, db_file, match_th,
     else:
         res = False
     return res
+
+
+def __check_format_of_values(df, match_th=0.8, **args):
+    """
+    This function tests if values of value-pairs
+    (e.g., account name and number) are in correct format (numbers are int and
+    names are str).
+    Input: df
+    Output: df with corrected column names
+    """
+    # Variable names that are matched
+    var_num = [
+        "org_number",
+        "org_sub_number",
+        "org_sub_sub_number",
+        "suppl_number",
+        "account_number",
+        "service_cat_number",
+        "vat_code",
+        "cost_pool_id",
+        "cost_pool_sub_id",
+        "project_number"
+        ]
+    var_name = [
+        "org_name",
+        "org_sub_number",
+        "org_sub_sub_number",
+        "suppl_name",
+        "account_name",
+        "service_cat",
+        "vat_code_name",
+        "cost_pool_name",
+        "cost_pool_sub_name",
+        "project_name"
+        ]
+    # Create DFs from them
+    df_num = pd.DataFrame({"var1": var_num,
+                           "var2": var_name,
+                           "type": ["int"] * len(var_num)
+                           })
+    df_name = pd.DataFrame({"var1": var_name,
+                            "var2": var_num,
+                            "type": ["str"] * len(var_num)
+                            })
+    df_var = pd.concat([df_num, df_name])
+    df_var = df_var.reset_index(drop=True)
+    # Loop over variable names
+    colnames = df.columns.tolist()
+    orig = []
+    new = []
+    for row_i, var in df_var.iterrows():
+        # Get indices which tell what column is the variable if any
+        ind = [i for i, x in enumerate(df.columns) if x == var["var1"]]
+        # If the specified variable can be found from the column names
+        if len(ind) > 0:
+            # Loop over columns that are specified by the variable
+            # (there might be duplicated column names, that is why for-loop)
+            for i in ind:
+                number_of_nums = sum(df.iloc[:, i].dropna().astype(
+                    str).str.strip().str.isdigit())
+                number_of_vals = len(df.iloc[:, i].dropna())
+                prop_of_nums = number_of_nums/number_of_vals
+                # If the variable must be integer or str and it is not
+                if (var["type"] == "int" and
+                    prop_of_nums < match_th) or (var["type"] == "str" and
+                                                 1-prop_of_nums < match_th):
+                    # Add to lists for warning message
+                    orig.append(colnames[i])
+                    new.append(var["var2"])
+                    # Change the column name
+                    colnames[i] = var["var2"]
+    # Column names have been changed
+    if len(orig) > 0:
+        # Update column names
+        df.columns = colnames
+        # Give warning
+        warnings.warn(
+            message=f"Based on expected value types the following"
+            f"column names... \n {orig}\n"
+            f"... were replaced with \n {new}",
+            category=Warning
+            )
+        # Katso jos muuttujan määrittelelemä (var1) sarake on df:ssä
+        # ota muuttujan määrittelemät sarakkeet, looppaa niiden yli
+        # katso vastaako yksittäisen sarakkeen arvo "type":ä.
+        # Voiko ei-nonet muuttaa digitiksi, is.digit
+        # Jos ei, ota var2 ja anna warning (laita listaan ja anna warning lopuksi).
+        # JOs kyllä, jatka ilman mitään
+    # Voi olla duplikaatteja nimiä
+    # Katso että pytest menee läpi
+    return df
