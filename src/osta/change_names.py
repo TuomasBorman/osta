@@ -408,12 +408,14 @@ def __test_if_loose_match(col, fields, pattern_th,
     # If column is not empty
     if col.strip():
         # Try partial match, get the most similar key value
-        col_name_part = process.extractOne(col, fields.keys(),
-                                           scorer=scorer)
+        res = process.extract(col.strip(), fields.keys(), scorer=scorer)
+        col_name_part = res[0]
+        col_name_part2 = res[1]
         # Value [0,1] to a number between 0-100
         pattern_th = pattern_th*100
-        # If the matching score is over threshold
-        if col_name_part[1] >= pattern_th:
+        # If the matching score is over threshold and second match is not close
+        if col_name_part[1] >= pattern_th and (col_name_part[1] >=
+                                               col_name_part2[1] + 0.05):
             # Get only the key name
             col_name_part = col_name_part[0]
             # Based on the key, get the value
