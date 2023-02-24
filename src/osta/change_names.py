@@ -5,6 +5,8 @@ import warnings
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import pkg_resources
+from os import listdir
+from os.path import isfile, join, isdir
 
 
 def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
@@ -219,7 +221,7 @@ def change_names_list(df_list, save_dir=None, **args):
     Output: A list of pd.Dfs
     """
     # INPUT CHECK
-    if not isinstance(df_list, list):
+    if not (isinstance(df_list, list) or isinstance(df_list, str)):
         raise Exception(
             "'df_list' must be a list of pd.DataFrames or paths to files."
             )
@@ -228,12 +230,42 @@ def change_names_list(df_list, save_dir=None, **args):
             "'save_dir' must be None or string specifying directory to where ",
             "result files will be stored."
             )
+    # If df_list is directory, check that it is correct directory
+    if isinstance(df_list, str) and not isdir(df_list):
+        raise Exception(
+            "Directory specified by 'df_list' not found."
+            )
+    elif isinstance(df_list, str) and isdir(df_list):
+        # If it is directory, get all the files inside it
+        df_list = [join(df_list, f) for f in listdir(df_list)
+                   if isfile(join(df_list, f))]
     # INPUT CHECK END
     # Loop over list elements
-    for df in df_list:
+    for i, x in enumerate(df_list):
         # Check if it is pd.DataFrame. Otherwise try to load it as a local file
-        if not isinstance(df, pd.DataFrame):
-            print(1)
+        df_is_DF = True
+        if not isinstance(x, pd.DataFrame):
+            # Try to load it
+            try:
+                df = utils.__detect_format_and_open_file(x, **args)
+            except Exception:
+                df_is_DF = False
+                msg = x if isinstance(x, str) else ("element " + i)
+                warnings.warn(
+                    message=f"{msg} was not detected.",
+                    category=Warning
+                    )
+        else:
+            df = x
+        # If the file is not DF and it was not possible to load
+        if df_is_DF:
+            # Change names from individual file
+            df = change_names(df, **args)
+        # Save file if list contained paths or if specified
+        if isinstance(x, str) or save_dir is not None:
+            # Get correct path
+            x = x if isinstance(x, str) else join(save_dir, x)
+            df.to_csv(x, index=False)
     return df_list
 
 # HELP FUNCTIONS
