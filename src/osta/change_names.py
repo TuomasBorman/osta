@@ -211,6 +211,31 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         df.columns = colnames
     return df
 
+
+def change_names_list(df_list, save_dir=None, **args):
+    """
+    Chnage names of multiple pd.DFs
+    Input: A list of pd.DFs or path's to them
+    Output: A list of pd.Dfs
+    """
+    # INPUT CHECK
+    if not isinstance(df_list, list):
+        raise Exception(
+            "'df_list' must be a list of pd.DataFrames or paths to files."
+            )
+    if not (isinstance(save_dir, str) or save_dir is None):
+        raise Exception(
+            "'save_dir' must be None or string specifying directory to where ",
+            "result files will be stored."
+            )
+    # INPUT CHECK END
+    # Loop over list elements
+    for df in df_list:
+        # Check if it is pd.DataFrame. Otherwise try to load it as a local file
+        if not isinstance(df, pd.DataFrame):
+            print(1)
+    return df_list
+
 # HELP FUNCTIONS
 
 
@@ -417,8 +442,8 @@ def __test_if_loose_match(col, fields, pattern_th,
         # Value [0,1] to a number between 0-100
         pattern_th = pattern_th*100
         # If the matching score is over threshold and second match is not close
-        if col_name_part[1] >= pattern_th and (col_name_part[1] >=
-                                               col_name_part2[1] + 0.05):
+        if col_name_part[1] >= pattern_th and (col_name_part[1] >
+                                               col_name_part2[1]):
             # Get only the key name
             col_name_part = col_name_part[0]
             # Based on the key, get the value

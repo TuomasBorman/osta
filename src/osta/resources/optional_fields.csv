@@ -5,6 +5,7 @@ alv-numero,vat_code
 alv-nimi,vat_code_name
 alv nimi,vat_code_name
 kustannuspaikan nimi,cost_pool_name
+kustannuspaikan_nimi,cost_pool_name
 kustannuspaikka_nimi,cost_pool_name
 kustannuspaikka nimi,cost_pool_name
 kp:n nimi,cost_pool_name
@@ -19,6 +20,9 @@ id,doc_id
 rondo id,doc_id
 toimielin (t),org_sub_name
 toimielin,org_sub_name
+tulosyksikön nimi,org_sub_name
+tulosyksikon nimi,org_sub_name
+tulosyksikon_nimi,org_sub_name
 tulosyksikön numero,org_sub_number
 tulosyksikon_id,org_sub_number
 toimielintunnus,org_sub_number
@@ -38,6 +42,7 @@ tulosyksikön numero,org_sub_sub_sub_sub_number
 tulosyksikön nro,org_sub_sub_sub_sub_number
 toiminnon nimi,function_name
 toiminto,function_name
+osasto,function_name
 toimintonumero,function_number
 toslaji,voucher_type
 tositelaji,voucher_type
@@ -54,3 +59,18 @@ projekti/hanke nro,project_number
 projektin nimi,project_name
 hankkeen nimi,project_name
 projekti/hanke nimi,project_name
+tiliryhmänumero,account_group_number
+tiliryhmä nro,account_group_number
+tiliryhmä,account_group_name
+tiliryhman nimi,account_group_name
+tiliryhmän nimi,account_group_name
+tiliryhman_nimi,account_group_name
+laskun_numero,invoice_number
+tilausnumero,order_number
+sopimusnumero,contract_number
+ostotilausnumero,order_number_type
+kirjauspäivä,doc_date
+kirjauspäivämäärä,doc_date
+kirjauspaivamaara,doc_date
+vuosi,year
+kuukausi,month

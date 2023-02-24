@@ -7,16 +7,14 @@ import json
 import warnings
 import sys
 import re
-import codecs
 import tempfile
 import urllib.request
 from zipfile import ZipFile
 import shutil
 import os
 import filetype
-import cchardet
-import csv
 from osta.change_names import change_names
+import osta.__utils as utils
 
 
 def fetch_data_urls(search_words, **args):
@@ -263,6 +261,9 @@ def read_file(file_path, temp_dir=None, **args):
         # Check if spedicified directory exists. If not, create it
         if not os.path.isdir(temp_dir):
             os.makedirs(temp_dir)
+        # Get file path were final file will be stored
+        save_file = file_path.split("/")
+        save_file = save_file[-1]
         # Get temporary file path
         file_path = file_path.replace("/", "_")
         file_path = os.path.join(temp_dir, file_path)
@@ -303,7 +304,8 @@ def read_file(file_path, temp_dir=None, **args):
     dfs = []
     for path_temp in file_path:
         # Open file as DataFrame
-        df = __detect_format_and_open_file(path_temp, **args)
+        df = __open_and_save_file(
+            path_temp, save_file=save_file, **args)
         # Store DF tp list
         dfs.append(df)
     # If there is only one DF in list, return only the DF
@@ -312,8 +314,8 @@ def read_file(file_path, temp_dir=None, **args):
     return dfs
 
 
-def __detect_format_and_open_file(
-        file_path, save_dir=None,
+def __open_and_save_file(
+        file_path, save_dir=None, save_file=None,
         encoding=None, guess_encoding=True,
         delimiter=None, guess_delimiter=True,
         polish_data=True, change_colnames=False,
@@ -328,65 +330,18 @@ def __detect_format_and_open_file(
         raise Exception(
             "'save_dir' must be None or string specifying temporary directory."
             )
-    if not (isinstance(encoding, str) or encoding is None):
+    if not (isinstance(save_file, str) or save_file is None):
         raise Exception(
-            "'encoding' must be a string or None."
-            )
-    if not isinstance(guess_encoding, bool):
-        raise Exception(
-            "'guess_encoding' must be a boolean value."
-            )
-    if not (isinstance(delimiter, str) or delimiter is None):
-        raise Exception(
-            "'delimiter' must be a string or None."
-            )
-    if not isinstance(guess_delimiter, bool):
-        raise Exception(
-            "'guess_delimiter' must be a boolean value."
+            "'save_file' must be None or string specifying temporary ",
+            "directory."
             )
     if not isinstance(polish_data, bool):
         raise Exception(
             "'polish_data' must be a boolean value."
             )
     # INPUT CHECK END
-    # Check if the file is excel file
-    file_type = filetype.guess(file_path)
-    if file_type is not None and (file_type.extension == "xls" or
-                                  file_type.extension == "xlsx"):
-        file_type = "excel"
-    elif file_type is None or file_type.extension == "csv":
-        # Otherwise try filetype csv unless filetype is guessed to be other
-        file_type = "csv"
-    else:
-        raise Exception(
-            "The format of the file is not supported."
-            )
-
-    # If encoding is not determined and user wants to guess it for csv file
-    if file_type == "csv" and encoding is None and guess_encoding:
-        # Open the data
-        rawdata = open(file_path, "rb")
-        # Check its encoding
-        encoding = cchardet.detect(rawdata.read())["encoding"]
-
-    # If delimiter is not specified and user wants to guess it for csv file
-    if file_type == "csv" and delimiter is None and guess_delimiter:
-        # Open the data
-        rawdata = codecs.open(file_path, 'r', encoding=encoding)
-        # Get delimiter
-        delimiter = csv.Sniffer().sniff(rawdata.read()).delimiter
-        # If the delimiter is just space, the file contains empty strings for
-        # the missing entries --> empty space is not correct delimiter, try \t
-        if delimiter == " ":
-            delimiter = "\t"
-
-    # Based on file format, open the file with correct function
-    if file_type == "excel":
-        df = pd.read_excel(file_path, **args, dtype='unicode')
-    else:
-        df = pd.read_csv(file_path, encoding=encoding, delimiter=delimiter,
-                         **args, dtype='unicode')
-
+    # Open the file
+    df = utils.__detect_format_and_open_file(file_path, **args)
     # Polish data, i.e., remove empty rows and columns
     if polish_data:
         # Remove spaces from beginning and end of the value
@@ -418,17 +373,21 @@ def __detect_format_and_open_file(
         # Check if spedicified directory exists. If not, create it
         if not os.path.isdir(save_dir):
             os.makedirs(save_dir)
-        file_path = file_path.split("/")
-        file_path = file_path[-1]
+        # Get file_name if not provided
+        if save_file is not None:
+            file_path = save_file
+        else:
+            file_path = file_path.split("/")
+            file_path = file_path[-1]
         file_path = re.split(r".csv|.xls|.xlsx", file_path)
         file_path = file_path[0]
         file_path = os.path.join(save_dir, file_path)
         # Save file, do not overwrite
         if os.path.exists(file_path + ".csv"):
-            i = 0
-            while os.path.exists(f"{file_path}{str(i)}.csv"):
+            i = 2
+            while os.path.exists(f"{file_path} ({str(i)}).csv"):
                 i += 1
-            file_path = "file_path_" + str(i) + ".csv"
+            file_path = file_path + " (" + str(i) + ")"
         file_path = file_path + ".csv"
-        df.to_csv(file_path)
+        df.to_csv(file_path, index=False)
     return df

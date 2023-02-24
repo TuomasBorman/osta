@@ -19,6 +19,8 @@ tapahtumanumero,voucher
 tosite,voucher
 tapahtuma,voucher
 tositenro,voucher
+tositteen numero,voucher
+tositteen_numero,voucher
 toimittajan nimi,suppl_name
 toimittaja,suppl_name
 toimittajanimi,suppl_name
@@ -45,12 +47,17 @@ tapaht.pvm,date
 pvm,date
 laskun päivä,date
 laskun päivämäärä,date
+laskun_paiva,date
+laskun_paivamaara,date
 kirjauspäivä,date
 kirjauspäivämäärä,date
 kirjauspvm,date
 kirjaus pvm,date
 tapaht.pvm,date
 tapahtumapäivä,date
+tositepaivamaara,date
+tositepaiva,date
+paivamaara,date
 tapahtumapäivämäärä,date
 kirjanpidon tilinumero,account_number
 tilinumero,account_number
@@ -61,10 +68,8 @@ tili,account_name
 kirjanpidon tili,account_name
 tili (t),account_name
 tilin nimi,account_name
+tilin_nimi,account_name
 pääkirjatilin nimi,account_name
-tiliryhmänumero,account_group_number
-tiliryhmä nro,account_group_number
-tiliryhmä,account_group_name
 palveluluokka,service_cat
 palvelun numero,service_cat
 vastuualuetunnus,service_cat
@@ -79,6 +84,7 @@ rivin osuus verollinen,total
 "€, brutto",total
 euroa,total
 bruttosumma,total
+kokonaissumma_euroina,total
 laskun summa ilman alv,price_ex_vat
 laskun summa ilman alv:tä,price_ex_vat
 rivin osuus veroton,price_ex_vat
@@ -86,9 +92,11 @@ rivin nettosumma,price_ex_vat
 "eur, netto",price_ex_vat
 "€, netto",price_ex_vat
 nettosumma,price_ex_vat
+summa_alv0_euroina,price_ex_vat
 rivin osuus vero,vat_amount
 rivin alv-summa,vat_amount
 alv määrä euroina,vat_amount
 "alv, €",vat_amount
 "alv, eur",vat_amount
+alv_maara_euroina,vat_amount
 verkkolaskuosoite,invoice_account

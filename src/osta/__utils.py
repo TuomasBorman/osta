@@ -4,6 +4,10 @@ import pandas as pd
 import re
 import numpy as np
 import warnings
+import codecs
+import cchardet
+import csv
+import filetype
 
 
 def __is_non_empty_df(df):
@@ -365,3 +369,71 @@ def __subset_data_based_on_year(df, df_db, db_year=None,
     # Get only unique values
     df_db = df_db.drop_duplicates(subset=["number", "name"])
     return df_db
+
+
+def __detect_format_and_open_file(
+        file_path,
+        encoding=None, guess_encoding=True,
+        delimiter=None, guess_delimiter=True,
+        **args):
+    """
+    This function is a helper function to load and detect the format of the
+    file that cab be found from the disk and that is not zipped.
+    The returned value is pandas.DataFrame.
+    """
+    # INPUT CHECK
+    if not (isinstance(encoding, str) or encoding is None):
+        raise Exception(
+            "'encoding' must be a string or None."
+            )
+    if not isinstance(guess_encoding, bool):
+        raise Exception(
+            "'guess_encoding' must be a boolean value."
+            )
+    if not (isinstance(delimiter, str) or delimiter is None):
+        raise Exception(
+            "'delimiter' must be a string or None."
+            )
+    if not isinstance(guess_delimiter, bool):
+        raise Exception(
+            "'guess_delimiter' must be a boolean value."
+            )
+    # INPUT CHECK END
+    # Check if the file is excel file
+    file_type = filetype.guess(file_path)
+    if file_type is not None and (file_type.extension == "xls" or
+                                  file_type.extension == "xlsx"):
+        file_type = "excel"
+    elif file_type is None or file_type.extension == "csv":
+        # Otherwise try filetype csv unless filetype is guessed to be other
+        file_type = "csv"
+    else:
+        raise Exception(
+            "The format of the file is not supported."
+            )
+
+    # If encoding is not determined and user wants to guess it for csv file
+    if file_type == "csv" and encoding is None and guess_encoding:
+        # Open the data
+        rawdata = open(file_path, "rb")
+        # Check its encoding
+        encoding = cchardet.detect(rawdata.read())["encoding"]
+
+    # If delimiter is not specified and user wants to guess it for csv file
+    if file_type == "csv" and delimiter is None and guess_delimiter:
+        # Open the data
+        rawdata = codecs.open(file_path, 'r', encoding=encoding)
+        # Get delimiter
+        delimiter = csv.Sniffer().sniff(rawdata.read()).delimiter
+        # If the delimiter is just space, the file contains empty strings for
+        # the missing entries --> empty space is not correct delimiter, try \t
+        if delimiter == " ":
+            delimiter = "\t"
+
+    # Based on file format, open the file with correct function
+    if file_type == "excel":
+        df = pd.read_excel(file_path, **args, dtype='unicode')
+    else:
+        df = pd.read_csv(file_path, encoding=encoding, delimiter=delimiter,
+                         **args, dtype='unicode')
+    return df

@@ -9,3 +9,6 @@ https://avoindata.tutkihallintoa.fi/apis
 ---> on vain valtion, ei kuntien
 
 - funktioiden nimet (lower camelcase) argumenttien nimet?
+
+- Poista sellaiset kenttien nimet, joita ei tarvita/analysoida?
+- Mieti kenttien nimet uusiksi (paremmat nimet)?
