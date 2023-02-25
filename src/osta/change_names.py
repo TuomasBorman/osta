@@ -5,8 +5,11 @@ import warnings
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import pkg_resources
-from os import listdir
-from os.path import isfile, join, isdir
+from os import listdir, mknod, makedirs
+from os.path import isfile, join, isdir, exists, dirname
+import logging
+import sys
+import tempfile
 
 
 def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
@@ -214,7 +217,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
     return df
 
 
-def change_names_list(df_list, save_dir=None, **args):
+def change_names_list(df_list, save_dir=None, log_file=False, **args):
     """
     Chnage names of multiple pd.DFs
     Input: A list of pd.DFs or path's to them
@@ -230,6 +233,10 @@ def change_names_list(df_list, save_dir=None, **args):
             "'save_dir' must be None or string specifying directory to where ",
             "result files will be stored."
             )
+    if not (isinstance(log_file, str) or isinstance(log_file, bool)):
+        raise Exception(
+            "'log_file' must be a boolean value or a string specifying a path."
+            )
     # If df_list is directory, check that it is correct directory
     if isinstance(df_list, str) and not isdir(df_list):
         raise Exception(
@@ -240,8 +247,43 @@ def change_names_list(df_list, save_dir=None, **args):
         df_list = [join(df_list, f) for f in listdir(df_list)
                    if isfile(join(df_list, f))]
     # INPUT CHECK END
+    if log_file:
+        if isinstance(log_file, str):
+            dir_name = dirname(log_file)
+            file_name = log_file
+        else:
+            # Get the name of higher level tmp directory
+            temp_dir_path = tempfile.gettempdir()
+            dir_name = temp_dir_path + "/osta"
+            file_name = join(dir_name, "osta_log.log")
+        if not exists(dir_name):
+            makedirs(dir_name)
+        if not exists(file_name):
+            mknod(file_name)
+
+        logging.basicConfig(
+            filename=file_name,
+            format='%(asctime)s %(levelname)-8s %(message)s',
+            level=logging.INFO,
+            datefmt='%Y-%m-%d %H:%M:%S')
+        logging.captureWarnings(True)
+        logger = logging.getLogger("change_names_list")
+    # For progress bar, specify the width of it
+    progress_bar_width = 50
     # Loop over list elements
     for i, x in enumerate(df_list):
+        # Update the progress bar
+        percent = 100*((i)/len(df_list))
+        i += 1
+        sys.stdout.write('\r')
+        sys.stdout.write("Completed: [{:{}}] {:>3}%"
+                         .format('='*int(
+                             percent/(100/progress_bar_width)),
+                                 progress_bar_width, int(percent)))
+        sys.stdout.flush()
+        # mesage
+        msg = x if isinstance(x, str) else ("element " + i)
+        logger.info(f'File: {msg}')
         # Check if it is pd.DataFrame. Otherwise try to load it as a local file
         df_is_DF = True
         if not isinstance(x, pd.DataFrame):
@@ -266,6 +308,8 @@ def change_names_list(df_list, save_dir=None, **args):
             # Get correct path
             x = x if isinstance(x, str) else join(save_dir, x)
             df.to_csv(x, index=False)
+    # Stop progress bar
+    sys.stdout.write("\n")
     return df_list
 
 # HELP FUNCTIONS

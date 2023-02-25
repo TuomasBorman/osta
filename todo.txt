@@ -12,3 +12,5 @@ https://avoindata.tutkihallintoa.fi/apis
 
 - Poista sellaiset kenttien nimet, joita ei tarvita/analysoida?
 - Mieti kenttien nimet uusiksi (paremmat nimet)?
+
+- log-tiedosto temp-directoryyn
