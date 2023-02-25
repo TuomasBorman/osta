@@ -493,7 +493,7 @@ def fetch_company_data(ser, language="en", only_ltd=False, merge_bid=True,
         if temp_dir is None:
             # Get the name of higher level tmp directory
             temp_dir_path = tempfile.gettempdir()
-            temp_dir = temp_dir_path + "/osta_tmp_dir"
+            temp_dir = temp_dir_path + "/osta"
         # Check if spedicified directory exists. If not, create it
         if not os.path.isdir(temp_dir):
             os.makedirs(temp_dir)
@@ -1656,7 +1656,7 @@ def __fetch_financial_taxonomy(datatype, subset, key_figs,
         if temp_dir is None:
             # Get the name of higher level tmp directory
             temp_dir_path = tempfile.gettempdir()
-            temp_dir = temp_dir_path + "/osta_tmp_dir"
+            temp_dir = temp_dir_path + "/osta"
         # Check if spedicified directory exists. If not, create it
         if not os.path.isdir(temp_dir):
             os.makedirs(temp_dir)

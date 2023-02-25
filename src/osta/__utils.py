@@ -486,7 +486,7 @@ def __custom_format_for_warning(msg, *args, **kwargs):
     return str(msg)
 
 
-def __stop_logging():
+def __stop_logging(logger=None):
     """
     This function resets logging;
     warnings are not captured to log file anymore.

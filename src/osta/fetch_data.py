@@ -17,7 +17,7 @@ from osta.change_names import change_names
 import osta.__utils as utils
 
 
-def fetch_data_urls(search_words, **args):
+def fetch_data_urls(search_words, log_file=False, **args):
     """
     Fetch the url addresses of downloadable datasets of Avoindata.fi.
 
@@ -45,7 +45,16 @@ def fetch_data_urls(search_words, **args):
         raise Exception(
             "'search_words' must be a string."
             )
+    if not (isinstance(log_file, str) or isinstance(log_file, bool)):
+        raise Exception(
+            "'log_file' must be a boolean value or a string specifying a path."
+            )
     # INPUT CHECK END
+    # If user wants to create a logger file
+    if log_file:
+        # Create a logger with file
+        logger = utils.__start_logging(__name__, log_file)
+    # Initialize result df
     df = pd.DataFrame()
     # Get query for searching pages that contain data
     url = "https://www.avoindata.fi"
@@ -152,10 +161,13 @@ def fetch_data_urls(search_words, **args):
             message="Retrieving URL addresses was not successful.",
             category=Warning
             )
+    # Reset logging; do not capture warnings anymore
+    if log_file:
+        utils.__stop_logging(logger)
     return df
 
 
-def read_files(file_path, as_df=True, **args):
+def read_files(file_path, as_df=True, log_file=False, **args):
     """
     Read single CSV or Excel file to pandas.DataFrame.
 
@@ -181,7 +193,19 @@ def read_files(file_path, as_df=True, **args):
         raise Exception(
             "'file_path' must be a list of strings."
             )
+    if not isinstance(as_df, bool):
+        raise Exception(
+            "'as_df' must be a boolean value."
+            )
+    if not (isinstance(log_file, str) or isinstance(log_file, bool)):
+        raise Exception(
+            "'log_file' must be a boolean value or a string specifying a path."
+            )
     # INPUT CHECK END
+    # If user wants to create a logger file
+    if log_file:
+        # Create a logger with file
+        logger = utils.__start_logging(__name__, log_file)
     # If the file_path contains only one path, create a list from it
     if isinstance(file_path, str):
         file_path = [file_path]
@@ -197,6 +221,10 @@ def read_files(file_path, as_df=True, **args):
                          .format('='*int(percent/(100/progress_bar_width)),
                                  progress_bar_width, int(percent)))
         sys.stdout.flush()
+        # Get the name of the file (or the element number)
+        # and add info to log file
+        if log_file:
+            logger.info(f'File: {path_temp}')
         # Try to load, give a warning if not success
         try:
             df = read_file(path_temp, **args)
@@ -217,6 +245,9 @@ def read_files(file_path, as_df=True, **args):
         res = df_list
     # Stop progress bar
     sys.stdout.write("\n")
+    # Reset logging; do not capture warnings anymore
+    if log_file:
+        utils.__stop_logging()
     return res
 
 
@@ -257,7 +288,7 @@ def read_file(file_path, temp_dir=None, **args):
         if temp_dir is None:
             # Get the name of higher level tmp directory
             temp_dir_path = tempfile.gettempdir()
-            temp_dir = temp_dir_path + "/osta_tmp_dir"
+            temp_dir = temp_dir_path + "/osta"
         # Check if spedicified directory exists. If not, create it
         if not os.path.isdir(temp_dir):
             os.makedirs(temp_dir)

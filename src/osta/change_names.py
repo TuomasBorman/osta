@@ -219,7 +219,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
 
 def change_names_list(df_list, save_dir=None, log_file=False, **args):
     """
-    Chnage names of multiple pd.DFs
+    Change names of multiple pd.DFs
     Input: A list of pd.DFs or path's to them
     Output: A list of pd.Dfs
     """
@@ -265,9 +265,10 @@ def change_names_list(df_list, save_dir=None, log_file=False, **args):
                              percent/(100/progress_bar_width)),
                                  progress_bar_width, int(percent)))
         sys.stdout.flush()
-        # mesage
-        msg = x if isinstance(x, str) else ("element " + i)
+        # Get the name of the file (or the element number)
+        # and add info to log file
         if log_file:
+            msg = x if isinstance(x, str) else ("element " + i)
             logger.info(f'File: {msg}')
         # Check if it is pd.DataFrame. Otherwise try to load it as a local file
         df_is_DF = True
@@ -279,7 +280,7 @@ def change_names_list(df_list, save_dir=None, log_file=False, **args):
                 df_is_DF = False
                 msg = x if isinstance(x, str) else ("element " + i)
                 warnings.warn(
-                    message=f"{msg} was not detected.",
+                    message="Failed to open the file.",
                     category=UserWarning
                     )
         else:
@@ -288,11 +289,11 @@ def change_names_list(df_list, save_dir=None, log_file=False, **args):
         if df_is_DF:
             # Change names from individual file
             df = change_names(df, **args)
-        # Save file if list contained paths or if specified
-        if isinstance(x, str) or save_dir is not None:
-            # Get correct path
-            x = x if isinstance(x, str) else join(save_dir, x)
-            df.to_csv(x, index=False)
+            # Save file if list contained paths or if specified
+            if isinstance(x, str) or save_dir is not None:
+                # Get correct path
+                x = x if isinstance(x, str) else join(save_dir, x)
+                df.to_csv(x, index=False)
     # Stop progress bar
     sys.stdout.write("\n")
     # Reset logging; do not capture warnings anymore
