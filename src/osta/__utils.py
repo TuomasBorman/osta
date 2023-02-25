@@ -8,6 +8,9 @@ import codecs
 import cchardet
 import csv
 import filetype
+import logging
+from os import mknod, makedirs
+from os.path import exists, dirname
 
 
 def __is_non_empty_df(df):
@@ -437,3 +440,34 @@ def __detect_format_and_open_file(
         df = pd.read_csv(file_path, encoding=encoding, delimiter=delimiter,
                          **args, dtype='unicode')
     return df
+
+
+def __get_logger(name, file_name):
+    """
+    This function creates a logger with logger file.
+    """
+    # Check that path exists. If not, create it.
+    dir_name = dirname(file_name)
+    if not exists(dir_name):
+        makedirs(dir_name)
+    if not exists(file_name):
+        mknod(file_name)
+    # Configure
+    logging.basicConfig(
+        filename=file_name,
+        format='%(asctime)s - %(name)s - %(levelname)s\n%(message)s\n',
+        level=logging.INFO,
+        datefmt='%Y-%m-%d %H:%M:%S')
+    # Capture warnings from all function that are used
+    logging.captureWarnings(True)
+    # Create a logger
+    logger = logging.getLogger(name)
+    return logger
+
+
+def __custom_format_for_warning(msg, *args, **kwargs):
+    """
+    This function defines a custom format for warnings.
+    """
+    # Ignore everything except the message
+    return str(msg)

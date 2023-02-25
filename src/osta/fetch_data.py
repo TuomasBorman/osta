@@ -15,7 +15,6 @@ import os
 import filetype
 from osta.change_names import change_names
 import osta.__utils as utils
-from os.path import isfile, join, isdir, exists, dirname
 
 
 def fetch_data_urls(search_words, **args):

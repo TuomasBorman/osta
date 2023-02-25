@@ -5,11 +5,12 @@ import warnings
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import pkg_resources
-from os import listdir, mknod, makedirs
-from os.path import isfile, join, isdir, exists, dirname
-import logging
+from os import listdir
+from os.path import isfile, join, isdir, dirname
 import sys
 import tempfile
+import logging
+logger = logging.getLogger(__name__)
 
 
 def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
@@ -169,7 +170,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
             warnings.warn(
                 message=f"The following column names... \n {colnames_old}\n"
                 f"... were replaced with \n {colnames_new}",
-                category=Warning
+                category=UserWarning
                 )
         # Update not-found column names
         colnames_not_found = [i for i in colnames_not_found
@@ -182,7 +183,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         warnings.warn(
             message=f"The following column names were not detected. "
             f"Please check them for errors.\n {colnames_not_found}",
-            category=Warning
+            category=UserWarning
             )
 
     # Check that the format of the values are correct
@@ -210,7 +211,7 @@ def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
         warnings.warn(
             message=f"The following duplicated column names... \n"
             f"{colnames_old}\n... were replaced with \n {colnames_new}",
-            category=Warning
+            category=UserWarning
             )
         # Replace column names with new ones
         df.columns = colnames
@@ -247,27 +248,22 @@ def change_names_list(df_list, save_dir=None, log_file=False, **args):
         df_list = [join(df_list, f) for f in listdir(df_list)
                    if isfile(join(df_list, f))]
     # INPUT CHECK END
+    # If user wants to create a logger file
     if log_file:
+        # If user specified the path for the file
         if isinstance(log_file, str):
             dir_name = dirname(log_file)
             file_name = log_file
         else:
-            # Get the name of higher level tmp directory
+            # If tmp folder is used
             temp_dir_path = tempfile.gettempdir()
             dir_name = temp_dir_path + "/osta"
             file_name = join(dir_name, "osta_log.log")
-        if not exists(dir_name):
-            makedirs(dir_name)
-        if not exists(file_name):
-            mknod(file_name)
+        # Create a logger with file
+        logger = utils.__get_logger(__name__, file_name)
+        # Get only message from warnings
+        warnings.formatwarning = utils.__custom_format_for_warning
 
-        logging.basicConfig(
-            filename=file_name,
-            format='%(asctime)s %(levelname)-8s %(message)s',
-            level=logging.INFO,
-            datefmt='%Y-%m-%d %H:%M:%S')
-        logging.captureWarnings(True)
-        logger = logging.getLogger("change_names_list")
     # For progress bar, specify the width of it
     progress_bar_width = 50
     # Loop over list elements
@@ -283,7 +279,8 @@ def change_names_list(df_list, save_dir=None, log_file=False, **args):
         sys.stdout.flush()
         # mesage
         msg = x if isinstance(x, str) else ("element " + i)
-        logger.info(f'File: {msg}')
+        if log_file:
+            logger.info(f'File: {msg}')
         # Check if it is pd.DataFrame. Otherwise try to load it as a local file
         df_is_DF = True
         if not isinstance(x, pd.DataFrame):
@@ -295,7 +292,7 @@ def change_names_list(df_list, save_dir=None, log_file=False, **args):
                 msg = x if isinstance(x, str) else ("element " + i)
                 warnings.warn(
                     message=f"{msg} was not detected.",
-                    category=Warning
+                    category=UserWarning
                     )
         else:
             df = x
@@ -828,6 +825,6 @@ def __check_format_of_values(df, match_th=0.8, **args):
             message=f"Based on expected value types the following "
             f"column names... \n {orig}\n"
             f"... were replaced with \n {new}",
-            category=Warning
+            category=UserWarning
             )
     return df
