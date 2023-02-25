@@ -6,9 +6,8 @@ from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import pkg_resources
 from os import listdir
-from os.path import isfile, join, isdir, dirname
+from os.path import isfile, isdir, join
 import sys
-import tempfile
 import logging
 logger = logging.getLogger(__name__)
 
@@ -250,26 +249,15 @@ def change_names_list(df_list, save_dir=None, log_file=False, **args):
     # INPUT CHECK END
     # If user wants to create a logger file
     if log_file:
-        # If user specified the path for the file
-        if isinstance(log_file, str):
-            dir_name = dirname(log_file)
-            file_name = log_file
-        else:
-            # If tmp folder is used
-            temp_dir_path = tempfile.gettempdir()
-            dir_name = temp_dir_path + "/osta"
-            file_name = join(dir_name, "osta_log.log")
         # Create a logger with file
-        logger = utils.__get_logger(__name__, file_name)
-        # Get only message from warnings
-        warnings.formatwarning = utils.__custom_format_for_warning
+        logger = utils.__start_logging(__name__, log_file)
 
     # For progress bar, specify the width of it
     progress_bar_width = 50
     # Loop over list elements
     for i, x in enumerate(df_list):
         # Update the progress bar
-        percent = 100*((i)/len(df_list))
+        percent = 100*((i+1)/len(df_list))
         i += 1
         sys.stdout.write('\r')
         sys.stdout.write("Completed: [{:{}}] {:>3}%"
@@ -307,6 +295,9 @@ def change_names_list(df_list, save_dir=None, log_file=False, **args):
             df.to_csv(x, index=False)
     # Stop progress bar
     sys.stdout.write("\n")
+    # Reset logging; do not capture warnings anymore
+    if log_file:
+        utils.__stop_logging()
     return df_list
 
 # HELP FUNCTIONS

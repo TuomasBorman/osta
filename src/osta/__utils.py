@@ -10,7 +10,9 @@ import csv
 import filetype
 import logging
 from os import mknod, makedirs
-from os.path import exists, dirname
+from os.path import exists, dirname, join
+import tempfile
+from importlib import reload
 
 
 def __is_non_empty_df(df):
@@ -442,10 +444,19 @@ def __detect_format_and_open_file(
     return df
 
 
-def __get_logger(name, file_name):
+def __start_logging(name, log_file):
     """
     This function creates a logger with logger file.
     """
+    # If user specified the path for the file
+    if isinstance(log_file, str):
+        dir_name = dirname(log_file)
+        file_name = log_file
+    else:
+        # If tmp folder is used
+        temp_dir_path = tempfile.gettempdir()
+        dir_name = temp_dir_path + "/osta"
+        file_name = join(dir_name, "osta_log.log")
     # Check that path exists. If not, create it.
     dir_name = dirname(file_name)
     if not exists(dir_name):
@@ -462,6 +473,8 @@ def __get_logger(name, file_name):
     logging.captureWarnings(True)
     # Create a logger
     logger = logging.getLogger(name)
+    # Get only message from warnings
+    warnings.formatwarning = __custom_format_for_warning
     return logger
 
 
@@ -471,3 +484,15 @@ def __custom_format_for_warning(msg, *args, **kwargs):
     """
     # Ignore everything except the message
     return str(msg)
+
+
+def __stop_logging():
+    """
+    This function resets logging;
+    warnings are not captured to log file anymore.
+    """
+    # Do not catch warnings
+    logging.captureWarnings(False)
+    # Reset warning message formatting
+    reload(warnings)
+    return None
