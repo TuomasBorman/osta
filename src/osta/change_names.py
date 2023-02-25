@@ -8,8 +8,6 @@ import pkg_resources
 from os import listdir
 from os.path import isfile, isdir, join
 import sys
-import logging
-logger = logging.getLogger(__name__)
 
 
 def change_names(df, guess_names=True, make_unique=True, fields=None, **args):
