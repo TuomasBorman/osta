@@ -7,6 +7,9 @@ from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import pkg_resources
 import numpy as np
+from os import listdir
+from os.path import isfile, isdir, join
+import sys
 
 
 def clean_data(df, **args):
@@ -215,6 +218,91 @@ def clean_data(df, **args):
     # Check country data
     df = __standardize_country(df, **args)
     return df
+
+
+def clean_data_list(df_list, save_dir=None, log_file=False, **args):
+    """
+    Change names of multiple pd.DFs
+    Input: A list of pd.DFs or path's to them
+    Output: A list of pd.Dfs
+    """
+    # INPUT CHECK
+    if not (isinstance(df_list, list) or isinstance(df_list, str)):
+        raise Exception(
+            "'df_list' must be a list of pd.DataFrames or paths to files."
+            )
+    if not (isinstance(save_dir, str) or save_dir is None):
+        raise Exception(
+            "'save_dir' must be None or string specifying directory to where ",
+            "result files will be stored."
+            )
+    if not (isinstance(log_file, str) or isinstance(log_file, bool)):
+        raise Exception(
+            "'log_file' must be a boolean value or a string specifying a path."
+            )
+    # If df_list is directory, check that it is correct directory
+    if isinstance(df_list, str) and not isdir(df_list):
+        raise Exception(
+            "Directory specified by 'df_list' not found."
+            )
+    elif isinstance(df_list, str) and isdir(df_list):
+        # If it is directory, get all the files inside it
+        df_list = [join(df_list, f) for f in listdir(df_list)
+                   if isfile(join(df_list, f))]
+    # INPUT CHECK END
+    # If user wants to create a logger file
+    if log_file:
+        # Create a logger with file
+        logger = utils.__start_logging(__name__, log_file)
+
+    # For progress bar, specify the width of it
+    progress_bar_width = 50
+    # Loop over list elements
+    for i, x in enumerate(df_list):
+        # Update the progress bar
+        percent = 100*((i+1)/len(df_list))
+        i += 1
+        sys.stdout.write('\r')
+        sys.stdout.write("Completed: [{:{}}] {:>3}%"
+                         .format('='*int(
+                             percent/(100/progress_bar_width)),
+                                 progress_bar_width, int(percent)))
+        sys.stdout.flush()
+        # Get the name of the file (or the element number)
+        # and add info to log file
+        if log_file:
+            msg = x if isinstance(x, str) else ("element " + i)
+            logger.info(f'File: {msg}')
+        # Check if it is pd.DataFrame. Otherwise try to load it as a local file
+        df_is_DF = True
+        if not isinstance(x, pd.DataFrame):
+            # Try to load it
+            try:
+                df = utils.__detect_format_and_open_file(x, **args)
+            except Exception:
+                df_is_DF = False
+                msg = x if isinstance(x, str) else ("element " + i)
+                warnings.warn(
+                    message="Failed to open the file.",
+                    category=UserWarning
+                    )
+        else:
+            df = x
+        # If the file is not DF and it was not possible to load
+        if df_is_DF:
+            # Change names from individual file
+            df = clean_data(df, **args)
+            # Save file if list contained paths or if specified
+            if isinstance(x, str) or save_dir is not None:
+                # Get correct path
+                x = x if isinstance(x, str) else join(save_dir, x)
+                df.to_csv(x, index=False)
+    # Stop progress bar
+    sys.stdout.write("\n")
+    # Reset logging; do not capture warnings anymore
+    if log_file:
+        utils.__stop_logging()
+    return df_list
 
 
 def __standardize_country(df, disable_country=False,
@@ -994,9 +1082,10 @@ def __check_org_data(df, cols_to_check):
             # Check that bids are valid; True if not valid
             valid = utils.__are_valid_bids(col).values
             # Are bids duplicated?
-            duplicated = col.isin(col[col.duplicated()])
+            uniq = df.loc[:, cols_to_check].drop_duplicates()[col_to_check]
+            duplicated = col.isin(uniq[uniq.duplicated()])
             # Update result
-            res = res | valid | duplicated
+            res = res | ~valid | duplicated
         # Name found?
         if any(i in cols_to_check for i in ["org_name", "suppl_name"]):
             # Get column
@@ -1005,7 +1094,8 @@ def __check_org_data(df, cols_to_check):
             # Get names
             col = df[col_to_check]
             # Are names duplicated?
-            duplicated = col.isin(col[col.duplicated()])
+            uniq = df.loc[:, cols_to_check].drop_duplicates()[col_to_check]
+            duplicated = col.isin(uniq[uniq.duplicated()])
             # Update result
             res = res | duplicated
         # Number found?
@@ -1015,8 +1105,8 @@ def __check_org_data(df, cols_to_check):
                             if x in cols_to_check][0]
             # Get numbers
             col = df[col_to_check]
-            # Are numbers duplicated?
-            duplicated = col.isin(col[col.duplicated()])
+            uniq = df.loc[:, cols_to_check].drop_duplicates()[col_to_check]
+            duplicated = col.isin(uniq[uniq.duplicated()])
             # Update result
             res = res | duplicated
         if any(res):
@@ -1370,8 +1460,8 @@ def __check_empty_observations(df, thresh=0, **args):
         warnings.warn(
             message=f"It seems that the data includes rows with up to "
             f"{max_num} empty values. Please check them for errors. "
-            f"5 first rows with empty values printed below.\n"
-            f"{df.loc[empty_values>0,:].head()}",
+            f"Rows with empty values printed below.\n"
+            f"{df.loc[empty_values>0,:]}",
             category=Warning
             )
     return df
