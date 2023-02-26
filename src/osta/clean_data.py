@@ -98,6 +98,9 @@ def clean_data(df, **args):
         can be dropped by specifying thresh. For example, thresh=df.shape[0]-5
         removes all rows that have over 5 empty values. (By default: thresh=0)
 
+        `check_na`: A boolean value specifying whether to notify if there are
+        missing values in organization data. (By default: check_na=False)
+
     Details:
         This function standardize the data and checks that it is in correct
         format. If the data is not in expected format containing erroneous
@@ -1067,6 +1070,12 @@ def __check_org_data(df, cols_to_check, check_na=False, **args):
     Input: df, columns that contain organization information
     Output: which rows are incorrect? None if check were not made
     """
+    # INPUT CHECK
+    if not isinstance(check_na, bool):
+        raise Exception(
+            "'check_na' must be True or False."
+            )
+    # INPUT CHECK END
     # Which column are found from df
     cols_to_check = [x for x in cols_to_check if x in df.columns]
     # If any columns were found
