@@ -325,8 +325,7 @@ def __not_duplicated_columns_found(df, cols_to_check):
     return cols_to_check
 
 
-def __subset_data_based_on_year(df, df_db, db_year=None,
-                                date_format="%d-%m-%Y", **args):
+def __subset_data_based_on_year(df, df_db, db_year=None, **args):
     """
     This function subsets database by taking only specific years that user
     has specified or that can be found from the data.
@@ -360,15 +359,16 @@ def __subset_data_based_on_year(df, df_db, db_year=None,
         cols_to_check = __not_duplicated_columns_found(df, cols_to_check)
         if len(cols_to_check) == 1:
             col_to_check = cols_to_check[0]
-            # INPUT CHECK END
             # Get date column
             date = df.loc[:, col_to_check]
             # Extract year if possible
             if "date" in df.columns:
                 try:
-                    year = pd.to_datetime(date, format=date_format)
-                    year = date.dt.year.drop_duplicates().sort_values()
-                    df_db = df_db.loc[df_db["year"] == year, :]
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore")
+                        year = pd.to_datetime(date).dt.year
+                    year = year.drop_duplicates().sort_values()
+                    df_db = df_db.loc[df_db["year"].isin(year), :]
                 except Exception:
                     pass
     # Get only unique values

@@ -892,14 +892,47 @@ def __standardize_account(df, disable_account=False, account_data=None,
                 :, account_data["cat_1"] == subset_account_data]
     # Column of db that are matched with columns that are being checked
     # Subset to match with cols_to_check
-    cols_to_match = ["number", "name"]
+    cols_to_match = ["number", "name", "year"]
     cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
                      if x in cols_to_check]
-    # Standardize organization data
-    df = __standardize_based_on_db(df=df, df_db=account_data,
-                                   cols_to_check=cols_to_check,
-                                   cols_to_match=cols_to_match,
-                                   disable_partial=True, **args)
+    # Test if year can be fetched based on the data
+    year = None
+    if "date" in df.columns and "year" in account_data.columns:
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                year = pd.to_datetime(df["date"]).dt.year
+        except Exception:
+            pass
+    # If the year was found, check data based on years
+    year_not_found = []
+    if year is not None:
+        for y in year.drop_duplicates():
+            temp_df = df.loc[year == y, :]
+            temp_account = account_data.loc[account_data["year"] == y, :]
+            # If year was found from the database
+            if temp_account.shape[0] > 0:
+                # Standardize organization data
+                temp_df = __standardize_based_on_db(
+                    df=temp_df, df_db=temp_account,
+                    cols_to_check=cols_to_check,
+                    cols_to_match=cols_to_match, disable_partial=True, **args)
+                # Add data back
+                df.loc[year == y, :] = temp_df
+            else:
+                year_not_found.append(y)
+    else:
+        # Standardize organization data without year information
+        df = __standardize_based_on_db(
+            df=df, df_db=account_data, cols_to_check=cols_to_check,
+            cols_to_match=cols_to_match, disable_partial=True, **args)
+    # Give warning if year was not found
+    if len(year_not_found) > 0:
+        warnings.warn(
+            message=f"'The following years were not found from the account "
+            f"data and they are not checked: {year_not_found}",
+            category=Warning
+            )
     # Check that values are matching
     __check_variable_pair(df, cols_to_check=cols_to_check)
     return df
@@ -940,11 +973,45 @@ def __standardize_service(df, disable_service=False,
     cols_to_match = ["number", "name"]
     cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
                      if x in cols_to_check]
-    # Standardize organization data
-    df = __standardize_based_on_db(df=df, df_db=service_data,
-                                   cols_to_check=cols_to_check,
-                                   cols_to_match=cols_to_match,
-                                   disable_partial=True, **args)
+    
+    # Test if year can be fetched based on the data
+    year = None
+    if "date" in df.columns and "year" in service_data.columns:
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                year = pd.to_datetime(df["date"]).dt.year
+        except Exception:
+            pass
+    # If the year was found, check data based on years
+    year_not_found = []
+    if year is not None:
+        for y in year.drop_duplicates():
+            temp_df = df.loc[year == y, :]
+            temp_account = service_data.loc[service_data["year"] == y, :]
+            # If year was found from the database
+            if temp_account.shape[0] > 0:
+                # Standardize organization data
+                temp_df = __standardize_based_on_db(
+                    df=temp_df, df_db=temp_account,
+                    cols_to_check=cols_to_check,
+                    cols_to_match=cols_to_match, disable_partial=True, **args)
+                # Add data back
+                df.loc[year == y, :] = temp_df
+            else:
+                year_not_found.append(y)
+    else:
+        # Standardize organization data without year information
+        df = __standardize_based_on_db(
+            df=df, df_db=service_data, cols_to_check=cols_to_check,
+            cols_to_match=cols_to_match, disable_partial=True, **args)
+    # Give warning if year was not found
+    if len(year_not_found) > 0:
+        warnings.warn(
+            message=f"'The following years were not found from the service "
+            f"data and they are not checked: {year_not_found}",
+            category=Warning
+            )
     # Check that values are matching
     __check_variable_pair(df, cols_to_check=cols_to_check)
     return df
@@ -1105,10 +1172,8 @@ def __check_org_data(df, cols_to_check, check_na=False, **args):
             uniq = uniq[uniq.notna()]
             uniq = uniq[uniq.duplicated()]
             duplicated = col.isin(uniq)
-            print(col[duplicated])
             # Update result
             res = res | ~valid | duplicated
-            print(sum(res))
         # Name found?
         if any(i in cols_to_check for i in ["org_name", "suppl_name"]):
             # Get column

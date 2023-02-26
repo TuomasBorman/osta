@@ -1,0 +1,138 @@
+,account_number,account_name
+0,4560,Poltto- ja voiteluaineet
+1,4330,Asiakaspalvelujen ostot muilta
+2,4440,Koulutus- ja kulttuuripalvelut
+3,4595,Huolto-ja korjaustarvikkeet
+4,4600,Muu materiaali
+5,4500,Toimisto- ja koulutarvikkeet
+6,4592,Valmiit tuotteet/tavarat
+7,4310,Asiakaspalvelujen ostot kunn.
+8,4602,IT-tarvikeostot
+11,4551,Kemikaalit
+14,4534,Hoitotarvikkeet
+16,4361,Puhelin- ja tietoliikennepalve
+20,4840,Koneiden ja laitt. vuokrat
+21,4391,Rakenn.rak.-ja kunn.pitopal
+32,4590,Rakennusmateriaali
+33,4401,"Kon.,kal.ja laitteiden kunnoss"
+36,4550,Puhdistusaineet ja -tarvikkeet
+41,4530,Vaatteisto
+57,4410,Majoitus- ja ravitsemispalvelut
+62,4393,Työkonepalvelut
+63,4341,Asiantuntijapalvelut
+64,4520,Elintarvikkeet
+84,4339,Kotikuntakorvaukset
+90,4320,Asiakaspalv ostot kuntayht
+100,1170,Muut koneet ja kalusto
+106,4421,Rahti- yms palvelut
+108,4605,"Liikelahjat,palkinnot,merkkipä"
+109,1195,Keskeneräiset hankinnat
+121,4371,Muut vakuutukset
+131,4580,Kalusto
+137,4420,Matkustus- ja kuljetuspalvelut
+153,4980,Muut kulut
+169,4510,Kirjallisuus
+301,4890,Muut vuokrat
+302,4340,Asiantuntijapalvelut
+303,4411,Kokous-ja neuvottelutarjoilut
+304,4570,Lämmitys
+352,4460,Muut palvelut
+382,4533,Lääkkeet
+384,4732,Kotihoidon palvelusetelikulut
+390,4352,Ilmoitukset
+407,4392,Alueiden rak. ja kunn.pitopal
+411,4728,Muut lakisääteiset avustukset
+463,4742,Avustukset yhteisöille
+471,4381,Jätehuoltomaksut
+512,4601,IT-laiteostot
+555,4300,Asiakaspalvelujen ostot
+588,4739,Muut avustukset kotitalouksille
+594,1100,Maa- ja vesialueet
+613,4569,Sähkö ja kaasu
+615,4430,Sosiaali- ja terveyspalvelut
+636,4362,IT-palvelut
+749,4360,Posti- ja kuriiripalvelut
+878,4749,Muut avustukset yhteisöille
+892,4076,Vuosipalkkiot ja ansionmenetyk
+938,4462,Muut palvelumaksut
+982,4450,Osuus verotuskustannuksiin
+1128,2623,"Ulosotot, ostolaskut"
+1221,4419,"Joukko- ja palveluliikenne,YYP"
+1322,4842,IT-ohjelmisto- ja sovellusvuok
+1339,4363,IT-ohjelmisto- ja sovellusosto
+1563,4981,Jäsenmaksut
+1678,4431,Laboratoriopalvelut
+1855,4351,Painatukset
+1868,2637,Asiakaskassojen pankkitapahtum
+1870,4380,Puhtaanapito- ja pesulapalvelut
+2048,1790,Koodi 614/100% alv-ver.palautu
+2267,3510,Pysyvien vastaavien hyödykkeiden luovutusvoitot
+2387,3440,Maa- ja vesialueiden vuokrat
+2595,4820,Rakennusten ja huoneistojen vuokrat
+2856,4460,Muut yhteistoimintaosuudet
+3110,4900,Välilliset verot
+3575,,
+3647,4343,Henkilöstöhallintopalveluiden
+3653,4373,Ajoneuvovakuutukset
+3687,2562,Lähdeverovelka
+3714,4085,Muut palkkiot ulkopuolisille
+3716,2806,Muut siirtovelat muille
+3717,2628,Avainpantit
+3775,4570,Vesi
+3876,3315,EU-tuki kunnan kehittämisproj.
+3877,6320,Viivästyskorot ja korotukset
+4106,3540,Perintämaksutuotot
+4177,4731,Päivähoidon palv.setelikulut
+4392,2680,Oulu10 palveluiden tuotemyynti
+4714,4733,Palv.asumisen palv.setelikulut
+4821,2551,Matkatiliostojen selvittelytil
+4822,2625,Maksukorttiostojen selv.tili
+4842,3290,Pysäköintimaksut
+4921,4841,IT-laitevuokrat
+6374,4719,Ennaltaehk. toimeentulotuki
+6408,3294,Muut palvelumaksut
+7776,4412,Edustuskulut
+7982,4521,Alkoholi
+8505,4830,Koneiden ja laitteiden vuokrat
+8699,1010,Muut pitkävaikutteiset menot
+8775,1250,Palautuskelpoiset liittymismak
+8858,4715,Yksityisen hoidon tuen kuntalisä
+9554,1160,Kuljetusvälineet
+10339,3530,Muut tuotot
+11324,4394,Verkoston rakentamis- ja kunno
+11359,2626,Joukkoliikenne arvolataus
+11360,3287,Muut yhdyskuntap.maksut
+13436,4413,Päivärahat
+13761,1005,Tietokoneohjelmistot
+16079,1969,Yhdystili Oulun Tilakeskus
+16136,4342,ICT-palvelut
+17957,4402,Työpuku-ja työkalukorvaukset
+19865,1184,Arvo- ja taide-esineet
+19890,4700,Lasten kotihoidon tuki
+20635,4432,Röntgenpalvelut
+21308,1205,Asunto-osakkeet tytäryhteisöissä
+22125,4571,Sähkö
+29260,2648,Kuntoutusrahasuoritusten välit
+29396,2449,Saadut ennakot
+29703,2500,Joukkovelkakirjalainat
+29782,2570,YO-tutkintomaksut
+29933,1826,Siirtosaamiset muilta
+29987,6130,Viivästyskorot
+30023,2580,Lomapalkkajaksotus
+34829,2627,Museokortti
+35570,2665,Etälukioverkoston kust.jako
+36631,4344,Rahoitus- ja pankkipalvelut
+36649,1150,Muut kiinteät rak. ja laitteet
+38082,1130,Kiinteät rakenteet ja laitteet
+38829,4100,KuEl-palkkaperusteinen maksu
+41096,46009,SIS Muu materiaali
+41232,4382,Jätevesimaksut
+41677,2620,Selvittelytili
+44730,3020,Myyntituotot kuntayhtymiltä
+44750,1140,Johtoverkostot ja laitteet
+45227,1212,Muut osakkeet ja osuudet
+50352,4745,Työmarkkinatuen kuntaosuus
+50459,4735,Muut palvelusetelikulut
+52581,4372,Vastuuvakuutukset
+53253,3332,Muut tuet ja avustukset valtio
+54621,1102,Kiinteistöjen liittymismaksut
