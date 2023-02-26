@@ -260,7 +260,24 @@ def test_clean_data_suppl():
             "suppl_id": ["01242425", "test243", "test"]
             }
     df = pd.DataFrame(data)
-    df = clean_data(df, disable_org=True)
+    df = clean_data(df, disable_suppl=True)
+    # Expected names
+    data = {"suppl_number": [4844, 48344, 4844444],
+            "suppl_name": ["test", "test1", "test3"],
+            "suppl_id": ["01242425", "test243", "test"]
+            }
+    df_expect = pd.DataFrame(data)
+    # Expect that are equal
+    assert_frame_equal(df, df_expect)
+
+    data = {"suppl_number": [4844, 48344, 4844444],
+            "suppl_name": ["test", "test1", "test3"],
+            "suppl_id": ["01242425", "test243", "test"]
+            }
+    df = pd.DataFrame(data)
+    # Expect a warning
+    with pytest.warns(Warning):
+        df = clean_data(df)
     # Expected names
     data = {"suppl_number": [4844, 48344, 4844444],
             "suppl_name": ["test", "test1", "test3"],
@@ -464,17 +481,14 @@ def test_clean_data_account():
 
 
 def test_clean_data_voucher():
-    data = {"voucher": [104420, 1187, 370111],
-            "test": ["0135202-4", "0135202-4", "test"]
+    data = {"voucher": [104420, 104420, 104420, 104420, 104420,
+                        104420, 104420, 104420, 104420, 104410],
             }
     df = pd.DataFrame(data)
     # Expect a warning
     with pytest.warns(Warning):
         df = clean_data(df)
     # Expected names
-    data = {"voucher": [104420, 1187, 370111],
-            "test": ["0135202-4", "0135202-4", "test"]
-            }
     df_expect = pd.DataFrame(data)
     # Expect that are equal
     assert_frame_equal(df, df_expect)

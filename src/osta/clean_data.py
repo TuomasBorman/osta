@@ -881,15 +881,13 @@ def __standardize_account(df, disable_account=False, account_data=None,
     cols_to_match = ["number", "name"]
     cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
                      if x in cols_to_check]
-    # Data types to check
-    dtypes = ["int64", "object"]
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=account_data,
                                    cols_to_check=cols_to_check,
                                    cols_to_match=cols_to_match,
                                    disable_partial=True, **args)
     # Check that values are matching
-    __check_variable_pair(df, cols_to_check=cols_to_check, dtypes=dtypes)
+    __check_variable_pair(df, cols_to_check=cols_to_check)
     return df
 
 
@@ -928,15 +926,13 @@ def __standardize_service(df, disable_service=False,
     cols_to_match = ["number", "name"]
     cols_to_match = [cols_to_match[i] for i, x in enumerate(cols_df)
                      if x in cols_to_check]
-    # Data types to check
-    dtypes = ["int64", "object"]
     # Standardize organization data
     df = __standardize_based_on_db(df=df, df_db=service_data,
                                    cols_to_check=cols_to_check,
                                    cols_to_match=cols_to_match,
                                    disable_partial=True, **args)
     # Check that values are matching
-    __check_variable_pair(df, cols_to_check=cols_to_check, dtypes=dtypes)
+    __check_variable_pair(df, cols_to_check=cols_to_check)
     return df
 
 
@@ -1161,7 +1157,8 @@ def __get_matches_from_db(df, df_db,
     part_match_df = pd.DataFrame()
 
     # Loop over rows
-    for i, row in df.iterrows():
+    for i in range(0, df.shape[0]):
+        row = df.iloc[i, :]
         # Intialize a DF for variables' position in data base
         temp = pd.DataFrame()
         # Loop over variables
@@ -1310,7 +1307,7 @@ def __check_if_missmatch_db(temp, row_db, j, df_db,
     return [missmatch_df, missmatch]
 
 
-def __check_variable_pair(df, cols_to_check, dtypes, **args):
+def __check_variable_pair(df, cols_to_check, dtypes=None, **args):
     """
     This function checks variable pair that their data type is correct.
     Input: df, columns being checked, and expected data types
@@ -1319,7 +1316,11 @@ def __check_variable_pair(df, cols_to_check, dtypes, **args):
     # Subset so that only available columns are checked
     ind = [i for i, x in enumerate(cols_to_check) if x in df.columns]
     cols_to_check = list(cols_to_check[i] for i in ind)
-    dtypes = list(dtypes[i] for i in ind)
+    # If dtypes is None, do not check them
+    if dtypes is None:
+        dtypes = df[cols_to_check].dtypes
+    else:
+        dtypes = list(dtypes[i] for i in ind)
     # Check if data types match
     ind = [i for i in ind if df[cols_to_check[i]].dtype != dtypes[i]]
     # If not, give warning
@@ -1428,8 +1429,11 @@ def __check_voucher(df, disable_voucher=False, **args):
         df=df,
         col_i=df.columns.tolist().index(col_to_check),
         colnames=df.columns.tolist())
-    # Voucher should match with other data or it should increase
-    if not (res or df[col_to_check].is_monotonic_increasing):
+    # Get portion of unique values
+    portion = len(df[col_to_check].drop_duplicates())/df.shape[0]
+    # Voucher should match with other data or it should increase, or there
+    # should be unique values in 25 % of rows.
+    if not (res or df[col_to_check].is_monotonic_increasing or portion > 0.25):
         warnings.warn(
             message="It seems that 'voucher' column does not include " +
             "voucher values. Please check it for errors.",
