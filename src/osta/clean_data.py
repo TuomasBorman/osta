@@ -408,7 +408,8 @@ def __clean_sums(df, disable_sums=False, **args):
     if len(cols_missing) == 0 and all(df.dtypes[cols_to_check] == "float64"):
         test = df["price_ex_vat"] + df["vat_amount"]
         # Get columns that do not match
-        temp = df.loc[df["total"] != test, cols_to_check]
+        temp = df.loc[np.round(df["total"], 2) != np.round(test, 2),
+                      cols_to_check]
         # If any unmatching was found
         if temp.shape[0] > 0:
             temp = temp.drop_duplicates()
@@ -461,8 +462,18 @@ def __standardize_date(df, disable_date=False, date_format="%d-%m-%Y",
     # Split dates from separator. Result is multiple columns
     # with year, month and day separated
     df_date_mod = df_date.astype(str).str.split(r"[-/.]", expand=True)
-    # If the split was succesful
-    if df_date_mod.shape[1] > 1:
+    # If the date is in long format containing also time
+    if any(df_date.astype(str).str.len() > 10):
+        try:
+            df_date_mod = pd.to_datetime(df_date)
+            # Default settings
+            yearfirst = True
+            dayfirst = False
+            convert_date = True
+        except Exception:
+            pass
+    elif df_date_mod.shape[1] > 1:
+        # If the split was succesful and there are only day, month, and year
         # Get format of dates if None
         if not (isinstance(dayfirst, bool) or isinstance(yearfirst, bool)):
             df_date_mod, dayfirst, yearfirst = __get_format_of_dates_w_sep(
@@ -830,7 +841,7 @@ def __standardize_org(df, disable_org=False, org_data=None, **args):
                                    cols_to_match=cols_to_match,
                                    **args)
     # If organization data was not in database, it is not checked.
-    __check_org_data(df, cols_to_check)
+    __check_org_data(df, cols_to_check, **args)
     return df
 
 
@@ -975,7 +986,7 @@ def __standardize_suppl(df, disable_suppl=False, suppl_data=None, **args):
     # Check VAT numbers
     __check_vat_number(df, cols_to_check=["suppl_id", "vat_number", "country"],
                        **args)
-    __check_org_data(df, cols_to_check)
+    __check_org_data(df, cols_to_check, **args)
     return df
 
 
@@ -1049,7 +1060,7 @@ def __standardize_based_on_db(df, df_db,
     return df
 
 
-def __check_org_data(df, cols_to_check):
+def __check_org_data(df, cols_to_check, check_na=False, **args):
     """
     Check if organization data is not duplicated or has empty values, or
     incorrect business IDs.
@@ -1067,7 +1078,10 @@ def __check_org_data(df, cols_to_check):
         # now there should be only unique number, name, ID combinations
         df = df.drop_duplicates()
         # Are there None values
-        res = df.isna().sum(axis=1) > 0
+        if check_na:
+            res = df.isna().sum(axis=1) > 0
+        else:
+            res = [False] * df.shape[0]
         # BIDs found?
         if any(i in cols_to_check for i in ["org_id", "suppl_id"]):
             # Get bid column
@@ -1079,9 +1093,13 @@ def __check_org_data(df, cols_to_check):
             valid = utils.__are_valid_bids(col).values
             # Are bids duplicated?
             uniq = df.loc[:, cols_to_check].drop_duplicates()[col_to_check]
-            duplicated = col.isin(uniq[uniq.duplicated()])
+            uniq = uniq[uniq.notna()]
+            uniq = uniq[uniq.duplicated()]
+            duplicated = col.isin(uniq)
+            print(col[duplicated])
             # Update result
             res = res | ~valid | duplicated
+            print(sum(res))
         # Name found?
         if any(i in cols_to_check for i in ["org_name", "suppl_name"]):
             # Get column
@@ -1091,7 +1109,9 @@ def __check_org_data(df, cols_to_check):
             col = df[col_to_check]
             # Are names duplicated?
             uniq = df.loc[:, cols_to_check].drop_duplicates()[col_to_check]
-            duplicated = col.isin(uniq[uniq.duplicated()])
+            uniq = uniq[uniq.notna()]
+            uniq = uniq[uniq.duplicated()]
+            duplicated = col.isin(uniq)
             # Update result
             res = res | duplicated
         # Number found?
@@ -1102,14 +1122,16 @@ def __check_org_data(df, cols_to_check):
             # Get numbers
             col = df[col_to_check]
             uniq = df.loc[:, cols_to_check].drop_duplicates()[col_to_check]
-            duplicated = col.isin(uniq[uniq.duplicated()])
+            uniq = uniq[uniq.notna()]
+            uniq = uniq[uniq.duplicated()]
+            duplicated = col.isin(uniq)
             # Update result
             res = res | duplicated
         if any(res):
             # Get only incorrect values
             df = df.loc[res, :]
             warnings.warn(
-                message=f"Following organization data contains duplicated "
+                message=f"The following organization data contains duplicated "
                 f"or empty values or business IDs are incorrect. "
                 f"Please check them for errors: \n{df}",
                 category=Warning
@@ -1201,10 +1223,17 @@ def __get_matches_from_db(df, df_db,
             name_df = row[df.columns == cols_to_check[
                 cols_to_match.index("name")]].values[0]
             name_db = df_db.loc[:, "name"]
-            # Try partial match, get the most similar name
-            name_part = process.extractOne(name_df, name_db, scorer=scorer)
+            # Try partial match, if not None
+            if not pd.isna(name_df):
+                res = process.extract(name_df, name_db, scorer=scorer)
+                name_part = res[0]
+                name_part2 = res[1]
+            else:
+                name_part = 0
+                name_part2 = 0
             # If the matching score is over threshold
-            if disable_partial is False and name_part[1] >= pattern_th:
+            if disable_partial is False and name_part[1] >= pattern_th and (
+                    name_part[1] > name_part2[1]):
                 # Get only the name
                 name_part = name_part[0]
                 # Find row based on name with partial match
@@ -1292,14 +1321,16 @@ def __check_if_missmatch_db(temp, row_db, j, df_db,
             value = [row_db.values.tolist()[0][num] for num, x in
                      enumerate(cols_to_match) if x not in
                      cols_to_match[j]]
-            # Check if they equal
+            # Check if they not equal
             if value != temp_db:
                 # Get values
                 names1 = temp.columns.tolist()
                 # Store data for warning message
                 names2 = list("Found " + x for x in names1)
-                names = [x for z in zip(names1, names2) for x in z]
-                values = pd.DataFrame([value, temp_db], index=names)
+                names = [[names1[i], names2[i]] for i in range(0, len(names1))]
+                names = names = sum(names, [])
+                value.extend(temp_db)
+                values = pd.DataFrame(value, index=names)
                 missmatch_df = pd.concat([missmatch_df, values],
                                          axis=1, ignore_index=True)
                 # Missmatch was found
@@ -1461,6 +1492,8 @@ def __check_empty_observations(df, thresh=0, **args):
     empty_values = df.apply(lambda x: len(x)-x.count(), axis=1)
     if any(empty_values > 0):
         max_num = max(empty_values)
+        # Print all columns
+        pd.set_option('display.max_columns', df.shape[1])
         warnings.warn(
             message=f"It seems that the data includes rows with up to "
             f"{max_num} empty values. Please check them for errors. "
@@ -1468,4 +1501,5 @@ def __check_empty_observations(df, thresh=0, **args):
             f"{df.loc[empty_values>0,:]}",
             category=Warning
             )
+        pd.reset_option('all')
     return df
