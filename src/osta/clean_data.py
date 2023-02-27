@@ -50,7 +50,7 @@ def clean_data(df, **args):
 
         `scorer`: A scorer function passed into fuzzywuzzy.process.extractOne
         function that evaluates the match between names and database.
-        (By default: scorer=fuzz.token_sort_ratio)
+        (By default: scorer=fuzz.partial_ratio)
 
         `org_data`: pd.DataFrame or None. Database for organization data.
         Data must include on of the following columns: 'name', 'number', or
@@ -1062,7 +1062,7 @@ def __standardize_suppl(df, disable_suppl=False, suppl_data=None, **args):
 
 def __standardize_based_on_db(df, df_db,
                               cols_to_check, cols_to_match,
-                              pattern_th=0.7, scorer=fuzz.token_sort_ratio,
+                              pattern_th=0.7, scorer=fuzz.partial_ratio,
                               disable_partial=False,
                               **args):
     """
