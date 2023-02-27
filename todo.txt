@@ -1,7 +1,5 @@
 TODO:
 
-warnings to log file 
-https://stackoverflow.com/questions/41764345/python-3-how-to-log-warnings-and-errors-to-log-file
 
 - Löytyykö rajapintaa myös tililuettelolle? (ja palveluluokille)
 https://avoindata.tutkihallintoa.fi/apis
@@ -12,5 +10,3 @@ https://avoindata.tutkihallintoa.fi/apis
 
 - Poista sellaiset kenttien nimet, joita ei tarvita/analysoida?
 - Mieti kenttien nimet uusiksi (paremmat nimet)?
-
-- log-tiedosto temp-directoryyn

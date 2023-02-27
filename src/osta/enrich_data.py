@@ -408,14 +408,18 @@ def __add_sums(df, disable_sums=False, **args):
     return df
 
 
-def fetch_company_data(ser, language="en", only_ltd=False, merge_bid=True,
-                       use_cache=True, temp_dir=None,
+def fetch_company_data(ser, ser_name=None, language="en", only_ltd=False,
+                       merge_bid=True, use_cache=True, temp_dir=None,
                        **args):
     """
     Fetch company data from databases.
 
     Arguments:
         `ser`: pd.Series including business IDs.
+
+        `ser_name`: pd.Series including names. Optional, search will be made
+        first with BID and secondly by name if BID was not found.
+        (By default: ser_name=None)
 
         `language`: A string specifying the language of fetched data. Must be
         "en" (English), "fi" (Finnish), or "sv" (Swedish).
@@ -457,6 +461,11 @@ def fetch_company_data(ser, language="en", only_ltd=False, merge_bid=True,
     if not (isinstance(ser, pd.Series) and len(ser) > 0):
         raise Exception(
             "'ser' must be non-empty pandas.Series."
+            )
+    if not (ser_name is None or
+            (isinstance(ser_name, pd.Series) and len(ser_name) == len(ser))):
+        raise Exception(
+            "'ser_name' must be None or non-empty pandas.Series."
             )
     if not (isinstance(language, str) and language in ["fi", "en", "sv"]):
         raise Exception(
@@ -611,9 +620,15 @@ def fetch_company_data(ser, language="en", only_ltd=False, merge_bid=True,
             # If BID was not found from the database, try to find
             # with web search
             try:
+                # Try to find based on BID
                 res = __fetch_company_data_from_website(bid, language)
             except Exception:
-                res = pd.DataFrame([bid], index=["bid"]).transpose()
+                try:
+                    # Try to find data based on name
+                    res = __fetch_company_data_from_website(
+                        ser_name[bid_i], language)
+                except Exception:
+                    res = pd.DataFrame([bid], index=["bid"]).transpose()
         else:
             # If user want only ltd info and data was not found
             res = pd.DataFrame([bid], index=["bid"]).transpose()
@@ -677,8 +692,7 @@ def __fetch_company_data_from_website(bid, language):
     Output: df with company data
     """
     # Test if BID is business ID or name
-    # bid_option = utils.__are_valid_bids(pd.Series([bid])).all()
-    bid_option = True
+    bid_option = utils.__are_valid_bids(pd.Series([bid])).all()
     # Create a driver
     driver_found = False
     for driver in ["firefox", "chrome", "ie"]:

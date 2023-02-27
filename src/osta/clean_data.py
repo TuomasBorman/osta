@@ -1168,9 +1168,11 @@ def __check_org_data(df, cols_to_check, check_na=False, **args):
             # Check that bids are valid; True if not valid
             valid = utils.__are_valid_bids(col).values
             # Are bids duplicated?
-            uniq = df.loc[:, cols_to_check].drop_duplicates()[col_to_check]
-            uniq = uniq[uniq.notna()]
-            uniq = uniq[uniq.duplicated()]
+            temp = df.loc[:, cols_to_check]
+            temp = temp.drop_duplicates()
+            freq = temp[col_to_check]
+            freq = freq[freq.notna()].value_counts()
+            uniq = freq[(freq > 1).values].index.tolist()
             duplicated = col.isin(uniq)
             # Update result
             res = res | ~valid | duplicated
@@ -1182,9 +1184,11 @@ def __check_org_data(df, cols_to_check, check_na=False, **args):
             # Get names
             col = df[col_to_check]
             # Are names duplicated?
-            uniq = df.loc[:, cols_to_check].drop_duplicates()[col_to_check]
-            uniq = uniq[uniq.notna()]
-            uniq = uniq[uniq.duplicated()]
+            temp = df.loc[:, cols_to_check]
+            temp = temp.drop_duplicates()
+            freq = temp[col_to_check]
+            freq = freq[freq.notna()].value_counts()
+            uniq = freq[(freq > 1).values].index.tolist()
             duplicated = col.isin(uniq)
             # Update result
             res = res | duplicated
@@ -1194,10 +1198,11 @@ def __check_org_data(df, cols_to_check, check_na=False, **args):
             col_to_check = [x for x in ["org_number", "suppl_number"]
                             if x in cols_to_check][0]
             # Get numbers
-            col = df[col_to_check]
-            uniq = df.loc[:, cols_to_check].drop_duplicates()[col_to_check]
-            uniq = uniq[uniq.notna()]
-            uniq = uniq[uniq.duplicated()]
+            temp = df.loc[:, cols_to_check]
+            temp = temp.drop_duplicates()
+            freq = temp[col_to_check]
+            freq = freq[freq.notna()].value_counts()
+            uniq = freq[(freq > 1).values].index.tolist()
             duplicated = col.isin(uniq)
             # Update result
             res = res | duplicated
@@ -1206,7 +1211,8 @@ def __check_org_data(df, cols_to_check, check_na=False, **args):
             df = df.loc[res, :]
             warnings.warn(
                 message=f"The following organization data contains duplicated "
-                f"or empty values or business IDs are incorrect. "
+                f"(e.g., equal business ID but different name) or empty "
+                "values or business IDs are incorrect. "
                 f"Please check them for errors: \n{df}",
                 category=Warning
                 )
@@ -1567,7 +1573,7 @@ def __check_empty_observations(df, thresh=0, **args):
     if any(empty_values > 0):
         max_num = max(empty_values)
         # Print all columns
-        pd.set_option('display.max_columns', df.shape[1])
+        pd.set_option("display.max_columns", df.shape[1])
         warnings.warn(
             message=f"It seems that the data includes rows with up to "
             f"{max_num} empty values. Please check them for errors. "
@@ -1575,5 +1581,5 @@ def __check_empty_observations(df, thresh=0, **args):
             f"{df.loc[empty_values>0,:]}",
             category=Warning
             )
-        pd.reset_option('all')
+        pd.reset_option("display.max_columns", silent=True)
     return df
