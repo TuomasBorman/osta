@@ -584,7 +584,7 @@ def __org_or_suppl_BID(df, col_i, colnames, match_th):
                                         df.iloc[:, colnames.index("org_id")]):
             res = "org_id"
         # If there are not many unique values, it might be organization ID
-        if df.iloc[:, col_i].nunique()/df.shape[0] < 0.2:
+        if df.iloc[:, col_i].nunique() < 50:
             res = "org_id"
     return res
 
