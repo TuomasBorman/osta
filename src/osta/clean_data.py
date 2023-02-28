@@ -1080,6 +1080,7 @@ def __standardize_based_on_db(df, df_db,
     # Value [0,1] to a number between 0-100, because fuzzywuzzy requires that
     pattern_th = pattern_th*100
     # INPUT CHECK END
+    # Create copy to avoid warnings related to assigning just a slice of data
     df = df.copy()
     # Which column are found from df and df_db
     cols_df = [x for x in cols_to_check if x in df.columns]
