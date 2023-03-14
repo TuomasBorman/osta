@@ -366,7 +366,7 @@ def __standardize_country(df, disable_country=False,
     return df
 
 
-def __clean_sums(df, disable_sums=False, **args):
+def __clean_sums(df, disable_sums=False, to_positive=False, **args):
     """
     This function checks that sums (total, vat, netsum) are in float format,
     and tries to convert them if they are not. Futhermore, if one field is
@@ -378,6 +378,10 @@ def __clean_sums(df, disable_sums=False, **args):
     if not isinstance(disable_sums, bool):
         raise Exception(
             "'disable_sums' must be True or False."
+            )
+    if not isinstance(to_positive, bool):
+        raise Exception(
+            "'to_positive' must be True or False."
             )
     # Check if column(s) is found as non-duplicated
     cols_df = ["total", "vat_amount", "price_ex_vat"]
@@ -428,6 +432,20 @@ def __clean_sums(df, disable_sums=False, **args):
             f"check them for errors: \n{cols_to_check}",
             category=Warning
             )
+    # If there are negative values, give warning
+    if any(df.dtypes[cols_to_check] == "float64"):
+        # Take indices of rows that have negative values
+        ind = (df.loc[:, df.dtypes[cols_to_check] == "float64"
+                      ] < 0).sum(axis=1) > 0
+        warnings.warn(
+            message=f"The following rows include negative values. Please "
+            f"check them for errors: \n{df.loc[ind, cols_to_check]}",
+            category=Warning
+            )
+    # Convert negative values to positive values if specified
+    if any(df.dtypes[cols_to_check] == "float64") and to_positive:
+        df.loc[:, df.dtypes[cols_to_check] == "float64"] = df.loc[
+            :, df.dtypes[cols_to_check] == "float64"].abs()
     return df
 
 

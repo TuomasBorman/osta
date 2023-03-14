@@ -12,3 +12,4 @@ https://avoindata.tutkihallintoa.fi/apis
 - Mieti kenttien nimet uusiksi (paremmat nimet)?
 
 - HCck if negative values in total --> convert to positive if ok
+- Lue kaikki excel-sheetit

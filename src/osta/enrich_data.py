@@ -16,6 +16,9 @@ import tempfile
 import os
 import json
 import numpy as np
+import xmltodict
+import geopandas as gpd
+import pyproj
 
 
 def enrich_data(df, **args):
@@ -1267,7 +1270,7 @@ def fetch_financial_data(org_bids, years, subset=True, wide_format=True,
             }
         df = df.rename(columns=new_colnames)
     # If specified, convert into wide format
-    if wide_format:
+    if not df.empty and wide_format:
         df = df.pivot_table(index="bid",
                             columns="key_figure_label",
                             values="value")
@@ -1699,4 +1702,87 @@ def __fetch_financial_taxonomy(datatype, subset, key_figs,
     if subset:
         ind = [x in key_figs for x in df[label_col]]
         df = df.loc[ind, :]
+    return df
+
+
+def fetch_map_data(year=None, resolution="1000", coord_sys="4326"):
+    """
+    Fetch the coordinate data of municipality borders from Statistics Finland
+    (Tilastokeskus,
+     https://www.stat.fi/org/avoindata/paikkatietoaineistot/kuntapohjaiset_tilastointialueet.html).
+
+    Arguments:
+        `year`: A string or an integer specifying the year of the data.
+
+        `resolution`: A string specifying the resolution of the data. Must be
+        "1000" (1 : 1 000 000) or "4500" (1 : 4 500 000).
+        (By default: resolution="1000")
+
+        `coord_sys`: A string specifying the coordinate system to which the
+        data is converted. (By default: coord_sys="4326")
+
+    Details:
+        This function fetches coordinates of borders of municipalities. The
+        borders are retunred as a polygons that can be plotted.
+
+    Examples:
+        ```
+        # Fetch map data for all municipalities.
+        df_map = fetch_map_data(2023)
+        ```
+
+    Output:
+        pandas.DataFrame with url addresses.
+
+    """
+    # INPUT CHECK
+    if not (isinstance(year, str) or isinstance(year, int)):
+        raise Exception(
+            "'year' must be a string or an integer."
+            )
+    year = str(year)
+    if not (isinstance(resolution, str) and
+            (resolution == "1000" or resolution == "4500")):
+        raise Exception(
+            "'resolution' must be '1000' or '4500'."
+            )
+    if not isinstance(coord_sys, str):
+        raise Exception(
+            "'coord_sys' must be a string."
+            )
+    # INPUT CHECK END
+    output_format = "json"
+    # Get available years
+    response = requests.get(
+        "https://geo.stat.fi/geoserver/tilastointialueet/wfs?service=WFS&"
+        "request=GetCapabilities&version=2.0.0")
+    if not response.ok:
+        raise Exception(
+            "Error while fetching the data. Please, check internet connection."
+            )
+    dict_data = xmltodict.parse(response.content)
+    # Loop through results and get those years that have municipality data at
+    # 1: 4 500 000 resolution
+    years = []
+    for x in dict_data["wfs:WFS_Capabilities"]["FeatureTypeList"][
+            "FeatureType"]:
+        temp = x["Title"]
+        temp = re.search("Kunnat \\d\\d\\d\\d \\(1:4 500 000\\)", temp)
+        if temp:
+            temp = re.search("\\d\\d\\d\\d", temp.group()).group()
+            years.append(temp)
+    # Check that year is correct
+    if year not in years:
+        raise Exception(
+            "The database does not include data from year specified by 'year'."
+            )
+    # URL to database
+    url = "https://geo.stat.fi/geoserver/wfs?amp%3Brequest=GetCapabilities&"\
+        "request=GetFeature&service=WFS&version=1.1.0&"\
+        "typeName=tilastointialueet:kunta" + resolution + "k"\
+        "_" + year + "&outputFormat=" + output_format
+    # Get the data. Try catch; year might not be correct
+    df = gpd.read_file(url)
+    # Convert data to coordinate system
+    df = df.to_crs(pyproj.CRS.from_epsg(coord_sys))
     return df
