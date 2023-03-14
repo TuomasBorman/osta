@@ -256,7 +256,7 @@ def change_names_list(df_list, save_dir=None, log_file=False, **args):
     for i, x in enumerate(df_list):
         # Update the progress bar
         percent = 100*((i+1)/len(df_list))
-        i += 1
+        # i += 1
         sys.stdout.write('\r')
         sys.stdout.write("Completed: [{:{}}] {:>3}%"
                          .format('='*int(
@@ -276,7 +276,7 @@ def change_names_list(df_list, save_dir=None, log_file=False, **args):
                 df = utils.__detect_format_and_open_file(x, **args)
             except Exception:
                 df_is_DF = False
-                msg = x if isinstance(x, str) else ("element " + i)
+                # msg = x if isinstance(x, str) else ("element " + i)
                 warnings.warn(
                     message="Failed to open the file.",
                     category=UserWarning

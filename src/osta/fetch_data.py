@@ -15,6 +15,8 @@ import os
 import filetype
 from osta.change_names import change_names
 import osta.__utils as utils
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 
 
 def fetch_data_urls(search_words, log_file=False, **args):
@@ -41,9 +43,9 @@ def fetch_data_urls(search_words, log_file=False, **args):
 
     """
     # INPUT CHECK
-    if not isinstance(search_words, str):
+    if not (isinstance(search_words, str) or isinstance(search_words, list)):
         raise Exception(
-            "'search_words' must be a string."
+            "'search_words' must be a string or a list."
             )
     if not (isinstance(log_file, str) or isinstance(log_file, bool)):
         raise Exception(
@@ -56,9 +58,12 @@ def fetch_data_urls(search_words, log_file=False, **args):
         logger = utils.__start_logging(__name__, log_file)
     # Initialize result df
     df = pd.DataFrame()
+    # If search_words is a list, search word will be just "osta" and results
+    # are subsetted later
+    word = "osto" if isinstance(search_words, list) else search_words
     # Get query for searching pages that contain data
     url = "https://www.avoindata.fi"
-    query = url + "/data/fi/" + "dataset?q=" + search_words
+    query = url + "/data/fi/" + "dataset?q=" + word
     # Search
     r = requests.get(query)
     # If the search was succesful
@@ -89,7 +94,7 @@ def fetch_data_urls(search_words, log_file=False, **args):
             # If not the first page (which is already loaded), load the page
             if num != 1:
                 query = (url + "/data/fi/" + "dataset?q=" +
-                         search_words + "&page=" + str(num))
+                         word + "&page=" + str(num))
                 # Search
                 r = requests.get(query)
                 # Parse dataset and find pages / individual search results
@@ -152,6 +157,21 @@ def fetch_data_urls(search_words, log_file=False, **args):
 
                 # Add data to main DataFrame
                 df = pd.concat([df, df_temp])
+        # If user wanted to search based on municipalities, subset the data
+        if isinstance(search_words, list):
+            # Match "osto" and municipality
+            pattern = r"(?=.*(" + word + ").*)"
+            r = re.compile(pattern)
+            dfs = df.astype(str, copy=True, errors="raise")
+            # Find search word ("osta") and municipalities
+            # (with loose match - 80%)
+            scorer = fuzz.partial_ratio
+            ind = dfs.applymap(lambda x: bool(
+                r.match(x.lower()) and process.extractOne(
+                    x, search_words, scorer=scorer)[1] > 80)).sum(
+                axis=1) > 0
+            # Subset the data; take only those rows that had correct results
+            df = df.loc[ind, :]
         # Reset index
         df = df.reset_index(drop=True)
         # Stop progress bar
